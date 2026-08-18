@@ -6,6 +6,7 @@ import {
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 import { createAuth } from './auth/better-auth.js';
+import { devSessionResolver, registerDevLoginRoutes } from './auth/dev-login.js';
 import { betterAuthResolver, sessionPlugin, type SessionResolver } from './auth/session.js';
 import type { Env } from './env.js';
 import { registerErrorHandler } from './plugins/errors.js';
@@ -70,14 +71,45 @@ export async function buildApp({
   await registerSecurity(app, env);
 
   const auth = createAuth(prisma, env);
-  await app.register(sessionPlugin, { resolve: resolveSession ?? betterAuthResolver(auth), prisma });
 
+  // Fora de produção, o cookie de desenvolvimento serve como identidade de
+  // reserva — uma sessão real do Better Auth sempre vence. Em produção este
+  // encadeamento não existe, e `registerDevLoginRoutes` se recusaria a rodar.
+  const isDevelopment = env.NODE_ENV !== 'production';
+  const baseResolver = resolveSession ?? betterAuthResolver(auth);
+  const resolver =
+    isDevelopment && !resolveSession ? devSessionResolver(env, baseResolver) : baseResolver;
+
+  await app.register(sessionPlugin, { resolve: resolver, prisma });
+
+  // Na raiz ficam só as rotas que não pertencem ao aplicativo:
+  //   /health  — sonda de infraestrutura (o Cloud Run consulta esta URL)
+  //   /s/...   — link de compartilhamento, que vai colado em conversa
+  //   /api/auth — o Better Auth, cujo `basePath` já inclui o prefixo
   registerHealthRoutes(app, version);
-  registerAuthRoutes(app, auth);
-  registerReferenceRoutes(app, prisma);
-  registerInviteRoutes(app, prisma, env);
-  registerProfileRoutes(app, prisma);
   registerShareRoutes(app, prisma, env);
+  registerAuthRoutes(app, auth);
+
+  // Todo o resto vive sob `/api`. Ter um prefixo único é o que permite ao SPA
+  // usar um caminho relativo em desenvolvimento (com proxy do Vite) e uma URL
+  // absoluta em produção, sem cada rota precisar saber qual é o caso.
+  await app.register(
+    (scope) => {
+      registerReferenceRoutes(scope, prisma);
+      registerInviteRoutes(scope, prisma, env);
+      registerProfileRoutes(scope, prisma);
+
+      if (isDevelopment) {
+        registerDevLoginRoutes(scope, prisma, env);
+      }
+
+      // O registro é síncrono, mas o Fastify precisa de um sinal de conclusão:
+      // sem devolver a promessa (ou chamar `done`), o `register` ficaria
+      // esperando para sempre.
+      return Promise.resolve();
+    },
+    { prefix: '/api' },
+  );
 
   return app;
 }

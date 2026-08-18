@@ -25,7 +25,7 @@ beforeEach(async () => {
 async function createInviteAs(userId: string) {
   return app.inject({
     method: 'POST',
-    url: '/invites',
+    url: '/api/invites',
     headers: asUser(userId),
     payload: { validityDays: 30 },
   });
@@ -51,7 +51,7 @@ describe('rotas de convite', () => {
   it('não deixa gerar convite sem sessão @spec:AC-019', async () => {
     const response = await app.inject({
       method: 'POST',
-      url: '/invites',
+      url: '/api/invites',
       payload: { validityDays: 30 },
     });
 
@@ -65,7 +65,7 @@ describe('rotas de convite', () => {
 
     const response = await app.inject({
       method: 'POST',
-      url: '/invites/check',
+      url: '/api/invites/check',
       payload: { code },
     });
 
@@ -88,7 +88,7 @@ describe('rotas de convite', () => {
   it('recusa convite inexistente com a mesma resposta de um expirado', async () => {
     const response = await app.inject({
       method: 'POST',
-      url: '/invites/check',
+      url: '/api/invites/check',
       payload: { code: generateInviteCode() },
     });
 
@@ -104,7 +104,7 @@ describe('rotas de convite', () => {
     for (let tentativa = 0; tentativa < 14; tentativa += 1) {
       const response = await app.inject({
         method: 'POST',
-        url: '/invites/check',
+        url: '/api/invites/check',
         payload: { code: generateInviteCode() },
         remoteAddress: '203.0.113.10',
       });

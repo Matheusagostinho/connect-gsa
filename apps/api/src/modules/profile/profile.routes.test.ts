@@ -52,7 +52,7 @@ describe('rotas de perfil', () => {
   it('recusa área restrita sem sessão, sem devolver dado nenhum @spec:AC-019', async () => {
     const ana = await createTestUser();
 
-    for (const url of ['/me', `/profiles/${ana.id}`]) {
+    for (const url of ['/api/me', `/api/profiles/${ana.id}`]) {
       const response = await app.inject({ method: 'GET', url });
       expect(response.statusCode).toBe(401);
       expect(response.body).not.toContain(ana.email);
@@ -64,13 +64,13 @@ describe('rotas de perfil', () => {
     const ana = await createTestUser();
     const { city, institution } = await reference();
 
-    const antes = await app.inject({ method: 'GET', url: '/me', headers: asUser(ana.id) });
+    const antes = await app.inject({ method: 'GET', url: '/api/me', headers: asUser(ana.id) });
     expect(antes.statusCode).toBe(200);
     expect(antes.json()).toMatchObject({ profileComplete: false, institution: null, city: null });
 
     const depois = await app.inject({
       method: 'PATCH',
-      url: '/me',
+      url: '/api/me',
       headers: asUser(ana.id),
       payload: validProfile(city.id, institution.id),
     });
@@ -85,7 +85,7 @@ describe('rotas de perfil', () => {
 
     const response = await app.inject({
       method: 'PATCH',
-      url: '/me',
+      url: '/api/me',
       headers: asUser(ana.id),
       payload: {
         ...validProfile(city.id, institution.id),
@@ -106,7 +106,7 @@ describe('rotas de perfil', () => {
 
     const response = await app.inject({
       method: 'PATCH',
-      url: '/me',
+      url: '/api/me',
       headers: asUser(ana.id),
       payload: validProfile(city.id, institution.id),
     });
@@ -127,7 +127,7 @@ describe('rotas de perfil', () => {
 
     const response = await app.inject({
       method: 'PATCH',
-      url: '/me',
+      url: '/api/me',
       headers: asUser(ana.id),
       payload: validProfile('11111111-1111-4111-8111-111111111111', institution.id),
     });
@@ -141,14 +141,14 @@ describe('rotas de perfil', () => {
 
     await app.inject({
       method: 'PATCH',
-      url: '/me',
+      url: '/api/me',
       headers: asUser(ana.id),
       payload: validProfile(city.id, institution.id),
     });
 
     const response = await app.inject({
       method: 'PATCH',
-      url: '/me',
+      url: '/api/me',
       headers: asUser(ana.id),
       payload: {
         ...validProfile(city.id, institution.id),
@@ -166,7 +166,7 @@ describe('rotas de perfil', () => {
 
     const response = await app.inject({
       method: 'PATCH',
-      url: `/profiles/${bruno.id}`,
+      url: `/api/profiles/${bruno.id}`,
       headers: asUser(ana.id),
       payload: { ...validProfile(city.id, institution.id), bio: 'invadido' },
     });
@@ -186,14 +186,14 @@ describe('rotas de perfil', () => {
 
     await app.inject({
       method: 'PATCH',
-      url: '/me',
+      url: '/api/me',
       headers: asUser(bruno.id),
       payload: validProfile(city.id, institution.id),
     });
 
     const alheio = await app.inject({
       method: 'GET',
-      url: `/profiles/${bruno.id}`,
+      url: `/api/profiles/${bruno.id}`,
       headers: asUser(ana.id),
     });
 
@@ -202,7 +202,7 @@ describe('rotas de perfil', () => {
     expect(alheio.json()).not.toHaveProperty('email');
 
     // Nem no próprio perfil o e-mail trafega: o SPA nunca precisou dele.
-    const proprio = await app.inject({ method: 'GET', url: '/me', headers: asUser(bruno.id) });
+    const proprio = await app.inject({ method: 'GET', url: '/api/me', headers: asUser(bruno.id) });
     expect(proprio.body).not.toContain('bruno.contato@uni.br');
     expect(proprio.json()).not.toHaveProperty('email');
   });
@@ -213,7 +213,7 @@ describe('rotas de perfil', () => {
 
     const response = await app.inject({
       method: 'PATCH',
-      url: '/me',
+      url: '/api/me',
       headers: asUser(ana.id),
       payload: validProfile(city.id, institution.id),
     });
@@ -227,7 +227,7 @@ describe('rotas de perfil', () => {
 
     const ligou = await app.inject({
       method: 'PATCH',
-      url: '/me/privacy',
+      url: '/api/me/privacy',
       headers: asUser(ana.id),
       payload: { visibleOnMap: true },
     });
@@ -235,7 +235,7 @@ describe('rotas de perfil', () => {
 
     const desligou = await app.inject({
       method: 'PATCH',
-      url: '/me/privacy',
+      url: '/api/me/privacy',
       headers: asUser(ana.id),
       payload: { visibleOnMap: false },
     });
@@ -250,7 +250,7 @@ describe('rotas de perfil', () => {
 
     const response = await app.inject({
       method: 'GET',
-      url: `/profiles/${bruno.id}`,
+      url: `/api/profiles/${bruno.id}`,
       headers: asUser(ana.id),
     });
 

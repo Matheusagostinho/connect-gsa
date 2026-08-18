@@ -18,7 +18,7 @@ async function completeProfile(userId: string) {
 
   await app.inject({
     method: 'PATCH',
-    url: '/me',
+    url: '/api/me',
     headers: asUser(userId),
     payload: {
       name: 'Ana Souza',

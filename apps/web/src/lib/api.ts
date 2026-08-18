@@ -6,8 +6,18 @@
  * para anexar num cabeçalho. Sem esta opção, o navegador simplesmente não
  * envia o cookie e tudo responde 401.
  */
-// `ImportMetaEnv` tem assinatura de índice aberta, então o acesso devolve `any`
-// — a anotação explícita é o que impede isso de contaminar as chamadas abaixo.
+/**
+ * Raiz da API.
+ *
+ * Em desenvolvimento fica relativa (`/api`) e o proxy do Vite encaminha para o
+ * Fastify — assim o navegador vê tudo como mesma origem e o cookie de sessão se
+ * comporta como em produção. Em produção, `VITE_API_URL` traz a URL do Cloud
+ * Run **incluindo o `/api`**, porque é sob esse prefixo que as rotas do
+ * aplicativo vivem.
+ *
+ * `ImportMetaEnv` tem assinatura de índice aberta, então o acesso devolve `any`
+ * — a anotação explícita é o que impede isso de contaminar as chamadas abaixo.
+ */
 const BASE_URL: string = (import.meta.env['VITE_API_URL'] as string | undefined) ?? '/api';
 
 export class ApiError extends Error {
