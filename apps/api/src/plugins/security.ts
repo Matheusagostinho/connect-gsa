@@ -1,4 +1,5 @@
 import cookie from '@fastify/cookie';
+import multipart from '@fastify/multipart';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
@@ -42,6 +43,12 @@ export async function registerSecurity(app: FastifyInstance, env: Env): Promise<
       sameSite: 'lax',
       path: '/',
     },
+  });
+
+  // O teto de tamanho é aplicado no plugin, antes de o corpo ser lido inteiro:
+  // recusar 50 MB depois de recebê-los seria pagar a banda à toa.
+  await app.register(multipart, {
+    limits: { fileSize: 5 * 1024 * 1024, files: 1, fields: 4 },
   });
 
   // Piso global. O diretório de embaixadores é uma lista de contatos valiosa:
