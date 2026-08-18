@@ -33,7 +33,7 @@
 ## T-005 — Better Auth com Google, LinkedIn e GitHub [concluida]
 
 - Refs: AC-001, AC-002, AC-003
-- Arquivos: apps/api/src/auth/better-auth.ts, apps/api/src/auth/session.ts, apps/api/src/auth/invite-ticket.ts, apps/api/src/auth/invite-ticket.test.ts, apps/api/src/auth/auth.gate.test.ts, apps/api/src/routes/auth.ts, apps/api/src/testing/auth.ts, apps/api/src/testing/helpers.ts, apps/api/src/testing/app.ts, apps/api/src/testing/db.ts
+- Arquivos: apps/api/src/auth/better-auth.ts, apps/api/src/auth/session.ts, apps/api/src/auth/signed-ticket.ts, apps/api/src/auth/invite-ticket.ts, apps/api/src/auth/invite-ticket.test.ts, apps/api/src/auth/auth.gate.test.ts, apps/api/src/routes/auth.ts, apps/api/src/testing/auth.ts, apps/api/src/testing/helpers.ts, apps/api/src/testing/app.ts, apps/api/src/testing/db.ts
 - Notas: Sessão em cookie httpOnly+Secure+SameSite (P-008). `accountLinking` restrito a
   provedores com e-mail verificado (ASM-006). Depende de T-003 e T-004.
 
@@ -94,3 +94,18 @@
 - Arquivos: AGENTS.md, README.md, .env.example, apps/api/AGENTS.md, apps/web/AGENTS.md, packages/db/AGENTS.md, packages/shared/AGENTS.md, packages/config/AGENTS.md
 - Notas: README em português, com aviso de projeto não oficial enquanto Q-003 estiver aberta.
   `.env.example` só com placeholder (P-007).
+
+## T-014 — Entrada de desenvolvimento, travada contra produção [concluida]
+
+- Refs: US-008, AC-020, AC-021
+- Arquivos: apps/api/src/auth/dev-login.ts, apps/api/src/auth/dev-login.test.ts, apps/web/src/pages/DevLogin.tsx, packages/db/prisma/seed-dev.ts, scripts/preparar-banco-de-teste.sh, docker/postgres-init/01-cria-banco-de-teste.sql
+- Notas: Porta dos fundos deliberada. A trava é o próprio `NODE_ENV`, verificada no momento
+  do registro das rotas — e provada por teste, inclusive que a aplicação de produção
+  responde 404 nesses endereços.
+
+## T-015 — Identidade visual e tema claro/escuro [concluida]
+
+- Refs: US-009, AC-022
+- Arquivos: apps/web/src/styles/tokens.css, apps/web/src/lib/theme.ts, apps/web/src/lib/theme.test.ts, apps/web/src/components/ThemeToggle.tsx, apps/web/src/components/ui.tsx, apps/web/index.html
+- Notas: Linguagem do antigravity.google com Google Sans (SIL OFL desde jan/2026). O
+  amarelo fica fora do gradiente de TEXTO: medido, dá 1,71:1 sobre branco.

@@ -20,7 +20,8 @@
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "seed:dev": "tsx prisma/seed-dev.ts"
   },
   "dependencies": {
     "@prisma/adapter-neon": "^7.9.1",

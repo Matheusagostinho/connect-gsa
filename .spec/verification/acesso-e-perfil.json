@@ -1,11 +1,11 @@
 {
   "feature": "acesso-e-perfil",
-  "timestamp": "2026-08-18T17:50:37.417Z",
-  "gitRev": null,
+  "timestamp": "2026-08-18T20:26:12.483Z",
+  "gitRev": "36421d1",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 59,
+  "testsParsed": 68,
   "results": {
     "AC-001": {
       "status": "pass",
@@ -101,16 +101,31 @@
       "status": "pass",
       "testName": "rotas de convite não deixa gerar convite sem sessão @spec:AC-019 não deixa gerar convite sem sessão @spec:AC-019",
       "method": "vitest-json"
+    },
+    "AC-020": {
+      "status": "pass",
+      "testName": "login de desenvolvimento entra como o usuário escolhido em desenvolvimento @spec:AC-020 entra como o usuário escolhido em desenvolvimento @spec:AC-020",
+      "method": "vitest-json"
+    },
+    "AC-021": {
+      "status": "pass",
+      "testName": "login de desenvolvimento não expõe nenhuma rota de desenvolvimento quando a aplicação sobe em produção @spec:AC-021 não expõe nenhuma rota de desenvolvimento quando a aplicação sobe em produção @spec:AC-021",
+      "method": "vitest-json"
+    },
+    "AC-022": {
+      "status": "pass",
+      "testName": "tema abre no tema escolhido depois de recarregar @spec:AC-022 abre no tema escolhido depois de recarregar @spec:AC-022",
+      "method": "vitest-json"
     }
   },
   "principles": {
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
     "P-003": {
       "status": "pass",
       "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003"
-    },
-    "P-008": {
-      "status": "pass",
-      "testName": "portão de entrada da rede entrega a sessão em cookie httpOnly e autentica a requisição @spec:AC-001 @principle:P-008 entrega a sessão em cookie httpOnly e autentica a requisição @spec:AC-001 @principle:P-008"
     },
     "P-004": {
       "status": "pass",

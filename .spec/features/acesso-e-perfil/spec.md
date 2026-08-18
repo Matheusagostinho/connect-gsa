@@ -174,6 +174,37 @@ o lançamento para o programa não dependa de mais nenhuma etapa de infraestrutu
 - **Quando** chamo qualquer rota de perfil da API
 - **Então** recebo 401 e nenhum dado de embaixador vem na resposta
 
+### US-008 — Experimentar a rede antes de haver credenciais OAuth
+
+Como responsável pelo projeto, quero navegar pelo aplicativo sem depender de credenciais
+dos provedores sociais, para que a avaliação do produto não fique bloqueada por uma etapa
+de configuração externa.
+
+#### AC-020 — Entro como qualquer pessoa semeada, em desenvolvimento
+
+- **Dado** que a aplicação roda fora de produção e há pessoas de exemplo no banco
+- **Quando** escolho uma delas na entrada de desenvolvimento
+- **Então** passo a navegar autenticado como ela, e uma área restrita responde os meus dados
+
+#### AC-021 — Essa porta não existe em produção
+
+- **Dado** que a aplicação sobe com a configuração de produção
+- **Quando** tento alcançar qualquer endereço da entrada de desenvolvimento
+- **Então** a rede responde que não existe (404), e tentar habilitá-la impede a aplicação
+  de subir em vez de abrir a brecha em silêncio
+
+### US-009 — Ler a rede do meu jeito
+
+Como embaixador, quero escolher entre tema claro e escuro, para que eu consiga usar a rede
+de madrugada sem clarão e de dia sem forçar a vista.
+
+#### AC-022 — Minha escolha de tema vale e continua valendo
+
+- **Dado** que escolhi o tema escuro
+- **Quando** volto ao aplicativo depois
+- **Então** ele abre escuro; e se eu escolher "seguir o sistema", ele volta a acompanhar a
+  preferência do sistema operacional em vez de ficar preso à minha última escolha
+
 ## Fora de escopo
 
 - Busca e filtro do diretório, e o mapa em si (só a preferência de visibilidade entra aqui).

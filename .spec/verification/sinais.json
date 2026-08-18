@@ -603,6 +603,51 @@
       "primeiraVez": "2026-08-18T17:51:02.628Z",
       "ultimaVez": "2026-08-18T17:51:02.628Z",
       "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/auth/dev-login.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/auth/dev-login.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T20:24:46.023Z",
+      "ultimaVez": "2026-08-18T20:24:46.024Z",
+      "gitRev": "36421d1"
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/auth/signed-ticket.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/auth/signed-ticket.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T20:24:46.024Z",
+      "ultimaVez": "2026-08-18T20:24:46.024Z",
+      "gitRev": "36421d1"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/components/ThemeToggle.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/components/ThemeToggle.tsx",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T20:24:46.024Z",
+      "ultimaVez": "2026-08-18T20:24:46.024Z",
+      "gitRev": "36421d1"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/lib/theme.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/lib/theme.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T20:24:46.024Z",
+      "ultimaVez": "2026-08-18T20:24:46.024Z",
+      "gitRev": "36421d1"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/pages/DevLogin.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/pages/DevLogin.tsx",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T20:24:46.024Z",
+      "ultimaVez": "2026-08-18T20:24:46.024Z",
+      "gitRev": "36421d1"
     }
   }
 }
