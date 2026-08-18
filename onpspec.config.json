@@ -1,0 +1,16 @@
+{
+  "testCommand": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "reporterOutputFile": ".spec/verification/raw.json",
+  "testGlobs": [
+    "apps/**/src/**/*.test.ts",
+    "apps/**/src/**/*.test.tsx",
+    "apps/**/tests/**",
+    "packages/**/src/**/*.test.ts"
+  ],
+  "srcGlobs": [
+    "apps/**/src/**",
+    "packages/shared/src/**",
+    "packages/db/src/*.ts"
+  ]
+}

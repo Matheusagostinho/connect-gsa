@@ -1,0 +1,136 @@
+{
+  "feature": "acesso-e-perfil",
+  "timestamp": "2026-08-18T17:50:37.417Z",
+  "gitRev": null,
+  "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 59,
+  "results": {
+    "AC-001": {
+      "status": "pass",
+      "testName": "portão de entrada da rede entrega a sessão em cookie httpOnly e autentica a requisição @spec:AC-001 @principle:P-008 entrega a sessão em cookie httpOnly e autentica a requisição @spec:AC-001 @principle:P-008",
+      "method": "vitest-json"
+    },
+    "AC-002": {
+      "status": "pass",
+      "testName": "portão de entrada da rede oferece os três provedores do programa @spec:AC-002 oferece os três provedores do programa @spec:AC-002",
+      "method": "vitest-json"
+    },
+    "AC-003": {
+      "status": "pass",
+      "testName": "portão de entrada da rede mantém um e-mail ligado a uma única conta, sem perfil duplicado @spec:AC-003 mantém um e-mail ligado a uma única conta, sem perfil duplicado @spec:AC-003",
+      "method": "vitest-json"
+    },
+    "AC-004": {
+      "status": "pass",
+      "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003",
+      "method": "vitest-json"
+    },
+    "AC-005": {
+      "status": "pass",
+      "testName": "portão de entrada da rede recusa convite já usado no momento de criar a conta @spec:AC-005 recusa convite já usado no momento de criar a conta @spec:AC-005",
+      "method": "vitest-json"
+    },
+    "AC-006": {
+      "status": "pass",
+      "testName": "convites recusa convite vencido @spec:AC-006 recusa convite vencido @spec:AC-006",
+      "method": "vitest-json"
+    },
+    "AC-007": {
+      "status": "pass",
+      "testName": "convites sob corrida, o mesmo convite é reservado por exatamente uma tentativa @spec:AC-007 sob corrida, o mesmo convite é reservado por exatamente uma tentativa @spec:AC-007",
+      "method": "vitest-json"
+    },
+    "AC-008": {
+      "status": "pass",
+      "testName": "portão de entrada da rede não aceita bilhete de convite forjado @spec:AC-008 não aceita bilhete de convite forjado @spec:AC-008",
+      "method": "vitest-json"
+    },
+    "AC-009": {
+      "status": "pass",
+      "testName": "rota protegida empurra para o onboarding enquanto o perfil estiver incompleto @spec:AC-009 empurra para o onboarding enquanto o perfil estiver incompleto @spec:AC-009",
+      "method": "vitest-json"
+    },
+    "AC-010": {
+      "status": "pass",
+      "testName": "rotas de perfil desarma HTML colado na bio antes de gravar @spec:AC-010 desarma HTML colado na bio antes de gravar @spec:AC-010",
+      "method": "vitest-json"
+    },
+    "AC-011": {
+      "status": "pass",
+      "testName": "rotas de perfil guarda a cidade e o centroide dela, nunca coordenada do aparelho @spec:AC-011 guarda a cidade e o centroide dela, nunca coordenada do aparelho @spec:AC-011",
+      "method": "vitest-json"
+    },
+    "AC-012": {
+      "status": "pass",
+      "testName": "rotas de perfil salva as alterações do próprio perfil @spec:AC-012 salva as alterações do próprio perfil @spec:AC-012",
+      "method": "vitest-json"
+    },
+    "AC-013": {
+      "status": "pass",
+      "testName": "permissões deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004 deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004",
+      "method": "vitest-json"
+    },
+    "AC-014": {
+      "status": "pass",
+      "testName": "rotas de perfil não entrega o e-mail de ninguém junto do perfil @spec:AC-014 @principle:P-002 não entrega o e-mail de ninguém junto do perfil @spec:AC-014 @principle:P-002",
+      "method": "vitest-json"
+    },
+    "AC-015": {
+      "status": "pass",
+      "testName": "rotas de perfil deixa o perfil novo fora do mapa @spec:AC-015 @principle:P-001 deixa o perfil novo fora do mapa @spec:AC-015 @principle:P-001",
+      "method": "vitest-json"
+    },
+    "AC-016": {
+      "status": "pass",
+      "testName": "rotas de perfil liga e desliga a presença no mapa na hora @spec:AC-016 liga e desliga a presença no mapa na hora @spec:AC-016",
+      "method": "vitest-json"
+    },
+    "AC-017": {
+      "status": "pass",
+      "testName": "permissões só deixa coordenação gerar convite @spec:AC-017 só deixa coordenação gerar convite @spec:AC-017",
+      "method": "vitest-json"
+    },
+    "AC-018": {
+      "status": "pass",
+      "testName": "rotas de perfil responde que está viva sem exigir login @spec:AC-018 responde que está viva sem exigir login @spec:AC-018",
+      "method": "vitest-json"
+    },
+    "AC-019": {
+      "status": "pass",
+      "testName": "rotas de convite não deixa gerar convite sem sessão @spec:AC-019 não deixa gerar convite sem sessão @spec:AC-019",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {
+    "P-003": {
+      "status": "pass",
+      "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003"
+    },
+    "P-008": {
+      "status": "pass",
+      "testName": "portão de entrada da rede entrega a sessão em cookie httpOnly e autentica a requisição @spec:AC-001 @principle:P-008 entrega a sessão em cookie httpOnly e autentica a requisição @spec:AC-001 @principle:P-008"
+    },
+    "P-004": {
+      "status": "pass",
+      "testName": "permissões deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004 deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004"
+    },
+    "P-009": {
+      "status": "pass",
+      "testName": "convites gera código imprevisível e nunca guarda o código em claro @principle:P-009 gera código imprevisível e nunca guarda o código em claro @principle:P-009"
+    },
+    "P-002": {
+      "status": "pass",
+      "testName": "rotas de perfil não entrega o e-mail de ninguém junto do perfil @spec:AC-014 @principle:P-002 não entrega o e-mail de ninguém junto do perfil @spec:AC-014 @principle:P-002"
+    },
+    "P-001": {
+      "status": "pass",
+      "testName": "rotas de perfil deixa o perfil novo fora do mapa @spec:AC-015 @principle:P-001 deixa o perfil novo fora do mapa @spec:AC-015 @principle:P-001"
+    },
+    "P-006": {
+      "status": "pass",
+      "testName": "sanitização de texto livre desarma HTML colado na bio, preservando o texto @spec:AC-010 @principle:P-006 desarma HTML colado na bio, preservando o texto @spec:AC-010 @principle:P-006"
+    }
+  }
+}

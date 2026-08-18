@@ -1,0 +1,258 @@
+{
+  "runId": "connect-gsa-acesso-e-perfil-msyu4zk3",
+  "feature": "acesso-e-perfil",
+  "agent": "claude",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-08-18 15:46",
+  "branchTrabalho": "spec/acesso-e-perfil",
+  "baseDir": ".spec/features/acesso-e-perfil",
+  "specDir": ".spec",
+  "repoName": "connect-gsa",
+  "logsDir": "../onp-worktrees/connect-gsa-acesso-e-perfil-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-001",
+      "titulo": "Fundação do monorepo (Turborepo + pnpm + config compartilhada)",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "package.json",
+        "pnpm-workspace.yaml",
+        "turbo.json",
+        "tsconfig.json",
+        "packages/config/package.json",
+        "packages/config/tsconfig.base.json",
+        "packages/config/eslint.config.js",
+        "vitest.config.ts"
+      ],
+      "refs": [
+        "US-007"
+      ]
+    },
+    {
+      "id": "T-002",
+      "titulo": "Contratos compartilhados em Zod (packages/shared)",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "packages/shared/package.json",
+        "packages/shared/src/index.ts",
+        "packages/shared/src/perfil.schema.ts",
+        "packages/shared/src/convite.schema.ts",
+        "packages/shared/src/papel.ts"
+      ],
+      "refs": [
+        "AC-010",
+        "AC-011",
+        "AC-012"
+      ]
+    },
+    {
+      "id": "T-003",
+      "titulo": "Schema Prisma, migration inicial e seed (packages/db)",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "packages/db/package.json",
+        "packages/db/prisma/schema.prisma",
+        "packages/db/prisma/seed.ts",
+        "packages/db/src/client.ts",
+        "packages/db/src/cidade.test.ts"
+      ],
+      "refs": [
+        "AC-011",
+        "AC-015"
+      ]
+    },
+    {
+      "id": "T-004",
+      "titulo": "Servidor Fastify: segurança de base, erros e /health",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "apps/api/package.json",
+        "apps/api/src/server.ts",
+        "apps/api/src/app.ts",
+        "apps/api/src/plugins/seguranca.ts",
+        "apps/api/src/plugins/erros.ts",
+        "apps/api/src/rotas/health.ts",
+        "apps/api/src/rotas/health.test.ts"
+      ],
+      "refs": [
+        "AC-018",
+        "AC-019"
+      ]
+    },
+    {
+      "id": "T-005",
+      "titulo": "Better Auth com Google, LinkedIn e GitHub",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "apps/api/src/auth/better-auth.ts",
+        "apps/api/src/auth/sessao.ts",
+        "apps/api/src/auth/auth.test.ts"
+      ],
+      "refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003"
+      ]
+    },
+    {
+      "id": "T-006",
+      "titulo": "Allowlist e convites: geração, consumo transacional e rate limit",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "apps/api/src/modules/convite/convite.service.ts",
+        "apps/api/src/modules/convite/convite.rotas.ts",
+        "apps/api/src/modules/convite/codigo.ts",
+        "apps/api/src/modules/convite/convite.test.ts"
+      ],
+      "refs": [
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-017"
+      ]
+    },
+    {
+      "id": "T-007",
+      "titulo": "Autorização com CASL",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "apps/api/src/authz/habilidades.ts",
+        "apps/api/src/authz/guard.ts",
+        "apps/api/src/authz/authz.test.ts"
+      ],
+      "refs": [
+        "AC-013",
+        "AC-017"
+      ]
+    },
+    {
+      "id": "T-008",
+      "titulo": "Perfil: serviço, rotas, sanitização e vínculo com cidade",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "apps/api/src/modules/perfil/perfil.service.ts",
+        "apps/api/src/modules/perfil/perfil.rotas.ts",
+        "apps/api/src/modules/perfil/sanitizar.ts",
+        "apps/api/src/modules/perfil/perfil.mapper.ts",
+        "apps/api/src/modules/perfil/perfil.test.ts"
+      ],
+      "refs": [
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016"
+      ]
+    },
+    {
+      "id": "T-009",
+      "titulo": "Rota de compartilhamento com Open Graph",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "apps/api/src/modules/share/share.rotas.ts",
+        "apps/api/src/modules/share/share.test.ts"
+      ],
+      "refs": [
+        "US-007"
+      ]
+    },
+    {
+      "id": "T-010",
+      "titulo": "SPA base: Vite, React, Router, Query, Tailwind e design system",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "apps/web/package.json",
+        "apps/web/vite.config.ts",
+        "apps/web/index.html",
+        "apps/web/src/main.tsx",
+        "apps/web/src/App.tsx",
+        "apps/web/src/estilos/tokens.css",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/lib/query.ts"
+      ],
+      "refs": [
+        "US-003",
+        "US-004"
+      ]
+    },
+    {
+      "id": "T-011",
+      "titulo": "Telas: login, resgate de convite, onboarding e perfil",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "apps/web/src/paginas/Login.tsx",
+        "apps/web/src/paginas/Convite.tsx",
+        "apps/web/src/paginas/Onboarding.tsx",
+        "apps/web/src/paginas/Perfil.tsx",
+        "apps/web/src/componentes/RotaProtegida.tsx",
+        "apps/web/src/paginas/Perfil.test.tsx"
+      ],
+      "refs": [
+        "AC-009",
+        "AC-012",
+        "AC-015",
+        "AC-016"
+      ]
+    },
+    {
+      "id": "T-012",
+      "titulo": "Publicação: Dockerfile, Cloud Run, Firebase Hosting e CI/CD",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "apps/api/Dockerfile",
+        "apps/api/.dockerignore",
+        "firebase.json",
+        ".firebaserc",
+        ".github/workflows/ci.yml",
+        ".github/workflows/deploy-api.yml",
+        ".github/workflows/deploy-web.yml"
+      ],
+      "refs": [
+        "AC-018"
+      ]
+    },
+    {
+      "id": "T-013",
+      "titulo": "Documentação: AGENTS.md por pasta e README.md em português",
+      "modelo": "claude-sonnet-5",
+      "esforco": "medium",
+      "arquivos": [
+        "AGENTS.md",
+        "README.md",
+        ".env.example",
+        "apps/api/AGENTS.md",
+        "apps/web/AGENTS.md",
+        "packages/db/AGENTS.md",
+        "packages/shared/AGENTS.md",
+        "packages/config/AGENTS.md"
+      ],
+      "refs": [
+        "US-007"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

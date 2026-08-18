@@ -1,0 +1,608 @@
+{
+  "schema": 1,
+  "sinais": {
+    "ARQUIVO_INEXISTENTE::acesso-e-perfil::T-001": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "acesso-e-perfil",
+      "ref": "T-001",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.106Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-004": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-004",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-005": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-005",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-006": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-006",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-007": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-007",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-008": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-008",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-009": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-009",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-010": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-010",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-011": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-011",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-012": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-012",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-013": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-013",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-014": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-014",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-015": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-015",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-016": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-016",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-017": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-017",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-018": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-018",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TASK::acesso-e-perfil::AC-019": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-019",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-001": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-001",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-002": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-002",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-003": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-003",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-004": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-004",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-005": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-005",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-006": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-006",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-007": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-007",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-008": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-008",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-009": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-009",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-010": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-010",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-011": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-011",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-012": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-012",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-013": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-013",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-014": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-014",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-015": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-015",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-016": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-016",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-017": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-017",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-018": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-018",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::acesso-e-perfil::AC-019": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "acesso-e-perfil",
+      "ref": "AC-019",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "PRINCIPIO_VIOLADO::—::P-001": {
+      "codigo": "PRINCIPIO_VIOLADO",
+      "feature": "—",
+      "ref": "P-001",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "PRINCIPIO_VIOLADO::—::P-002": {
+      "codigo": "PRINCIPIO_VIOLADO",
+      "feature": "—",
+      "ref": "P-002",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "PRINCIPIO_VIOLADO::—::P-003": {
+      "codigo": "PRINCIPIO_VIOLADO",
+      "feature": "—",
+      "ref": "P-003",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "PRINCIPIO_VIOLADO::—::P-004": {
+      "codigo": "PRINCIPIO_VIOLADO",
+      "feature": "—",
+      "ref": "P-004",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "GLOB_SEM_ARQUIVOS::—::P-005": {
+      "codigo": "GLOB_SEM_ARQUIVOS",
+      "feature": "—",
+      "ref": "P-005",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "PRINCIPIO_VIOLADO::—::P-006": {
+      "codigo": "PRINCIPIO_VIOLADO",
+      "feature": "—",
+      "ref": "P-006",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "GLOB_SEM_ARQUIVOS::—::P-007": {
+      "codigo": "GLOB_SEM_ARQUIVOS",
+      "feature": "—",
+      "ref": "P-007",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "GLOB_SEM_ARQUIVOS::—::P-008": {
+      "codigo": "GLOB_SEM_ARQUIVOS",
+      "feature": "—",
+      "ref": "P-008",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "PRINCIPIO_VIOLADO::—::P-009": {
+      "codigo": "PRINCIPIO_VIOLADO",
+      "feature": "—",
+      "ref": "P-009",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T15:25:10.107Z",
+      "ultimaVez": "2026-08-18T15:25:10.107Z",
+      "gitRev": null
+    },
+    "VERIFY_OBSOLETO::acesso-e-perfil::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "acesso-e-perfil",
+      "ref": "—",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-08-18T17:48:39.918Z",
+      "ultimaVez": "2026-08-18T17:51:02.628Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/testing/app.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/testing/app.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:49:40.042Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/testing/db.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/testing/db.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:49:40.042Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/testing/setup.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/testing/setup.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:49:40.042Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/browser.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/browser.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/client.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/client.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/commonInputTypes.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/commonInputTypes.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/enums.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/enums.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/internal/class.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/internal/class.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/internal/prismaNamespace.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/internal/prismaNamespace.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/internal/prismaNamespaceBrowser.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/internal/prismaNamespaceBrowser.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/models.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/models.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/models/Account.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/models/Account.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/models/AllowedEmail.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/models/AllowedEmail.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/models/City.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/models/City.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/models/Institution.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/models/Institution.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/models/InviteCode.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/models/InviteCode.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/models/Session.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/models/Session.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/models/User.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/models/User.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::packages/db/src/generated/models/Verification.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/db/src/generated/models/Verification.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:48:39.919Z",
+      "ultimaVez": "2026-08-18T17:48:39.919Z",
+      "gitRev": null
+    },
+    "PRINCIPIO_VIOLADO::—::P-007": {
+      "codigo": "PRINCIPIO_VIOLADO",
+      "feature": "—",
+      "ref": "P-007",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-08-18T17:49:40.042Z",
+      "ultimaVez": "2026-08-18T17:51:02.628Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/__violacao.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/__violacao.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-18T17:51:02.628Z",
+      "ultimaVez": "2026-08-18T17:51:02.628Z",
+      "gitRev": null
+    }
+  }
+}
