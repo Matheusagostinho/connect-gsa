@@ -1,0 +1,20 @@
+{
+  "name": "@connect-gsa/config",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Configuração compartilhada: TypeScript, ESLint e Prettier",
+  "type": "module",
+  "files": ["tsconfig.base.json", "eslint.config.js", "prettier.config.js"],
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./eslint": "./eslint.config.js",
+    "./prettier": "./prettier.config.js"
+  },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.6",
+    "typescript-eslint": "^8.67.0"
+  }
+}

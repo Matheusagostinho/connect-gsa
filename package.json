@@ -1,0 +1,36 @@
+{
+  "name": "connect-gsa",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Rede social fechada para os embaixadores do Programa de Embaixadores Estudantis do Google",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "pnpm --filter @connect-gsa/db exec prisma generate",
+    "db:migrate": "pnpm --filter @connect-gsa/db exec prisma migrate dev",
+    "db:seed": "pnpm --filter @connect-gsa/db run seed",
+    "spec:audit": "node ~/.claude/skills/onp-spec-driven/scripts/onp-spec.mjs audit --ci"
+  },
+  "devDependencies": {
+    "@connect-gsa/config": "workspace:*",
+    "turbo": "^2.10.10",
+    "typescript": "5.9.3",
+    "vitest": "^4.1.11"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "esbuild",
+      "prisma"
+    ]
+  }
+}

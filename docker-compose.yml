@@ -1,0 +1,22 @@
+# Postgres de desenvolvimento. Produção usa Neon — ver README.md.
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: connect-gsa-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: connectgsa
+      POSTGRES_PASSWORD: connectgsa_dev
+      POSTGRES_DB: connectgsa
+    ports:
+      - '5433:5432'
+    volumes:
+      - connect-gsa-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U connectgsa -d connectgsa']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  connect-gsa-pgdata:

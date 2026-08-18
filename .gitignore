@@ -1,0 +1,57 @@
+# Dependências
+node_modules/
+.pnpm-store/
+
+# Build
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# Ambiente — NUNCA versionar segredo
+.env
+.env.*
+!.env.example
+
+# Ferramental de agente (fora do GitHub)
+.claude/
+CLAUDE.md
+**/CLAUDE.md
+.spec/features/*/plano-execucao.md
+.spec/features/*/plano-execucao.html
+.spec/features/*/executar-tarefas.sh
+
+# Testes / cobertura
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# Cache de ferramentas
+.turbo/
+.cache/
+.eslintcache
+.vite/
+
+# Deploy
+.firebase/
+.gcloudignore
+
+# Sistema operacional / editor
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Client gerado pelo Prisma (recriado por `pnpm db:generate`)
+packages/db/src/generated/
+
+# Saída bruta do runner de testes (a prova consolidada é versionada)
+.spec/verification/raw.json
