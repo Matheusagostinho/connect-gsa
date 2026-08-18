@@ -11,14 +11,37 @@ import { createPrismaClient, type PrismaClient } from '@connect-gsa/db';
  */
 let client: PrismaClient | undefined;
 
-export function testDb(): PrismaClient {
-  if (!client) {
-    const connectionString = process.env.DATABASE_URL;
-    if (!connectionString) {
-      throw new Error('DATABASE_URL não definida — copie .env.example para .env');
-    }
-    client = createPrismaClient(connectionString);
+/**
+ * Escolhe o banco dos testes — e se recusa a usar o de desenvolvimento.
+ *
+ * `resetTestData` apaga tabelas inteiras. Sem esta trava, um `pnpm test`
+ * distraído levaria junto as pessoas e convites que você tinha semeado para
+ * navegar pelo aplicativo. A recusa é explícita porque o estrago é silencioso:
+ * os testes passariam normalmente e você só descobriria ao voltar para a tela.
+ */
+function testConnectionString(): string {
+  const test = process.env.TEST_DATABASE_URL;
+  const dev = process.env.DATABASE_URL;
+
+  if (!test) {
+    throw new Error(
+      'TEST_DATABASE_URL não definida. Copie .env.example para .env — os testes precisam de ' +
+        'um banco próprio, senão apagam os dados de desenvolvimento.',
+    );
   }
+
+  if (test === dev) {
+    throw new Error(
+      'TEST_DATABASE_URL é igual a DATABASE_URL. Os testes limpam tabelas inteiras e apagariam ' +
+        'seu banco de desenvolvimento. Use um banco separado (ex.: connectgsa_test).',
+    );
+  }
+
+  return test;
+}
+
+export function testDb(): PrismaClient {
+  client ??= createPrismaClient(testConnectionString());
   return client;
 }
 

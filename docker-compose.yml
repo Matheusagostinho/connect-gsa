@@ -12,6 +12,9 @@ services:
       - '5433:5432'
     volumes:
       - connect-gsa-pgdata:/var/lib/postgresql/data
+      # Roda só na primeira criação do volume: cria o banco de testes ao lado
+      # do de desenvolvimento.
+      - ./docker/postgres-init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U connectgsa -d connectgsa']
       interval: 5s
