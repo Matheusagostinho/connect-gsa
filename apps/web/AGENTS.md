@@ -26,7 +26,17 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
 4. **Componente não usa hexadecimal cru.** Só as variáveis de `styles/tokens.css`.
 5. **A cidade vem de lista, nunca do GPS.** O `Permissions-Policy` do Firebase Hosting
    inclusive nega `geolocation=()` para o navegador inteiro (P-001).
-6. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
+6. **Nenhuma reação depende só do emoji.** A fileira mostra emoji **e** rótulo. Dois
+   motivos: "Bora junto" e "Posso ajudar" são intenções que emoji nenhum comunica sozinho,
+   e há sistema Linux sem fonte de emoji instalada, onde o ícone vira quadrado vazio.
+7. **A fileira de reações abre por clique, não por hover.** Hover não existe em celular nem
+   no teclado, e as reações de intenção — o diferencial desta rede — ficariam inalcançáveis
+   para metade das pessoas. O botão grande aplica "Decolou" num toque; o chevron abre o resto.
+8. **Sair zera o cache do React Query antes de navegar.** Sem isso, o feed e o perfil da
+   pessoa anterior ficariam em memória e apareceriam por um instante para quem entrasse
+   depois — num produto feito para computador compartilhado de laboratório, é o pior lugar
+   possível para um vazamento.
+9. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
    então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
    registrada pela API lá.
 

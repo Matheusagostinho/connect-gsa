@@ -15,6 +15,11 @@ Os outros guardas estruturais no mesmo arquivo:
 - `InviteCode.codeHash`, nunca o código em claro (P-009).
 - `InviteCode.usedById @unique` — é o BANCO que recusa o segundo uso do mesmo convite,
   mesmo se duas requisições passarem juntas pela checagem da aplicação (AC-007).
+- `PostReaction @@unique([postId, userId])` — é o que torna "uma reação por pessoa,
+  trocável" uma garantia, e não uma intenção. Sem ele, dois toques rápidos no celular
+  criariam duas reações e a contagem passaria a mentir.
+- `Post.mediaKey` guarda a CHAVE, não a URL. Trocar de provedor de armazenamento não
+  deveria exigir reescrever linhas do banco.
 
 ## Convenção de nomes
 

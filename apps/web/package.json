@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "SPA do ConnectGSA \u2014 Vite, React e Tailwind",
+  "description": "SPA do ConnectGSA — Vite, React e Tailwind",
   "scripts": {
     "build": "tsc -b && vite build",
     "dev": "vite",
@@ -28,6 +28,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.5",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.5",

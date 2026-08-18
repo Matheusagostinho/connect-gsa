@@ -55,3 +55,6 @@ packages/db/src/generated/
 
 # Saída bruta do runner de testes (a prova consolidada é versionada)
 .spec/verification/raw.json
+
+# Imagens gravadas em disco no desenvolvimento
+.media/

@@ -24,6 +24,9 @@ src/
 ├── modules/
 │   ├── invite/         geração, conferência e reserva atômica de convites
 │   ├── profile/        perfil, sanitização e o mapper que nunca devolve e-mail
+│   ├── media/          reprocessamento de imagem e drivers de armazenamento
+│   ├── post/           posts, reações e comentários
+│   ├── feed/           ranking (função pura) e montagem paginada do feed
 │   └── share/          prévia Open Graph para link colado no WhatsApp
 └── routes/             health, repasse do Better Auth, dados de referência
 ```
@@ -54,6 +57,36 @@ qualquer usuário. Ela é travada em três camadas, e nenhuma depende de alguém
 
 A trava é o `NODE_ENV` de propósito. Uma variável própria (`ENABLE_DEV_LOGIN`) seria pior:
 mais uma coisa para alguém copiar sem querer para o ambiente errado.
+
+## O ranking do feed
+
+`modules/feed/ranking.ts` é uma **função pura**: sem banco, sem `Date.now()` implícito, sem
+sessão. Foi assim de propósito — cada regra vira um teste de uma linha, e o dia em que o
+feed "ficar estranho" a investigação começa ali, não numa consulta SQL de trinta linhas.
+
+O raciocínio veio do `xai-org/x-algorithm`, **sem copiar os pesos**: lá eles multiplicam
+probabilidades previstas por um modelo, aqui temos contagens. Copiar a tabela produziria
+ordenação sem sentido, e o próprio comentário do código deles avisa isso.
+
+O cursor do feed carrega o **instante da montagem**, não a data do último post. Como a
+ordenação é por nota e não por data, um post publicado entre uma página e outra se
+intercalaria no meio da lista — e você veria de novo o que já viu. Congelar o instante é o
+que torna a página 2 uma continuação real da página 1.
+
+## Imagens
+
+Todo envio passa PELA API, não por URL assinada direto ao bucket (ASM-012). É mais lento, e
+é de propósito: só assim conseguimos inspecionar o conteúdo e **reprocessar a imagem antes
+de gravar**. Foto de celular carrega GPS no EXIF, e um arquivo guardado como veio entregaria
+a localização exata de um estudante (P-001) — por um caminho que o schema do banco não cobre.
+
+Não removemos "os campos ruins" do EXIF: lista de bloqueio envelhece mal. Decodificamos os
+pixels e escrevemos um arquivo novo, que nasce sem metadado. O tipo vem dos **bytes**, nunca
+da extensão nem do `Content-Type`, que são do cliente e não valem nada.
+
+O destino é escolhido por driver: disco local em desenvolvimento, Cloud Storage em produção.
+Sem essa costura, ou o ambiente local exigiria credencial do Google, ou o código de produção
+teria um `if` sobre ambiente por dentro.
 
 ## Cinco coisas que não podem ser desfeitas
 

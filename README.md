@@ -15,11 +15,13 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Entregue | Ainda não |
 |---|---|
 | Monorepo, CI/CD e publicação | Busca no diretório e mapa |
-| Login social (Google, LinkedIn, GitHub) | Feed e quadro de avisos |
+| Login social (Google, LinkedIn, GitHub) | Quadro de avisos oficiais |
 | Acesso restrito por convite ou lista aprovada | Gamificação (pontos, badges, ranking) |
-| Perfil: criar, ver, editar | Presença online em tempo real |
+| Perfil: criar, ver, editar, sair da conta | Presença online em tempo real |
+| Feed com ranking, posts, comentários | Notificação de reação e comentário |
+| Cinco reações próprias | Sugerir conexão a partir de "Bora junto" |
+| Envio de imagem em post e foto de perfil | Vídeo |
 | Controle de visibilidade no mapa | Exportar e excluir a própria conta |
-| Permissões por papel (CASL) | Foto de perfil própria (usamos a do provedor) |
 
 A especificação completa, com critérios de aceite e provas, está em
 `.spec/features/acesso-e-perfil/`.
@@ -134,6 +136,47 @@ Eles usam um **banco separado** (`connectgsa_test`), porque limpam tabelas intei
 casos — apontá-los para o banco de desenvolvimento apagaria os dados que você semeou. O
 código se recusa a rodar se `TEST_DATABASE_URL` for igual a `DATABASE_URL`.
 
+## As reações
+
+O conjunto é próprio, e a escolha não é estética. Numa rede de **conexão**, "gostei"
+desperdiça a interação: as três primeiras reconhecem o post, e as duas últimas sinalizam
+disposição de trabalhar junto.
+
+| Reação | Diz | Peso no feed |
+|---|---|---|
+| 🚀 **Decolou** | Isso aqui é notável | 1 |
+| 💡 **Aprendi** | Aprendi alguma coisa com isso | 1,5 |
+| 👏 **Respeito** | Reconheço o esforço por trás disso | 1 |
+| 🤝 **Bora junto** | Quero construir isso com você | 3 |
+| 🙋 **Posso ajudar** | Tenho como ajudar nisso | 3 |
+
+Uma reação por pessoa por post, trocável: escolher outra substitui a anterior, escolher a
+mesma desfaz. Isso força a pessoa a dizer o que realmente quis dizer e mantém cada sinal
+limpo para o ranking.
+
+## Como o feed ordena
+
+O raciocínio veio do código aberto do X (`xai-org/x-algorithm`), mas **os pesos de lá não
+foram copiados** — e isso é deliberado. O comentário no `param.rs` deles avisa que aqueles
+números multiplicam *probabilidades previstas por um modelo treinado*, não contagens. Um
+report vale −234 porque a probabilidade base dele é mais de mil vezes menor que a de um
+like. Aplicar aquela tabela sobre contagens brutas, que é o que temos, produziria
+ordenação sem sentido.
+
+O que atravessou foram quatro ideias independentes de modelo:
+
+1. **Ação de esforço vale mais que ação de toque** — comentar pesa 4, reagir pesa 1 a 3.
+2. **Diversidade de autor** — cada post seguinte do mesmo autor vale metade, até um piso de
+   25%. Numa rede de centenas, uma pessoa prolífica tomaria a tela inteira.
+3. **Início frio suavizado** — a nota nunca chega a zero, então post recém publicado
+   disputa por recência em vez de ser enterrado por ainda não ter sido visto.
+4. **Proximidade em vez de punição** — no X, quem você não segue leva desconto, porque lá
+   são centenas de milhões de contas. Aqui a rede cabe numa sala: quem é da sua instituição
+   ou cidade sobe, e ninguém desce.
+
+A função está em `apps/api/src/modules/feed/ranking.ts`. É pura, sem banco e sem relógio
+implícito — cada regra tem um teste próprio.
+
 ## Segurança e privacidade
 
 Os princípios verificáveis estão em `.spec/constituicao.md` — os marcados `[DEVE]` têm
@@ -152,6 +195,10 @@ verificação executável. Os que mais moldam o código:
   recuperação para atacar.
 - **Autorização no servidor.** A tela esconde botões; quem recusa é a API.
 - **Texto livre é sanitizado na entrada**, antes de chegar ao banco.
+- **Toda imagem é reprocessada.** Foto de celular carrega coordenadas de GPS no EXIF;
+  guardá-la como veio entregaria a localização exata de um estudante. Não removemos "os
+  campos ruins" — decodificamos os pixels e escrevemos um arquivo novo, que nasce sem
+  metadado nenhum. O tipo é decidido pelos bytes, nunca pela extensão.
 
 Encontrou uma falha? Abra uma issue **sem** detalhes exploráveis e peça contato privado.
 
