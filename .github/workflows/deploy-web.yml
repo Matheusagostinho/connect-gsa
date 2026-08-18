@@ -1,0 +1,50 @@
+name: Deploy do SPA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/web/**'
+      - 'packages/shared/**'
+      - 'firebase.json'
+      - '.github/workflows/deploy-web.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-web
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Compilar o SPA
+        run: |
+          pnpm --filter @connect-gsa/shared run build
+          pnpm --filter @connect-gsa/web run build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOY_SA }}
+
+      - name: Publicar no Firebase Hosting
+        run: pnpm dlx firebase-tools@latest deploy --only hosting --project "${{ secrets.GCP_PROJECT_ID }}" --non-interactive

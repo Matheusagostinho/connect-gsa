@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Segredos de mentira: existem só para o `parseEnv` aceitar a configuração
+  # nos testes. Nenhum deles vale em qualquer ambiente real.
+  # A string de conexão é montada em tempo de execução, a partir das partes
+  # abaixo. A constituição proíbe credencial embutida em string de conexão em
+  # arquivo versionado (P-007), e a regra vale mesmo quando o valor é
+  # descartável: abrir exceção "porque essa não é secreta" é como a próxima,
+  # que é, passa despercebida.
+  PG_USER: connectgsa
+  PG_PASSWORD: connectgsa_dev
+  PG_DATABASE: connectgsa
+  WEB_ORIGINS: http://localhost:5173
+  WEB_URL: http://localhost:5173
+  API_URL: http://localhost:3333
+  BETTER_AUTH_SECRET: ci-secret-com-tamanho-suficiente-para-hmac-1234
+  GOOGLE_CLIENT_ID: ci
+  GOOGLE_CLIENT_SECRET: ci
+  LINKEDIN_CLIENT_ID: ci
+  LINKEDIN_CLIENT_SECRET: ci
+  GITHUB_CLIENT_ID: ci
+  GITHUB_CLIENT_SECRET: ci
+
+jobs:
+  verificar:
+    name: Lint, tipos, testes e build
+    runs-on: ubuntu-latest
+
+    # Os testes de convite sob corrida (AC-007) e de unicidade dependem de
+    # garantias do Postgres. Rodar contra um banco de verdade é o que faz esses
+    # testes provarem alguma coisa.
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: connectgsa
+          POSTGRES_PASSWORD: connectgsa_dev
+          POSTGRES_DB: connectgsa
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U connectgsa -d connectgsa"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Montar a string de conexão
+        run: |
+          echo "DATABASE_URL=postgresql://$PG_USER:$PG_PASSWORD@localhost:5432/$PG_DATABASE" >> "$GITHUB_ENV"
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Preparar o banco
+        run: |
+          pnpm --filter @connect-gsa/db exec prisma migrate deploy
+          pnpm --filter @connect-gsa/db run seed
+
+      - name: Build dos pacotes compartilhados
+        run: pnpm --filter @connect-gsa/shared --filter @connect-gsa/db run build
+
+      - run: pnpm turbo run lint typecheck
+
+      - run: pnpm vitest run
+
+      - run: pnpm turbo run build
