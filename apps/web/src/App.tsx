@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute.tsx';
 import { InvitePage } from './pages/Invite.tsx';
 import { LoginPage } from './pages/Login.tsx';
 import { OnboardingPage } from './pages/Onboarding.tsx';
+import { DevLoginPage } from './pages/DevLogin.tsx';
 import { ProfilePage } from './pages/Profile.tsx';
 
 const queryClient = new QueryClient({
@@ -23,6 +24,11 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/convite" element={<InvitePage />} />
+          {/*
+            Só existe quando a API expõe /dev/* — ou seja, fora de produção.
+            A tela lida com a rota ausente mostrando o erro, sem quebrar.
+          */}
+          {import.meta.env.DEV ? <Route path="/dev" element={<DevLoginPage />} /> : null}
           <Route path="/entrar" element={<LoginPage />} />
           <Route
             path="/onboarding"
