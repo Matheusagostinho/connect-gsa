@@ -1,11 +1,11 @@
 {
   "feature": "acesso-e-perfil",
-  "timestamp": "2026-08-18T20:26:12.483Z",
-  "gitRev": "36421d1",
+  "timestamp": "2026-08-18T22:15:46.647Z",
+  "gitRev": "9a69eec",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 68,
+  "testsParsed": 119,
   "results": {
     "AC-001": {
       "status": "pass",
@@ -99,7 +99,7 @@
     },
     "AC-019": {
       "status": "pass",
-      "testName": "rotas de convite não deixa gerar convite sem sessão @spec:AC-019 não deixa gerar convite sem sessão @spec:AC-019",
+      "testName": "feed exige sessão @spec:AC-019 exige sessão @spec:AC-019",
       "method": "vitest-json"
     },
     "AC-020": {
@@ -135,17 +135,17 @@
       "status": "pass",
       "testName": "convites gera código imprevisível e nunca guarda o código em claro @principle:P-009 gera código imprevisível e nunca guarda o código em claro @principle:P-009"
     },
-    "P-002": {
-      "status": "pass",
-      "testName": "rotas de perfil não entrega o e-mail de ninguém junto do perfil @spec:AC-014 @principle:P-002 não entrega o e-mail de ninguém junto do perfil @spec:AC-014 @principle:P-002"
-    },
     "P-001": {
       "status": "pass",
-      "testName": "rotas de perfil deixa o perfil novo fora do mapa @spec:AC-015 @principle:P-001 deixa o perfil novo fora do mapa @spec:AC-015 @principle:P-001"
+      "testName": "reprocessamento de imagem descarta as coordenadas de GPS embutidas na foto @spec:AC-026 @principle:P-001 descarta as coordenadas de GPS embutidas na foto @spec:AC-026 @principle:P-001"
     },
     "P-006": {
       "status": "pass",
-      "testName": "sanitização de texto livre desarma HTML colado na bio, preservando o texto @spec:AC-010 @principle:P-006 desarma HTML colado na bio, preservando o texto @spec:AC-010 @principle:P-006"
+      "testName": "posts desarma HTML colado no post @spec:AC-024 @principle:P-006 desarma HTML colado no post @spec:AC-024 @principle:P-006"
+    },
+    "P-002": {
+      "status": "pass",
+      "testName": "comentários não entrega e-mail de ninguém junto do post ou do comentário @principle:P-002 não entrega e-mail de ninguém junto do post ou do comentário @principle:P-002"
     }
   }
 }

@@ -1,0 +1,131 @@
+{
+  "feature": "feed-e-reacoes",
+  "timestamp": "2026-08-18T22:15:12.089Z",
+  "gitRev": "9a69eec",
+  "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 119,
+  "results": {
+    "AC-023": {
+      "status": "pass",
+      "testName": "posts publica e o post aparece com autor e horário @spec:AC-023 publica e o post aparece com autor e horário @spec:AC-023",
+      "method": "vitest-json"
+    },
+    "AC-024": {
+      "status": "pass",
+      "testName": "posts desarma HTML colado no post @spec:AC-024 @principle:P-006 desarma HTML colado no post @spec:AC-024 @principle:P-006",
+      "method": "vitest-json"
+    },
+    "AC-025": {
+      "status": "pass",
+      "testName": "posts recusa post vazio e post longo demais @spec:AC-025 recusa post vazio e post longo demais @spec:AC-025",
+      "method": "vitest-json"
+    },
+    "AC-026": {
+      "status": "pass",
+      "testName": "reprocessamento de imagem descarta as coordenadas de GPS embutidas na foto @spec:AC-026 @principle:P-001 descarta as coordenadas de GPS embutidas na foto @spec:AC-026 @principle:P-001",
+      "method": "vitest-json"
+    },
+    "AC-027": {
+      "status": "pass",
+      "testName": "reprocessamento de imagem recusa arquivo que não é imagem, mesmo com cara de jpg @spec:AC-027 recusa arquivo que não é imagem, mesmo com cara de jpg @spec:AC-027",
+      "method": "vitest-json"
+    },
+    "AC-028": {
+      "status": "pass",
+      "testName": "reprocessamento de imagem recusa arquivo acima do limite antes de processar @spec:AC-028 recusa arquivo acima do limite antes de processar @spec:AC-028",
+      "method": "vitest-json"
+    },
+    "AC-029": {
+      "status": "pass",
+      "testName": "reprocessamento de imagem recorta a foto de perfil em quadrado @spec:AC-029 recorta a foto de perfil em quadrado @spec:AC-029",
+      "method": "vitest-json"
+    },
+    "AC-030": {
+      "status": "pass",
+      "testName": "reações reage e a contagem daquela reação sobe @spec:AC-030 reage e a contagem daquela reação sobe @spec:AC-030",
+      "method": "vitest-json"
+    },
+    "AC-031": {
+      "status": "pass",
+      "testName": "reações trocar de reação substitui, não soma @spec:AC-031 trocar de reação substitui, não soma @spec:AC-031",
+      "method": "vitest-json"
+    },
+    "AC-032": {
+      "status": "pass",
+      "testName": "reações reagir de novo com a mesma reação desfaz @spec:AC-032 reagir de novo com a mesma reação desfaz @spec:AC-032",
+      "method": "vitest-json"
+    },
+    "AC-033": {
+      "status": "pass",
+      "testName": "comentários comenta e o contador do post sobe @spec:AC-033 comenta e o contador do post sobe @spec:AC-033",
+      "method": "vitest-json"
+    },
+    "AC-034": {
+      "status": "pass",
+      "testName": "comentários só o autor do comentário — ou a moderação — pode apagá-lo @spec:AC-034 @principle:P-004 só o autor do comentário — ou a moderação — pode apagá-lo @spec:AC-034 @principle:P-004",
+      "method": "vitest-json"
+    },
+    "AC-035": {
+      "status": "pass",
+      "testName": "feed põe o post mais engajado à frente @spec:AC-035 põe o post mais engajado à frente @spec:AC-035",
+      "method": "vitest-json"
+    },
+    "AC-036": {
+      "status": "pass",
+      "testName": "ranking do feed põe o recente acima do antigo com engajamento parecido @spec:AC-036 põe o recente acima do antigo com engajamento parecido @spec:AC-036",
+      "method": "vitest-json"
+    },
+    "AC-037": {
+      "status": "pass",
+      "testName": "ranking do feed espalha os posts de quem publica muito @spec:AC-037 espalha os posts de quem publica muito @spec:AC-037",
+      "method": "vitest-json"
+    },
+    "AC-038": {
+      "status": "pass",
+      "testName": "ranking do feed não enterra post novo sem reações sob post antigo igualmente parado @spec:AC-038 não enterra post novo sem reações sob post antigo igualmente parado @spec:AC-038",
+      "method": "vitest-json"
+    },
+    "AC-039": {
+      "status": "pass",
+      "testName": "feed pagina sem repetir nem pular post @spec:AC-039 pagina sem repetir nem pular post @spec:AC-039",
+      "method": "vitest-json"
+    },
+    "AC-040": {
+      "status": "pass",
+      "testName": "sair da conta encerra a sessão e a área restrita volta a exigir autenticação @spec:AC-040 encerra a sessão e a área restrita volta a exigir autenticação @spec:AC-040",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
+    "P-003": {
+      "status": "pass",
+      "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003"
+    },
+    "P-004": {
+      "status": "pass",
+      "testName": "permissões deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004 deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004"
+    },
+    "P-009": {
+      "status": "pass",
+      "testName": "convites gera código imprevisível e nunca guarda o código em claro @principle:P-009 gera código imprevisível e nunca guarda o código em claro @principle:P-009"
+    },
+    "P-001": {
+      "status": "pass",
+      "testName": "reprocessamento de imagem descarta as coordenadas de GPS embutidas na foto @spec:AC-026 @principle:P-001 descarta as coordenadas de GPS embutidas na foto @spec:AC-026 @principle:P-001"
+    },
+    "P-006": {
+      "status": "pass",
+      "testName": "posts desarma HTML colado no post @spec:AC-024 @principle:P-006 desarma HTML colado no post @spec:AC-024 @principle:P-006"
+    },
+    "P-002": {
+      "status": "pass",
+      "testName": "comentários não entrega e-mail de ninguém junto do post ou do comentário @principle:P-002 não entrega e-mail de ninguém junto do post ou do comentário @principle:P-002"
+    }
+  }
+}
