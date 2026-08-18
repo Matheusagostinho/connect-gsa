@@ -48,6 +48,10 @@ export function testDb(): PrismaClient {
 /** Limpa só o que os testes criam. Municípios e instituições vêm do seed e ficam. */
 export async function resetTestData(): Promise<void> {
   const prisma = testDb();
+  // Ordem importa onde não há cascade a partir do que apagamos primeiro.
+  await prisma.comment.deleteMany();
+  await prisma.postReaction.deleteMany();
+  await prisma.post.deleteMany();
   await prisma.inviteCode.deleteMany();
   await prisma.session.deleteMany();
   await prisma.account.deleteMany();

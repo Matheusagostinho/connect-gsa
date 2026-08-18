@@ -11,11 +11,17 @@ import { betterAuthResolver, sessionPlugin, type SessionResolver } from './auth/
 import type { Env } from './env.js';
 import { registerErrorHandler } from './plugins/errors.js';
 import { registerSecurity } from './plugins/security.js';
-import { registerAuthRoutes } from './routes/auth.js';
+import { registerAuthRoutes, registerLogoutRoute } from './routes/auth.js';
 import { registerHealthRoutes } from './routes/health.js';
 import { registerInviteRoutes } from './modules/invite/invite.routes.js';
 import { registerProfileRoutes } from './modules/profile/profile.routes.js';
 import { registerShareRoutes } from './modules/share/share.routes.js';
+import { registerFeedRoutes } from './modules/feed/feed.routes.js';
+import { registerMediaRoutes } from './modules/media/media.routes.js';
+import { registerPostRoutes } from './modules/post/post.routes.js';
+import { CloudStorageDriver } from './modules/media/cloud-storage.js';
+import { LocalStorageDriver } from './modules/media/local-storage.js';
+import type { StorageDriver } from './modules/media/storage.js';
 import { registerReferenceRoutes } from './routes/reference.js';
 
 export interface AppDeps {
@@ -70,6 +76,9 @@ export async function buildApp({
   registerErrorHandler(app);
   await registerSecurity(app, env);
 
+  const storage = createStorage(env);
+  await registerMediaHosting(app, env, storage);
+
   const auth = createAuth(prisma, env);
 
   // Fora de produção, o cookie de desenvolvimento serve como identidade de
@@ -98,6 +107,10 @@ export async function buildApp({
       registerReferenceRoutes(scope, prisma);
       registerInviteRoutes(scope, prisma, env);
       registerProfileRoutes(scope, prisma);
+      registerMediaRoutes(scope, prisma, storage);
+      registerPostRoutes(scope, prisma, storage);
+      registerFeedRoutes(scope, prisma, storage);
+      registerLogoutRoute(scope, auth);
 
       if (isDevelopment) {
         registerDevLoginRoutes(scope, prisma, env);
@@ -112,4 +125,46 @@ export async function buildApp({
   );
 
   return app;
+}
+
+/**
+ * Escolhe onde as imagens ficam.
+ *
+ * Sem bucket configurado, cai no disco local. Isso é o que permite desenvolver
+ * e rodar os testes sem uma credencial do Google — e o `README` avisa que
+ * produção exige `MEDIA_BUCKET`.
+ */
+function createStorage(env: Env): StorageDriver {
+  if (env.MEDIA_BUCKET && env.MEDIA_PUBLIC_URL) {
+    return new CloudStorageDriver(env.MEDIA_BUCKET, env.MEDIA_PUBLIC_URL);
+  }
+  return new LocalStorageDriver(env.MEDIA_LOCAL_DIR, env.API_URL);
+}
+
+/**
+ * Serve as imagens do disco local em `/media/*`.
+ *
+ * Só existe quando não há bucket: em produção, quem serve é o Cloud Storage
+ * atrás do CDN, e a API não gasta requisição com isso.
+ */
+async function registerMediaHosting(
+  app: FastifyInstance,
+  env: Env,
+  storage: StorageDriver,
+): Promise<void> {
+  if (!(storage instanceof LocalStorageDriver)) return;
+
+  const [{ default: fastifyStatic }, path] = await Promise.all([
+    import('@fastify/static'),
+    import('node:path'),
+  ]);
+
+  await app.register(fastifyStatic, {
+    root: path.resolve(env.MEDIA_LOCAL_DIR),
+    prefix: '/media/',
+    decorateReply: false,
+    // Nomes de arquivo são UUID, então o conteúdo sob uma chave nunca muda.
+    maxAge: '1y',
+    immutable: true,
+  });
 }

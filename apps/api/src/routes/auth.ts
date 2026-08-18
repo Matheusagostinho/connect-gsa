@@ -1,6 +1,9 @@
 import { fromNodeHeaders } from 'better-auth/node';
 import type { FastifyInstance } from 'fastify';
+import { z } from 'zod';
 import type { Auth } from '../auth/better-auth.js';
+import { DEV_SESSION_COOKIE } from '../auth/dev-login.js';
+import type { AppInstance } from '../types.js';
 
 /**
  * Repassa `/api/auth/*` para o Better Auth.
@@ -39,4 +42,36 @@ export function registerAuthRoutes(app: FastifyInstance, auth: Auth): void {
       return reply.send(text.length > 0 ? text : null);
     },
   });
+}
+
+/**
+ * Sair da conta (AC-040).
+ *
+ * Encerra os DOIS caminhos de sessão de uma vez: a do Better Auth, que é a real,
+ * e o cookie de desenvolvimento. Limpar só um deixaria a pessoa "saindo" e
+ * continuando autenticada pelo outro — o pior resultado possível para quem
+ * clicou em sair num computador compartilhado do laboratório.
+ *
+ * Responde 200 mesmo quando não havia sessão: sair é idempotente, e devolver
+ * erro para quem já está de fora só produz tela de erro sem motivo.
+ */
+export function registerLogoutRoute(app: AppInstance, auth: Auth): void {
+  app.post(
+    '/auth/logout',
+    { schema: { response: { 200: z.object({ ok: z.literal(true) }) } } },
+    async (request, reply) => {
+      await auth.api
+        .signOut({ headers: fromNodeHeaders(request.headers), asResponse: true })
+        .then((response) => {
+          // Repassa os `set-cookie` de expiração que o Better Auth emite.
+          const cookies = response.headers.getSetCookie?.() ?? [];
+          for (const cookie of cookies) reply.header('set-cookie', cookie);
+        })
+        .catch(() => undefined);
+
+      reply.clearCookie(DEV_SESSION_COOKIE, { path: '/' });
+
+      return { ok: true as const };
+    },
+  );
 }

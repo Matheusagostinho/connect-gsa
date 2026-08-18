@@ -1,3 +1,5 @@
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { buildApp } from '../app.js';
 import type { Env } from '../env.js';
@@ -11,13 +13,15 @@ import { testDb } from './db.js';
  * qualquer ambiente real.
  */
 export const testEnv: Env = {
-  NODE_ENV: 'test',
+  NODE_ENV: process.env['DEBUG_TEST_LOGS'] ? 'development' : 'test',
   PORT: 0,
   DATABASE_URL: process.env.DATABASE_URL ?? '',
   WEB_ORIGINS: ['http://localhost:5173'],
   WEB_URL: 'http://localhost:5173',
   API_URL: 'http://localhost:3333',
   BETTER_AUTH_SECRET: 'segredo-de-teste-suficientemente-longo-para-hmac',
+  // Disco temporário: os testes gravam imagens de verdade, mas fora do projeto.
+  MEDIA_LOCAL_DIR: join(tmpdir(), 'connect-gsa-test-media'),
   GOOGLE_CLIENT_ID: 'test',
   GOOGLE_CLIENT_SECRET: 'test',
   LINKEDIN_CLIENT_ID: 'test',

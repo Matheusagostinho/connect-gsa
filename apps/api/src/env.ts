@@ -28,6 +28,17 @@ const envSchema = z.object({
 
   BETTER_AUTH_SECRET: z.string().min(32, 'gere com: openssl rand -base64 32'),
 
+  /**
+   * Armazenamento de imagens.
+   *
+   * Ausentes, a API usa disco local — adequado a desenvolvimento e testes, e
+   * inadequado a produção, onde o Cloud Run tem sistema de arquivos efêmero e
+   * um deploy apagaria tudo.
+   */
+  MEDIA_BUCKET: z.string().min(1).optional(),
+  MEDIA_PUBLIC_URL: z.url().optional(),
+  MEDIA_LOCAL_DIR: z.string().min(1).default('.media'),
+
   GOOGLE_CLIENT_ID: z.string().min(1),
   GOOGLE_CLIENT_SECRET: z.string().min(1),
   LINKEDIN_CLIENT_ID: z.string().min(1),
