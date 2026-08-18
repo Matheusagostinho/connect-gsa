@@ -1,0 +1,72 @@
+@import 'tailwindcss';
+
+/*
+ * Design system do ConnectGSA.
+ *
+ * Paleta: perfil "Membership/Community" da base da skill ui-ux-pro-max —
+ * roxo de comunidade com verde de adesão. Foi escolhida por casar com o tipo
+ * de produto e, de quebra, por NÃO usar nenhuma das cores da marca Google:
+ * enquanto a pergunta sobre aval do programa estiver aberta, parecer oficial
+ * sem ser é o risco a evitar.
+ *
+ * Tipografia: Inter em família única, com variação de peso. A base sugeria
+ * Poppins/Open Sans, que rende melhor em página de marketing; aqui a interface
+ * é densa e lida em 14–16px, onde o Inter é mais legível.
+ *
+ * Regra: componente nunca usa hexadecimal cru — só estas variáveis.
+ */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #7c3aed;
+  --color-on-primary: #ffffff;
+  --color-secondary: #a78bfa;
+  --color-on-secondary: #0f172a;
+  --color-accent: #16a34a;
+  --color-on-accent: #ffffff;
+
+  --color-background: #faf5ff;
+  --color-foreground: #4c1d95;
+  --color-card: #ffffff;
+  --color-card-foreground: #4c1d95;
+  --color-muted: #eceef9;
+  --color-muted-foreground: #475569;
+  --color-border: #ddd6fe;
+  --color-destructive: #dc2626;
+  --color-on-destructive: #ffffff;
+  --color-ring: #7c3aed;
+
+  --radius-card: 0.875rem;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Foco sempre visível. Remover o anel de foco é o atalho que quebra a navegação
+ * por teclado — e uma rede fechada de estudantes inclui quem depende dela.
+ */
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+/* Respeita quem pediu menos movimento no sistema operacional. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
