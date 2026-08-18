@@ -36,6 +36,7 @@ Pessoa ──> Firebase Hosting (SPA estático, CDN global)
 | Camada | Escolha | Por quê |
 |---|---|---|
 | SPA | Vite + React 19 | Tudo fica atrás de login: SSR não teria o que renderizar |
+| Visual | Google Sans, claro/escuro | Linguagem do antigravity.google; a fonte é SIL OFL desde jan/2026 |
 | API | Fastify 5 | Separada do front, com validação e autorização próprias |
 | Banco | Postgres (Neon) via Prisma 7 | Fonte de verdade; PostGIS disponível quando precisar |
 | Auth | Better Auth | O Auth.js foi absorvido por ele e não recebe mais features |
@@ -60,16 +61,42 @@ cd connect-gsa
 pnpm install
 
 cp .env.example .env
-# Gere o segredo da sessão:
+# Gere o segredo da sessão e cole em BETTER_AUTH_SECRET:
 #   openssl rand -base64 32
-# e crie as credenciais OAuth nos consoles do Google, LinkedIn e GitHub.
 
 docker compose up -d          # Postgres local na porta 5433
-pnpm db:migrate
+pnpm db:migrate               # aplica as migrações
 pnpm db:seed                  # 5.571 municípios do IBGE + 94 instituições
+pnpm db:seed:dev              # pessoas fictícias para você navegar
+pnpm db:test:setup            # banco separado para a suíte de testes
 
 pnpm dev                      # API em :3333 e SPA em :5173
 ```
+
+Abra **http://localhost:5173/dev** e escolha uma pessoa para entrar.
+
+### Entrar sem credenciais OAuth
+
+A tela `/dev` existe para você testar o aplicativo antes de haver credenciais
+OAuth. Ela lista as pessoas semeadas e entra como qualquer uma delas — inclusive
+o Diego, que tem perfil incompleto e serve para ver o onboarding sendo exigido.
+
+Isso é uma porta dos fundos deliberada, e por isso é travada em três camadas: a
+API **se recusa a subir** se essas rotas forem registradas com
+`NODE_ENV=production`, o `app.ts` só as registra fora de produção, e há teste
+provando as duas coisas. A tela some do build de produção.
+
+### Ligar o OAuth de verdade
+
+1. **Google** — [Console](https://console.cloud.google.com/apis/credentials) →
+   *Criar credenciais* → *ID do cliente OAuth* → *Aplicativo da Web*.
+2. **GitHub** — Settings → Developer settings → OAuth Apps → *New OAuth App*.
+3. **LinkedIn** — [Developers](https://www.linkedin.com/developers/apps) → *Create app*
+   → aba *Auth*.
+
+Em todos, cadastre a URL de retorno
+`http://localhost:3333/api/auth/callback/{google|github|linkedin}` (e a equivalente
+com o domínio de produção). Cole os pares de id/segredo no `.env` e reinicie a API.
 
 ### URLs de retorno do OAuth
 
@@ -94,6 +121,7 @@ Com um administrador no ar, `POST /invites` gera convites para os demais.
 
 ```bash
 docker compose up -d
+pnpm db:test:setup            # só na primeira vez
 pnpm test                     # suíte inteira
 pnpm turbo run lint typecheck
 ```
@@ -101,6 +129,10 @@ pnpm turbo run lint typecheck
 Os testes rodam contra um Postgres de verdade, não contra mocks: reserva de convite sob
 corrida e unicidade de e-mail são garantias do banco, e um mock aprovaria implementações
 erradas.
+
+Eles usam um **banco separado** (`connectgsa_test`), porque limpam tabelas inteiras entre
+casos — apontá-los para o banco de desenvolvimento apagaria os dados que você semeou. O
+código se recusa a rodar se `TEST_DATABASE_URL` for igual a `DATABASE_URL`.
 
 ## Segurança e privacidade
 

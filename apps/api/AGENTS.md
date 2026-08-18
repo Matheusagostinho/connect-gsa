@@ -16,7 +16,9 @@ src/
 │   └── errors.ts       AppError + tratamento central (não vaza stack em produção)
 ├── auth/
 │   ├── better-auth.ts  provedores sociais, vínculo de contas e O PORTÃO da rede
-│   ├── invite-ticket.ts bilhete HMAC que atravessa o vaivém do OAuth
+│   ├── signed-ticket.ts assinatura HMAC genérica com prazo
+│   ├── invite-ticket.ts bilhete que atravessa o vaivém do OAuth
+│   ├── dev-login.ts    porta dos fundos de desenvolvimento, travada contra produção
 │   └── session.ts      resolve a sessão e expõe `request.currentUser`
 ├── authz/              CASL: quem pode o quê
 ├── modules/
@@ -25,6 +27,33 @@ src/
 │   └── share/          prévia Open Graph para link colado no WhatsApp
 └── routes/             health, repasse do Better Auth, dados de referência
 ```
+
+## Onde cada rota mora
+
+| Prefixo | O que é |
+|---|---|
+| `/health` | sonda de infraestrutura — o Cloud Run consulta esta URL |
+| `/s/...` | link de compartilhamento, que vai colado em conversa |
+| `/api/auth/*` | Better Auth (o `basePath` dele já inclui o prefixo) |
+| `/api/*` | todo o resto do aplicativo |
+
+O prefixo único em `/api` é o que permite ao SPA usar caminho relativo em desenvolvimento
+(com o proxy do Vite) e URL absoluta em produção, sem cada rota precisar saber qual é o
+caso. Ao adicionar rota do aplicativo, registre-a **dentro** do escopo com prefixo.
+
+## O login de desenvolvimento
+
+`auth/dev-login.ts` é uma porta dos fundos deliberada: quem alcança a rota entra como
+qualquer usuário. Ela é travada em três camadas, e nenhuma depende de alguém lembrar:
+
+1. `assertDevOnly` **lança** se `NODE_ENV=production`, e roda no momento do registro — a
+   API se recusa a subir, em vez de abrir uma brecha silenciosa.
+2. O `app.ts` só registra essas rotas fora de produção.
+3. `dev-login.test.ts` prova as duas coisas, inclusive que `/api/dev/*` responde 404 numa
+   aplicação montada em modo produção.
+
+A trava é o `NODE_ENV` de propósito. Uma variável própria (`ENABLE_DEV_LOGIN`) seria pior:
+mais uma coisa para alguém copiar sem querer para o ambiente errado.
 
 ## Cinco coisas que não podem ser desfeitas
 
@@ -57,6 +86,10 @@ testes provam o portão, e não um mock dele.
 
 Os testes precisam do Postgres de verdade (`docker compose up -d`): corrida de convite e
 unicidade de e-mail são garantias do banco, e um mock aprovaria implementações erradas.
+
+Eles usam um banco **separado** (`TEST_DATABASE_URL`), porque `resetTestData` apaga tabelas
+inteiras. `testing/db.ts` se recusa a rodar se ele for igual ao de desenvolvimento — o
+estrago seria silencioso: os testes passariam e você só descobriria ao voltar para a tela.
 
 ## Armadilhas conhecidas
 

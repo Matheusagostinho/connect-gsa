@@ -40,6 +40,16 @@ partir da API de localidades do IBGE cruzada com o dataset de coordenadas. É id
 seed.
 
 ```bash
-pnpm db:migrate     # aplica migrações em desenvolvimento
-pnpm db:seed
+pnpm db:migrate       # aplica migrações em desenvolvimento
+pnpm db:seed          # municípios e instituições
+pnpm db:seed:dev      # pessoas fictícias, só fora de produção
+pnpm db:test:setup    # prepara o banco separado da suíte de testes
 ```
+
+`seed-dev.ts` cria pessoas com e-mails em `example.invalid` — domínio reservado justamente
+para isso, que não existe e nunca vai existir. Ele se recusa a rodar em produção: essas
+contas entrariam na rede sem passar pelo portão de convite.
+
+O banco de testes é separado (`connectgsa_test`) porque a suíte limpa tabelas inteiras
+entre casos. O `docker-compose.yml` o cria junto do de desenvolvimento na primeira subida
+do volume.

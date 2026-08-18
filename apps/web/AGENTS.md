@@ -26,17 +26,37 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
 4. **Componente não usa hexadecimal cru.** Só as variáveis de `styles/tokens.css`.
 5. **A cidade vem de lista, nunca do GPS.** O `Permissions-Policy` do Firebase Hosting
    inclusive nega `geolocation=()` para o navegador inteiro (P-001).
+6. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
+   então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
+   registrada pela API lá.
 
 ## Design system
 
-Paleta "Membership/Community" (roxo `#7C3AED` + verde `#16A34A`), da base da skill
-`ui-ux-pro-max`. Escolhida por casar com o tipo de produto e por **não** usar nenhuma cor
-da marca Google — enquanto o aval do programa estiver em aberto, parecer oficial sem ser é
-o risco a evitar. Tipografia Inter em família única.
+Linguagem visual derivada do **antigravity.google**: superfície limpa, tinta quase preta,
+botões sólidos em pílula, muito respiro (ritmo de 8px, goteira de 72px) e cor aparecendo
+só como acento. Tipografia **Google Sans** — publicada sob SIL Open Font License desde
+janeiro de 2026, então não há pendência de licença.
 
-Checklist antes de entregar tela nova: alvo de toque ≥ 44px, contraste ≥ 4,5:1, foco
-visível, rótulo visível (nunca placeholder como rótulo), erro junto do campo,
-`prefers-reduced-motion` respeitado, e testado em 375/768/1024/1440px.
+Tudo mora em `styles/tokens.css`. Três coisas ali não são preferência:
+
+1. **A paleta clara vive no `:root` puro.** É o padrão mesmo sem JavaScript. O escuro é
+   redefinido duas vezes de propósito — por `prefers-color-scheme` (guardado contra uma
+   escolha explícita de claro) e por `data-theme` — para o alternador vencer nos dois
+   sentidos.
+2. **`spark-text` não usa o amarelo.** Medido: `#FBBC04` dá **1,71:1** sobre branco,
+   abaixo do mínimo de 3:1 até para texto grande. Azul, violeta e vermelho passam nos dois
+   temas. O gradiente de quatro cores (`spark-gradient`) fica só em decoração — avatar e
+   marcador — onde não há texto.
+3. **`applyStoredThemeEagerly()` roda antes do React montar.** Sem isso, quem escolheu o
+   tema escuro leva um clarão branco a cada carregamento.
+
+**Estética sim, identidade não:** sem logotipo do Google, sem tratamento que imite a marca,
+e o aviso de projeto não oficial no rodapé enquanto a Q-003 estiver aberta.
+
+Checklist antes de entregar tela nova: alvo de toque ≥ 44px, contraste ≥ 4,5:1 (3:1 para
+texto grande), foco visível, rótulo visível (nunca placeholder como rótulo), erro junto do
+campo, `prefers-reduced-motion` respeitado, testado em 375/768/1024/1440px **e nos dois
+temas**.
 
 ## Cuidado com a cota
 
