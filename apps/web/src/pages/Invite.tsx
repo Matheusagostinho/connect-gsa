@@ -1,17 +1,18 @@
-import { useMutation } from '@tanstack/react-query';
 import { inviteCodeSchema } from '@connect-gsa/shared';
+import { useMutation } from '@tanstack/react-query';
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { ThemeToggle } from '../components/ThemeToggle.tsx';
+import { Button, Card, Field, Shell, UnofficialNotice, Wordmark } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
-import { Button, Card, Field } from '../components/ui.tsx';
 
 /**
  * Primeira porta: o código de convite.
  *
  * O código é conferido ANTES do login social por um motivo de experiência —
  * descobrir que o convite não presta depois de já ter autorizado o Google seria
- * frustrante e confuso. Conferir aqui não consome o convite: quem desistir no
- * meio do caminho não queima o próprio acesso.
+ * frustrante. Conferir aqui não consome o convite: quem desistir no meio do
+ * caminho não queima o próprio acesso.
  */
 export function InvitePage() {
   const navigate = useNavigate();
@@ -39,15 +40,20 @@ export function InvitePage() {
   const error = validationError ?? (check.error instanceof Error ? check.error.message : undefined);
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-4 py-12">
-      <Card>
-        <h1 className="text-2xl font-extrabold">Você tem um convite?</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          O ConnectGSA é exclusivo para participantes do Programa de Embaixadores Estudantis do
-          Google. Informe o código que a coordenação enviou.
-        </p>
+    <Shell>
+      <header className="mb-12 flex items-center justify-between">
+        <Wordmark />
+        <ThemeToggle />
+      </header>
 
-        <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4" noValidate>
+      <h1 className="display mb-3 text-4xl sm:text-5xl">Você tem um convite?</h1>
+      <p className="mb-10 text-lg text-ink-muted">
+        O ConnectGSA é exclusivo para participantes do Programa de Embaixadores Estudantis do
+        Google.
+      </p>
+
+      <Card>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
           <Field
             id="codigo"
             label="Código do convite"
@@ -55,6 +61,7 @@ export function InvitePage() {
             value={code}
             autoComplete="off"
             spellCheck={false}
+            className="font-mono"
             onChange={(event) => setCode(event.target.value)}
             {...(error ? { error } : {})}
           />
@@ -63,15 +70,17 @@ export function InvitePage() {
             {check.isPending ? 'Conferindo…' : 'Continuar'}
           </Button>
         </form>
-
-        <p className="mt-4 text-xs text-muted-foreground">
-          Seu e-mail já está na lista oficial do programa?{' '}
-          <a href="/entrar" className="font-semibold text-primary underline">
-            Entre direto
-          </a>
-          .
-        </p>
       </Card>
-    </main>
+
+      <p className="mt-8 text-sm text-ink-muted">
+        Seu e-mail já está na lista oficial do programa?{' '}
+        <a href="/entrar" className="font-medium text-ink underline">
+          Entre direto
+        </a>
+        .
+      </p>
+
+      <UnofficialNotice className="mt-16" />
+    </Shell>
   );
 }

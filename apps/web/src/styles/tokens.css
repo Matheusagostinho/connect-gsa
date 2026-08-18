@@ -3,51 +3,181 @@
 /*
  * Design system do ConnectGSA.
  *
- * Paleta: perfil "Membership/Community" da base da skill ui-ux-pro-max —
- * roxo de comunidade com verde de adesão. Foi escolhida por casar com o tipo
- * de produto e, de quebra, por NÃO usar nenhuma das cores da marca Google:
- * enquanto a pergunta sobre aval do programa estiver aberta, parecer oficial
- * sem ser é o risco a evitar.
+ * Linguagem visual derivada do antigravity.google: superfície limpa, tinta
+ * quase preta, botões sólidos em pílula, tipografia Google Sans, muito respiro
+ * (ritmo de 8px, goteira de 72px) e as cores da Google aparecendo apenas como
+ * acento — nunca como cromo de interface.
  *
- * Tipografia: Inter em família única, com variação de peso. A base sugeria
- * Poppins/Open Sans, que rende melhor em página de marketing; aqui a interface
- * é densa e lida em 14–16px, onde o Inter é mais legível.
+ * Estética sim, identidade não: não usamos logotipo do Google nem tratamento de
+ * marca. O projeto não é oficial, e o rodapé diz isso.
  *
  * Regra: componente nunca usa hexadecimal cru — só estas variáveis.
  */
+
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans:
+    'Google Sans', 'Google Sans Flex', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'Google Sans Code', ui-monospace, monospace;
 
-  --color-primary: #7c3aed;
-  --color-on-primary: #ffffff;
-  --color-secondary: #a78bfa;
-  --color-on-secondary: #0f172a;
-  --color-accent: #16a34a;
-  --color-on-accent: #ffffff;
+  /* Ritmo de 8px e goteira de 72px, como na referência. */
+  --spacing-gutter: 4.5rem;
 
-  --color-background: #faf5ff;
-  --color-foreground: #4c1d95;
-  --color-card: #ffffff;
-  --color-card-foreground: #4c1d95;
-  --color-muted: #eceef9;
-  --color-muted-foreground: #475569;
-  --color-border: #ddd6fe;
-  --color-destructive: #dc2626;
-  --color-on-destructive: #ffffff;
-  --color-ring: #7c3aed;
+  --radius-pill: 999px;
+  --radius-card: 1.25rem;
+  --radius-field: 0.75rem;
 
-  --radius-card: 0.875rem;
+  /* Acento: as quatro cores, usadas só em gradiente e detalhe. */
+  --color-spark-blue: #4285f4;
+  --color-spark-violet: #7c4dff;
+  --color-spark-red: #ea4335;
+  --color-spark-yellow: #fbbc04;
 }
 
+/*
+ * Tema.
+ *
+ * A paleta clara vive no `:root` puro, para ser o padrão mesmo sem JavaScript.
+ * O escuro é redefinido duas vezes de propósito: por preferência do sistema
+ * (guardada contra uma escolha explícita de claro) e por `data-theme`, para o
+ * alternador vencer nos dois sentidos.
+ */
 :root {
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f8f9fa;
+  --color-surface-raised: #ffffff;
+  --color-ink: #1f1f1f;
+  --color-ink-muted: #5f6368;
+  --color-border: #e3e3e3;
+  --color-border-strong: #c7c7c7;
+
+  /* Ação: pílula sólida de alto contraste, como os botões da referência. */
+  --color-action: #1f1f1f;
+  --color-on-action: #ffffff;
+  --color-action-hover: #3c3c3c;
+
+  --color-danger: #d93025;
+  --color-on-danger: #ffffff;
+  --color-success: #188038;
+
+  --color-ring: #1f1f1f;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 6%), 0 4px 16px rgb(0 0 0 / 4%);
+
   color-scheme: light;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-surface: #131314;
+    --color-surface-subtle: #1e1f20;
+    --color-surface-raised: #1e1f20;
+    --color-ink: #e3e3e3;
+    --color-ink-muted: #9aa0a6;
+    --color-border: #2e2f31;
+    --color-border-strong: #444746;
+
+    --color-action: #e3e3e3;
+    --color-on-action: #131314;
+    --color-action-hover: #ffffff;
+
+    --color-danger: #f28b82;
+    --color-on-danger: #131314;
+    --color-success: #81c995;
+
+    --color-ring: #8ab4f8;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 16px rgb(0 0 0 / 24%);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-surface: #131314;
+  --color-surface-subtle: #1e1f20;
+  --color-surface-raised: #1e1f20;
+  --color-ink: #e3e3e3;
+  --color-ink-muted: #9aa0a6;
+  --color-border: #2e2f31;
+  --color-border-strong: #444746;
+
+  --color-action: #e3e3e3;
+  --color-on-action: #131314;
+  --color-action-hover: #ffffff;
+
+  --color-danger: #f28b82;
+  --color-on-danger: #131314;
+  --color-success: #81c995;
+
+  --color-ring: #8ab4f8;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 16px rgb(0 0 0 / 24%);
+
+  color-scheme: dark;
+}
+
+/* Expõe as variáveis de tema às utilidades do Tailwind. */
+@theme inline {
+  --color-surface: var(--color-surface);
+  --color-surface-subtle: var(--color-surface-subtle);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-action: var(--color-action);
+  --color-on-action: var(--color-on-action);
+  --color-action-hover: var(--color-action-hover);
+  --color-danger: var(--color-danger);
+  --color-on-danger: var(--color-on-danger);
+  --color-success: var(--color-success);
+  --color-ring: var(--color-ring);
+}
+
 body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/*
+ * Display com entrelinha apertada (1.1) e peso 500, como na referência — é o
+ * que dá o ar de título de produto em vez de manchete de blog.
+ */
+.display {
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/*
+ * O acento: gradiente, nunca bloco chapado.
+ *
+ * Duas variantes de propósito. `spark-gradient` leva as quatro cores e serve a
+ * DECORAÇÃO (avatar, marcador) — ali não há texto e o contraste não se aplica.
+ * `spark-text` deixa o amarelo de fora: medido, ele dá 1,71:1 sobre branco,
+ * abaixo do mínimo de 3:1 até para texto grande. Azul, violeta e vermelho
+ * passam nos dois temas, e o degradê continua legível.
+ */
+.spark-gradient {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-spark-blue),
+    var(--color-spark-violet) 38%,
+    var(--color-spark-red) 68%,
+    var(--color-spark-yellow)
+  );
+}
+
+.spark-text {
+  background-image: linear-gradient(
+    95deg,
+    var(--color-spark-blue),
+    var(--color-spark-violet) 45%,
+    var(--color-spark-red)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /*
@@ -57,9 +187,9 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-ring);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
-/* Respeita quem pediu menos movimento no sistema operacional. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

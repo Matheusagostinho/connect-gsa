@@ -3,7 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Autocomplete } from '../components/Autocomplete.tsx';
-import { Button, Card, Field } from '../components/ui.tsx';
+import { ThemeToggle } from '../components/ThemeToggle.tsx';
+import { Button, Card, Field, Shell, Wordmark } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -76,14 +77,19 @@ export function OnboardingPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-lg flex-col justify-center px-4 py-12">
-      <Card>
-        <h1 className="text-2xl font-extrabold">Complete seu perfil</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          É assim que os outros embaixadores vão te encontrar.
-        </p>
+    <Shell width="lg">
+      <header className="mb-12 flex items-center justify-between">
+        <Wordmark />
+        <ThemeToggle />
+      </header>
 
-        <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4" noValidate>
+      <h1 className="display mb-3 text-4xl sm:text-5xl">Complete seu perfil</h1>
+      <p className="mb-10 text-lg text-ink-muted">
+        É assim que os outros embaixadores vão te encontrar.
+      </p>
+
+      <Card>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
           <Field
             id="nome"
             label="Nome"
@@ -132,13 +138,13 @@ export function OnboardingPage() {
             {...(errors['bio'] ? { error: errors['bio'] } : {})}
           />
 
-          <p className="text-xs text-muted-foreground">
+          <p className="rounded-field bg-surface-subtle p-4 text-xs text-ink-muted">
             Guardamos apenas a sua cidade — nunca a localização do seu aparelho. Você começa fora
             do mapa e decide depois se quer aparecer.
           </p>
 
           {save.error instanceof Error ? (
-            <p role="alert" className="text-sm font-medium text-destructive">
+            <p role="alert" className="text-sm font-medium text-danger">
               {save.error.message}
             </p>
           ) : null}
@@ -148,6 +154,6 @@ export function OnboardingPage() {
           </Button>
         </form>
       </Card>
-    </main>
+    </Shell>
   );
 }

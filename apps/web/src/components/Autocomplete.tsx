@@ -44,9 +44,9 @@ export function Autocomplete<T extends { id: string }>({
 
   if (value) {
     return (
-      <div className="flex flex-col gap-1.5">
-        <span className="text-sm font-medium text-foreground">{label}</span>
-        <div className="flex min-h-11 items-center justify-between rounded-lg border border-border bg-card px-3">
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-medium text-ink">{label}</span>
+        <div className="flex min-h-12 items-center justify-between rounded-field border border-border bg-surface px-4">
           <span className="text-base">{render(value)}</span>
           <button
             type="button"
@@ -54,7 +54,7 @@ export function Autocomplete<T extends { id: string }>({
               onSelect(null);
               setTerm('');
             }}
-            className="cursor-pointer text-sm font-semibold text-primary underline"
+            className="cursor-pointer text-sm font-semibold text-ink underline"
           >
             Trocar
           </button>
@@ -64,8 +64,8 @@ export function Autocomplete<T extends { id: string }>({
   }
 
   return (
-    <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-medium text-foreground">
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="text-sm font-medium text-ink">
         {label}
       </label>
       <input
@@ -79,26 +79,26 @@ export function Autocomplete<T extends { id: string }>({
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-erro` : undefined}
         className={cn(
-          'min-h-11 rounded-lg border bg-card px-3 text-base',
-          error ? 'border-destructive' : 'border-border',
+          'min-h-12 rounded-field border bg-surface px-3 text-base',
+          error ? 'border-danger' : 'border-border',
         )}
         placeholder="Digite ao menos 2 letras"
       />
 
       {isFetching ? (
-        <p className="text-xs text-muted-foreground" aria-live="polite">
+        <p className="text-xs text-ink-muted" aria-live="polite">
           Buscando…
         </p>
       ) : null}
 
       {options.length > 0 ? (
-        <ul id={`${id}-opcoes`} className="max-h-56 overflow-y-auto rounded-lg border border-border bg-card">
+        <ul id={`${id}-opcoes`} className="max-h-56 overflow-y-auto rounded-field border border-border bg-surface">
           {options.map((option) => (
             <li key={option.id}>
               <button
                 type="button"
                 onClick={() => onSelect(option)}
-                className="w-full cursor-pointer px-3 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-muted"
+                className="w-full cursor-pointer px-3 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-surface-subtle"
               >
                 {render(option)}
               </button>
@@ -108,7 +108,7 @@ export function Autocomplete<T extends { id: string }>({
       ) : null}
 
       {error ? (
-        <p id={`${id}-erro`} role="alert" className="text-xs font-medium text-destructive">
+        <p id={`${id}-erro`} role="alert" className="text-xs font-medium text-danger">
           {error}
         </p>
       ) : null}

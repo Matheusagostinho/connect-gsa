@@ -24,8 +24,8 @@ export function ProtectedRoute({
 
   if (isPending) {
     return (
-      <div className="flex min-h-screen items-center justify-center" role="status" aria-live="polite">
-        <span className="text-muted-foreground">Carregando…</span>
+      <div className="flex min-h-screen items-center justify-center bg-surface" role="status" aria-live="polite">
+        <span className="text-ink-muted">Carregando…</span>
       </div>
     );
   }

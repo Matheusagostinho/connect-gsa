@@ -1,10 +1,17 @@
 import type { MyProfile } from '@connect-gsa/shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { MapPin, School } from 'lucide-react';
+import { GraduationCap, MapPin } from 'lucide-react';
 import { Link } from 'react-router';
-import { Button, Card } from '../components/ui.tsx';
+import { ThemeToggle } from '../components/ThemeToggle.tsx';
+import { Button, Card, Shell, UnofficialNotice, Wordmark } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
 import { useMyProfile } from '../lib/session.js';
+
+const PAPEL: Record<string, string> = {
+  admin: 'Administração do programa',
+  moderator: 'Moderação',
+  ambassador: 'Embaixador',
+};
 
 /**
  * Perfil do próprio embaixador (US-004, US-005).
@@ -19,53 +26,60 @@ export function ProfilePage() {
   const { data: profile } = useMyProfile();
 
   const privacy = useMutation({
-    mutationFn: (visibleOnMap: boolean) =>
-      api.patch<MyProfile>('/me/privacy', { visibleOnMap }),
+    mutationFn: (visibleOnMap: boolean) => api.patch<MyProfile>('/me/privacy', { visibleOnMap }),
     onSuccess: (updated) => queryClient.setQueryData(['me'], updated),
   });
 
   if (!profile) return null;
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-2xl flex-col gap-4 px-4 py-10">
-      <Card>
-        <div className="flex items-start gap-4">
+    <Shell width="lg">
+      <header className="mb-12 flex items-center justify-between">
+        <Wordmark />
+        <ThemeToggle />
+      </header>
+
+      <Card className="mb-4">
+        <div className="flex items-start gap-5">
           {profile.imageUrl ? (
             <img
               src={profile.imageUrl}
               alt=""
-              width={64}
-              height={64}
-              className="size-16 rounded-full border border-border object-cover"
+              width={72}
+              height={72}
+              className="size-18 rounded-full border border-border object-cover"
             />
           ) : (
             <div
               aria-hidden="true"
-              className="flex size-16 items-center justify-center rounded-full bg-primary text-xl font-bold text-on-primary"
+              className="spark-gradient flex size-18 items-center justify-center rounded-full text-2xl font-medium text-white"
             >
               {profile.name.charAt(0).toUpperCase()}
             </div>
           )}
 
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-2xl font-extrabold">{profile.name}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{profile.course}</p>
+            <h1 className="display truncate text-3xl">{profile.name}</h1>
+            <p className="mt-1.5 text-sm text-ink-muted">
+              {PAPEL[profile.role] ?? profile.role}
+              {profile.course ? ` · ${profile.course}` : ''}
+            </p>
           </div>
         </div>
 
-        {profile.bio ? <p className="mt-4 text-sm">{profile.bio}</p> : null}
+        {profile.bio ? <p className="mt-6 text-base leading-relaxed">{profile.bio}</p> : null}
 
-        <dl className="mt-4 flex flex-col gap-2 text-sm">
+        <dl className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-muted">
           {profile.institution ? (
             <div className="flex items-center gap-2">
-              <School className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <GraduationCap className="size-4 shrink-0" aria-hidden="true" />
               <dt className="sr-only">Instituição</dt>
               <dd>{profile.institution.acronym ?? profile.institution.name}</dd>
             </div>
           ) : null}
           {profile.city ? (
             <div className="flex items-center gap-2">
-              <MapPin className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <MapPin className="size-4 shrink-0" aria-hidden="true" />
               <dt className="sr-only">Cidade</dt>
               <dd>
                 {profile.city.name}/{profile.city.state}
@@ -75,11 +89,11 @@ export function ProfilePage() {
         </dl>
 
         {profile.skills.length > 0 ? (
-          <ul className="mt-4 flex flex-wrap gap-2">
+          <ul className="mt-6 flex flex-wrap gap-2">
             {profile.skills.map((skill) => (
               <li
                 key={skill}
-                className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground"
+                className="rounded-pill border border-border px-3 py-1.5 text-xs font-medium text-ink-muted"
               >
                 {skill}
               </li>
@@ -89,24 +103,24 @@ export function ProfilePage() {
 
         <Link
           to="/onboarding"
-          className="mt-6 inline-flex min-h-11 cursor-pointer items-center text-sm font-semibold text-primary underline"
+          className="mt-8 inline-flex min-h-11 cursor-pointer items-center text-sm font-medium text-ink underline"
         >
           Editar perfil
         </Link>
       </Card>
 
       <Card>
-        <h2 className="text-lg font-bold">Privacidade</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <h2 className="text-xl font-medium">Privacidade</h2>
+        <p className="mt-2 text-sm text-ink-muted">
           Se você aparecer no mapa, os outros embaixadores veem a sua cidade — nunca um endereço.
         </p>
 
-        <div className="mt-4 flex items-center justify-between gap-4">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <span className="text-sm font-medium">
             {profile.visibleOnMap ? 'Você aparece no mapa' : 'Você não aparece no mapa'}
           </span>
           <Button
-            variant={profile.visibleOnMap ? 'ghost' : 'accent'}
+            variant={profile.visibleOnMap ? 'outline' : 'primary'}
             disabled={privacy.isPending}
             aria-pressed={profile.visibleOnMap}
             onClick={() => privacy.mutate(!profile.visibleOnMap)}
@@ -119,6 +133,8 @@ export function ProfilePage() {
           </Button>
         </div>
       </Card>
-    </main>
+
+      <UnofficialNotice className="mt-16" />
+    </Shell>
   );
 }
