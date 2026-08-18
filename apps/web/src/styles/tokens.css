@@ -15,8 +15,14 @@
  */
 
 @theme {
+  /*
+   * As fontes de emoji entram no fim da pilha de propósito: nem todo sistema
+   * Linux traz uma instalada, e sem elas o emoji vira quadrado vazio. É por
+   * isso que nenhuma reação depende SÓ do emoji — o rótulo sempre acompanha.
+   */
   --font-sans:
-    'Google Sans', 'Google Sans Flex', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    'Google Sans', 'Google Sans Flex', ui-sans-serif, system-ui, -apple-system, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
   --font-mono: 'Google Sans Code', ui-monospace, monospace;
 
   /* Ritmo de 8px e goteira de 72px, como na referência. */
@@ -198,5 +204,54 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Animação das reações.
+ *
+ * A referência é o Facebook — a fileira que cresce ao passar o cursor —, mas
+ * contida: escala pequena, mola curta, sem salto nem rotação. O objetivo é
+ * confirmar o toque, não pedir atenção.
+ *
+ * As duas regras `prefers-reduced-motion` no fim não são cortesia: movimento de
+ * escala é o que dispara enjoo em quem tem sensibilidade vestibular, e a
+ * pessoa já disse ao sistema operacional que não quer.
+ */
+@keyframes reacao-entra {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes reacao-escolhida {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.reacao-entra {
+  animation: reacao-entra 180ms cubic-bezier(0.34, 1.4, 0.64, 1) backwards;
+}
+
+.reacao-escolhida {
+  animation: reacao-escolhida 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reacao-entra,
+  .reacao-escolhida {
+    animation: none;
   }
 }

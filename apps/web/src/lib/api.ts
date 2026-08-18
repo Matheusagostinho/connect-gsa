@@ -66,7 +66,37 @@ export const api = {
     request<T>(path, { method: 'POST', body: JSON.stringify(body ?? {}) }),
   patch: <T>(path: string, body: unknown) =>
     request<T>(path, { method: 'PATCH', body: JSON.stringify(body) }),
+  remove: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
 };
+
+/**
+ * Envio de arquivo.
+ *
+ * Não define `Content-Type`: o navegador precisa gerar o `boundary` do
+ * multipart sozinho, e escrever o cabeçalho na mão faria o servidor não
+ * conseguir separar as partes.
+ */
+export async function upload<T>(path: string, file: File): Promise<T> {
+  const form = new FormData();
+  form.append('file', file);
+
+  const response = await fetch(`${BASE_URL}${path}`, {
+    method: 'POST',
+    credentials: 'include',
+    body: form,
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { message?: string } | null;
+    throw new ApiError(response.status, body?.message ?? 'Não foi possível enviar a imagem.', 'UPLOAD');
+  }
+
+  return (await response.json()) as T;
+}
+
+export function logout(): Promise<{ ok: true }> {
+  return api.post<{ ok: true }>('/auth/logout');
+}
 
 /** Endereço para onde o navegador é enviado ao entrar com um provedor social. */
 export function socialSignInUrl(provider: 'google' | 'github' | 'linkedin'): string {

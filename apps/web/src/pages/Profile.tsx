@@ -2,7 +2,8 @@ import type { MyProfile } from '@connect-gsa/shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GraduationCap, MapPin } from 'lucide-react';
 import { Link } from 'react-router';
-import { ThemeToggle } from '../components/ThemeToggle.tsx';
+import { AccountMenu } from '../components/AccountMenu.tsx';
+import { AvatarUpload } from '../components/AvatarUpload.tsx';
 import { Button, Card, Shell, UnofficialNotice, Wordmark } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
 import { useMyProfile } from '../lib/session.js';
@@ -35,28 +36,15 @@ export function ProfilePage() {
   return (
     <Shell width="lg">
       <header className="mb-12 flex items-center justify-between">
-        <Wordmark />
-        <ThemeToggle />
+        <Link to="/" aria-label="ConnectGSA">
+          <Wordmark />
+        </Link>
+        <AccountMenu profile={profile} />
       </header>
 
       <Card className="mb-4">
         <div className="flex items-start gap-5">
-          {profile.imageUrl ? (
-            <img
-              src={profile.imageUrl}
-              alt=""
-              width={72}
-              height={72}
-              className="size-18 rounded-full border border-border object-cover"
-            />
-          ) : (
-            <div
-              aria-hidden="true"
-              className="spark-gradient flex size-18 items-center justify-center rounded-full text-2xl font-medium text-white"
-            >
-              {profile.name.charAt(0).toUpperCase()}
-            </div>
-          )}
+          <AvatarUpload profile={profile} />
 
           <div className="min-w-0 flex-1">
             <h1 className="display truncate text-3xl">{profile.name}</h1>

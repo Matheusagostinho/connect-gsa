@@ -5,6 +5,7 @@ import { InvitePage } from './pages/Invite.tsx';
 import { LoginPage } from './pages/Login.tsx';
 import { OnboardingPage } from './pages/Onboarding.tsx';
 import { DevLoginPage } from './pages/DevLogin.tsx';
+import { FeedPage } from './pages/Feed.tsx';
 import { ProfilePage } from './pages/Profile.tsx';
 
 const queryClient = new QueryClient({
@@ -46,7 +47,15 @@ export function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="*" element={<Navigate to="/perfil" replace />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <FeedPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
