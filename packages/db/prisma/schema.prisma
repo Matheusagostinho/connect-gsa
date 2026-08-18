@@ -1,0 +1,178 @@
+// Schema do ConnectGSA.
+//
+// Convenção de nomes: os modelos `User`, `Session`, `Account` e `Verification`
+// seguem o schema canônico do Better Auth — os nomes de campo são exigidos pela
+// biblioteca e não podem ser traduzidos. Os campos e modelos próprios do
+// ConnectGSA seguem a mesma convenção (inglês) para o schema ficar coerente.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+// A URL de conexão vive em `prisma.config.ts` (Prisma 7 removeu `url` daqui) e
+// chega ao client em runtime pelo driver adapter — ver `src/client.ts`.
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ambassador
+  moderator
+  admin
+}
+
+/// Um participante da rede.
+///
+/// ATENÇÃO (P-001): não existe, e não deve passar a existir, coluna de latitude
+/// ou longitude aqui. A posição de um embaixador no mapa é o centroide da
+/// `City` que ele escolheu. Guardar coordenada precisa do aparelho transformaria
+/// um vazamento de banco em um vazamento de paradeiro de estudantes.
+model User {
+  // --- Campos exigidos pelo Better Auth ---
+  id            String   @id @default(uuid())
+  name          String
+  /// P-002: nunca sai da API. A serialização de perfil passa obrigatoriamente
+  /// pelo `toPublicProfile`, que não conhece este campo.
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // --- Campos do ConnectGSA ---
+  role           Role     @default(ambassador)
+  course         String?
+  bio            String   @default("")
+  skills         String[] @default([])
+  /// Lista de `{ label, url }` validada pelo `linkSchema` de @connect-gsa/shared.
+  links          Json     @default("[]")
+
+  institutionId String?
+  institution   Institution? @relation(fields: [institutionId], references: [id], onDelete: SetNull)
+  cityId        String?
+  city          City?        @relation(fields: [cityId], references: [id], onDelete: SetNull)
+
+  /// AC-015 / P-011: aparecer no mapa é escolha ativa. O default é, e precisa
+  /// continuar sendo, `false`.
+  visibleOnMap   Boolean @default(false)
+  profileComplete Boolean @default(false)
+
+  sessions       Session[]
+  accounts       Account[]
+  invitesCreated InviteCode[] @relation("InviteCreator")
+  inviteUsed     InviteCode?  @relation("InviteConsumer")
+
+  @@index([institutionId])
+  @@index([cityId])
+  // Filtro do diretório e do mapa: só perfis completos e visíveis interessam.
+  @@index([visibleOnMap, profileComplete])
+  @@index([skills], type: Gin)
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id @default(uuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(uuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+}
+
+/// Convite de uso único para entrar na rede (US-002).
+///
+/// O código em claro NUNCA é persistido: guardamos o SHA-256 dele (P-009). Um
+/// dump do banco, portanto, não entrega nenhum convite utilizável. O `usedById`
+/// é único, o que faz o próprio banco recusar o segundo uso do mesmo convite
+/// mesmo sob corrida (AC-007).
+model InviteCode {
+  id        String    @id @default(uuid())
+  codeHash  String    @unique
+  note      String?
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  createdById String
+  createdBy   User   @relation("InviteCreator", fields: [createdById], references: [id], onDelete: Cascade)
+
+  usedById String? @unique
+  usedBy   User?   @relation("InviteConsumer", fields: [usedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([createdById])
+  @@index([expiresAt])
+}
+
+/// Lista de e-mails pré-aprovados pelo programa (Q-001).
+///
+/// Caminho alternativo ao convite: se o programa entregar a relação oficial de
+/// embaixadores, o primeiro login desses e-mails dispensa código.
+model AllowedEmail {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+model Institution {
+  id      String  @id @default(uuid())
+  name    String  @unique
+  acronym String?
+  users   User[]
+
+  @@index([name])
+}
+
+/// Município brasileiro (ASM-001/ASM-005), com o centroide oficial do IBGE.
+///
+/// Este centroide é a granularidade máxima de localização que o ConnectGSA
+/// conhece sobre qualquer pessoa (P-001).
+model City {
+  id        String @id @default(uuid())
+  ibgeCode  String @unique
+  name      String
+  state     String @db.Char(2)
+  latitude  Float
+  longitude Float
+  users     User[]
+
+  @@unique([name, state])
+  @@index([state, name])
+}

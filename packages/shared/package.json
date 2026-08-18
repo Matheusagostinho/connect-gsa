@@ -1,0 +1,30 @@
+{
+  "name": "@connect-gsa/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Contratos Zod e tipos compartilhados entre a API e o SPA",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@connect-gsa/config": "workspace:*",
+    "eslint": "^10.8.1",
+    "typescript": "5.9.3",
+    "vitest": "^4.1.11"
+  }
+}
