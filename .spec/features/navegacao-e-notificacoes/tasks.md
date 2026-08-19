@@ -17,7 +17,7 @@
 ## T-038 — Estrutura de navegação: lateral no computador, inferior no celular [concluida]
 
 - Refs: US-023, AC-061, AC-062, AC-063
-- Arquivos: apps/web/src/components/AppShell.tsx, apps/web/src/components/AppShell.test.tsx, apps/web/src/components/SideNav.tsx, apps/web/src/components/BottomNav.tsx, apps/web/src/components/TopBar.tsx, apps/web/src/components/AccountMenu.tsx, apps/web/src/lib/navigation.ts
+- Arquivos: apps/web/src/components/AppShell.tsx, apps/web/src/components/AppShell.test.tsx, apps/web/src/components/SideNav.tsx, apps/web/src/components/BottomNav.tsx, apps/web/src/components/PageHeader.tsx, apps/web/src/components/AccountMenu.tsx, apps/web/src/lib/navigation.ts
 - Notas: Uma estrutura só, dois arranjos por consulta de mídia — não dois componentes com
   regras duplicadas.
 

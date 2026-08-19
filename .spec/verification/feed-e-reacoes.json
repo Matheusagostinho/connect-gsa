@@ -1,11 +1,11 @@
 {
   "feature": "feed-e-reacoes",
-  "timestamp": "2026-08-19T13:29:03.468Z",
-  "gitRev": "fb1b7bc",
+  "timestamp": "2026-08-19T16:04:42.950Z",
+  "gitRev": "91d91d3",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 232,
+  "testsParsed": 253,
   "results": {
     "AC-023": {
       "status": "pass",

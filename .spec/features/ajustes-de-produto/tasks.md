@@ -23,5 +23,5 @@
 ## T-049 — Marca, apresentação e endereços [concluida]
 
 - Refs: US-028
-- Arquivos: apps/web/src/components/Logo.tsx, apps/web/src/pages/Landing.tsx, apps/web/src/App.tsx, apps/web/src/components/ui.tsx, apps/web/src/lib/navigation.ts, apps/web/src/components/AmbassadorCardItem.tsx, apps/web/src/pages/Notifications.tsx, apps/web/src/components/SideNav.tsx, apps/web/src/components/TopBar.tsx, apps/web/src/pages/Login.tsx, apps/web/src/pages/Invite.tsx, apps/web/src/pages/Onboarding.tsx, apps/web/src/pages/DevLogin.tsx
+- Arquivos: apps/web/src/components/Logo.tsx, apps/web/src/pages/Landing.tsx, apps/web/src/App.tsx, apps/web/src/components/ui.tsx, apps/web/src/lib/navigation.ts, apps/web/src/components/AmbassadorCardItem.tsx, apps/web/src/pages/Notifications.tsx, apps/web/src/components/SideNav.tsx, apps/web/src/components/PageHeader.tsx, apps/web/src/pages/Login.tsx, apps/web/src/pages/Invite.tsx, apps/web/src/pages/Onboarding.tsx, apps/web/src/pages/DevLogin.tsx
 - Notas: Perfil de terceiros muda de `/e/{apelido}` para `/perfil/{apelido}`.

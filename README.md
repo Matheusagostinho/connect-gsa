@@ -34,6 +34,8 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Controle de visibilidade no mapa | |
 | Feed em abas: "Para você" e "Seguindo" | |
 | Caixa de notificações no cabeçalho | |
+| Perfil com publicações, abas e contagens | |
+| Coluna de sugestões no computador | |
 
 A especificação completa, com critérios de aceite e provas, está em
 `.spec/features/acesso-e-perfil/`.
@@ -165,6 +167,13 @@ disposição de trabalhar junto.
 Cada uma é um **ícone desenhado, não emoji**: há sistema sem fonte de emoji instalada, onde
 o caractere vira quadrado vazio. A reação escolhida ganha a cor dela e o traço é redesenhado
 na troca — nunca para quem pediu menos movimento no sistema.
+
+No cartão aparece **só o ícone**: o rótulo escrito repetia o que o desenho já diz e custava
+largura suficiente para o nome de quem publicou virar reticências. **Um toque** aplica;
+**pressionar e segurar** abre a fileira das cinco, como no Facebook. Arrastar cancela — num
+feed, o dedo que desce a tela começa em cima de algum elemento, e sem essa guarda rolar
+viraria uma loteria de menus abertos. No teclado, onde "segurar" não existe, a seta para
+cima abre.
 
 Uma reação por pessoa por post, trocável: escolher outra substitui a anterior, escolher a
 mesma desfaz. Isso força a pessoa a dizer o que realmente quis dizer e mantém cada sinal

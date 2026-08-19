@@ -1,40 +1,65 @@
 {
-  "feature": "ajustes-de-produto",
-  "timestamp": "2026-08-19T16:09:47.348Z",
+  "feature": "perfil-e-interacao",
+  "timestamp": "2026-08-19T16:03:09.762Z",
   "gitRev": "91d91d3",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
   "testsParsed": 253,
   "results": {
-    "AC-078": {
+    "AC-104": {
       "status": "pass",
-      "testName": "apagar o que é meu × moderar o que é de outro separa as duas coisas para quem tem poder de moderação @spec:AC-078 separa as duas coisas para quem tem poder de moderação @spec:AC-078",
+      "testName": "uma moldura só para todas as telas a navegação lateral vem da mesma moldura em qualquer tela @spec:AC-104 a navegação lateral vem da mesma moldura em qualquer tela @spec:AC-104",
       "method": "vitest-json"
     },
-    "AC-079": {
+    "AC-105": {
       "status": "pass",
-      "testName": "apagar o que é meu × moderar o que é de outro não oferece nada em publicação alheia para embaixador comum @spec:AC-079 não oferece nada em publicação alheia para embaixador comum @spec:AC-079",
+      "testName": "modal da cidade centraliza em vez de encostar numa borda @spec:AC-105 centraliza em vez de encostar numa borda @spec:AC-105",
       "method": "vitest-json"
     },
-    "AC-080": {
+    "AC-106": {
       "status": "pass",
-      "testName": "texto com links transforma endereço em link clicável, que abre em outra aba @spec:AC-080 transforma endereço em link clicável, que abre em outra aba @spec:AC-080",
+      "testName": "formulário do perfil editar acontece dentro da moldura do aplicativo @spec:AC-106 editar acontece dentro da moldura do aplicativo @spec:AC-106",
       "method": "vitest-json"
     },
-    "AC-081": {
+    "AC-107": {
       "status": "pass",
-      "testName": "texto com links encurta endereço comprido sem perder o destino @spec:AC-081 encurta endereço comprido sem perder o destino @spec:AC-081",
+      "testName": "formulário do perfil o primeiro preenchimento não oferece navegação que só recusa @spec:AC-107 o primeiro preenchimento não oferece navegação que só recusa @spec:AC-107",
       "method": "vitest-json"
     },
-    "AC-082": {
+    "AC-108": {
       "status": "pass",
-      "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006",
+      "testName": "apresentação do perfil mostra as publicações da pessoa @spec:AC-108 mostra as publicações da pessoa @spec:AC-108",
       "method": "vitest-json"
     },
-    "AC-083": {
+    "AC-109": {
       "status": "pass",
-      "testName": "barra de reações usa ícone desenhado, não emoji, para a reação aparecer em qualquer sistema @spec:AC-083 usa ícone desenhado, não emoji, para a reação aparecer em qualquer sistema @spec:AC-083",
+      "testName": "apresentação do perfil mostra conexões e publicações em número @spec:AC-109 mostra conexões e publicações em número @spec:AC-109",
+      "method": "vitest-json"
+    },
+    "AC-110": {
+      "status": "pass",
+      "testName": "apresentação do perfil o mesmo componente serve os dois perfis; só a ação muda @spec:AC-110 o mesmo componente serve os dois perfis; só a ação muda @spec:AC-110",
+      "method": "vitest-json"
+    },
+    "AC-111": {
+      "status": "pass",
+      "testName": "barra de reações mostra só o ícone no cartão, sem rótulo escrito @spec:AC-111 mostra só o ícone no cartão, sem rótulo escrito @spec:AC-111",
+      "method": "vitest-json"
+    },
+    "AC-112": {
+      "status": "pass",
+      "testName": "pressionar e segurar abre a fileira ao segurar, sem aplicar reação nenhuma @spec:AC-112 abre a fileira ao segurar, sem aplicar reação nenhuma @spec:AC-112",
+      "method": "vitest-json"
+    },
+    "AC-113": {
+      "status": "pass",
+      "testName": "pressionar e segurar cancela a espera quando o dedo arrasta para rolar @spec:AC-113 cancela a espera quando o dedo arrasta para rolar @spec:AC-113",
+      "method": "vitest-json"
+    },
+    "AC-114": {
+      "status": "pass",
+      "testName": "pressionar e segurar a seta para cima abre a fileira, porque teclado não tem \"segurar\" @spec:AC-114 a seta para cima abre a fileira, porque teclado não tem \"segurar\" @spec:AC-114",
       "method": "vitest-json"
     }
   },

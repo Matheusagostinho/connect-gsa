@@ -22,7 +22,7 @@
 ## T-057 — Caixa de notificações no cabeçalho [concluida]
 
 - Refs: US-039, AC-100
-- Arquivos: apps/web/src/components/NotificationBell.tsx, apps/web/src/components/NotificationBell.test.tsx, apps/web/src/components/AppShell.tsx, apps/web/src/components/TopBar.tsx, apps/web/src/components/SideNav.tsx
+- Arquivos: apps/web/src/components/NotificationBell.tsx, apps/web/src/components/NotificationBell.test.tsx, apps/web/src/components/AppShell.tsx, apps/web/src/components/PageHeader.tsx, apps/web/src/components/SideNav.tsx
 
 ## T-058 — Reações animadas [concluida]
 
@@ -37,6 +37,6 @@
 ## T-060 — Refino de espaço no celular [concluida]
 
 - Refs: US-038, AC-101
-- Arquivos: apps/web/src/components/AppShell.tsx, apps/web/src/components/TopBar.tsx, apps/web/src/components/PostCard.tsx, apps/web/src/pages/Feed.tsx
+- Arquivos: apps/web/src/components/AppShell.tsx, apps/web/src/components/PageHeader.tsx, apps/web/src/components/PostCard.tsx, apps/web/src/pages/Feed.tsx
 - Notas: o nome de quem publica vence o rótulo do botão de conectar — no celular o
   botão fica só com o ícone, e o rótulo continua para leitor de tela.

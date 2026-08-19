@@ -63,7 +63,33 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
 15. **A aba "Para você" ordena, não filtra.** Afinidade impulsiona no ranking do servidor;
     filtrar deixaria a tela inicial de quem acabou de chegar vazia — e é justamente quem
     acabou de chegar que mais precisa ver a rede.
-16. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
+16. **Existe UMA moldura: o `AppShell`.** Nenhuma página desenha o próprio
+    `SideNav` — o mapa já fez isso, num contêiner sem a largura máxima das
+    outras telas, e a coluna de navegação saltava oitenta pixels ao trocar de
+    seção. Quem precisa de tela cheia pede `variant="immersive"`, que entrega a
+    altura útil e faz o cabeçalho FLUTUAR sobre o conteúdo. Há teste estrutural
+    varrendo `pages/` atrás de `<SideNav`.
+17. **A largura máxima mora na COLUNA, não no `main`.** Aplicá-la só ao conteúdo
+    deixava o cabeçalho esticar por toda a área livre enquanto o conteúdo ficava
+    centrado embaixo — desalinhados, e a única tela onde isso não aparecia era a
+    que tinha a coluna da direita ocupando a sobra.
+18. **Um `dialog` nativo se centraliza com `margin: auto` nos quatro lados.**
+    Declarar `mt-auto mb-0` para colar no rodapé do celular derruba junto a
+    centralização horizontal — o modal da cidade encostou na borda esquerda do
+    computador por causa disso. `mx-auto` explícito.
+19. **Perfil próprio e de terceiro são o MESMO componente** (`ProfileView`). Eram
+    dois arquivos com o bloco de identidade copiado, e já tinham divergido — o
+    público mostrava campus e links, o próprio não, sem ninguém ter decidido
+    isso. O que ramifica é a ação disponível, não o desenho.
+20. **A reação abre por pressionar e segurar, e o gesto tem três guardas.**
+    Arrastar mais de 10px cancela (senão rolar o feed abriria menus sem parar),
+    `contextmenu` é bloqueado (senão o Android abre "copiar" no meio do gesto) e
+    `ArrowUp` abre pelo teclado, que não tem "segurar". A terceira é a mesma
+    lição do hover que já corrigimos uma vez.
+21. **Hash para cor: o resto por 360 vai no FIM.** Aplicá-lo a cada passo derrete
+    a entropia — `soma * 31 % 360` entra em ciclo curto, e dois identificadores
+    diferentes caíam no mesmo tom na faixa do perfil.
+22. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
    então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
    registrada pela API lá.
 

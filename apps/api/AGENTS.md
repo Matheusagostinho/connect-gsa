@@ -85,6 +85,18 @@ ordenação é por nota e não por data, um post publicado entre uma página e o
 intercalaria no meio da lista — e você veria de novo o que já viu. Congelar o instante é o
 que torna a página 2 uma continuação real da página 1.
 
+## Contagens do perfil
+
+`connectionCount` e `postCount` são **consultados**, não guardados em coluna.
+Contador denormalizado paga por si onde é lido a cada item de uma lista — o caso
+do feed —, mas aqui é lido uma vez por visita a um perfil, e o preço passa a ser
+manter dois lugares em sincronia para sempre. Divergir é questão de tempo, e um
+número errado no perfil é pior que uma consulta a mais.
+
+Só laço **aceito** conta como conexão: pedido pendente é intenção de um lado só.
+E só publicação `kind: 'feed'` conta — comunicado oficial pertence à coordenação,
+e contá-lo inflaria o perfil de quem por acaso tem o papel.
+
 ## Imagens
 
 Todo envio passa PELA API, não por URL assinada direto ao bucket (ASM-012). É mais lento, e

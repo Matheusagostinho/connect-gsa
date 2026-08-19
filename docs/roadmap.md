@@ -114,6 +114,34 @@ O resto é refino, e vale registrar o que **não** é óbvio:
 
 **232 testes, 97/97 critérios provados, auditoria limpa.**
 
+### ~~Fatia 6.6 — Perfil estilo X e reação por pressionar~~ · **entregue**
+
+Também nasceu de usar o produto. O achado estrutural: **o mapa não passava pela
+moldura do aplicativo** — desenhava a própria navegação lateral, e a coluna saía
+oitenta pixels fora de lugar ao trocar de seção. A correção não foi de classe: o
+`AppShell` ganhou um modo imersivo e o mapa voltou para dentro dele. Há teste
+varrendo `pages/` para impedir que alguma tela volte a montar a própria moldura.
+
+O que mais mudou, e por quê:
+
+- **Cabeçalho fixo na coluna de conteúdo.** O sino e a conta flutuavam a
+  trezentos pixels do conteúdo, parecendo do navegador e não da página.
+- **Coluna da direita** em telas ≥1280px, com gente do diretório e o aviso mais
+  recente. Não introduz nada novo — mostra o que a rede já serve num lugar onde
+  antes não havia nada. Numa rede começando, o problema não é excesso de
+  conteúdo, é não saber que tem alguém do outro lado.
+- **Perfil refeito**, com as publicações da pessoa e um só componente para o
+  próprio e o de terceiro. Eram dois arquivos copiados que já tinham divergido.
+  Box para a identidade (uma coisa só), cards para as publicações (unidades
+  separáveis).
+- **Onboarding** entra na moldura quando é edição; no primeiro preenchimento
+  continua sem navegação, porque toda outra seção devolveria a pessoa para cá.
+- **Reação só com ícone**, e a fileira abre ao pressionar e segurar. O gesto tem
+  três guardas: arrastar cancela, o menu nativo é bloqueado, e o teclado abre
+  pela seta para cima.
+
+**253 testes, 108/108 critérios provados, auditoria limpa.**
+
 ### Fatia 7 — Publicação em produção · **bloqueado por você**
 
 > Os três workflows estão **desligados no automático** desde 19/08/2026, a pedido: rodam só
