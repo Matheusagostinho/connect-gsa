@@ -10,7 +10,7 @@ import { connectionStateFor } from '../connection/connection.service.js';
 import { badRequest } from '../../plugins/errors.js';
 import { PROFILE_SELECT, toMyProfile, toPublicProfile } from './profile.mapper.js';
 import { sanitizeText } from './sanitize.js';
-import { buildUniqueSlug } from './slug.js';
+import { MOTIVO, buildUniqueSlug, validarSlugEscolhido } from './slug.js';
 
 /**
  * Busca o perfil de outra pessoa pelo id OU pelo slug.
@@ -26,7 +26,14 @@ export async function getPublicProfile(
   const row = await prisma.user.findFirst({
     where: {
       profileComplete: true,
-      OR: [{ slug: idOuSlug }, ...(isUuid(idOuSlug) ? [{ id: idOuSlug }] : [])],
+      // `previousSlug` entra na busca: o endereço que já circulou em conversa
+      // continua encontrando o perfil depois de a pessoa trocar de nome de
+      // usuário (AC-118).
+      OR: [
+        { slug: idOuSlug },
+        { previousSlug: idOuSlug },
+        ...(isUuid(idOuSlug) ? [{ id: idOuSlug }] : []),
+      ],
     },
     select: PROFILE_SELECT,
   });
@@ -91,10 +98,67 @@ export async function getMyProfile(prisma: PrismaClient, userId: string): Promis
  *   o cliente escolher a coordenada que aparece no mapa — e a garantia do P-001
  *   deixaria de valer, porque a posição passaria a vir do cliente.
  */
+/**
+ * O endereço está ocupado por OUTRA pessoa?
+ *
+ * Consulta `slug` e `previousSlug`: enquanto o endereço anterior de alguém ainda
+ * responde, ninguém mais pode tomá-lo — senão o link antigo passaria a levar
+ * para o perfil errado, que é pior do que não levar a lugar nenhum.
+ */
+async function slugOcupado(
+  prisma: PrismaClient,
+  candidato: string,
+  exceto: string,
+): Promise<boolean> {
+  const dono = await prisma.user.findFirst({
+    where: {
+      OR: [{ slug: candidato }, { previousSlug: candidato }],
+      NOT: { id: exceto },
+    },
+    select: { id: true },
+  });
+
+  return dono !== null;
+}
+
+/**
+ * Resolve o pedido de troca de nome de usuário, ou devolve `null` se não houver.
+ *
+ * Recusar com o motivo, e não em silêncio: "já está em uso" e "espere mais uns
+ * dias" pedem reações completamente diferentes de quem está preenchendo o campo.
+ */
+async function resolverTrocaDeSlug(
+  prisma: PrismaClient,
+  userId: string,
+  atual: { slug: string | null; previousSlug: string | null; slugChangedAt: Date | null },
+  pedido: string | null,
+  agora: Date,
+): Promise<{ slug: string; previousSlug: string | null; slugChangedAt: Date } | null> {
+  const escolhido = pedido?.trim().toLowerCase();
+  if (!escolhido || escolhido === atual.slug) return null;
+
+  const recusa = await validarSlugEscolhido(escolhido, {
+    existe: (candidato) => slugOcupado(prisma, candidato, userId),
+    trocadoEm: atual.slugChangedAt,
+    agora,
+  });
+
+  if (recusa) throw badRequest(MOTIVO[recusa], 'INVALID_USERNAME');
+
+  return {
+    slug: escolhido,
+    // O anterior passa a responder no lugar do que estava guardado. Perde-se o
+    // penúltimo — daí o intervalo mínimo entre trocas existir.
+    previousSlug: atual.slug,
+    slugChangedAt: agora,
+  };
+}
+
 export async function updateProfile(
   prisma: PrismaClient,
   userId: string,
   input: UpdateProfile,
+  agora: Date = new Date(),
 ): Promise<MyProfile> {
   const [city, institution] = await Promise.all([
     prisma.city.findUnique({ where: { id: input.cityId }, select: { id: true } }),
@@ -126,23 +190,26 @@ export async function updateProfile(
 
   const atual = await prisma.user.findUniqueOrThrow({
     where: { id: userId },
-    select: { slug: true },
+    select: { slug: true, previousSlug: true, slugChangedAt: true },
   });
 
   const name = sanitizeText(input.name);
 
-  // O slug nasce no primeiro salvamento e não é reescrito depois (ASM-016).
+  // O slug NASCE derivado do nome. Depois disso, só muda se a pessoa pedir.
   const slug =
     atual.slug ??
-    (await buildUniqueSlug(name, async (candidato) =>
-      Boolean(await prisma.user.findUnique({ where: { slug: candidato }, select: { id: true } })),
-    ));
+    (await buildUniqueSlug(name, async (candidato) => slugOcupado(prisma, candidato, userId)));
+
+  const troca = await resolverTrocaDeSlug(prisma, userId, atual, input.slug ?? null, agora);
 
   const row = await prisma.user.update({
     where: { id: userId },
     data: {
       name,
-      slug,
+      slug: troca?.slug ?? slug,
+      ...(troca
+        ? { previousSlug: troca.previousSlug, slugChangedAt: troca.slugChangedAt }
+        : {}),
       course: sanitizeText(input.course),
       bio: sanitizeText(input.bio),
       skills: { set: skills.map((s) => ({ id: s.id })) },

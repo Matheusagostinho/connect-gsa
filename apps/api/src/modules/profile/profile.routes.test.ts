@@ -354,3 +354,104 @@ describe('contagens do perfil', () => {
     expect(perfil.postCount).toBe(0);
   });
 });
+
+describe('trocar o nome de usuário', () => {
+  async function comPerfil(name: string, extra: Record<string, unknown> = {}) {
+    const user = await createTestUser();
+    const { city, institution } = await reference();
+    await app.inject({
+      method: 'PATCH',
+      url: '/api/me',
+      headers: asUser(user.id),
+      payload: { ...validProfile(city.id, institution.id), name, ...extra },
+    });
+    return user;
+  }
+
+  async function trocar(userId: string, slug: string) {
+    const { city, institution } = await reference();
+    return app.inject({
+      method: 'PATCH',
+      url: '/api/me',
+      headers: asUser(userId),
+      payload: { ...validProfile(city.id, institution.id), name: 'Ana Souza', slug },
+    });
+  }
+
+  it('o endereço antigo continua encontrando o perfil @spec:AC-118', async () => {
+    const ana = await comPerfil('Ana Souza');
+    const bruno = await comPerfil('Bruno Lima');
+
+    const antes = await app.inject({ method: 'GET', url: '/api/me', headers: asUser(ana.id) });
+    const slugAntigo = antes.json<{ slug: string }>().slug;
+
+    const troca = await trocar(ana.id, 'ana-dev');
+    expect(troca.statusCode).toBe(200);
+    expect(troca.json<{ slug: string }>().slug).toBe('ana-dev');
+
+    // O link que já circulou em conversa não pode virar 404 de um dia para o
+    // outro — é a razão pela qual o slug era imutável antes.
+    const peloAntigo = await app.inject({
+      method: 'GET',
+      url: `/api/profiles/${slugAntigo}`,
+      headers: asUser(bruno.id),
+    });
+
+    expect(peloAntigo.statusCode).toBe(200);
+    expect(peloAntigo.json<{ slug: string }>().slug).toBe('ana-dev');
+  });
+
+  it('recusa nome de usuário que já é de outra pessoa @spec:AC-117', async () => {
+    const ana = await comPerfil('Ana Souza');
+    const bruno = await comPerfil('Bruno Lima');
+
+    const dele = await app.inject({ method: 'GET', url: '/api/me', headers: asUser(bruno.id) });
+    const resposta = await trocar(ana.id, dele.json<{ slug: string }>().slug);
+
+    expect(resposta.statusCode).toBe(400);
+    expect(resposta.json<{ message: string }>().message).toMatch(/já está em uso/i);
+  });
+
+  it('recusa tomar o endereço anterior de outra pessoa @spec:AC-118', async () => {
+    const ana = await comPerfil('Ana Souza');
+    const bruno = await comPerfil('Bruno Lima');
+
+    const antes = await app.inject({ method: 'GET', url: '/api/me', headers: asUser(ana.id) });
+    const slugAntigo = antes.json<{ slug: string }>().slug;
+
+    await trocar(ana.id, 'ana-dev');
+
+    // Enquanto o endereço antigo de Ana ainda responde, ninguém pode tomá-lo:
+    // o link antigo passaria a levar ao perfil ERRADO, que é pior que não levar
+    // a lugar nenhum.
+    const resposta = await trocar(bruno.id, slugAntigo);
+
+    expect(resposta.statusCode).toBe(400);
+  });
+
+  it('recusa segunda troca antes do intervalo mínimo @spec:AC-119', async () => {
+    const ana = await comPerfil('Ana Souza');
+
+    expect((await trocar(ana.id, 'ana-dev')).statusCode).toBe(200);
+
+    const segunda = await trocar(ana.id, 'ana-dev-2');
+    expect(segunda.statusCode).toBe(400);
+    expect(segunda.json<{ message: string }>().message).toMatch(/30 dias/);
+  });
+
+  it('salvar o perfil sem mexer no nome de usuário não conta como troca @spec:AC-119', async () => {
+    const ana = await comPerfil('Ana Souza');
+    const { city, institution } = await reference();
+
+    // Sem esta regra, editar a bio duas vezes esgotaria o intervalo de troca.
+    for (let i = 0; i < 3; i += 1) {
+      const resposta = await app.inject({
+        method: 'PATCH',
+        url: '/api/me',
+        headers: asUser(ana.id),
+        payload: { ...validProfile(city.id, institution.id), bio: `versão ${i}` },
+      });
+      expect(resposta.statusCode).toBe(200);
+    }
+  });
+});

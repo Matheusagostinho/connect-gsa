@@ -16,7 +16,9 @@ export const PROFILE_LIMITS = {
   courseMax: 120,
   skillsMax: 10,
   skillMax: 32,
-  linksMax: 4,
+  linksMax: 5,
+  slugMin: 3,
+  slugMax: 30,
   linkUrlMax: 300,
 } as const;
 
@@ -61,6 +63,22 @@ export const updateProfileSchema = z.object({
     .max(PROFILE_LIMITS.skillsMax)
     .default([]),
   links: z.array(linkSchema).max(PROFILE_LIMITS.linksMax).default([]),
+  /**
+   * Nome de usuário escolhido — o endereço público do perfil.
+   *
+   * Opcional: quem não mexe no campo não pede troca nenhuma, e mandar o valor
+   * atual de volta a cada salvamento faria toda edição de bio contar como
+   * tentativa de troca. A regra de unicidade, formato e intervalo mínimo vive no
+   * servidor (AC-117, AC-119) — aqui só o formato, para o erro chegar antes.
+   */
+  slug: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .min(PROFILE_LIMITS.slugMin)
+    .max(PROFILE_LIMITS.slugMax)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Use apenas letras minúsculas, números e hífen.')
+    .optional(),
 });
 
 export type UpdateProfile = z.infer<typeof updateProfileSchema>;

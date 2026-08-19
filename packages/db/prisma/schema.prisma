@@ -52,12 +52,23 @@ model User {
   cityId        String?
   city          City?        @relation(fields: [cityId], references: [id], onDelete: SetNull)
 
-  /// Endereço público e estável do perfil (`/e/ana-ribeiro`).
+  /// Endereço público do perfil (`/perfil/ana-ribeiro`).
   ///
-  /// Derivado do nome no primeiro salvamento e NÃO reescrito quando a pessoa
-  /// muda o nome de exibição (ASM-016): endereço compartilhado que deixa de
-  /// funcionar é pior que slug desatualizado.
+  /// Derivado do nome no primeiro salvamento. A pessoa PODE trocá-lo, mas com
+  /// duas defesas, porque endereço compartilhado que deixa de funcionar é pior
+  /// que slug desatualizado (ASM-016): o anterior fica guardado e continua
+  /// respondendo, e há intervalo mínimo entre trocas.
   slug String? @unique
+
+  /// O endereço anterior, que continua encontrando este perfil.
+  ///
+  /// Guardamos apenas UM: uma cadeia de todos os endereços já usados custa uma
+  /// tabela para um caso raro. `@unique` porque ele também precisa impedir que
+  /// outra pessoa tome o endereço enquanto ele ainda responde.
+  previousSlug String? @unique
+
+  /// Quando o nome de usuário foi trocado pela última vez.
+  slugChangedAt DateTime?
 
   /// Até quando esta pessoa já viu as próprias notificações.
   ///
