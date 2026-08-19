@@ -2,12 +2,13 @@ import { PROFILE_LIMITS, type MyProfile, updateProfileSchema } from '@connect-gs
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { AppShell } from '../components/AppShell.tsx';
 import { Autocomplete } from '../components/Autocomplete.tsx';
 import { InstitutionPicker } from '../components/InstitutionPicker.tsx';
 import { SkillPicker } from '../components/SkillPicker.tsx';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { Wordmark } from '../components/Logo.tsx';
-import { Button, Card, Field, Shell, } from '../components/ui.tsx';
+import { Button, Card, Field, Shell } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -19,11 +20,19 @@ interface City {
 import type { Institution } from '@connect-gsa/shared';
 
 /**
- * Onboarding do perfil (US-003).
+ * O formulário do perfil — de entrada e de edição (US-003).
  *
  * A cidade é escolhida numa lista fechada, nunca digitada nem lida do GPS: é
  * assim que a rede aprende onde a pessoa está sem nunca saber onde ela está
  * (P-001). O aparelho não é consultado em momento algum.
+ *
+ * A moldura muda conforme QUEM chega aqui, e a diferença não é estética:
+ *
+ * - **Perfil já completo** (veio de "Editar perfil") → moldura do aplicativo,
+ *   com navegação e cabeçalho, porque toda outra seção está de fato disponível.
+ * - **Primeira vez** (perfil incompleto) → sem navegação, de propósito. O
+ *   `ProtectedRoute` devolve a pessoa para cá se ela tentar qualquer outro
+ *   destino, e uma navegação que só recusa é pior que navegação nenhuma.
  */
 export function OnboardingPage() {
   const navigate = useNavigate();
@@ -76,19 +85,10 @@ export function OnboardingPage() {
     save.mutate(parsed.data);
   }
 
-  return (
-    <Shell width="lg">
-      <header className="mb-12 flex items-center justify-between">
-        <Wordmark />
-        <ThemeToggle />
-      </header>
+  const editando = profile?.profileComplete === true;
 
-      <h1 className="display mb-3 text-4xl sm:text-5xl">Complete seu perfil</h1>
-      <p className="mb-10 text-lg text-ink-muted">
-        É assim que os outros embaixadores vão te encontrar.
-      </p>
-
-      <Card>
+  const formulario = (
+    <Card>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
           <Field
             id="nome"
@@ -152,10 +152,33 @@ export function OnboardingPage() {
           ) : null}
 
           <Button type="submit" disabled={save.isPending}>
-            {save.isPending ? 'Salvando…' : 'Salvar e continuar'}
+            {save.isPending ? 'Salvando…' : editando ? 'Salvar' : 'Salvar e continuar'}
           </Button>
         </form>
       </Card>
+  );
+
+  if (editando && profile) {
+    return (
+      <AppShell profile={profile} width="lg" title="Editar perfil">
+        {formulario}
+      </AppShell>
+    );
+  }
+
+  return (
+    <Shell width="lg">
+      <header className="mb-12 flex items-center justify-between">
+        <Wordmark />
+        <ThemeToggle />
+      </header>
+
+      <h1 className="display mb-3 text-4xl sm:text-5xl">Complete seu perfil</h1>
+      <p className="mb-10 text-lg text-ink-muted">
+        É assim que os outros embaixadores vão te encontrar.
+      </p>
+
+      {formulario}
     </Shell>
   );
 }
