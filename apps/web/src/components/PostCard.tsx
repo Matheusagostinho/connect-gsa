@@ -9,7 +9,7 @@ import { useDeletePost, useReact } from '../lib/feed.js';
 import { Avatar } from './Avatar.tsx';
 import { RichText } from './RichText.tsx';
 import { ReactionBar } from './ReactionBar.tsx';
-import { Button, Card, cn } from './ui.tsx';
+import { Button, cn } from './ui.tsx';
 
 /** "há 3 min", "há 2 h", "12 de ago" — sem biblioteca de datas para 20 linhas. */
 function quandoFoi(iso: string): string {
@@ -65,7 +65,17 @@ export function PostCard({ post }: { post: Post }) {
   const totalComentarios = comentarios?.length ?? post.commentCount;
 
   return (
-    <Card className={cn('p-5', post.kind === 'announcement' && 'border-border-strong')}>
+    <div
+      className={cn(
+        // Publicação deixou de ser cartão. Numa lista longa, um cartão por post
+        // vira uma sequência de caixas com sombra e o olho passa a contar
+        // molduras em vez de ler — o feed do X não tem cartão nenhum, e é o que
+        // faz cem publicações seguidas continuarem legíveis. O fio separa; a
+        // moldura isolaria.
+        'border-b border-border px-4 py-4 transition-colors duration-200 sm:px-5',
+        post.kind === 'announcement' && 'bg-surface-subtle/50',
+      )}
+    >
       <article>
         {/*
           Comunicado oficial se identifica. Sem a marca, ele parece publicação
@@ -274,6 +284,6 @@ export function PostCard({ post }: { post: Post }) {
           </section>
         ) : null}
       </article>
-    </Card>
+    </div>
   );
 }

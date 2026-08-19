@@ -53,10 +53,16 @@ export function FeedTabs({
             )}
           >
             {label}
+            {/*
+              O indicador ocupa a aba INTEIRA, não um traço curto no meio: com
+              duas abas largas, um traço de 56px no centro lia como enfeite em
+              vez de posição — e num toque rápido é a extensão que diz onde se
+              está, não o desenho.
+            */}
             {ativa ? (
               <span
                 aria-hidden="true"
-                className="spark-gradient absolute inset-x-0 bottom-0 mx-auto h-1 w-14 rounded-pill"
+                className="spark-gradient absolute inset-x-0 bottom-0 h-1 rounded-pill"
               />
             ) : null}
           </button>

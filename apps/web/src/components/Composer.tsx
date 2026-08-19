@@ -3,7 +3,7 @@ import { ImagePlus, X } from 'lucide-react';
 import { type FormEvent, useRef, useState } from 'react';
 import { uploadPostImage, useCreatePost } from '../lib/feed.js';
 import { Avatar } from './Avatar.tsx';
-import { Button, Card } from './ui.tsx';
+import { Button, cn } from './ui.tsx';
 
 /**
  * Caixa de publicação.
@@ -54,8 +54,8 @@ export function Composer({ authorName, authorImage }: { authorName: string; auth
   }
 
   return (
-    <Card className="p-5">
-      <form onSubmit={enviar} className="flex gap-4">
+    <div className="border-b border-border px-4 py-3 sm:px-5">
+      <form onSubmit={enviar} className="flex gap-3">
         <Avatar name={authorName} imageUrl={authorImage} />
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
@@ -67,9 +67,20 @@ export function Composer({ authorName, authorImage }: { authorName: string; auth
             value={content}
             onChange={(event) => setContent(event.target.value)}
             maxLength={POST_LIMITS.contentMax}
-            rows={3}
+            rows={1}
             placeholder="O que você está construindo?"
-            className="w-full resize-none bg-transparent text-base text-ink outline-none placeholder:text-ink-muted"
+            // Cresce com o texto em vez de reservar três linhas vazias: uma
+            // caixa alta e sem moldura parece um buraco na página, e uma caixa
+            // que não cresce esconde o que já foi escrito.
+            onInput={(event) => {
+              const campo = event.currentTarget;
+              campo.style.height = 'auto';
+              campo.style.height = `${campo.scrollHeight}px`;
+            }}
+            className={cn(
+              'w-full resize-none bg-transparent py-2 text-lg text-ink outline-none',
+              'max-h-72 overflow-y-auto placeholder:text-ink-muted',
+            )}
           />
 
           {media ? (
@@ -136,6 +147,6 @@ export function Composer({ authorName, authorImage }: { authorName: string; auth
           </div>
         </div>
       </form>
-    </Card>
+    </div>
   );
 }
