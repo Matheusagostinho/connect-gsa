@@ -184,3 +184,34 @@ describe('afinidade', () => {
     expect(proximityFactor(distante)).toBe(1);
   });
 });
+
+describe('recência forte', () => {
+  it('o recém-publicado vence o engajado de seis horas atrás @spec:AC-115', () => {
+    const agoraSemNada = post({ id: 'novo' });
+    const engajadoDeOntem = post({
+      id: 'velho',
+      createdAt: horasAtras(6),
+      reactionCounts: { liftoff: 8, together: 3 },
+      commentCount: 5,
+    });
+
+    // Abrir a rede e reencontrar o assunto do dia anterior no topo é o sintoma
+    // de um feed que envelheceu. Com meia-vida de 2h, seis horas já derrubam o
+    // post a um oitavo, e o ranking passa a decidir entre coisas do MESMO
+    // período — que é onde ele de fato tem algo a dizer.
+    expect(baseScore(agoraSemNada, AGORA)).toBeGreaterThan(baseScore(engajadoDeOntem, AGORA));
+  });
+
+  it('entre dois posts da mesma hora, o mais engajado ainda ganha @spec:AC-115', () => {
+    const semNada = post({ id: 'a', createdAt: horasAtras(1) });
+    const engajado = post({
+      id: 'b',
+      createdAt: horasAtras(1),
+      reactionCounts: { together: 4 },
+      commentCount: 2,
+    });
+
+    // A recência ficou mais forte, não exclusiva: o ranking continua existindo.
+    expect(baseScore(engajado, AGORA)).toBeGreaterThan(baseScore(semNada, AGORA));
+  });
+});

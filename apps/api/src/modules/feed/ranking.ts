@@ -40,8 +40,15 @@ import { REACTION_META, type Reaction } from '@connect-gsa/shared';
 /** Quanto um comentário vale, em relação a uma reação de reconhecimento (peso 1). */
 export const COMMENT_WEIGHT = 4;
 
-/** Meia-vida da recência: em 12 horas, um post vale metade. */
-export const RECENCY_HALF_LIFE_HOURS = 12;
+/**
+ * Meia-vida da recência: em 2 horas, um post vale metade.
+ *
+ * Era 12h. Duas horas é o que faz o recém-publicado vencer o engajado de ontem —
+ * abrir a rede e reencontrar o assunto do dia anterior no topo é o sintoma de um
+ * feed que envelheceu. Em 6h um post já vale um oitavo, então o ranking continua
+ * decidindo entre coisas do MESMO período, que é onde ele tem algo a dizer.
+ */
+export const RECENCY_HALF_LIFE_HOURS = 2;
 
 /**
  * Suavização de início frio.
@@ -108,9 +115,18 @@ export function engagementValue(post: RankablePost): number {
   return total;
 }
 
-/** Encolhe a nota na direção da média — é o que evita o veredito precipitado. */
+/**
+ * Encolhe a nota na direção da média — é o que evita o veredito precipitado.
+ *
+ * O engajamento entra em LOGARITMO, não cru. Somado linearmente ele cresce sem
+ * teto, e um post muito reagido ficava imbatível: nem a recência derrubava, e o
+ * feed reencontrava o assunto de ontem no topo. Em log, a diferença entre 0 e 5
+ * interações continua grande — que é a que importa — e a diferença entre 40 e 80
+ * quase some, que é a que não importa para quem está lendo.
+ */
 export function smoothedQuality(post: RankablePost): number {
-  return (engagementValue(post) + PRIOR_STRENGTH * PRIOR_MEAN) / (1 + PRIOR_STRENGTH);
+  const comprimido = Math.log2(1 + engagementValue(post));
+  return (comprimido + PRIOR_STRENGTH * PRIOR_MEAN) / (1 + PRIOR_STRENGTH);
 }
 
 export function recencyFactor(post: RankablePost, now: Date): number {
