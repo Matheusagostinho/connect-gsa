@@ -36,7 +36,11 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     ...init,
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
+      // O cabeçalho só entra quando há corpo. Anunciar `application/json` e não
+      // mandar nada faz o servidor recusar com "Body cannot be empty" — que foi
+      // o que quebrava, de uma vez só, apagar publicação, apagar comentário e
+      // desfazer conexão.
+      ...(init.body === undefined ? {} : { 'Content-Type': 'application/json' }),
       ...init.headers,
     },
   });
