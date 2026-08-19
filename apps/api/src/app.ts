@@ -18,6 +18,7 @@ import { registerProfileRoutes } from './modules/profile/profile.routes.js';
 import { registerShareRoutes } from './modules/share/share.routes.js';
 import { registerFeedRoutes } from './modules/feed/feed.routes.js';
 import { registerMediaRoutes } from './modules/media/media.routes.js';
+import { registerAnnouncementRoutes } from './modules/post/announcement.routes.js';
 import { registerAuthorPostsRoute, registerPostRoutes } from './modules/post/post.routes.js';
 import { registerConnectionRoutes } from './modules/connection/connection.routes.js';
 import { registerDirectoryRoutes } from './modules/directory/directory.routes.js';
@@ -113,6 +114,7 @@ export async function buildApp({
       registerProfileRoutes(scope, prisma);
       registerMediaRoutes(scope, prisma, storage);
       registerPostRoutes(scope, prisma, storage);
+      registerAnnouncementRoutes(scope, prisma, storage);
       registerFeedRoutes(scope, prisma, storage);
       registerDirectoryRoutes(scope, prisma);
       registerConnectionRoutes(scope, prisma);

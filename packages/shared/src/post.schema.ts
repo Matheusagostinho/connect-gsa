@@ -12,6 +12,18 @@ export const POST_LIMITS = {
   pageSize: 20,
 } as const;
 
+/** Publicação comum ou comunicado oficial do programa. */
+export const postKindSchema = z.enum(['feed', 'announcement']);
+
+export type PostKind = z.infer<typeof postKindSchema>;
+
+export const createAnnouncementSchema = z.object({
+  content: z.string().trim().min(1, 'Escreva o comunicado').max(POST_LIMITS.contentMax),
+  mediaKey: z.string().trim().max(200).optional(),
+});
+
+export type CreateAnnouncement = z.infer<typeof createAnnouncementSchema>;
+
 export const createPostSchema = z.object({
   content: z.string().trim().min(1, 'Escreva alguma coisa').max(POST_LIMITS.contentMax),
   /** Chave devolvida pelo envio de imagem; o cliente nunca escolhe a URL final. */
@@ -60,6 +72,8 @@ export type Comment = z.infer<typeof commentSchema>;
 
 export const postSchema = z.object({
   id: z.uuid(),
+  /** Distingue publicação comum de comunicado oficial. */
+  kind: postKindSchema,
   content: z.string(),
   mediaUrl: z.url().nullable(),
   createdAt: z.iso.datetime(),

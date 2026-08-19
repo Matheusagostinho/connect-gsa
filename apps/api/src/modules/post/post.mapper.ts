@@ -4,6 +4,7 @@ import type { StorageDriver } from '../media/storage.js';
 /** Tudo o que o serviço precisa buscar para montar um post. */
 export const POST_SELECT = {
   id: true,
+  kind: true,
   content: true,
   mediaKey: true,
   createdAt: true,
@@ -22,6 +23,7 @@ export const POST_SELECT = {
 
 export interface PostRow {
   id: string;
+  kind: string;
   content: string;
   mediaKey: string | null;
   createdAt: Date;
@@ -62,6 +64,7 @@ export function toPost(
 ): Post {
   return {
     id: row.id,
+    kind: row.kind === 'announcement' ? 'announcement' : 'feed',
     content: row.content,
     mediaUrl: row.mediaKey ? storage.urlFor(row.mediaKey) : null,
     createdAt: row.createdAt.toISOString(),
