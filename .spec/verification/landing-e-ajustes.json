@@ -1,55 +1,40 @@
 {
-  "feature": "dados-do-titular",
-  "timestamp": "2026-08-19T21:37:08.879Z",
+  "feature": "landing-e-ajustes",
+  "timestamp": "2026-08-19T21:39:00.676Z",
   "gitRev": "bedb2d2",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
   "testsParsed": 306,
   "results": {
-    "AC-069": {
+    "AC-125": {
       "status": "pass",
-      "testName": "exportar meus dados devolve um arquivo estruturado, com data de geração @spec:AC-069 devolve um arquivo estruturado, com data de geração @spec:AC-069",
+      "testName": "nuvem de pixels desenha a malha de pontos @spec:AC-125 desenha a malha de pontos @spec:AC-125",
       "method": "vitest-json"
     },
-    "AC-070": {
+    "AC-126": {
       "status": "pass",
-      "testName": "exportar meus dados traz perfil, publicações, comentários, reações e conexões @spec:AC-070 traz perfil, publicações, comentários, reações e conexões @spec:AC-070",
+      "testName": "nuvem de pixels não anima para quem pediu menos movimento — mas ainda desenha @spec:AC-126 não anima para quem pediu menos movimento — mas ainda desenha @spec:AC-126",
       "method": "vitest-json"
     },
-    "AC-071": {
+    "AC-127": {
       "status": "pass",
-      "testName": "exportar meus dados não entrega e-mail de terceiros @spec:AC-071 @principle:P-002 não entrega e-mail de terceiros @spec:AC-071 @principle:P-002",
+      "testName": "rotas de perfil coloca o perfil novo no mapa, pela cidade @spec:AC-127 @principle:P-001 coloca o perfil novo no mapa, pela cidade @spec:AC-127 @principle:P-001",
       "method": "vitest-json"
     },
-    "AC-072": {
+    "AC-128": {
       "status": "pass",
-      "testName": "excluir minha conta apaga a conta e o perfil deixa de responder @spec:AC-072 apaga a conta e o perfil deixa de responder @spec:AC-072",
+      "testName": "formulário do perfil avisa que a pessoa vai aparecer no mapa, e que pode sair @spec:AC-128 avisa que a pessoa vai aparecer no mapa, e que pode sair @spec:AC-128",
       "method": "vitest-json"
     },
-    "AC-073": {
+    "AC-129": {
       "status": "pass",
-      "testName": "excluir minha conta leva junto publicações, comentários e reações @spec:AC-073 leva junto publicações, comentários e reações @spec:AC-073",
+      "testName": "cartão de publicação conectar pelo cartão atualiza o feed em cache @spec:AC-129 conectar pelo cartão atualiza o feed em cache @spec:AC-129",
       "method": "vitest-json"
     },
-    "AC-074": {
+    "AC-130": {
       "status": "pass",
-      "testName": "excluir minha conta apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012 apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012",
-      "method": "vitest-json"
-    },
-    "AC-075": {
-      "status": "pass",
-      "testName": "excluir minha conta mantém corretos os contadores das publicações de terceiros @spec:AC-075 mantém corretos os contadores das publicações de terceiros @spec:AC-075",
-      "method": "vitest-json"
-    },
-    "AC-076": {
-      "status": "pass",
-      "testName": "excluir minha conta recusa sem a confirmação escrita, e nada é apagado @spec:AC-076 recusa sem a confirmação escrita, e nada é apagado @spec:AC-076",
-      "method": "vitest-json"
-    },
-    "AC-077": {
-      "status": "pass",
-      "testName": "excluir minha conta encerra a sessão junto @spec:AC-077 encerra a sessão junto @spec:AC-077",
+      "testName": "apresentação do perfil o indicador da aba ocupa a aba inteira @spec:AC-130 o indicador da aba ocupa a aba inteira @spec:AC-130",
       "method": "vitest-json"
     }
   },

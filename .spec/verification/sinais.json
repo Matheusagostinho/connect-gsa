@@ -410,10 +410,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "acesso-e-perfil",
       "ref": "—",
-      "ocorrencias": 11,
+      "ocorrencias": 12,
       "primeiraVez": "2026-08-18T17:48:39.918Z",
-      "ultimaVez": "2026-08-19T20:37:02.092Z",
-      "gitRev": "a4c8db2"
+      "ultimaVez": "2026-08-19T21:31:43.570Z",
+      "gitRev": "bedb2d2"
     },
     "ARQUIVO_ORFAO::—::apps/api/src/testing/app.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -842,10 +842,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "feed-e-reacoes",
       "ref": "—",
-      "ocorrencias": 6,
+      "ocorrencias": 7,
       "primeiraVez": "2026-08-19T01:29:02.037Z",
-      "ultimaVez": "2026-08-19T20:37:02.092Z",
-      "gitRev": "a4c8db2"
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
     },
     "ARQUIVO_ORFAO::—::apps/api/src/modules/connection/connection.routes.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -1076,28 +1076,28 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dados-do-titular",
       "ref": "—",
-      "ocorrencias": 6,
+      "ocorrencias": 7,
       "primeiraVez": "2026-08-19T02:43:43.406Z",
-      "ultimaVez": "2026-08-19T20:37:02.092Z",
-      "gitRev": "a4c8db2"
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
     },
     "VERIFY_OBSOLETO::diretorio-mapa-e-conexoes::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "diretorio-mapa-e-conexoes",
       "ref": "—",
-      "ocorrencias": 6,
+      "ocorrencias": 7,
       "primeiraVez": "2026-08-19T02:43:43.406Z",
-      "ultimaVez": "2026-08-19T20:37:02.092Z",
-      "gitRev": "a4c8db2"
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
     },
     "VERIFY_OBSOLETO::navegacao-e-notificacoes::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "navegacao-e-notificacoes",
       "ref": "—",
-      "ocorrencias": 4,
+      "ocorrencias": 5,
       "primeiraVez": "2026-08-19T02:43:43.406Z",
-      "ultimaVez": "2026-08-19T20:37:02.092Z",
-      "gitRev": "a4c8db2"
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
     },
     "STATUS_INVALIDO::feed-em-abas-e-refino::.spec/features/feed-em-abas-e-refino/spec.md": {
       "codigo": "STATUS_INVALIDO",
@@ -1130,10 +1130,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "ajustes-de-produto",
       "ref": "—",
-      "ocorrencias": 5,
+      "ocorrencias": 6,
       "primeiraVez": "2026-08-19T13:17:28.798Z",
-      "ultimaVez": "2026-08-19T20:37:02.092Z",
-      "gitRev": "a4c8db2"
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
     },
     "ASM_ABERTA::feed-em-abas-e-refino::ASM-033": {
       "codigo": "ASM_ABERTA",
@@ -1193,10 +1193,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "quadro-de-avisos",
       "ref": "—",
-      "ocorrencias": 4,
+      "ocorrencias": 5,
       "primeiraVez": "2026-08-19T13:17:28.798Z",
-      "ultimaVez": "2026-08-19T20:37:02.092Z",
-      "gitRev": "a4c8db2"
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
     },
     "ARQUIVO_INEXISTENTE::perfil-e-interacao::T-001": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -1445,10 +1445,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "feed-em-abas-e-refino",
       "ref": "—",
-      "ocorrencias": 2,
+      "ocorrencias": 3,
       "primeiraVez": "2026-08-19T16:03:17.306Z",
-      "ultimaVez": "2026-08-19T20:37:02.092Z",
-      "gitRev": "a4c8db2"
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
     },
     "ARQUIVO_INEXISTENTE::navegacao-e-notificacoes::T-038": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -1598,10 +1598,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "perfil-e-interacao",
       "ref": "—",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-08-19T20:37:02.092Z",
-      "ultimaVez": "2026-08-19T20:37:02.092Z",
-      "gitRev": "a4c8db2"
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
     },
     "ASM_STATUS_INVALIDO::refino-de-interface::ASM-041": {
       "codigo": "ASM_STATUS_INVALIDO",
@@ -1611,6 +1611,105 @@
       "primeiraVez": "2026-08-19T20:37:02.092Z",
       "ultimaVez": "2026-08-19T20:37:02.092Z",
       "gitRev": "a4c8db2"
+    },
+    "ARQUIVO_INEXISTENTE::landing-e-ajustes::T-077": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "landing-e-ajustes",
+      "ref": "T-077",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T21:07:24.561Z",
+      "ultimaVez": "2026-08-19T21:07:24.562Z",
+      "gitRev": "bedb2d2"
+    },
+    "ARQUIVO_INEXISTENTE::landing-e-ajustes::T-078": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "landing-e-ajustes",
+      "ref": "T-078",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T21:07:24.562Z",
+      "ultimaVez": "2026-08-19T21:07:24.562Z",
+      "gitRev": "bedb2d2"
+    },
+    "ARQUIVO_INEXISTENTE::landing-e-ajustes::T-079": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "landing-e-ajustes",
+      "ref": "T-079",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T21:07:24.562Z",
+      "ultimaVez": "2026-08-19T21:07:24.562Z",
+      "gitRev": "bedb2d2"
+    },
+    "AC_SEM_TESTE::landing-e-ajustes::AC-125": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "landing-e-ajustes",
+      "ref": "AC-125",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T21:07:24.562Z",
+      "ultimaVez": "2026-08-19T21:07:24.562Z",
+      "gitRev": "bedb2d2"
+    },
+    "AC_SEM_TESTE::landing-e-ajustes::AC-126": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "landing-e-ajustes",
+      "ref": "AC-126",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T21:07:24.562Z",
+      "ultimaVez": "2026-08-19T21:07:24.562Z",
+      "gitRev": "bedb2d2"
+    },
+    "AC_SEM_TESTE::landing-e-ajustes::AC-127": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "landing-e-ajustes",
+      "ref": "AC-127",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T21:07:24.562Z",
+      "ultimaVez": "2026-08-19T21:07:24.562Z",
+      "gitRev": "bedb2d2"
+    },
+    "AC_SEM_TESTE::landing-e-ajustes::AC-128": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "landing-e-ajustes",
+      "ref": "AC-128",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T21:07:24.562Z",
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
+    },
+    "AC_SEM_TESTE::landing-e-ajustes::AC-129": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "landing-e-ajustes",
+      "ref": "AC-129",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T21:07:24.562Z",
+      "ultimaVez": "2026-08-19T21:07:24.562Z",
+      "gitRev": "bedb2d2"
+    },
+    "AC_SEM_TESTE::landing-e-ajustes::AC-130": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "landing-e-ajustes",
+      "ref": "AC-130",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T21:07:24.562Z",
+      "ultimaVez": "2026-08-19T21:07:24.562Z",
+      "gitRev": "bedb2d2"
+    },
+    "TASK_CONCLUIDA_SEM_PROVA::landing-e-ajustes::T-078": {
+      "codigo": "TASK_CONCLUIDA_SEM_PROVA",
+      "feature": "landing-e-ajustes",
+      "ref": "T-078",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T21:31:43.571Z",
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
+    },
+    "VERIFY_OBSOLETO::refino-de-interface::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "refino-de-interface",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T21:31:43.571Z",
+      "ultimaVez": "2026-08-19T21:31:43.571Z",
+      "gitRev": "bedb2d2"
     }
   }
 }

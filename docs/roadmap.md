@@ -169,6 +169,38 @@ tiles porque o servidor de desenvolvimento servia o worker compartilhado como
 
 **287 testes, 118/118 critérios provados, auditoria limpa.**
 
+### ~~Fatia 6.8 — Apresentação viva e ajustes~~ · **entregue**
+
+**A mudança de regra: o perfil novo nasce visível no mapa.** Isso inverteu o
+P-011 e o AC-015, que diziam o contrário desde o primeiro dia. A razão deles era
+boa — padrão pré-marcado em algo de localização é o que "opt-in consciente"
+existe para evitar —, e por isso a inversão ficou registrada na constituição com
+o motivo, e não apagada. O que a sustenta continua valendo e não pode ser
+afrouxado junto: o mapa conhece apenas o município, o formulário avisa a pessoa
+de que ela vai aparecer, sair é imediato, e **quem já tinha perfil não foi
+migrado** — ligar o mapa de quem escolheu ficar fora seria desfazer a decisão
+dela pelas costas.
+
+**A que dá cara ao produto:** a apresentação ganhou uma nuvem de pixels que
+deriva sozinha e se afasta do cursor, em canvas próprio. Uma dependência de
+partículas pesaria mais que o recurso numa página que precisa abrir rápido para
+quem chegou por um link de convite.
+
+**Os defeitos corrigidos**, todos encontrados usando o produto:
+
+- **O botão de conectar não respondia.** A lista de caches atualizados não
+  incluía o feed, então a publicação continuava dizendo `connection: 'none'`.
+  Os três estados do laço passaram a ser visíveis, porque "o botão sumiu" não
+  diz se o pedido saiu, se falhou ou se as duas pessoas já eram conexão.
+- **O layout saltava ao trocar de seção**, por meia largura de barra de rolagem.
+- **No celular, os botões do perfil ficavam por cima do nome** — o `flex-wrap`
+  distribuía o que sobrava, e o que sobrava era nada.
+- **Avatar com foto ausente** mostrava o ícone de imagem quebrada.
+
+"Avisos" saiu do menu, adiado para a v2 — a rota continua viva.
+
+**306 testes, 124/124 critérios provados, auditoria limpa.**
+
 ### Fatia 7 — Publicação em produção · **bloqueado por você**
 
 > Os três workflows estão **desligados no automático** desde 19/08/2026, a pedido: rodam só

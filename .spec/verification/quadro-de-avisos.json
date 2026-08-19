@@ -1,11 +1,11 @@
 {
   "feature": "quadro-de-avisos",
-  "timestamp": "2026-08-19T20:58:23.805Z",
-  "gitRev": "a4c8db2",
+  "timestamp": "2026-08-19T21:51:07.618Z",
+  "gitRev": "bedb2d2",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 287,
+  "testsParsed": 306,
   "results": {
     "AC-090": {
       "status": "pass",

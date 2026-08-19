@@ -101,7 +101,23 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
     morre ao importar e o mapa fica sem um único tile — o mesmo sintoma de
     sempre, agora por cache do servidor e não por arquivo faltando. Reiniciar o
     dev resolve; antes de investigar o código, confira o `Content-Type`.
-25. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
+25. **`scrollbar-gutter: stable` no `html`.** O feed rola e tem barra; o
+    diretório e o mapa não têm. Sem a calha reservada, o contêiner centralizado
+    se desloca por metade da largura da barra a cada navegação — pequeno,
+    constante e invisível em navegador de barra sobreposta, que é onde o
+    Chromium dos nossos testes roda. Só o usuário percebia.
+26. **`-z-10` joga o elemento para trás do fundo do PRÓPRIO ancestral.** Foi o
+    que fez a nuvem de pixels da apresentação simplesmente não aparecer. O
+    padrão é `z-0` no decorativo, `z-10` no conteúdo e `isolate` no contêiner —
+    que prende o empilhamento ali e o impede de competir com o cabeçalho fixo.
+27. **Os três estados do laço são visíveis, e nenhum é a ausência de algo.** O
+    botão de conectar sumir depois do toque não diz se o pedido saiu, se falhou
+    ou se as duas pessoas já eram conexão — e sumir era justamente o que
+    acontecia quando conectar ACEITAVA um pedido que já esperava do outro lado.
+28. **Avatar recua para a inicial quando a foto não carrega.** Um arquivo que
+    sumiu do armazenamento virava o ícone de imagem quebrada do navegador, que
+    é pior que não ter foto: parece defeito do produto.
+29. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
    então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
    registrada pela API lá.
 

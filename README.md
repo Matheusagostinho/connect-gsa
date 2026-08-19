@@ -38,6 +38,7 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Coluna de sugestões no computador | |
 | Nome de usuário editável, com o antigo respondendo | |
 | Cinco campos de link no perfil | |
+| Apresentação com nuvem de pixels interativa | |
 
 A especificação completa, com critérios de aceite e provas, está em
 `.spec/features/acesso-e-perfil/`.
@@ -227,6 +228,12 @@ MapLibre GL com tiles do **OpenFreeMap** (estilo Positron). A escolha não é s�
 o OpenFreeMap serve **sem chave de API, sem cadastro e sem cookies** — numa rede de
 estudantes, não introduzir um rastreador de terceiros pesa mais que qualquer conveniência.
 O Mapbox GL virou licença proprietária na versão 2 e exigiria token com faturamento.
+
+**O perfil nasce visível no mapa** — padrão invertido em 19/08/2026. O princípio
+anterior dizia o contrário, e a mudança está registrada na constituição com o motivo,
+não apagada. O que a sustenta: só o município é conhecido, o formulário de entrada avisa
+que a pessoa vai aparecer, sair tem efeito imediato, e quem já tinha perfil não foi
+migrado.
 
 **Um pino por cidade, nunca por pessoa.** Isso não é agrupamento visual: a API não devolve
 posição individual porque ela não existe no sistema. Desenhar uma pessoa num ponto exigiria
