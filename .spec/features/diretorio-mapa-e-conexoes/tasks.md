@@ -58,7 +58,7 @@
 ## T-033 — Diretório, conexões e perfil público na tela [concluida]
 
 - Refs: US-018, US-019, US-021
-- Arquivos: apps/web/src/components/AmbassadorCardItem.tsx, apps/web/src/components/AppNav.tsx, apps/web/src/lib/directory.ts, apps/web/src/pages/Directory.tsx, apps/web/src/pages/Connections.tsx, apps/web/src/pages/PublicProfile.tsx, apps/web/src/App.tsx
+- Arquivos: apps/web/src/components/AmbassadorCardItem.tsx, apps/web/src/lib/directory.ts, apps/web/src/pages/Directory.tsx, apps/web/src/pages/Connections.tsx, apps/web/src/pages/PublicProfile.tsx, apps/web/src/App.tsx
 - Notas: O mapa entra por `lazy` — ele pesa mais que todo o resto do aplicativo junto.
 
 ## T-034 — Seletores e compartilhamento de convite [concluida]

@@ -1,11 +1,11 @@
 {
   "feature": "acesso-e-perfil",
-  "timestamp": "2026-08-19T01:31:49.154Z",
-  "gitRev": "9185688",
+  "timestamp": "2026-08-19T02:03:52.281Z",
+  "gitRev": "a7c21d0",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 158,
+  "testsParsed": 173,
   "results": {
     "AC-001": {
       "status": "pass",

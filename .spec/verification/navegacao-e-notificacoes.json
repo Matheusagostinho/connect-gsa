@@ -1,0 +1,81 @@
+{
+  "feature": "navegacao-e-notificacoes",
+  "timestamp": "2026-08-19T02:06:19.533Z",
+  "gitRev": "a7c21d0",
+  "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 173,
+  "results": {
+    "AC-061": {
+      "status": "pass",
+      "testName": "moldura do aplicativo oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062 oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062",
+      "method": "vitest-json"
+    },
+    "AC-062": {
+      "status": "pass",
+      "testName": "moldura do aplicativo oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062 oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062",
+      "method": "vitest-json"
+    },
+    "AC-063": {
+      "status": "pass",
+      "testName": "moldura do aplicativo marca a seção atual para quem vê e para quem ouve @spec:AC-063 marca a seção atual para quem vê e para quem ouve @spec:AC-063",
+      "method": "vitest-json"
+    },
+    "AC-064": {
+      "status": "pass",
+      "testName": "mapa em tela cheia o mapa preenche o contêiner em vez de fixar a própria altura @spec:AC-064 o mapa preenche o contêiner em vez de fixar a própria altura @spec:AC-064",
+      "method": "vitest-json"
+    },
+    "AC-065": {
+      "status": "pass",
+      "testName": "notificações junta pedido de conexão, reação e comentário num lugar só @spec:AC-065 junta pedido de conexão, reação e comentário num lugar só @spec:AC-065",
+      "method": "vitest-json"
+    },
+    "AC-066": {
+      "status": "pass",
+      "testName": "moldura do aplicativo mostra quantas notificações estão por ler @spec:AC-066 mostra quantas notificações estão por ler @spec:AC-066",
+      "method": "vitest-json"
+    },
+    "AC-067": {
+      "status": "pass",
+      "testName": "notificações conta as não lidas e zera depois de olhar @spec:AC-066 @spec:AC-067 conta as não lidas e zera depois de olhar @spec:AC-066 @spec:AC-067",
+      "method": "vitest-json"
+    },
+    "AC-068": {
+      "status": "pass",
+      "testName": "notificações não me notifica do que eu mesmo fiz @spec:AC-068 não me notifica do que eu mesmo fiz @spec:AC-068",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
+    "P-003": {
+      "status": "pass",
+      "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003"
+    },
+    "P-004": {
+      "status": "pass",
+      "testName": "permissões deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004 deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004"
+    },
+    "P-002": {
+      "status": "pass",
+      "testName": "diretório não entrega e-mail de ninguém @principle:P-002 não entrega e-mail de ninguém @principle:P-002"
+    },
+    "P-001": {
+      "status": "pass",
+      "testName": "mapa não mostra quem optou por ficar fora do mapa @spec:AC-053 @principle:P-001 não mostra quem optou por ficar fora do mapa @spec:AC-053 @principle:P-001"
+    },
+    "P-009": {
+      "status": "pass",
+      "testName": "convites gera código imprevisível e nunca guarda o código em claro @principle:P-009 gera código imprevisível e nunca guarda o código em claro @principle:P-009"
+    },
+    "P-006": {
+      "status": "pass",
+      "testName": "posts desarma HTML colado no post @spec:AC-024 @principle:P-006 desarma HTML colado no post @spec:AC-024 @principle:P-006"
+    }
+  }
+}

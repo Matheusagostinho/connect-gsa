@@ -1008,6 +1008,33 @@
       "primeiraVez": "2026-08-19T01:29:02.037Z",
       "ultimaVez": "2026-08-19T01:32:29.319Z",
       "gitRev": "9185688"
+    },
+    "ARQUIVO_INEXISTENTE::diretorio-mapa-e-conexoes::T-033": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "T-033",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T02:00:46.758Z",
+      "ultimaVez": "2026-08-19T02:00:46.758Z",
+      "gitRev": "a7c21d0"
+    },
+    "TASK_CONCLUIDA_SEM_PROVA::navegacao-e-notificacoes::T-039": {
+      "codigo": "TASK_CONCLUIDA_SEM_PROVA",
+      "feature": "navegacao-e-notificacoes",
+      "ref": "T-039",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T02:00:46.758Z",
+      "ultimaVez": "2026-08-19T02:00:46.758Z",
+      "gitRev": "a7c21d0"
+    },
+    "AC_SEM_TESTE::navegacao-e-notificacoes::AC-064": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "navegacao-e-notificacoes",
+      "ref": "AC-064",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T02:00:46.758Z",
+      "ultimaVez": "2026-08-19T02:00:46.758Z",
+      "gitRev": "a7c21d0"
     }
   }
 }
