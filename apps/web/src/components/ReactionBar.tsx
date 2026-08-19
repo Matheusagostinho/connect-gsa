@@ -56,6 +56,8 @@ export function ReactionBar({
 }) {
   const [aberta, setAberta] = useState(false);
   const [pulsando, setPulsando] = useState(false);
+  /** Qual reação disparou a animação — decide se ela decola ou pulsa. */
+  const [escolhida, setEscolhida] = useState<Reaction | null>(null);
   /** Muda a cada escolha, para o ícone ser remontado e a animação reiniciar. */
   const [desenho, setDesenho] = useState(0);
   const container = useRef<HTMLDivElement>(null);
@@ -100,11 +102,14 @@ export function ReactionBar({
   const atual = mine ? REACTION_META[mine] : REACTION_META[PRINCIPAL];
 
   function escolher(reaction: Reaction) {
+    setEscolhida(reaction);
     setPulsando(true);
     setDesenho((n) => n + 1);
     setAberta(false);
     onReact(reaction);
-    window.setTimeout(() => setPulsando(false), 340);
+    // A decolagem é mais longa que o pulso; esperar o maior evita cortar o
+    // foguete no meio do voo.
+    window.setTimeout(() => setPulsando(false), reaction === 'liftoff' ? 620 : 340);
   }
 
   return (
@@ -134,8 +139,8 @@ export function ReactionBar({
                   onClick={() => escolher(reaction)}
                   style={{ animationDelay: `${indice * 28}ms` }}
                   className={cn(
-                    'reacao-entra flex w-[3.25rem] shrink cursor-pointer flex-col items-center gap-0.5 sm:w-16',
-                    'rounded-field px-1 py-2 transition-transform duration-150 hover:scale-108',
+                    'reacao-entra reacao-hover flex w-[3.25rem] shrink cursor-pointer',
+                    'flex-col items-center gap-0.5 rounded-field px-1 py-2 sm:w-16',
                     mine === reaction && 'bg-surface-subtle',
                   )}
                 >
@@ -208,17 +213,28 @@ export function ReactionBar({
             }
           }}
           className={cn(
-            'flex size-10 cursor-pointer items-center justify-center rounded-pill border',
-            'transition-colors duration-200 disabled:cursor-not-allowed',
+            'reacao-hover relative flex size-10 cursor-pointer items-center justify-center',
+            'overflow-hidden rounded-pill disabled:cursor-not-allowed',
             // `touch-none` e `select-none`: sem eles, segurar no celular começa
             // a rolagem e a seleção de texto por cima do próprio gesto.
             'touch-none select-none',
+            // Sem moldura quando não reagi: a borda em toda publicação de um
+            // feed longo desenhava uma coluna de círculos vazios, e o que
+            // precisa se destacar é a reação que EXISTE.
             mine
-              ? 'border-transparent bg-surface-subtle text-ink'
-              : 'border-border text-ink-muted hover:text-ink',
+              ? 'bg-surface-subtle text-ink'
+              : 'text-ink-muted hover:bg-surface-subtle hover:text-ink',
           )}
         >
-          <span className={cn(pulsando && 'reacao-escolhida', 'inline-flex')}>
+          <span
+            className={cn(
+              'relative inline-flex',
+              // Foguete decola; as outras pulsam. Aplicar a decolagem a um
+              // aperto de mão seria movimento sem significado, e o ponto das
+              // reações desta rede é cada uma dizer uma coisa diferente.
+              pulsando && (escolhida === 'liftoff' ? 'reacao-decola' : 'reacao-escolhida'),
+            )}
+          >
             {/*
               A chave inclui o contador: trocar a chave remonta o ícone, e é o
               que faz o traço ser redesenhado a cada escolha em vez de animar

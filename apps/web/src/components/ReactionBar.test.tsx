@@ -228,3 +228,42 @@ describe('pressionar e segurar', () => {
     expect(fileira()).toBeInTheDocument();
   });
 });
+
+describe('resposta ao mouse e decolagem', () => {
+  it('a barra tem resposta ao passar o mouse @spec:AC-121', () => {
+    render(<ReactionBar counts={{}} mine={null} onReact={vi.fn()} />);
+
+    // A classe carrega a transição E o `prefers-reduced-motion` que a desliga —
+    // uma animação sem essa saída é acessibilidade quebrada por padrão.
+    const botao = screen.getByRole('button', { name: /^reagir com decolou/i });
+    expect(botao.className).toContain('reacao-hover');
+  });
+
+  it('o foguete decola; as outras reações pulsam @spec:AC-121', async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<ReactionBar counts={{}} mine={null} onReact={vi.fn()} />);
+
+    await user.click(screen.getByRole('button', { name: /^reagir com decolou/i }));
+    expect(document.querySelector('.reacao-decola')).not.toBeNull();
+
+    rerender(<ReactionBar counts={{}} mine={null} onReact={vi.fn()} />);
+    fireEvent.keyDown(screen.getByRole('button', { name: /^reagir com decolou/i }), {
+      key: 'ArrowUp',
+    });
+    await user.click(screen.getByRole('button', { name: /bora junto:/i }));
+
+    // Aplicar a decolagem a um aperto de mão seria movimento sem significado, e
+    // o ponto destas reações é cada uma dizer uma coisa diferente.
+    expect(document.querySelector('.reacao-decola')).toBeNull();
+    expect(document.querySelector('.reacao-escolhida')).not.toBeNull();
+  });
+
+  it('o botão não tem moldura quando ainda não reagi', () => {
+    render(<ReactionBar counts={{}} mine={null} onReact={vi.fn()} />);
+
+    // A borda em toda publicação de um feed longo desenhava uma coluna de
+    // círculos vazios; o que precisa se destacar é a reação que EXISTE.
+    const botao = screen.getByRole('button', { name: /^reagir com decolou/i });
+    expect(botao.className).not.toMatch(/\bborder-border\b/);
+  });
+});

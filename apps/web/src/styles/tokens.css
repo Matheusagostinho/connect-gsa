@@ -277,14 +277,110 @@ body {
   animation: reacao-escolhida 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
+/*
+ * O foguete decolando — a animação da reação principal.
+ *
+ * Três coisas acontecem juntas, porque decolagem é isso: o foguete AGACHA antes
+ * de subir (a antecipação é o que faz o movimento parecer impulso e não
+ * teletransporte), sobe saindo de quadro, e volta do outro lado. O tempo total
+ * fica na casa da curtida do X, ~600ms — mais que isso e a pessoa espera a
+ * animação em vez de continuar lendo.
+ *
+ * `overflow: hidden` no pai é o que faz "sair de quadro" existir; sem ele o
+ * foguete passeia por cima da publicação de cima.
+ */
+@keyframes reacao-decola {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  18% {
+    transform: translateY(2px) scale(0.86);
+  }
+  46% {
+    transform: translateY(-22px) scale(1.06);
+    opacity: 0;
+  }
+  47% {
+    transform: translateY(20px) scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.reacao-decola {
+  animation: reacao-decola 600ms cubic-bezier(0.3, 0, 0.2, 1);
+}
+
+/*
+ * O rastro: um anel que abre e some, no lugar de onde o foguete saiu.
+ *
+ * Partícula de verdade exigiria canvas ou uma dezena de elementos. Um anel
+ * único diz a mesma coisa — "algo saiu daqui com força" — por um pseudoelemento.
+ */
+@keyframes reacao-rastro {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.1);
+  }
+}
+
+.reacao-decola::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid currentColor;
+  animation: reacao-rastro 600ms ease-out forwards;
+}
+
+/*
+ * Resposta ao passar o mouse.
+ *
+ * Sobe um fio e cresce um pouco. É deliberadamente pequeno: a barra de reações
+ * aparece uma vez por publicação, e num feed de cinquenta uma animação chamativa
+ * viraria ruído em movimento.
+ */
+.reacao-hover {
+  transition:
+    transform 160ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+@media (hover: hover) {
+  .reacao-hover:hover {
+    transform: translateY(-2px) scale(1.08);
+  }
+}
+
+.reacao-hover:active {
+  transform: translateY(0) scale(0.94);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reacao-entra,
   .reacao-escolhida,
+  .reacao-decola,
+  .reacao-decola::after,
   .reacao-desenha path,
   .reacao-desenha circle,
   .reacao-desenha line,
   .reacao-desenha polyline {
     animation: none;
+  }
+
+  .reacao-hover,
+  .reacao-hover:hover,
+  .reacao-hover:active {
+    transform: none;
+    transition: none;
   }
 }
 
