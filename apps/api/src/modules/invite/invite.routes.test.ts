@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { INVITE_QUOTA } from '@connect-gsa/shared';
 import { INVITE_COOKIE, readInviteTicket } from '../../auth/invite-ticket.js';
 import { asUser, buildTestApp, testEnv } from '../../testing/app.js';
 import { closeTestDb, createTestUser, resetTestData, testDb } from '../../testing/db.js';
@@ -32,20 +33,40 @@ async function createInviteAs(userId: string) {
 }
 
 describe('rotas de convite', () => {
-  it('só deixa a coordenação gerar convite @spec:AC-017 @principle:P-004', async () => {
-    const [embaixador, admin] = await Promise.all([
-      createTestUser({ role: 'ambassador' }),
-      createTestUser({ role: 'admin' }),
-    ]);
+  it('deixa o embaixador comum gerar convite @spec:AC-017 @spec:AC-131', async () => {
+    const embaixador = await createTestUser({ role: 'ambassador' });
+
+    const aceito = await createInviteAs(embaixador.id);
+
+    expect(aceito.statusCode).toBe(201);
+    expect(aceito.json<{ code: string }>().code).toMatch(/^[0-9A-HJKMNP-TV-Z]{8}$/);
+    await expect(prisma.inviteCode.count()).resolves.toBe(1);
+  });
+
+  it('recusa depois do teto do embaixador, com o motivo @spec:AC-131 @principle:P-004', async () => {
+    const embaixador = await createTestUser({ role: 'ambassador' });
+
+    for (let i = 0; i < INVITE_QUOTA.max; i += 1) {
+      expect((await createInviteAs(embaixador.id)).statusCode).toBe(201);
+    }
 
     const recusado = await createInviteAs(embaixador.id);
-    expect(recusado.statusCode).toBe(403);
-    await expect(prisma.inviteCode.count()).resolves.toBe(0);
 
-    const aceito = await createInviteAs(admin.id);
-    expect(aceito.statusCode).toBe(201);
-    expect(aceito.json<{ code: string }>().code).toMatch(/^[0-9a-f]{32}$/);
-    await expect(prisma.inviteCode.count()).resolves.toBe(1);
+    // O teto é o que passou a segurar o portão no lugar da permissão: uma conta
+    // comprometida não pode virar torneira de convites.
+    expect(recusado.statusCode).toBe(403);
+    expect(recusado.json<{ message: string }>().message).toMatch(/convites/i);
+    await expect(prisma.inviteCode.count()).resolves.toBe(INVITE_QUOTA.max);
+  });
+
+  it('coordenação e moderação não têm teto @spec:AC-132', async () => {
+    for (const role of ['admin', 'moderator'] as const) {
+      const pessoa = await createTestUser({ role });
+
+      for (let i = 0; i < INVITE_QUOTA.max + 2; i += 1) {
+        expect((await createInviteAs(pessoa.id)).statusCode).toBe(201);
+      }
+    }
   });
 
   it('não deixa gerar convite sem sessão @spec:AC-019', async () => {
@@ -116,5 +137,85 @@ describe('rotas de convite', () => {
     // E a resposta de bloqueio não diz nada sobre os códigos tentados.
     const ultimo = respostas.at(-1);
     expect(ultimo).toBe(429);
+  });
+});
+
+describe('quem convidou', () => {
+  async function conviteDe(userId: string) {
+    const resposta = await app.inject({
+      method: 'POST',
+      url: '/api/invites',
+      headers: asUser(userId),
+      payload: { validityDays: 30 },
+    });
+    return resposta.json<{ code: string; shareUrl: string }>();
+  }
+
+  it('o link leva o código no caminho @spec:AC-134', async () => {
+    const ana = await createTestUser({ role: 'admin' });
+    const { code, shareUrl } = await conviteDe(ana.id);
+
+    // `/convite/ABC5EK9M` se lê e se dita; `?c=` no meio de uma URL não.
+    expect(shareUrl).toContain(`/convite/${code}`);
+  });
+
+  it('a página do convite diz quem convidou, só o primeiro nome @spec:AC-135', async () => {
+    const ana = await createTestUser({ role: 'admin' });
+    await prisma.user.update({ where: { id: ana.id }, data: { name: 'Ana Ribeiro Souza' } });
+    const { code } = await conviteDe(ana.id);
+
+    const resposta = await app.inject({ method: 'GET', url: `/api/invites/${code}` });
+
+    expect(resposta.statusCode).toBe(200);
+    // Nome completo transformaria o link num jeito de descobrir quem está na
+    // rede sem entrar nela — e a rede ser fechada é o ponto.
+    expect(resposta.json<{ invitedBy: string }>().invitedBy).toBe('Ana');
+    expect(resposta.body).not.toContain('Souza');
+  });
+
+  it('não vira oráculo: inexistente, usado e expirado respondem igual @spec:AC-136', async () => {
+    const ana = await createTestUser({ role: 'admin' });
+
+    const inexistente = await app.inject({
+      method: 'GET',
+      url: `/api/invites/${generateInviteCode()}`,
+    });
+
+    const { code: usado } = await conviteDe(ana.id);
+    await prisma.inviteCode.updateMany({
+      where: { codeHash: hashInviteCode(usado) },
+      data: { usedAt: new Date() },
+    });
+    const jaUsado = await app.inject({ method: 'GET', url: `/api/invites/${usado}` });
+
+    const { code: vencido } = await conviteDe(ana.id);
+    await prisma.inviteCode.updateMany({
+      where: { codeHash: hashInviteCode(vencido) },
+      data: { expiresAt: new Date(Date.now() - 1000) },
+    });
+    const expirado = await app.inject({ method: 'GET', url: `/api/invites/${vencido}` });
+
+    // Distinguir os três motivos entregaria de graça o oráculo que o limite de
+    // tentativas existe para negar.
+    for (const resposta of [inexistente, jaUsado, expirado]) {
+      expect(resposta.statusCode).toBe(400);
+      expect(resposta.json<{ message: string }>().message).toBe(
+        'Convite inválido, expirado ou já utilizado.',
+      );
+    }
+  });
+
+  it('não revela nome nenhum quando o convite não presta @spec:AC-136', async () => {
+    const ana = await createTestUser({ role: 'admin' });
+    await prisma.user.update({ where: { id: ana.id }, data: { name: 'Ana Ribeiro' } });
+    const { code } = await conviteDe(ana.id);
+    await prisma.inviteCode.updateMany({
+      where: { codeHash: hashInviteCode(code) },
+      data: { usedAt: new Date() },
+    });
+
+    const resposta = await app.inject({ method: 'GET', url: `/api/invites/${code}` });
+
+    expect(resposta.body).not.toContain('Ana');
   });
 });

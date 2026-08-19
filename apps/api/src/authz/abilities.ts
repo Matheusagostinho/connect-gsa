@@ -21,9 +21,14 @@ export function defineAbilitiesFor(user: CurrentUser): AppAbility {
   can('update', 'Profile', { id: user.id } as never);
   can('read', 'Announcement');
 
+  // Convidar deixou de ser privilégio da coordenação: quem conhece outro
+  // participante do programa é quem está NELE. O que segura o portão não é mais
+  // a permissão, e sim o TETO por período — ele vive no serviço, porque depende
+  // de contar linhas no banco e o CASL decide sobre o que já está em memória.
+  can('create', 'Invite');
+  can('read', 'Invite');
+
   if (user.role === 'moderator' || user.role === 'admin') {
-    can('create', 'Invite');
-    can('read', 'Invite');
     can('manage', 'Announcement');
   }
 

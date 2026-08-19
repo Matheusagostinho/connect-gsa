@@ -36,8 +36,6 @@ export function SettingsPage() {
 
   if (!profile) return null;
 
-  const podeConvidar = profile.role === 'admin' || profile.role === 'moderator';
-
   return (
     <AppShell profile={profile} title="Configurações">
 
@@ -78,7 +76,12 @@ export function SettingsPage() {
           </div>
         </Card>
 
-        {podeConvidar ? <InviteShare /> : null}
+        {/*
+          Convidar deixou de ser privilégio da coordenação: quem conhece outro
+          participante do programa é quem está NELE. O que segura o portão passou
+          a ser o teto por período, verificado no servidor.
+        */}
+        <InviteShare />
 
         <Card>
           <h2 className="text-xl font-medium">Seus dados</h2>

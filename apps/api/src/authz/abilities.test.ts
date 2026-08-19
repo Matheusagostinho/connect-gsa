@@ -18,8 +18,12 @@ describe('permissões', () => {
     expect(() => assertCan(embaixador('ana'), 'read', 'Profile')).not.toThrow();
   });
 
-  it('só deixa coordenação gerar convite @spec:AC-017', () => {
-    expect(() => assertCan(embaixador('ana'), 'create', 'Invite')).toThrow(/permissão/i);
+  it('deixa todo embaixador gerar convite; o teto fica no serviço @spec:AC-017', () => {
+    // Convidar deixou de ser privilégio da coordenação (AC-017, invertido em
+    // 2026-08-19). O que segura o portão passou a ser o TETO por período, que
+    // vive no serviço — o CASL decide sobre o que já está em memória, e contar
+    // convites criados exige ir ao banco.
+    expect(() => assertCan(embaixador('ana'), 'create', 'Invite')).not.toThrow();
     expect(() => assertCan(moderador('bruno'), 'create', 'Invite')).not.toThrow();
     expect(() => assertCan(admin('carla'), 'create', 'Invite')).not.toThrow();
   });

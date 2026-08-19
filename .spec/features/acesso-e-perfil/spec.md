@@ -155,12 +155,18 @@ localização só seja visível se eu quiser.
 Como administrador do programa, quero gerar convites, para que eu controle quem
 entra sem depender de repassar uma planilha de e-mails.
 
-#### AC-017 — Só administrador gera convite
+#### AC-017 — Todo embaixador gera convite, e o teto é quem segura o portão
+
+> **Invertido em 2026-08-19.** Este critério dizia que só a coordenação gerava
+> convite. A mudança é decisão do dono do produto e está descrita em
+> `convite-simples` (AC-131, AC-132): quem conhece outro participante do programa
+> é quem está NELE. O que passou a segurar o portão não é a permissão, e sim o
+> **teto por período** — uma conta comprometida não vira torneira.
 
 - **Dado** que estou autenticado como embaixador comum
-- **Quando** tento gerar um convite
-- **Então** a ação é recusada por falta de permissão (403); o mesmo pedido feito
-  por um administrador gera um convite válido e imprevisível
+- **Quando** gero um convite
+- **Então** ele é criado, válido e imprevisível — e depois do meu teto mensal um
+  novo pedido é recusado com o motivo
 
 ### US-007 — Ter a rede efetivamente no ar
 

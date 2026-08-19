@@ -1,5 +1,5 @@
 import type { PrismaClient } from '@connect-gsa/db';
-import type { CreateInvite, CreatedInvite } from '@connect-gsa/shared';
+import { INVITE_QUOTA, type CreateInvite, type CreatedInvite } from '@connect-gsa/shared';
 import { badRequest, forbidden } from '../../plugins/errors.js';
 import { generateInviteCode, hashInviteCode, looksLikeInviteCode } from './invite.code.js';
 
@@ -19,12 +19,47 @@ export interface ClaimedInvite {
   inviteId: string;
 }
 
+/**
+ * Quantos convites esta pessoa ainda pode criar no período.
+ *
+ * Conta os CRIADOS, não os usados. É mais restritivo de propósito: contar
+ * usados deixaria alguém gerar cem links de uma vez e espalhá-los, e o teto só
+ * apareceria depois que o estrago já estivesse na rua.
+ *
+ * Coordenação e moderação não têm teto — o teto existe para uma conta de
+ * embaixador comprometida não virar torneira, e quem tem o papel já pode fazer
+ * coisas piores.
+ */
+export async function invitesRestantes(
+  prisma: PrismaClient,
+  userId: string,
+  role: string,
+): Promise<number | null> {
+  if (role === 'moderator' || role === 'admin') return null;
+
+  const desde = new Date(Date.now() - INVITE_QUOTA.days * DIA_EM_MS);
+  const criados = await prisma.inviteCode.count({
+    where: { createdById: userId, createdAt: { gte: desde } },
+  });
+
+  return Math.max(0, INVITE_QUOTA.max - criados);
+}
+
 export async function createInvite(
   prisma: PrismaClient,
   createdById: string,
   input: CreateInvite,
   webUrl: string,
+  role = 'ambassador',
 ): Promise<CreatedInvite> {
+  const restantes = await invitesRestantes(prisma, createdById, role);
+  if (restantes !== null && restantes <= 0) {
+    throw forbidden(
+      `Você já criou ${INVITE_QUOTA.max} convites nos últimos ${INVITE_QUOTA.days} dias. Espere um pouco para criar outro.`,
+      'INVITE_QUOTA',
+    );
+  }
+
   const code = generateInviteCode();
   const expiresAt = new Date(Date.now() + input.validityDays * DIA_EM_MS);
 
@@ -43,7 +78,7 @@ export async function createInvite(
   return {
     id: invite.id,
     code,
-    shareUrl: `${webUrl.replace(/\/+$/, '')}/convite?c=${code}`,
+    shareUrl: `${webUrl.replace(/\/+$/, '')}/convite/${code}`,
     expiresAt: invite.expiresAt.toISOString(),
     note: invite.note,
   };
@@ -140,6 +175,39 @@ export async function checkInvite(prisma: PrismaClient, code: string): Promise<{
   }
 
   return { codeHash };
+}
+
+/**
+ * Quem convidou, para a página do convite.
+ *
+ * Devolve só o PRIMEIRO NOME. O nome completo transformaria o link num jeito de
+ * descobrir quem está na rede sem entrar nela — e a rede ser fechada é o ponto.
+ *
+ * A recusa é a mesma dos outros caminhos e para os três motivos (não existe, já
+ * usado, expirado): responder diferente entregaria de graça o oráculo que o
+ * limite de tentativas existe para negar (AC-136).
+ */
+export async function invitationFor(
+  prisma: PrismaClient,
+  code: string,
+): Promise<{ invitedBy: string; expiresAt: string }> {
+  if (!looksLikeInviteCode(code)) {
+    throw badRequest(CONVITE_RECUSADO, 'INVITE_REJECTED');
+  }
+
+  const invite = await prisma.inviteCode.findFirst({
+    where: { codeHash: hashInviteCode(code), usedAt: null, expiresAt: { gt: new Date() } },
+    select: { expiresAt: true, createdBy: { select: { name: true } } },
+  });
+
+  if (!invite) {
+    throw badRequest(CONVITE_RECUSADO, 'INVITE_REJECTED');
+  }
+
+  return {
+    invitedBy: (invite.createdBy?.name ?? 'Alguém').trim().split(/\s+/)[0] ?? 'Alguém',
+    expiresAt: invite.expiresAt.toISOString(),
+  };
 }
 
 /** Caminho alternativo ao convite: e-mail já aprovado pelo programa (Q-001). */

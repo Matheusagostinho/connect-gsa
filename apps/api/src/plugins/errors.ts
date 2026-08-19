@@ -23,8 +23,8 @@ export const badRequest = (message: string, code = 'BAD_REQUEST'): AppError =>
   new AppError(400, message, code);
 export const unauthorized = (message = 'Autenticação necessária.'): AppError =>
   new AppError(401, message, 'UNAUTHORIZED');
-export const forbidden = (message = 'Você não tem permissão para isso.'): AppError =>
-  new AppError(403, message, 'FORBIDDEN');
+export const forbidden = (message = 'Você não tem permissão para isso.', code = 'FORBIDDEN'): AppError =>
+  new AppError(403, message, code);
 export const notFound = (message = 'Não encontrado.'): AppError =>
   new AppError(404, message, 'NOT_FOUND');
 export const tooManyRequests = (message = 'Tentativas demais. Aguarde um pouco.'): AppError =>

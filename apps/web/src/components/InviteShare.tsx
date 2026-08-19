@@ -1,4 +1,4 @@
-import type { CreatedInvite } from '@connect-gsa/shared';
+import { INVITE_QUOTA, type CreatedInvite } from '@connect-gsa/shared';
 import { useMutation } from '@tanstack/react-query';
 import { Check, Copy, Share2 } from 'lucide-react';
 import { useState } from 'react';
@@ -55,12 +55,19 @@ export function InviteShare() {
       <h2 className="text-xl font-medium">Convidar alguém</h2>
       <p className="mt-2 text-sm text-ink-muted">
         Gere um link e mande para quem é do programa. Vale por 30 dias e serve para uma pessoa só.
+        Você pode criar até {INVITE_QUOTA.max} convites a cada {INVITE_QUOTA.days} dias.
       </p>
 
       {convite ? (
         <div className="mt-5 flex flex-col gap-3">
-          <div className="rounded-field border border-border bg-surface-subtle p-3">
-            <p className="font-mono text-sm break-all text-ink">{convite.shareUrl}</p>
+          <div className="rounded-field border border-border bg-surface-subtle p-4">
+            {/*
+              O código sozinho, grande, além do link. Ele existe justamente para
+              ser DITADO — e ler oito caracteres no meio de uma URL é o oposto
+              disso. `tracking-widest` separa os caracteres para quem soletra.
+            */}
+            <p className="font-mono text-2xl tracking-widest text-ink">{convite.code}</p>
+            <p className="mt-3 font-mono text-xs break-all text-ink-muted">{convite.shareUrl}</p>
           </div>
 
           <div className="flex flex-wrap gap-2">

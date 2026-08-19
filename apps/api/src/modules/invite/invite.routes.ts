@@ -1,5 +1,11 @@
 import type { PrismaClient } from '@connect-gsa/db';
-import { createInviteSchema, createdInviteSchema, redeemInviteSchema } from '@connect-gsa/shared';
+import {
+  createInviteSchema,
+  createdInviteSchema,
+  inviteCodeSchema,
+  inviteInvitationSchema,
+  redeemInviteSchema,
+} from '@connect-gsa/shared';
 import { z } from 'zod';
 import type { AppInstance } from '../../types.js';
 import {
@@ -10,7 +16,7 @@ import {
 import { requireAuth } from '../../auth/session.js';
 import { assertCan } from '../../authz/guard.js';
 import type { Env } from '../../env.js';
-import { checkInvite, createInvite } from './invite.service.js';
+import { checkInvite, createInvite, invitationFor } from './invite.service.js';
 
 export function registerInviteRoutes(app: AppInstance, prisma: PrismaClient, env: Env): void {
   app.post(
@@ -20,9 +26,28 @@ export function registerInviteRoutes(app: AppInstance, prisma: PrismaClient, env
       const user = requireAuth(request);
       assertCan(user, 'create', 'Invite');
 
-      const invite = await createInvite(prisma, user.id, request.body, env.WEB_URL);
+      const invite = await createInvite(prisma, user.id, request.body, env.WEB_URL, user.role);
       return reply.status(201).send(invite);
     },
+  );
+
+  /**
+   * Quem convidou, para a página do convite.
+   *
+   * Mesmo limite apertado do `/invites/check`, e pelo mesmo motivo: ela também
+   * responde diferente para um código que existe e um que não existe. Sem o
+   * limite, seria o oráculo de uma varredura.
+   */
+  app.get(
+    '/invites/:code',
+    {
+      schema: {
+        params: z.object({ code: inviteCodeSchema }),
+        response: { 200: inviteInvitationSchema },
+      },
+      config: { rateLimit: { max: 10, timeWindow: '10 minutes' } },
+    },
+    async (request) => invitationFor(prisma, request.params.code),
   );
 
   /**
