@@ -28,6 +28,8 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Link de convite pronto para compartilhar | |
 | Notificações de reação, comentário e conexão | |
 | Navegação lateral no computador, inferior no celular | |
+| Exportar e excluir a conta (LGPD art. 18, V e VI) | |
+| Página de apresentação e tela de configurações | |
 | Controle de visibilidade no mapa | |
 
 A especificação completa, com critérios de aceite e provas, está em
@@ -242,7 +244,10 @@ verificação executável. Os que mais moldam o código:
 - **Sessão em cookie httpOnly.** Sem senha própria: nada de hash para vazar nem fluxo de
   recuperação para atacar.
 - **Autorização no servidor.** A tela esconde botões; quem recusa é a API.
-- **Texto livre é sanitizado na entrada**, antes de chegar ao banco.
+- **Texto livre é sanitizado na entrada**, antes de chegar ao banco. O link é reconhecido só
+  na exibição, pelo React — o conteúdo continua texto puro, que é o que impede injeção.
+- **O titular exporta e exclui os próprios dados.** Excluir apaga as imagens do
+  armazenamento e acerta os contadores das publicações de terceiros antes da cascata.
 - **Toda imagem é reprocessada.** Foto de celular carrega coordenadas de GPS no EXIF;
   guardá-la como veio entregaria a localização exata de um estudante. Não removemos "os
   campos ruins" — decodificamos os pixels e escrevemos um arquivo novo, que nasce sem

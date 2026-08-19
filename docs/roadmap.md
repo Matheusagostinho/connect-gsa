@@ -1,6 +1,6 @@
 # Roadmap do ConnectGSA
 
-> Situação em 19 de agosto de 2026 · 173 testes · 68/68 critérios de aceite provados
+> Situação em 19 de agosto de 2026 · 197 testes · 83/83 critérios de aceite provados
 
 Este documento compara o que o MVP prometeu com o que existe hoje, e ordena o que falta.
 A ordem não é por tamanho nem por vontade: começa pelo que é **exigência legal**, passa
@@ -51,7 +51,8 @@ lançamento.
 
 Entregues: conexões entre embaixadores (pedir, aceitar, recusar, desfazer), endereço público
 de perfil, link de convite compartilhável, sair da conta, tema claro e escuro, notificações,
-e uma entrada de desenvolvimento travada contra produção.
+tela de configurações, página de apresentação, marca própria, e uma entrada de
+desenvolvimento travada contra produção.
 
 A navegação também mudou de forma: coluna lateral fixa no computador e barra inferior no
 celular, com o mapa ocupando a tela inteira.
@@ -60,13 +61,15 @@ celular, com o mapa ocupando a tela inteira.
 
 ## 3. O que falta, em ordem
 
-### Fatia 4 — Exportar e excluir a conta · **exigência legal**
+### ~~Fatia 4 — Exportar e excluir a conta~~ · **entregue**
 
-LGPD, art. 18, incisos V e VI. A constituição do projeto (P-012) marca isso como obrigatório
-**antes da abertura pública do cadastro**. Guardamos dado de estudante, inclusive imagem:
-sem isso, o lançamento para o programa fica exposto.
+LGPD, art. 18, V e VI. O P-012 deixou de ser recomendação e virou princípio obrigatório,
+com verificação executável.
 
-Inclui apagar as imagens do armazenamento, não só as linhas do banco.
+Duas coisas que a cascata do banco não faz sozinha, e que teriam virado defeito silencioso:
+as **imagens** somem do armazenamento junto (não só as linhas — senão os arquivos seguiriam
+acessíveis por URL), e os **contadores desnormalizados** das publicações de terceiros são
+acertados antes da cascata (senão mentiriam para sempre).
 
 ### ~~Fatia 5 — Notificações~~ · **entregue**
 
