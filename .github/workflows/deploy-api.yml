@@ -1,13 +1,23 @@
+# Deploy da API — DESLIGADO no automático.
+#
+# Roda apenas sob demanda (aba Actions → Run workflow). Desligado a pedido em
+# 19/08/2026: sem projeto no Google Cloud e sem os segredos do Workload
+# Identity Federation, este workflow não tem como passar — ele falhava em
+# `google-github-actions/auth` antes de qualquer coisa.
+#
+# Para religar, depois de criar o projeto e configurar os segredos:
+#
+#   on:
+#     push:
+#       branches: [main]
+#       paths: [...]
+#     workflow_dispatch:
+#
+# Ver docs/roadmap.md, Fatia 7.
+
 name: Deploy da API
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/api/**'
-      - 'packages/**'
-      - 'pnpm-lock.yaml'
-      - '.github/workflows/deploy-api.yml'
   workflow_dispatch:
 
 concurrency:

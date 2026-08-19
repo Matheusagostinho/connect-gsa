@@ -1,9 +1,24 @@
+# CI — DESLIGADO no automático.
+#
+# Roda apenas sob demanda (aba Actions → Run workflow). Foi desligado a pedido
+# em 19/08/2026, enquanto a publicação em produção não existe e o ruído de
+# falha atrapalhava mais do que ajudava.
+#
+# Para religar: devolva os gatilhos abaixo.
+#
+#   on:
+#     pull_request:
+#     push:
+#       branches: [main]
+#
+# O que ele fazia de errado até aqui: rodava o seed sem gerar o client do
+# Prisma antes. O client é gitignorado (recriado em cada máquina), então no
+# runner ele simplesmente não existia. Já corrigido.
+
 name: CI
 
 on:
-  pull_request:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -75,6 +90,9 @@ jobs:
         run: |
           PGPASSWORD="$PG_PASSWORD" psql -h localhost -U "$PG_USER" -d "$PG_DATABASE" \
             -c "CREATE DATABASE $PG_TEST_DATABASE"
+          # O client do Prisma é gitignorado — é gerado, não versionado. Sem
+          # este passo, o seed importa um arquivo que não existe no runner.
+          pnpm --filter @connect-gsa/db run generate
           pnpm --filter @connect-gsa/db exec prisma migrate deploy
           pnpm --filter @connect-gsa/db run seed
           DATABASE_URL="$TEST_DATABASE_URL" pnpm --filter @connect-gsa/db exec prisma migrate deploy

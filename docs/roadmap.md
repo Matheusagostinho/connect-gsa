@@ -82,6 +82,12 @@ ao programa um motivo institucional para usar a rede.
 
 ### Fatia 7 — Publicação em produção · **bloqueado por você**
 
+> Os três workflows estão **desligados no automático** desde 19/08/2026, a pedido: rodam só
+> sob demanda pela aba Actions. Os de deploy não teriam como passar sem os segredos do
+> Google Cloud. O de CI tinha um defeito próprio — rodava o seed sem gerar o client do
+> Prisma antes —, já corrigido. Religar é devolver os gatilhos, que estão comentados no
+> topo de cada arquivo.
+
 Nada disso está no ar. Falta, e não depende de código:
 
 1. Criar o projeto no Google Cloud e ativar o faturamento
