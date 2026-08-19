@@ -229,6 +229,34 @@ body {
   }
 }
 
+/*
+ * O traço do ícone sendo desenhado.
+ *
+ * Os ícones do lucide são caminhos SVG com contorno, então dá para "escrevê-los"
+ * animando o tracejado — a técnica que o Vivus e o SVG.js embrulham em
+ * biblioteca. Aqui ela cabe em poucas linhas de CSS, sem pacote adicional.
+ *
+ * `pathLength` não é definido, então o comprimento vem em unidades de usuário;
+ * 64 cobre com folga os caminhos desses ícones no tamanho em que são usados.
+ */
+@keyframes reacao-desenha {
+  from {
+    stroke-dasharray: 64;
+    stroke-dashoffset: 64;
+  }
+  to {
+    stroke-dasharray: 64;
+    stroke-dashoffset: 0;
+  }
+}
+
+.reacao-desenha path,
+.reacao-desenha circle,
+.reacao-desenha line,
+.reacao-desenha polyline {
+  animation: reacao-desenha 520ms ease-out backwards;
+}
+
 @keyframes reacao-escolhida {
   0% {
     transform: scale(1);
@@ -251,7 +279,11 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .reacao-entra,
-  .reacao-escolhida {
+  .reacao-escolhida,
+  .reacao-desenha path,
+  .reacao-desenha circle,
+  .reacao-desenha line,
+  .reacao-desenha polyline {
     animation: none;
   }
 }
@@ -332,4 +364,16 @@ body {
 
 :root[data-theme='dark'] .maplibregl-canvas {
   filter: invert(0.92) hue-rotate(180deg) brightness(1.05);
+}
+
+/*
+ * O zoom e o crédito ficam acima da barra inferior no celular. Sem isto, o
+ * mapa em tela cheia esconde os dois atrás da navegação — e a atribuição do
+ * OpenStreetMap tem de continuar visível, é exigência da licença ODbL.
+ */
+@media (width < 64rem) {
+  .maplibregl-ctrl-bottom-right,
+  .maplibregl-ctrl-bottom-left {
+    margin-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
 }

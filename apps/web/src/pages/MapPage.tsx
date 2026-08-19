@@ -1,87 +1,87 @@
-import { X } from 'lucide-react';
 import { useState } from 'react';
-import { AmbassadorCardItem } from '../components/AmbassadorCardItem.tsx';
+import { NavLink } from 'react-router';
+import { AccountMenu } from '../components/AccountMenu.tsx';
 import { AmbassadorMap } from '../components/AmbassadorMap.tsx';
-import { AppShell, FullBleed } from '../components/AppShell.tsx';
-import { Card } from '../components/ui.tsx';
-import { useCityPeople, useMap } from '../lib/directory.js';
+import { BottomNav } from '../components/BottomNav.tsx';
+import { CityModal } from '../components/CityModal.tsx';
+import { Wordmark } from '../components/Logo.tsx';
+import { NotificationBell } from '../components/NotificationBell.tsx';
+import { SideNav } from '../components/SideNav.tsx';
+import { useMap } from '../lib/directory.js';
 import { useMyProfile } from '../lib/session.js';
 
+/**
+ * O mapa, em tela cheia.
+ *
+ * Esta é a única tela que não usa a moldura padrão. O mapa é o conteúdo, não um
+ * elemento dentro de uma coluna de leitura — colocá-lo numa caixa desperdiçaria
+ * justamente o que faz um mapa útil, que é enxergar o todo.
+ *
+ * No celular ele vira o FUNDO: a marca, as notificações e a conta flutuam por
+ * cima, e a lista de uma cidade sobe em modal. Numa tela de 390px, qualquer
+ * cabeçalho fixo come um quinto do mapa.
+ */
 export function MapPage() {
   const { data: profile } = useMyProfile();
   const { data: cities = [], isPending } = useMap();
   const [cidadeAberta, setCidadeAberta] = useState<string | null>(null);
-  const { data: pessoas = [], isPending: carregandoPessoas } = useCityPeople(cidadeAberta);
 
   if (!profile) return null;
 
-  const cidade = cities.find((c) => c.cityId === cidadeAberta);
+  const cidade = cities.find((c) => c.cityId === cidadeAberta) ?? null;
   const total = cities.reduce((soma, c) => soma + c.count, 0);
 
   return (
-    <AppShell profile={profile} bleed>
-      <FullBleed>
-        <div className="px-5 pb-3 lg:px-8">
-          <h1 className="display text-2xl sm:text-3xl">Onde estamos</h1>
-          <p className="mt-1 text-sm text-ink-muted">
-        {isPending
-          ? 'Carregando o mapa…'
-          : `${total} ${total === 1 ? 'embaixador' : 'embaixadores'} em ${cities.length} ${cities.length === 1 ? 'cidade' : 'cidades'}.`}{' '}
-            O mapa mostra a cidade de cada pessoa — nunca um endereço.
-          </p>
-        </div>
+    <div className="fixed inset-0 flex bg-surface">
+      {/* No computador a navegação continua sendo uma coluna, ao lado do mapa. */}
+      <div className="hidden shrink-0 px-8 lg:block">
+        <SideNav />
+      </div>
 
-        {/* O mapa toma toda a altura que sobra (AC-064). */}
-        <div className="min-h-0 flex-1 overflow-hidden border-y border-border">
-          <AmbassadorMap cities={cities} onSelectCity={setCidadeAberta} />
-        </div>
-      </FullBleed>
+      <div className="relative min-w-0 flex-1">
+        <AmbassadorMap cities={cities} onSelectCity={setCidadeAberta} />
 
-      {cidadeAberta ? (
-        <section className="mx-auto w-full max-w-5xl px-5 py-6 lg:px-8" aria-live="polite">
-          <div className="mb-4 flex items-center justify-between gap-4">
-            <h2 className="text-xl font-medium">
-              {cidade ? `${cidade.city}/${cidade.state}` : 'Cidade'}
-              {cidade ? (
-                <span className="ml-2 text-base font-normal text-ink-muted">
-                  {cidade.count} {cidade.count === 1 ? 'pessoa' : 'pessoas'}
-                </span>
-              ) : null}
-            </h2>
-            <button
-              type="button"
-              onClick={() => setCidadeAberta(null)}
-              aria-label="Fechar a lista da cidade"
-              className="flex size-10 cursor-pointer items-center justify-center rounded-pill text-ink-muted transition-colors duration-200 hover:text-ink"
-            >
-              <X className="size-4" aria-hidden="true" />
-            </button>
+        {/*
+          Flutuando sobre o mapa. `pointer-events-none` no contêiner e `auto`
+          nos controles: sem isso, a faixa transparente bloquearia o arraste do
+          mapa na parte de cima da tela.
+        */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4">
+          <div className="pointer-events-auto flex flex-col gap-1 rounded-card border border-border bg-surface/85 px-4 py-3 backdrop-blur-sm">
+            <NavLink to="/" aria-label="ConnectGSA" className="lg:hidden">
+              <Wordmark />
+            </NavLink>
+            <p className="text-sm font-medium text-ink max-lg:mt-1">
+              {isPending
+                ? 'Carregando o mapa…'
+                : `${total} ${total === 1 ? 'embaixador' : 'embaixadores'} em ${cities.length} ${
+                    cities.length === 1 ? 'cidade' : 'cidades'
+                  }`}
+            </p>
+            <p className="text-xs text-ink-muted">Cidade, nunca endereço</p>
           </div>
 
-          {carregandoPessoas ? (
-            <p className="text-ink-muted" role="status">
-              Carregando…
-            </p>
-          ) : (
-            <ul className="grid gap-4 sm:grid-cols-2">
-              {pessoas.map((pessoa) => (
-                <li key={pessoa.id}>
-                  <AmbassadorCardItem person={pessoa} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      ) : null}
+          <div className="pointer-events-auto flex items-center gap-1 rounded-pill border border-border bg-surface/85 px-1 backdrop-blur-sm">
+            <NotificationBell />
+            <AccountMenu profile={profile} />
+          </div>
+        </div>
 
-      {!isPending && cities.length === 0 ? (
-        <Card className="mx-auto mt-6 max-w-md text-center">
-          <h2 className="display text-2xl">Ninguém no mapa ainda</h2>
-          <p className="mt-2 text-ink-muted">
-            Aparecer no mapa é uma escolha de cada pessoa. Você pode ligar a sua em Meu perfil.
-          </p>
-        </Card>
-      ) : null}
-    </AppShell>
+        {!isPending && cities.length === 0 ? (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-6">
+            <div className="pointer-events-auto max-w-sm rounded-card border border-border bg-surface/95 p-6 text-center backdrop-blur-sm">
+              <h2 className="display text-xl">Ninguém no mapa ainda</h2>
+              <p className="mt-2 text-sm text-ink-muted">
+                Aparecer no mapa é escolha de cada pessoa. Você liga a sua em Configurações.
+              </p>
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      <CityModal city={cidade} onClose={() => setCidadeAberta(null)} />
+
+      <BottomNav />
+    </div>
   );
 }

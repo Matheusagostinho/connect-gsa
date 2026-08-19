@@ -112,7 +112,9 @@ export function AmbassadorMap({
       attributionControl: { compact: true },
     });
 
-    instancia.addControl(new NavigationControl({ showCompass: false }), 'top-right');
+    // Embaixo, e não em cima: no celular a marca e a conta flutuam no topo do
+    // mapa, e o zoom ali cairia por cima do avatar.
+    instancia.addControl(new NavigationControl({ showCompass: false }), 'bottom-right');
 
     instancia.once('load', () => {
       instancia.resize();
