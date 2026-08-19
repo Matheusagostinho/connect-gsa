@@ -32,7 +32,10 @@ export function FeedTabs({
     <div
       role="tablist"
       aria-label="Como ver o feed"
-      className="sticky top-0 z-20 -mx-4 mb-4 flex border-b border-border bg-surface/90 backdrop-blur-sm lg:top-0 lg:mx-0 lg:rounded-t-card"
+      // Sem `sticky` próprio: as abas moram DENTRO do cabeçalho da página, e é
+      // ele que gruda no topo. Duas coisas grudadas uma dentro da outra brigam
+      // por posição e a borda inferior aparece duplicada.
+      className="flex w-full"
     >
       {ABAS.map(({ value, label, descricao }) => {
         const ativa = atual === value;

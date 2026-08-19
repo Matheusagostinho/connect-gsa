@@ -36,9 +36,7 @@ export function ConnectionsPage() {
     (data?.connected.length ?? 0) + (data?.received.length ?? 0) + (data?.sent.length ?? 0) === 0;
 
   return (
-    <AppShell profile={profile} width="xl">
-
-      <h1 className="display mb-6 text-3xl sm:text-4xl">Minhas conexões</h1>
+    <AppShell profile={profile} width="xl" title="Minhas conexões">
 
       {isPending ? (
         <p className="py-8 text-center text-ink-muted" role="status">

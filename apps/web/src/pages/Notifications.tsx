@@ -51,8 +51,7 @@ export function NotificationsPage() {
   const itens = feed.data?.notifications ?? [];
 
   return (
-    <AppShell profile={profile}>
-      <h1 className="display mb-6 text-3xl sm:text-4xl">Notificações</h1>
+    <AppShell profile={profile} title="Notificações">
 
       {feed.isPending ? (
         <p className="py-8 text-center text-ink-muted" role="status">

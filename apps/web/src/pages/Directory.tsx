@@ -35,12 +35,12 @@ export function DirectoryPage() {
   const habilidadeAtiva = filtros.skill;
 
   return (
-    <AppShell profile={profile} width="xl">
-
-      <h1 className="display mb-2 text-3xl sm:text-4xl">Quem está na rede</h1>
-      <p className="mb-6 text-base text-ink-muted">
-        Procure por nome, curso, instituição — ou filtre por habilidade.
-      </p>
+    <AppShell
+      profile={profile}
+      width="xl"
+      title="Quem está na rede"
+      subtitle="Procure por nome, curso, instituição — ou filtre por habilidade"
+    >
 
       <div className="mb-4">
         <Field

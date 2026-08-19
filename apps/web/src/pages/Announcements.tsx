@@ -32,12 +32,12 @@ export function AnnouncementsPage() {
   }
 
   return (
-    <AppShell profile={profile} width="lg">
-      <h1 className="display mb-2 text-3xl sm:text-4xl">Avisos do programa</h1>
-      <p className="mb-6 text-base text-ink-muted">
-        Comunicados oficiais da coordenação. Ficam fora do feed para não se perderem na
-        rolagem.
-      </p>
+    <AppShell
+      profile={profile}
+      width="lg"
+      title="Avisos do programa"
+      subtitle="Comunicados da coordenação, fora do feed para não se perderem na rolagem"
+    >
 
       {podePublicar ? (
         <Card className="mb-4 p-5">

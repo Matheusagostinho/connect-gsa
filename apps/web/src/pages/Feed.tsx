@@ -19,9 +19,13 @@ export function FeedPage() {
   const posts = data?.pages.flatMap((page) => page.posts) ?? [];
 
   return (
-    <AppShell profile={profile} width="lg">
-      <FeedTabs atual={aba} onChange={setAba} />
-
+    <AppShell
+      profile={profile}
+      width="lg"
+      rail
+      title="Início"
+      tabs={<FeedTabs atual={aba} onChange={setAba} />}
+    >
       <AnnouncementBanner />
 
       <Composer authorName={profile.name} authorImage={profile.imageUrl} />
