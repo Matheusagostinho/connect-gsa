@@ -1,5 +1,4 @@
 import { REACTION_META, REACTION_ORDER, type Reaction } from '@connect-gsa/shared';
-import { ChevronUp } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { ReactionIcon } from './ReactionIcon.tsx';
 import { cn } from './ui.tsx';
@@ -8,22 +7,41 @@ import { cn } from './ui.tsx';
 const PRINCIPAL: Reaction = 'liftoff';
 
 /**
+ * Quanto tempo o dedo precisa ficar parado para a fileira abrir.
+ *
+ * Abaixo disso, um toque comum dispara a fileira sem querer; acima, o gesto
+ * parece travado e a pessoa solta antes de acontecer qualquer coisa.
+ */
+const ESPERA_MS = 450;
+
+/**
+ * Quanto o ponteiro pode andar antes de virar rolagem.
+ *
+ * Num feed, o dedo que desce a tela quase sempre começa em cima de algum
+ * elemento. Sem este limiar, rolar viraria uma loteria de menus abertos.
+ */
+const LIMIAR_ARRASTO = 10;
+
+/**
  * A barra de reações.
  *
  * Uma reação por post, trocável: escolher outra substitui a anterior, e
- * escolher a mesma desfaz — por isso o botão principal mostra a reação ATUAL,
- * e não um rótulo fixo.
+ * escolher a mesma desfaz.
  *
- * A interação tem duas portas de propósito:
+ * No cartão fica só o ÍCONE. O rótulo escrito repetia o que o desenho já diz e
+ * custava largura suficiente para o nome de quem publicou virar reticências —
+ * e o nome identifica a pessoa, a reação não.
  *
- * - **O botão grande aplica "Decolou" direto.** É a reação principal, e o
- *   caminho de um toque precisa existir; obrigar a escolher numa lista a cada
- *   vez transformaria a ação mais comum na mais cara.
- * - **O chevron ao lado abre as outras.** Deixar a fileira aparecer só no
- *   cursor pareceria mais elegante, mas hover não existe em celular e não
- *   existe no teclado — e as reações de intenção ("Bora junto", "Posso
- *   ajudar"), que são o diferencial desta rede, ficariam inalcançáveis para
- *   metade das pessoas.
+ * A interação tem três portas, uma para cada forma de usar o produto:
+ *
+ * - **Toque curto** aplica a reação. É a ação mais comum, e obrigar a escolher
+ *   numa lista a cada vez a transformaria na mais cara.
+ * - **Pressionar e segurar** abre a fileira, como no Facebook — mas cancelando
+ *   ao primeiro arrasto, senão rolar o feed abriria menus sem parar.
+ * - **Seta para cima** abre a fileira no teclado, onde "segurar" não existe.
+ *   Sem isso, as reações de intenção — o diferencial desta rede — ficariam
+ *   inalcançáveis para quem não usa ponteiro, que é o mesmo erro do hover que
+ *   já corrigimos uma vez.
  */
 export function ReactionBar({
   counts,
@@ -41,6 +59,11 @@ export function ReactionBar({
   /** Muda a cada escolha, para o ícone ser remontado e a animação reiniciar. */
   const [desenho, setDesenho] = useState(0);
   const container = useRef<HTMLDivElement>(null);
+
+  const temporizador = useRef<number | null>(null);
+  const origem = useRef<{ x: number; y: number } | null>(null);
+  /** Marca que a fileira abriu por pressão, para o clique seguinte não reagir. */
+  const abriuSegurando = useRef(false);
 
   useEffect(() => {
     if (!aberta) return;
@@ -60,6 +83,17 @@ export function ReactionBar({
       document.removeEventListener('keydown', fechar);
     };
   }, [aberta]);
+
+  /** Solta o temporizador ao desmontar: um post pode sair da tela no meio do gesto. */
+  useEffect(() => cancelarEspera, []);
+
+  function cancelarEspera() {
+    if (temporizador.current !== null) {
+      window.clearTimeout(temporizador.current);
+      temporizador.current = null;
+    }
+    origem.current = null;
+  }
 
   const total = Object.values(counts).reduce((soma: number, n) => soma + (n ?? 0), 0);
   const presentes = REACTION_ORDER.filter((reaction) => (counts[reaction] ?? 0) > 0);
@@ -107,10 +141,10 @@ export function ReactionBar({
                 >
                   <ReactionIcon reaction={reaction} className="size-5" colored={mine === reaction} />
                   {/*
-                    O rótulo não é redundante com o emoji: "Bora junto" e "Posso
-                    ajudar" são intenções, e nenhum emoji as comunica sozinho.
-                    De quebra, a fileira continua legível onde o sistema não tem
-                    fonte de emoji instalada.
+                    Aqui o rótulo FICA: "Bora junto" e "Posso ajudar" são
+                    intenções, e desenho nenhum as comunica sozinho. Na fileira
+                    a pessoa está justamente escolhendo, e é o momento em que
+                    saber o que cada uma significa importa.
                   */}
                   <span className="text-[0.65rem] leading-tight font-medium text-ink-muted">
                     {meta.label}
@@ -121,54 +155,84 @@ export function ReactionBar({
           </div>
         ) : null}
 
-        <div
+        <button
+          type="button"
+          disabled={disabled}
+          aria-pressed={mine !== null}
+          aria-expanded={aberta}
+          aria-haspopup="true"
+          // O nome acessível é a única coisa que sobreviveu do rótulo: sem ele o
+          // botão vira um desenho anônimo para quem lê por leitor de tela.
+          aria-label={
+            mine
+              ? `Sua reação: ${atual.label}. Segure ou use a seta para cima para trocar`
+              : 'Reagir com Decolou. Segure ou use a seta para cima para escolher outra'
+          }
+          onPointerDown={(event) => {
+            if (disabled) return;
+            abriuSegurando.current = false;
+            origem.current = { x: event.clientX, y: event.clientY };
+            temporizador.current = window.setTimeout(() => {
+              abriuSegurando.current = true;
+              setAberta(true);
+              cancelarEspera();
+            }, ESPERA_MS);
+          }}
+          onPointerMove={(event) => {
+            const inicio = origem.current;
+            if (!inicio) return;
+            const andou =
+              Math.abs(event.clientX - inicio.x) > LIMIAR_ARRASTO ||
+              Math.abs(event.clientY - inicio.y) > LIMIAR_ARRASTO;
+            if (andou) cancelarEspera();
+          }}
+          onPointerUp={cancelarEspera}
+          onPointerCancel={cancelarEspera}
+          onPointerLeave={cancelarEspera}
+          // O menu nativo do sistema abriria no meio do gesto no Android e
+          // engoliria o toque seguinte.
+          onContextMenu={(event) => event.preventDefault()}
+          onClick={() => {
+            // O clique chega DEPOIS do temporizador ter aberto a fileira; sem
+            // esta guarda, segurar abriria a fileira e reagiria ao mesmo tempo.
+            if (abriuSegurando.current) {
+              abriuSegurando.current = false;
+              return;
+            }
+            escolher(mine ?? PRINCIPAL);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'ArrowUp' || (event.altKey && event.key === 'Enter')) {
+              event.preventDefault();
+              setAberta(true);
+            }
+          }}
           className={cn(
-            'flex items-center rounded-pill border transition-colors duration-200',
-            mine ? 'border-transparent bg-surface-subtle' : 'border-border',
+            'flex size-10 cursor-pointer items-center justify-center rounded-pill border',
+            'transition-colors duration-200 disabled:cursor-not-allowed',
+            // `touch-none` e `select-none`: sem eles, segurar no celular começa
+            // a rolagem e a seleção de texto por cima do próprio gesto.
+            'touch-none select-none',
+            mine
+              ? 'border-transparent bg-surface-subtle text-ink'
+              : 'border-border text-ink-muted hover:text-ink',
           )}
         >
-          <button
-            type="button"
-            disabled={disabled}
-            onClick={() => escolher(mine ?? PRINCIPAL)}
-            aria-pressed={mine !== null}
-            className={cn(
-              'inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-pill pr-2 pl-4',
-              'text-sm font-medium transition-colors duration-200 disabled:cursor-not-allowed',
-              mine ? 'text-ink' : 'text-ink-muted hover:text-ink',
-            )}
-          >
-            <span className={cn(pulsando && 'reacao-escolhida', 'inline-flex')}>
-              {/*
-                A chave inclui o contador: trocar a chave remonta o ícone, e é o
-                que faz o traço ser redesenhado a cada escolha em vez de animar
-                só na primeira.
-              */}
-              <ReactionIcon
-                key={`${mine ?? PRINCIPAL}-${desenho}`}
-                reaction={mine ?? PRINCIPAL}
-                colored={mine !== null}
-                drawing={desenho > 0}
-              />
-            </span>
-            {mine ? atual.label : 'Reagir'}
-          </button>
-
-          <button
-            type="button"
-            disabled={disabled}
-            onClick={() => setAberta((estava) => !estava)}
-            aria-expanded={aberta}
-            aria-haspopup="true"
-            aria-label="Escolher outra reação"
-            className="flex min-h-10 cursor-pointer items-center rounded-pill pr-3 pl-1 text-ink-muted transition-colors duration-200 hover:text-ink disabled:cursor-not-allowed"
-          >
-            <ChevronUp
-              className={cn('size-4 transition-transform duration-200', aberta && 'rotate-180')}
-              aria-hidden="true"
+          <span className={cn(pulsando && 'reacao-escolhida', 'inline-flex')}>
+            {/*
+              A chave inclui o contador: trocar a chave remonta o ícone, e é o
+              que faz o traço ser redesenhado a cada escolha em vez de animar
+              só na primeira.
+            */}
+            <ReactionIcon
+              key={`${mine ?? PRINCIPAL}-${desenho}`}
+              reaction={mine ?? PRINCIPAL}
+              className="size-5"
+              colored={mine !== null}
+              drawing={desenho > 0}
             />
-          </button>
-        </div>
+          </span>
+        </button>
       </div>
 
       {total > 0 ? (
