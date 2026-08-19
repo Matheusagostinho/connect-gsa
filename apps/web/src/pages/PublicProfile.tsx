@@ -25,13 +25,7 @@ export function PublicProfilePage() {
   return (
     <AppShell
       profile={me}
-      width="lg"
-      title={profile?.name ?? 'Perfil'}
-      {...(profile
-        ? {
-            subtitle: `${profile.postCount} ${profile.postCount === 1 ? 'publicação' : 'publicações'}`,
-          }
-        : {})}
+
       lead={
         <button
           type="button"

@@ -1,6 +1,6 @@
 import type { MyProfile, PublicProfile } from '@connect-gsa/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -152,22 +152,26 @@ describe('apresentação do perfil', () => {
     expect(screen.getByText(/entrou em agosto de 2026/i)).toBeInTheDocument();
   });
 
-  it('a faixa é derivada do id: estável entre visitas, distinta entre pessoas', () => {
-    const faixa = () =>
-      document.querySelector<HTMLElement>('[style*="gradient"]')?.style.backgroundImage ?? '';
-
+  it('o contador de conexões é um link, e se anuncia como tal @spec:AC-122', () => {
     renderPerfil();
-    const primeira = faixa();
-    expect(primeira).toMatch(/linear-gradient/);
 
-    cleanup();
+    // Conexões saiu da navegação: este é o ÚNICO caminho até a lista, e um
+    // número que não parece clicável esconde a página inteira.
+    const link = screen.getByRole('link', { name: /conex/i });
+    expect(link).toHaveAttribute('href', '/conexoes');
+  });
+
+  it('oferece compartilhar o endereço do perfil @spec:AC-123', () => {
     renderPerfil();
-    // Uma cor sorteada mudaria a cada visita, e o perfil pareceria outro toda
-    // vez que fosse aberto.
-    expect(faixa()).toBe(primeira);
 
-    cleanup();
-    renderPerfil({ ...BASE, id: '99999999-9999-4999-8999-999999999999' });
-    expect(faixa()).not.toBe(primeira);
+    expect(screen.getByRole('button', { name: /compartilhar/i })).toBeInTheDocument();
+  });
+
+  it('não desenha capa nenhuma', () => {
+    renderPerfil();
+
+    // A faixa gerada ocupava um terço da tela do celular antes de a pessoa
+    // aparecer — enfeite no lugar do que faz alguém decidir se quer se conectar.
+    expect(document.querySelector('[style*="gradient"]')).toBeNull();
   });
 });
