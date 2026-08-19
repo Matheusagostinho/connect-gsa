@@ -110,12 +110,17 @@ de por que a rede não funciona sem ele (LGPD art. 6º, III).
 O embaixador escolhe se entra no mapa, e o padrão de um perfil recém-criado é
 não aparecer. Sair do mapa tem efeito imediato.
 
-## P-012 [RECOMENDADO] Titular pode exportar e excluir seus dados
+## P-012 [DEVE] Titular pode exportar e excluir seus dados
 
-Exportação em formato legível por máquina e exclusão de conta a pedido.
+Exportação em formato legível por máquina e exclusão de conta a pedido — LGPD
+art. 18, incisos V e VI.
 
-> Vira **[DEVE]** com verificação executável antes da abertura pública do
-> cadastro — LGPD arts. 18, V e VI. Fora do escopo da primeira fatia.
+Excluir apaga também as IMAGENS no armazenamento, não só as linhas do banco, e
+acerta os contadores desnormalizados das publicações de terceiros antes da
+cascata. Sem a primeira, os arquivos seguem acessíveis por URL; sem a segunda,
+os contadores de outras pessoas mentem para sempre.
+
+- verificação(teste): @principle:P-012
 
 ## P-013 [PODE] Ranking de gamificação só com opt-in
 

@@ -6,3 +6,4 @@ export * from './post.schema.js';
 export * from './directory.schema.js';
 export * from './connection.schema.js';
 export * from './notification.schema.js';
+export * from './account.schema.js';

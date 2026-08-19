@@ -21,6 +21,7 @@ import { registerMediaRoutes } from './modules/media/media.routes.js';
 import { registerAuthorPostsRoute, registerPostRoutes } from './modules/post/post.routes.js';
 import { registerConnectionRoutes } from './modules/connection/connection.routes.js';
 import { registerDirectoryRoutes } from './modules/directory/directory.routes.js';
+import { registerAccountRoutes } from './modules/account/account.routes.js';
 import { registerNotificationRoutes } from './modules/notification/notification.routes.js';
 import { CloudStorageDriver } from './modules/media/cloud-storage.js';
 import { LocalStorageDriver } from './modules/media/local-storage.js';
@@ -116,6 +117,7 @@ export async function buildApp({
       registerDirectoryRoutes(scope, prisma);
       registerConnectionRoutes(scope, prisma);
       registerNotificationRoutes(scope, prisma);
+      registerAccountRoutes(scope, prisma, storage);
       registerAuthorPostsRoute(scope, prisma, storage);
       registerLogoutRoute(scope, auth);
 
