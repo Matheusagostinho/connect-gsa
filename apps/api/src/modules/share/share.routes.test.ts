@@ -26,7 +26,7 @@ async function completeProfile(userId: string) {
       cityId: city.id,
       course: 'Ciência da Computação',
       bio: 'Bio secreta que não deve aparecer em prévia.',
-      skills: [],
+      skillSlugs: [],
       links: [],
     },
   });

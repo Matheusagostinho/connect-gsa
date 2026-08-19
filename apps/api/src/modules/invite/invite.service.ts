@@ -23,6 +23,7 @@ export async function createInvite(
   prisma: PrismaClient,
   createdById: string,
   input: CreateInvite,
+  webUrl: string,
 ): Promise<CreatedInvite> {
   const code = generateInviteCode();
   const expiresAt = new Date(Date.now() + input.validityDays * DIA_EM_MS);
@@ -42,6 +43,7 @@ export async function createInvite(
   return {
     id: invite.id,
     code,
+    shareUrl: `${webUrl.replace(/\/+$/, '')}/convite?c=${code}`,
     expiresAt: invite.expiresAt.toISOString(),
     note: invite.note,
   };

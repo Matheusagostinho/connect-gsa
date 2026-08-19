@@ -20,7 +20,7 @@ export function registerInviteRoutes(app: AppInstance, prisma: PrismaClient, env
       const user = requireAuth(request);
       assertCan(user, 'create', 'Invite');
 
-      const invite = await createInvite(prisma, user.id, request.body);
+      const invite = await createInvite(prisma, user.id, request.body, env.WEB_URL);
       return reply.status(201).send(invite);
     },
   );

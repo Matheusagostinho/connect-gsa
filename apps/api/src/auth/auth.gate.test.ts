@@ -70,7 +70,7 @@ describe('portão de entrada da rede', () => {
 
   it('recusa convite já usado no momento de criar a conta @spec:AC-005', async () => {
     const admin = await createTestUser({ role: 'admin' });
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 });
+    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
 
     // Simula o convite já consumido por outra pessoa.
     await prisma.inviteCode.update({

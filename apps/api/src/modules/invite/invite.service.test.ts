@@ -17,7 +17,7 @@ describe('convites', () => {
   it('gera código imprevisível e nunca guarda o código em claro @principle:P-009', async () => {
     const admin = await createTestUser({ role: 'admin' });
 
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 });
+    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
 
     // 32 hexadecimais = 128 bits de entropia.
     expect(invite.code).toMatch(/^[0-9a-f]{32}$/);
@@ -30,13 +30,13 @@ describe('convites', () => {
     expect(JSON.stringify(stored)).not.toContain(invite.code);
 
     // Dois convites seguidos não se parecem.
-    const outro = await createInvite(prisma, admin.id, { validityDays: 30 });
+    const outro = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
     expect(outro.code).not.toBe(invite.code);
   });
 
   it('aceita um convite válido uma vez e recusa a segunda @spec:AC-005', async () => {
     const admin = await createTestUser({ role: 'admin' });
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 });
+    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
 
     await expect(claimInvite(prisma, invite.code)).resolves.toMatchObject({ inviteId: invite.id });
     await expect(claimInvite(prisma, invite.code)).rejects.toThrow(/inválido, expirado ou já/i);
@@ -62,7 +62,7 @@ describe('convites', () => {
 
     // A mesma mensagem do convite já usado: nada de oráculo para quem varre.
     const admin = await createTestUser({ role: 'admin' });
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 });
+    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
     await claimInvite(prisma, invite.code);
 
     const [erroInexistente, erroUsado] = await Promise.all([
@@ -74,7 +74,7 @@ describe('convites', () => {
 
   it('sob corrida, o mesmo convite é reservado por exatamente uma tentativa @spec:AC-007', async () => {
     const admin = await createTestUser({ role: 'admin' });
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 });
+    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
 
     const tentativas = await Promise.allSettled(
       Array.from({ length: 12 }, () => claimInvite(prisma, invite.code)),
@@ -92,5 +92,33 @@ describe('convites', () => {
     // A comparação normaliza caixa e espaços — e-mail é case-insensitive na prática.
     await expect(isEmailAllowed(prisma, '  ANA@UNI.BR ')).resolves.toBe(true);
     await expect(isEmailAllowed(prisma, 'outra@uni.br')).resolves.toBe(false);
+  });
+});
+
+describe('link de convite', () => {
+  it('devolve um endereço pronto para compartilhar @spec:AC-059', async () => {
+    const admin = await createTestUser({ role: 'admin' });
+
+    const invite = await createInvite(
+      prisma,
+      admin.id,
+      { validityDays: 30 },
+      'https://connectgsa.web.app',
+    );
+
+    expect(invite.shareUrl).toBe(`https://connectgsa.web.app/convite?c=${invite.code}`);
+  });
+
+  it('não duplica a barra quando a URL configurada termina em barra', async () => {
+    const admin = await createTestUser({ role: 'admin' });
+
+    const invite = await createInvite(
+      prisma,
+      admin.id,
+      { validityDays: 30 },
+      'https://connectgsa.web.app/',
+    );
+
+    expect(invite.shareUrl).not.toContain('//convite');
   });
 });

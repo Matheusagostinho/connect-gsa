@@ -10,33 +10,35 @@ import {
 /** Exatamente o que o serviço precisa buscar para montar um perfil público. */
 export const PROFILE_SELECT = {
   id: true,
+  slug: true,
   name: true,
   image: true,
   role: true,
   course: true,
   bio: true,
-  skills: true,
   links: true,
   visibleOnMap: true,
   profileComplete: true,
   createdAt: true,
-  institution: { select: { id: true, name: true, acronym: true } },
+  skills: { select: { slug: true, name: true, category: true } },
+  institution: { select: { id: true, name: true, campus: true, acronym: true } },
   city: { select: { id: true, name: true, state: true, latitude: true, longitude: true } },
 } as const;
 
 export interface ProfileRow {
   id: string;
+  slug: string | null;
   name: string;
   image: string | null;
   role: string;
   course: string | null;
   bio: string;
-  skills: string[];
+  skills: { slug: string; name: string; category: string }[];
   links: unknown;
   visibleOnMap: boolean;
   profileComplete: boolean;
   createdAt: Date;
-  institution: { id: string; name: string; acronym: string | null } | null;
+  institution: { id: string; name: string; campus: string; acronym: string | null } | null;
   city: {
     id: string;
     name: string;
@@ -55,6 +57,8 @@ function parseLinks(value: unknown): Link[] {
 function baseProfile(row: ProfileRow) {
   return {
     id: row.id,
+    // Perfil sem slug só existe entre criar a conta e concluir o onboarding.
+    slug: row.slug ?? row.id,
     name: row.name,
     imageUrl: row.image,
     role: row.role,
@@ -83,11 +87,15 @@ function baseProfile(row: ProfileRow) {
  * incompleto não tem o que fazer no diretório, e inventar um valor de fachada
  * só esconderia o defeito.
  */
-export function toPublicProfile(row: ProfileRow): PublicProfile {
+export function toPublicProfile(
+  row: ProfileRow,
+  connection: PublicProfile['connection'] = 'none',
+): PublicProfile {
   return publicProfileSchema.parse({
     ...baseProfile(row),
     institution: row.institution,
     city: row.city,
+    connection,
   });
 }
 

@@ -15,10 +15,11 @@ import {
   createPost,
   deleteComment,
   deletePost,
+  hydratePosts,
   listComments,
   reactToPost,
 } from './post.service.js';
-import type { ViewerContext } from './post.mapper.js';
+import { POST_SELECT, type ViewerContext } from './post.mapper.js';
 
 const paramsSchema = z.object({ id: z.uuid() });
 
@@ -103,6 +104,56 @@ export function registerPostRoutes(
     async (request, reply) => {
       await deleteComment(prisma, viewerOf(request), request.params.id);
       return reply.status(204).send(null);
+    },
+  );
+}
+
+/**
+ * Posts de uma pessoa, para o perfil dela (AC-047).
+ *
+ * Ordem cronológica pura aqui, ao contrário do feed: no perfil de alguém a
+ * pergunta é "o que essa pessoa vem fazendo", e ranquear por engajamento
+ * esconderia o post mais recente atrás de um antigo que viralizou.
+ */
+export function registerAuthorPostsRoute(
+  app: AppInstance,
+  prisma: PrismaClient,
+  storage: StorageDriver,
+): void {
+  app.get(
+    '/profiles/:id/posts',
+    {
+      schema: {
+        params: z.object({ id: z.string().min(1).max(80) }),
+        response: { 200: z.array(postSchema) },
+      },
+      config: { rateLimit: { max: 120, timeWindow: '1 minute' } },
+    },
+    async (request) => {
+      const user = requireAuth(request);
+      const viewer: ViewerContext = {
+        userId: user.id,
+        isModerator: user.role === 'moderator' || user.role === 'admin',
+      };
+
+      const autor = await prisma.user.findFirst({
+        where: {
+          profileComplete: true,
+          OR: [{ slug: request.params.id }, { id: request.params.id }],
+        },
+        select: { id: true },
+      });
+
+      if (!autor) return [];
+
+      const rows = await prisma.post.findMany({
+        where: { authorId: autor.id, kind: 'feed' },
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        take: 30,
+        select: POST_SELECT,
+      });
+
+      return hydratePosts(prisma, rows, viewer, storage);
     },
   );
 }

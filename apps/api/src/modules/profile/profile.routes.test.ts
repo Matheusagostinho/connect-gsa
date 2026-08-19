@@ -22,7 +22,7 @@ function validProfile(cityId: string, institutionId: string) {
     cityId,
     course: 'Ciência da Computação',
     bio: 'Embaixadora e entusiasta de IA.',
-    skills: ['React', 'Go'],
+    skillSlugs: ['react', 'go'],
     links: [{ label: 'LinkedIn', url: 'https://linkedin.com/in/ana' }],
   };
 }
@@ -153,11 +153,13 @@ describe('rotas de perfil', () => {
       payload: {
         ...validProfile(city.id, institution.id),
         bio: 'Nova bio',
-        skills: ['Kotlin'],
+        skillSlugs: ['kotlin'],
       },
     });
 
-    expect(response.json()).toMatchObject({ bio: 'Nova bio', skills: ['Kotlin'] });
+    const atualizado = response.json<{ bio: string; skills: { slug: string }[] }>();
+    expect(atualizado.bio).toBe('Nova bio');
+    expect(atualizado.skills.map((s) => s.slug)).toEqual(['kotlin']);
   });
 
   it('recusa edição de perfil alheio no servidor @spec:AC-013', async () => {

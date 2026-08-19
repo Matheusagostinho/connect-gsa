@@ -56,7 +56,10 @@ export async function resetTestData(): Promise<void> {
   await prisma.session.deleteMany();
   await prisma.account.deleteMany();
   await prisma.allowedEmail.deleteMany();
+  await prisma.connection.deleteMany();
   await prisma.user.deleteMany();
+  // Instituição proposta é dado de teste; a curada vem do seed e fica.
+  await prisma.institution.deleteMany({ where: { status: 'pending' } });
 }
 
 export async function closeTestDb(): Promise<void> {

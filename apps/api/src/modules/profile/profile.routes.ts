@@ -47,15 +47,24 @@ export function registerProfileRoutes(app: AppInstance, prisma: PrismaClient): v
     },
   );
 
+  /**
+   * Perfil de outra pessoa, por id ou por slug.
+   *
+   * Aceitar os dois é o que faz `/e/ana-ribeiro` funcionar sem duplicar a rota
+   * — e o slug é o endereço que circula em conversa (AC-046).
+   */
   app.get(
     '/profiles/:id',
     {
-      schema: { params: z.object({ id: z.uuid() }), response: { 200: publicProfileSchema } },
+      schema: {
+        params: z.object({ id: z.string().min(1).max(80) }),
+        response: { 200: publicProfileSchema },
+      },
     },
     async (request) => {
       const user = requireAuth(request);
       assertCan(user, 'read', 'Profile');
-      return getPublicProfile(prisma, request.params.id);
+      return getPublicProfile(prisma, request.params.id, user.id);
     },
   );
 

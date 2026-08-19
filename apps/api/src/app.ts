@@ -18,7 +18,9 @@ import { registerProfileRoutes } from './modules/profile/profile.routes.js';
 import { registerShareRoutes } from './modules/share/share.routes.js';
 import { registerFeedRoutes } from './modules/feed/feed.routes.js';
 import { registerMediaRoutes } from './modules/media/media.routes.js';
-import { registerPostRoutes } from './modules/post/post.routes.js';
+import { registerAuthorPostsRoute, registerPostRoutes } from './modules/post/post.routes.js';
+import { registerConnectionRoutes } from './modules/connection/connection.routes.js';
+import { registerDirectoryRoutes } from './modules/directory/directory.routes.js';
 import { CloudStorageDriver } from './modules/media/cloud-storage.js';
 import { LocalStorageDriver } from './modules/media/local-storage.js';
 import type { StorageDriver } from './modules/media/storage.js';
@@ -110,6 +112,9 @@ export async function buildApp({
       registerMediaRoutes(scope, prisma, storage);
       registerPostRoutes(scope, prisma, storage);
       registerFeedRoutes(scope, prisma, storage);
+      registerDirectoryRoutes(scope, prisma);
+      registerConnectionRoutes(scope, prisma);
+      registerAuthorPostsRoute(scope, prisma, storage);
       registerLogoutRoute(scope, auth);
 
       if (isDevelopment) {

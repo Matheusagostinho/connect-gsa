@@ -6,23 +6,40 @@ import type {
   UpdateProfile,
 } from '@connect-gsa/shared';
 import { notFound } from '../../plugins/errors.js';
+import { connectionStateFor } from '../connection/connection.service.js';
+import { badRequest } from '../../plugins/errors.js';
 import { PROFILE_SELECT, toMyProfile, toPublicProfile } from './profile.mapper.js';
-import { sanitizeList, sanitizeText } from './sanitize.js';
+import { sanitizeText } from './sanitize.js';
+import { buildUniqueSlug } from './slug.js';
 
-/** Busca o perfil de outra pessoa. Só perfis concluídos existem para terceiros. */
+/**
+ * Busca o perfil de outra pessoa pelo id OU pelo slug.
+ *
+ * Aceitar os dois deixa `/e/ana-ribeiro` e a navegação interna por id usarem a
+ * mesma rota — sem duplicar a regra de "só perfil concluído aparece".
+ */
 export async function getPublicProfile(
   prisma: PrismaClient,
-  userId: string,
+  idOuSlug: string,
+  viewerId?: string,
 ): Promise<PublicProfile> {
   const row = await prisma.user.findFirst({
-    where: { id: userId, profileComplete: true },
+    where: {
+      profileComplete: true,
+      OR: [{ slug: idOuSlug }, ...(isUuid(idOuSlug) ? [{ id: idOuSlug }] : [])],
+    },
     select: PROFILE_SELECT,
   });
 
   if (!row) throw notFound('Perfil não encontrado.');
 
-  return toPublicProfile(row);
+  const connection = viewerId ? await connectionStateFor(prisma, viewerId, row.id) : 'none';
+
+  return toPublicProfile(row, connection);
 }
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const isUuid = (valor: string): boolean => UUID.test(valor);
 
 export async function getMyProfile(prisma: PrismaClient, userId: string): Promise<MyProfile> {
   const row = await prisma.user.findUnique({ where: { id: userId }, select: PROFILE_SELECT });
@@ -61,13 +78,41 @@ export async function updateProfile(
     url: link.url,
   }));
 
+  // Habilidade fora do catálogo é recusada em vez de criada (AC-045): aceitar
+  // texto livre aqui reabriria o problema que o catálogo existe para resolver.
+  const skills = await prisma.skill.findMany({
+    where: { slug: { in: input.skillSlugs } },
+    select: { id: true, slug: true },
+  });
+
+  if (skills.length !== new Set(input.skillSlugs).size) {
+    const conhecidas = new Set(skills.map((s) => s.slug));
+    const desconhecidas = input.skillSlugs.filter((slug) => !conhecidas.has(slug));
+    throw badRequest(`Habilidade desconhecida: ${desconhecidas.join(', ')}`, 'UNKNOWN_SKILL');
+  }
+
+  const atual = await prisma.user.findUniqueOrThrow({
+    where: { id: userId },
+    select: { slug: true },
+  });
+
+  const name = sanitizeText(input.name);
+
+  // O slug nasce no primeiro salvamento e não é reescrito depois (ASM-016).
+  const slug =
+    atual.slug ??
+    (await buildUniqueSlug(name, async (candidato) =>
+      Boolean(await prisma.user.findUnique({ where: { slug: candidato }, select: { id: true } })),
+    ));
+
   const row = await prisma.user.update({
     where: { id: userId },
     data: {
-      name: sanitizeText(input.name),
+      name,
+      slug,
       course: sanitizeText(input.course),
       bio: sanitizeText(input.bio),
-      skills: sanitizeList(input.skills),
+      skills: { set: skills.map((s) => ({ id: s.id })) },
       links,
       cityId: city.id,
       institutionId: institution.id,
