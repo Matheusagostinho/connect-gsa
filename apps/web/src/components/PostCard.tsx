@@ -1,8 +1,10 @@
 import type { Comment, Post } from '@connect-gsa/shared';
 import { useMutation } from '@tanstack/react-query';
-import { Megaphone, MessageCircle, ShieldMinus, Trash2 } from 'lucide-react';
+import { Clock, Megaphone, MessageCircle, ShieldMinus, Trash2, UserPlus } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
+import { Link } from 'react-router';
 import { api } from '../lib/api.js';
+import { useConnectionAction } from '../lib/directory.js';
 import { useDeletePost, useReact } from '../lib/feed.js';
 import { Avatar } from './Avatar.tsx';
 import { RichText } from './RichText.tsx';
@@ -28,6 +30,7 @@ export function PostCard({ post }: { post: Post }) {
 
   const reagir = useReact(post.id);
   const apagar = useDeletePost();
+  const conexao = useConnectionAction(post.author.id);
 
   const carregar = useMutation({
     mutationFn: () => api.get<Comment[]>(`/posts/${post.id}/comments`),
@@ -79,13 +82,54 @@ export function PostCard({ post }: { post: Post }) {
           <Avatar name={post.author.name} imageUrl={post.author.imageUrl} />
 
           <div className="min-w-0 flex-1">
-            <p className="truncate font-medium text-ink">{post.author.name}</p>
+            <Link
+              to={`/perfil/${post.author.slug}`}
+              // `block`, e não o inline padrão do link: `truncate` não corta
+              // elemento inline, e no celular o nome escorria por baixo do
+              // botão de conectar em vez de terminar em reticências.
+              className="block truncate font-medium text-ink hover:underline"
+            >
+              {post.author.name}
+            </Link>
             <p className="truncate text-sm text-ink-muted">
               {[post.author.institutionAcronym, post.author.course].filter(Boolean).join(' · ')}
               {post.author.institutionAcronym || post.author.course ? ' · ' : ''}
               <time dateTime={post.createdAt}>{quandoFoi(post.createdAt)}</time>
             </p>
           </div>
+
+          {/*
+            Conectar aqui, e não só no diretório: o momento em que dá vontade de
+            se conectar com alguém é justamente quando algo que ela publicou
+            chamou atenção. Mandar a pessoa procurar o perfil perde esse momento.
+          */}
+          {post.author.connection === 'none' ? (
+            <button
+              type="button"
+              disabled={conexao.request.isPending}
+              onClick={() => conexao.request.mutate()}
+              className="flex min-h-9 min-w-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-pill border border-border text-xs font-medium text-ink-muted transition-colors duration-200 hover:text-ink disabled:cursor-not-allowed sm:px-3"
+            >
+              <UserPlus className="size-3.5" aria-hidden="true" />
+              {/*
+                Só o ícone no celular: com o rótulo, o botão comia largura
+                suficiente para o nome da pessoa virar "Carla Nog…". O nome é o
+                que identifica quem publicou — ele vem primeiro. O rótulo
+                continua existindo para quem lê por leitor de tela.
+              */}
+              <span className="max-sm:sr-only">Conectar</span>
+            </button>
+          ) : null}
+
+          {post.author.connection === 'pendingSent' ? (
+            <span
+              title="Pedido de conexão enviado"
+              className="flex size-9 shrink-0 items-center justify-center text-ink-muted"
+            >
+              <Clock className="size-3.5" aria-hidden="true" />
+              <span className="sr-only">Pedido de conexão enviado</span>
+            </span>
+          ) : null}
 
           {post.canDelete ? (
             <button
