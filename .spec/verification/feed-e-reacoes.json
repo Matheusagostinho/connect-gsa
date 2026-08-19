@@ -1,11 +1,11 @@
 {
   "feature": "feed-e-reacoes",
-  "timestamp": "2026-08-18T22:15:12.089Z",
-  "gitRev": "9a69eec",
+  "timestamp": "2026-08-19T01:32:28.783Z",
+  "gitRev": "9185688",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 119,
+  "testsParsed": 158,
   "results": {
     "AC-023": {
       "status": "pass",
@@ -111,21 +111,21 @@
       "status": "pass",
       "testName": "permissões deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004 deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004"
     },
+    "P-002": {
+      "status": "pass",
+      "testName": "diretório não entrega e-mail de ninguém @principle:P-002 não entrega e-mail de ninguém @principle:P-002"
+    },
+    "P-001": {
+      "status": "pass",
+      "testName": "mapa não mostra quem optou por ficar fora do mapa @spec:AC-053 @principle:P-001 não mostra quem optou por ficar fora do mapa @spec:AC-053 @principle:P-001"
+    },
     "P-009": {
       "status": "pass",
       "testName": "convites gera código imprevisível e nunca guarda o código em claro @principle:P-009 gera código imprevisível e nunca guarda o código em claro @principle:P-009"
     },
-    "P-001": {
-      "status": "pass",
-      "testName": "reprocessamento de imagem descarta as coordenadas de GPS embutidas na foto @spec:AC-026 @principle:P-001 descarta as coordenadas de GPS embutidas na foto @spec:AC-026 @principle:P-001"
-    },
     "P-006": {
       "status": "pass",
       "testName": "posts desarma HTML colado no post @spec:AC-024 @principle:P-006 desarma HTML colado no post @spec:AC-024 @principle:P-006"
-    },
-    "P-002": {
-      "status": "pass",
-      "testName": "comentários não entrega e-mail de ninguém junto do post ou do comentário @principle:P-002 não entrega e-mail de ninguém junto do post ou do comentário @principle:P-002"
     }
   }
 }

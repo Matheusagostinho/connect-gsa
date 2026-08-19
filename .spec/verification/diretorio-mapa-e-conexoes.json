@@ -1,0 +1,141 @@
+{
+  "feature": "diretorio-mapa-e-conexoes",
+  "timestamp": "2026-08-19T01:31:12.650Z",
+  "gitRev": "9185688",
+  "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 158,
+  "results": {
+    "AC-041": {
+      "status": "pass",
+      "testName": "instituições encontra o campus certo pela sigla e pelo nome do campus @spec:AC-041 encontra o campus certo pela sigla e pelo nome do campus @spec:AC-041",
+      "method": "vitest-json"
+    },
+    "AC-042": {
+      "status": "pass",
+      "testName": "instituições deixa propor instituição ausente e usá-la na hora @spec:AC-042 deixa propor instituição ausente e usá-la na hora @spec:AC-042",
+      "method": "vitest-json"
+    },
+    "AC-043": {
+      "status": "pass",
+      "testName": "instituições não mostra proposta pendente para outras pessoas @spec:AC-043 não mostra proposta pendente para outras pessoas @spec:AC-043",
+      "method": "vitest-json"
+    },
+    "AC-044": {
+      "status": "pass",
+      "testName": "habilidades entrega o catálogo com categoria @spec:AC-044 entrega o catálogo com categoria @spec:AC-044",
+      "method": "vitest-json"
+    },
+    "AC-045": {
+      "status": "pass",
+      "testName": "habilidades recusa habilidade fora do catálogo @spec:AC-045 recusa habilidade fora do catálogo @spec:AC-045",
+      "method": "vitest-json"
+    },
+    "AC-046": {
+      "status": "pass",
+      "testName": "perfil público tem endereço legível derivado do nome @spec:AC-046 tem endereço legível derivado do nome @spec:AC-046",
+      "method": "vitest-json"
+    },
+    "AC-047": {
+      "status": "pass",
+      "testName": "perfil público mostra as publicações da pessoa, da mais recente para a mais antiga @spec:AC-047 mostra as publicações da pessoa, da mais recente para a mais antiga @spec:AC-047",
+      "method": "vitest-json"
+    },
+    "AC-048": {
+      "status": "pass",
+      "testName": "perfil público não entrega o e-mail de ninguém no perfil nem nas publicações @spec:AC-048 @principle:P-002 não entrega o e-mail de ninguém no perfil nem nas publicações @spec:AC-048 @principle:P-002",
+      "method": "vitest-json"
+    },
+    "AC-049": {
+      "status": "pass",
+      "testName": "diretório filtra por habilidade e por instituição @spec:AC-049 filtra por habilidade e por instituição @spec:AC-049",
+      "method": "vitest-json"
+    },
+    "AC-050": {
+      "status": "pass",
+      "testName": "diretório pagina sem repetir nem pular ninguém @spec:AC-050 pagina sem repetir nem pular ninguém @spec:AC-050",
+      "method": "vitest-json"
+    },
+    "AC-051": {
+      "status": "pass",
+      "testName": "mapa agrupa por cidade e conta as pessoas @spec:AC-051 agrupa por cidade e conta as pessoas @spec:AC-051",
+      "method": "vitest-json"
+    },
+    "AC-052": {
+      "status": "pass",
+      "testName": "mapa lista quem está na cidade ao clicar @spec:AC-052 lista quem está na cidade ao clicar @spec:AC-052",
+      "method": "vitest-json"
+    },
+    "AC-053": {
+      "status": "pass",
+      "testName": "mapa não mostra quem optou por ficar fora do mapa @spec:AC-053 @principle:P-001 não mostra quem optou por ficar fora do mapa @spec:AC-053 @principle:P-001",
+      "method": "vitest-json"
+    },
+    "AC-054": {
+      "status": "pass",
+      "testName": "mapa devolve o centro do município, igual para todos da mesma cidade @spec:AC-054 @principle:P-001 devolve o centro do município, igual para todos da mesma cidade @spec:AC-054 @principle:P-001",
+      "method": "vitest-json"
+    },
+    "AC-055": {
+      "status": "pass",
+      "testName": "conexões conecta depois do aceite @spec:AC-055 conecta depois do aceite @spec:AC-055",
+      "method": "vitest-json"
+    },
+    "AC-056": {
+      "status": "pass",
+      "testName": "conexões pedido pendente não é conexão @spec:AC-056 pedido pendente não é conexão @spec:AC-056",
+      "method": "vitest-json"
+    },
+    "AC-057": {
+      "status": "pass",
+      "testName": "conexões nunca cria dois laços para o mesmo par @spec:AC-057 nunca cria dois laços para o mesmo par @spec:AC-057",
+      "method": "vitest-json"
+    },
+    "AC-058": {
+      "status": "pass",
+      "testName": "conexões recusa pedido e desfaz conexão @spec:AC-058 recusa pedido e desfaz conexão @spec:AC-058",
+      "method": "vitest-json"
+    },
+    "AC-059": {
+      "status": "pass",
+      "testName": "link de convite devolve um endereço pronto para compartilhar @spec:AC-059 devolve um endereço pronto para compartilhar @spec:AC-059",
+      "method": "vitest-json"
+    },
+    "AC-060": {
+      "status": "pass",
+      "testName": "tela de convite preenche o código quando a pessoa chega pelo link @spec:AC-060 preenche o código quando a pessoa chega pelo link @spec:AC-060",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
+    "P-003": {
+      "status": "pass",
+      "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003"
+    },
+    "P-004": {
+      "status": "pass",
+      "testName": "permissões deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004 deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004"
+    },
+    "P-002": {
+      "status": "pass",
+      "testName": "diretório não entrega e-mail de ninguém @principle:P-002 não entrega e-mail de ninguém @principle:P-002"
+    },
+    "P-001": {
+      "status": "pass",
+      "testName": "mapa não mostra quem optou por ficar fora do mapa @spec:AC-053 @principle:P-001 não mostra quem optou por ficar fora do mapa @spec:AC-053 @principle:P-001"
+    },
+    "P-009": {
+      "status": "pass",
+      "testName": "convites gera código imprevisível e nunca guarda o código em claro @principle:P-009 gera código imprevisível e nunca guarda o código em claro @principle:P-009"
+    },
+    "P-006": {
+      "status": "pass",
+      "testName": "posts desarma HTML colado no post @spec:AC-024 @principle:P-006 desarma HTML colado no post @spec:AC-024 @principle:P-006"
+    }
+  }
+}

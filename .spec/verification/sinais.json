@@ -410,10 +410,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "acesso-e-perfil",
       "ref": "—",
-      "ocorrencias": 4,
+      "ocorrencias": 5,
       "primeiraVez": "2026-08-18T17:48:39.918Z",
-      "ultimaVez": "2026-08-18T22:15:12.524Z",
-      "gitRev": "9a69eec"
+      "ultimaVez": "2026-08-19T01:29:02.037Z",
+      "gitRev": "9185688"
     },
     "ARQUIVO_ORFAO::—::apps/api/src/testing/app.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -648,6 +648,366 @@
       "primeiraVez": "2026-08-18T20:24:46.024Z",
       "ultimaVez": "2026-08-18T20:24:46.024Z",
       "gitRev": "36421d1"
+    },
+    "ARQUIVO_INEXISTENTE::diretorio-mapa-e-conexoes::T-001": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "T-001",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.318Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-044": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-044",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-045": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-045",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-046": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-046",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-047": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-047",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-048": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-048",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-049": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-049",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-050": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-050",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-051": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-051",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-052": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-052",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-053": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-053",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-054": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-054",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-055": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-055",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-056": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-056",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-057": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-057",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-058": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-058",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-059": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-059",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TASK::diretorio-mapa-e-conexoes::AC-060": {
+      "codigo": "AC_SEM_TASK",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-060",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TESTE::diretorio-mapa-e-conexoes::AC-047": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-047",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:29:02.037Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TESTE::diretorio-mapa-e-conexoes::AC-048": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-048",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:29:02.037Z",
+      "gitRev": "9185688"
+    },
+    "AC_SEM_TESTE::diretorio-mapa-e-conexoes::AC-060": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "AC-060",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:29:02.037Z",
+      "gitRev": "9185688"
+    },
+    "VERIFY_OBSOLETO::feed-e-reacoes::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "feed-e-reacoes",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:29:02.037Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/modules/connection/connection.routes.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/modules/connection/connection.routes.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/modules/connection/connection.service.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/modules/connection/connection.service.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/modules/directory/directory.routes.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/modules/directory/directory.routes.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/modules/directory/directory.service.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/modules/directory/directory.service.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/modules/profile/slug.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/modules/profile/slug.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/components/AmbassadorCardItem.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/components/AmbassadorCardItem.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/components/AmbassadorMap.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/components/AmbassadorMap.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/components/AppNav.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/components/AppNav.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/components/InstitutionPicker.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/components/InstitutionPicker.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/components/InviteShare.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/components/InviteShare.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/components/SkillPicker.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/components/SkillPicker.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/lib/directory.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/lib/directory.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/pages/Connections.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/pages/Connections.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/pages/Directory.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/pages/Directory.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/pages/MapPage.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/pages/MapPage.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::apps/web/src/pages/PublicProfile.tsx": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/web/src/pages/PublicProfile.tsx",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::packages/shared/src/connection.schema.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/shared/src/connection.schema.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
+    },
+    "ARQUIVO_ORFAO::—::packages/shared/src/directory.schema.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "packages/shared/src/directory.schema.ts",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-19T01:29:02.037Z",
+      "ultimaVez": "2026-08-19T01:32:29.319Z",
+      "gitRev": "9185688"
     }
   }
 }
