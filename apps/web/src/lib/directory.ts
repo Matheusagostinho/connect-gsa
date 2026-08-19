@@ -3,14 +3,22 @@ import type {
   ConnectionList,
   ConnectionState,
   DirectoryPage,
+  FeedPage,
   Institution,
   MapCity,
   Post,
   PublicProfile,
   Skill,
 } from '@connect-gsa/shared';
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type InfiniteData,
+} from '@tanstack/react-query';
 import { api } from './api.js';
+import { FEED_KEY } from './feed.js';
 
 export function useSkills() {
   return useQuery({
@@ -102,10 +110,40 @@ export function useConnections() {
  * correto — do que tentar remendar cada cache com o novo estado: a mesma pessoa
  * pode estar em três listas ao mesmo tempo.
  */
+/**
+ * Pedir, aceitar, recusar e desfazer conexão.
+ *
+ * O feed entra na lista de caches atualizados, e essa ausência era um defeito
+ * real: tocar em "Conectar" no cartão de uma publicação não mudava nada na tela,
+ * porque a publicação em cache continuava dizendo `connection: 'none'`. O botão
+ * parecia quebrado.
+ *
+ * O estado do laço é escrito NO CACHE do feed a partir da resposta do servidor,
+ * em vez de invalidá-lo: invalidar refaria o feed inteiro e reordenaria as
+ * publicações debaixo do dedo de quem só quis se conectar com alguém.
+ */
 export function useConnectionAction(userId: string) {
   const queryClient = useQueryClient();
 
-  const invalidar = async () => {
+  const aplicar = async (resposta: { connection: ConnectionState }) => {
+    queryClient.setQueriesData<InfiniteData<FeedPage, string | undefined>>(
+      { queryKey: FEED_KEY },
+      (dados) =>
+        dados
+          ? {
+              ...dados,
+              pages: dados.pages.map((pagina) => ({
+                ...pagina,
+                posts: pagina.posts.map((post) =>
+                  post.author.id === userId
+                    ? { ...post, author: { ...post.author, connection: resposta.connection } }
+                    : post,
+                ),
+              })),
+            }
+          : dados,
+    );
+
     await Promise.all(
       [['connections'], ['directory'], ['map'], ['profile']].map((key) =>
         queryClient.invalidateQueries({ queryKey: key }),
@@ -116,15 +154,15 @@ export function useConnectionAction(userId: string) {
   return {
     request: useMutation({
       mutationFn: () => api.post<{ connection: ConnectionState }>(`/connections/${userId}`),
-      onSuccess: invalidar,
+      onSuccess: aplicar,
     }),
     accept: useMutation({
       mutationFn: () => api.post<{ connection: ConnectionState }>(`/connections/${userId}/accept`),
-      onSuccess: invalidar,
+      onSuccess: aplicar,
     }),
     remove: useMutation({
       mutationFn: () => api.remove<{ connection: ConnectionState }>(`/connections/${userId}`),
-      onSuccess: invalidar,
+      onSuccess: aplicar,
     }),
   };
 }

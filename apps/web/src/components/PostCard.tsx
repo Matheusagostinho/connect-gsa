@@ -1,6 +1,6 @@
 import type { Comment, Post } from '@connect-gsa/shared';
 import { useMutation } from '@tanstack/react-query';
-import { Clock, Megaphone, MessageCircle, ShieldMinus, Trash2, UserPlus } from 'lucide-react';
+import { Check, Clock, Megaphone, MessageCircle, ShieldMinus, Trash2, UserPlus } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 import { Link } from 'react-router';
 import { api } from '../lib/api.js';
@@ -131,14 +131,46 @@ export function PostCard({ post }: { post: Post }) {
             </button>
           ) : null}
 
+          {/*
+            Os três estados do laço são visíveis, e nenhum é a ausência de algo.
+            O botão simplesmente sumir depois do toque não diz se o pedido saiu,
+            se falhou ou se a pessoa já era conexão — e sumir era exatamente o
+            que acontecia quando tocar em "Conectar" aceitava um pedido que já
+            estava esperando do outro lado.
+          */}
           {post.author.connection === 'pendingSent' ? (
             <span
               title="Pedido de conexão enviado"
-              className="flex size-9 shrink-0 items-center justify-center text-ink-muted"
+              className="flex min-h-9 shrink-0 items-center justify-center gap-1.5 rounded-pill px-2 text-xs font-medium text-ink-muted sm:px-3"
             >
               <Clock className="size-3.5" aria-hidden="true" />
+              <span className="max-sm:sr-only">Pedido enviado</span>
               <span className="sr-only">Pedido de conexão enviado</span>
             </span>
+          ) : null}
+
+          {post.author.connection === 'connected' ? (
+            <span
+              title="Vocês estão conectados"
+              className="flex min-h-9 shrink-0 items-center justify-center gap-1.5 rounded-pill bg-surface-subtle px-2 text-xs font-medium text-ink sm:px-3"
+            >
+              <Check className="size-3.5" aria-hidden="true" />
+              <span className="max-sm:sr-only">Conectados</span>
+              <span className="sr-only">Vocês estão conectados</span>
+            </span>
+          ) : null}
+
+          {post.author.connection === 'pendingReceived' ? (
+            <button
+              type="button"
+              disabled={conexao.accept.isPending}
+              onClick={() => conexao.accept.mutate()}
+              className="flex min-h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-pill bg-action px-2 text-xs font-medium text-on-action transition-opacity duration-200 disabled:cursor-not-allowed disabled:opacity-60 sm:px-3"
+            >
+              <Check className="size-3.5" aria-hidden="true" />
+              <span className="max-sm:sr-only">Aceitar</span>
+              <span className="sr-only">Aceitar o pedido de conexão</span>
+            </button>
           ) : null}
 
           {post.canDelete ? (
