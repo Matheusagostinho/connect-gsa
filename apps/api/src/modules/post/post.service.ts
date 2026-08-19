@@ -192,7 +192,8 @@ export async function listComments(
       institutionAcronym:
         linha.author.institution?.acronym ?? linha.author.institution?.name ?? null,
     },
-    canDelete: linha.authorId === viewer.userId || viewer.isModerator,
+    canDelete: linha.authorId === viewer.userId,
+    canModerate: linha.authorId !== viewer.userId && viewer.isModerator,
   }));
 }
 

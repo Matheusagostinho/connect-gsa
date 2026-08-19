@@ -44,7 +44,16 @@ export const commentSchema = z.object({
   content: z.string(),
   createdAt: z.iso.datetime(),
   author: postAuthorSchema,
+  /** É meu — posso apagar. */
   canDelete: z.boolean(),
+  /**
+   * Não é meu, mas tenho poder de moderação.
+   *
+   * Separado de `canDelete` de propósito: apagar o que é seu e remover o que é
+   * de outra pessoa são atos diferentes, e mostrá-los com o mesmo botão faz a
+   * coordenação achar que está apagando o próprio conteúdo.
+   */
+  canModerate: z.boolean(),
 });
 
 export type Comment = z.infer<typeof commentSchema>;
@@ -64,7 +73,10 @@ export const postSchema = z.object({
   /** A reação de quem está lendo, ou `null`. É o que deixa o botão aceso. */
   myReaction: reactionSchema.nullable(),
   commentCount: z.number().int().nonnegative(),
+  /** É meu — posso apagar. */
   canDelete: z.boolean(),
+  /** Não é meu, mas tenho poder de moderação. */
+  canModerate: z.boolean(),
 });
 
 export type Post = z.infer<typeof postSchema>;

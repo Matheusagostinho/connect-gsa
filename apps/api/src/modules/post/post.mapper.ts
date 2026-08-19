@@ -48,8 +48,10 @@ export interface ViewerContext {
  * vazar contato por aqui exigiria mudar o contrato compartilhado, não apenas
  * esquecer um `select`.
  *
- * `canDelete` é resolvido no servidor e mandado pronto: a tela usa isso para
- * decidir se mostra o botão, mas quem recusa a exclusão de verdade é a rota.
+ * `canDelete` e `canModerate` são resolvidos no servidor e mandados prontos. A
+ * tela usa os dois para decidir o que mostrar, mas quem recusa a exclusão de
+ * verdade é a rota — a separação aqui é de significado, não de segurança:
+ * apagar o que é seu e remover o que é de outra pessoa são atos distintos.
  */
 export function toPost(
   row: PostRow,
@@ -73,6 +75,7 @@ export function toPost(
     reactionCounts,
     myReaction,
     commentCount: row.commentCount,
-    canDelete: row.authorId === viewer.userId || viewer.isModerator,
+    canDelete: row.authorId === viewer.userId,
+    canModerate: row.authorId !== viewer.userId && viewer.isModerator,
   };
 }
