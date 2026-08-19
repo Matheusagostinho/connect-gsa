@@ -20,7 +20,7 @@ describe('convites', () => {
     const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
 
     // 32 hexadecimais = 128 bits de entropia.
-    expect(invite.code).toMatch(/^[0-9a-f]{32}$/);
+    expect(invite.code).toMatch(/^[0-9A-HJKMNP-TV-Z]{8}$/);
 
     const stored = await prisma.inviteCode.findUniqueOrThrow({ where: { id: invite.id } });
     expect(stored.codeHash).toBe(hashInviteCode(invite.code));
@@ -106,7 +106,7 @@ describe('link de convite', () => {
       'https://connectgsa.web.app',
     );
 
-    expect(invite.shareUrl).toBe(`https://connectgsa.web.app/convite?c=${invite.code}`);
+    expect(invite.shareUrl).toBe(`https://connectgsa.web.app/convite/${invite.code}`);
   });
 
   it('não duplica a barra quando a URL configurada termina em barra', async () => {

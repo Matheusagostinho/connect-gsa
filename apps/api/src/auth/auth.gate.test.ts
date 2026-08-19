@@ -129,7 +129,7 @@ describe('portão de entrada da rede', () => {
     const codigoInexistente = generateInviteCode();
 
     // Sem lista aprovada e sem bilhete válido, nem um código bem formatado abre a porta.
-    expect(codigoInexistente).toMatch(/^[0-9a-f]{32}$/);
+    expect(codigoInexistente).toMatch(/^[0-9A-HJKMNP-TV-Z]{8}$/);
     await expect(
       test.saveUser(test.createUser({ email: 'invasor@exemplo.com', name: 'Invasor' })),
     ).rejects.toThrow();

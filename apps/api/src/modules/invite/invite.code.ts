@@ -1,32 +1,47 @@
-import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
-import { INVITE_CODE_LENGTH } from '@connect-gsa/shared';
+import { createHash, randomInt, timingSafeEqual } from 'node:crypto';
+import { INVITE_ALPHABET, INVITE_CODE_LENGTH } from '@connect-gsa/shared';
 
 /**
  * Geração e verificação do código de convite (P-009).
  *
- * Duas decisões sustentam este arquivo:
+ * Três decisões sustentam este arquivo:
  *
- * 1. O código tem 128 bits vindos de `randomBytes`. Sequencial, baseado em
- *    tempo ou em `Math.random` seria varrível — e um convite adivinhado é uma
- *    conta a mais numa rede que deveria ser fechada.
- * 2. O banco guarda apenas o SHA-256. Um dump vazado não entrega convite
+ * 1. **`randomInt` do `node:crypto`, nunca `Math.random`.** Um gerador
+ *    previsível transformaria oito caracteres em zero: bastaria reproduzir a
+ *    sequência. E `randomInt` faz a rejeição de amostras por dentro — usar
+ *    `randomBytes` com `% 32` enviesaria o alfabeto se ele não fosse potência
+ *    de dois, e depender dessa coincidência é o tipo de coisa que quebra no dia
+ *    em que alguém tira uma letra do alfabeto.
+ * 2. **Oito caracteres de 32 símbolos = 1,1 trilhão.** O raciocínio completo,
+ *    com os números que descartaram cinco caracteres, está no
+ *    `inviteCodeSchema`.
+ * 3. **O banco guarda apenas o SHA-256.** Um dump vazado não entrega convite
  *    utilizável, e nem nós conseguimos recuperar um código já emitido.
  */
 
-const CODE_BYTES = 16; // 16 bytes = 128 bits = 32 caracteres hexadecimais
-
 export function generateInviteCode(): string {
-  return randomBytes(CODE_BYTES).toString('hex');
+  let code = '';
+  for (let i = 0; i < INVITE_CODE_LENGTH; i += 1) {
+    code += INVITE_ALPHABET[randomInt(INVITE_ALPHABET.length)];
+  }
+  return code;
 }
 
+/**
+ * O hash do código.
+ *
+ * Normaliza para MAIÚSCULAS antes de somar: o código circula por conversa e
+ * chega digitado de todo jeito. Sem normalizar, `abc5ek9m` e `ABC5EK9M` seriam
+ * convites diferentes, e o segundo simplesmente não existiria.
+ */
 export function hashInviteCode(code: string): string {
-  return createHash('sha256').update(code.trim().toLowerCase(), 'utf8').digest('hex');
+  return createHash('sha256').update(code.trim().toUpperCase(), 'utf8').digest('hex');
 }
 
 /**
  * Compara dois hashes sem vazar, pelo tempo de resposta, quantos caracteres
- * batiam. Contra 128 bits de entropia o ganho prático é pequeno, mas o custo
- * de fazer certo é zero.
+ * batiam. Contra este espaço o ganho prático é pequeno, mas o custo de fazer
+ * certo é zero.
  */
 export function inviteHashEquals(a: string, b: string): boolean {
   const bufferA = Buffer.from(a, 'utf8');
@@ -36,5 +51,5 @@ export function inviteHashEquals(a: string, b: string): boolean {
 }
 
 export function looksLikeInviteCode(value: string): boolean {
-  return new RegExp(`^[0-9a-f]{${INVITE_CODE_LENGTH}}$`).test(value.trim().toLowerCase());
+  return new RegExp(`^[${INVITE_ALPHABET}]{${INVITE_CODE_LENGTH}}$`).test(value.trim().toUpperCase());
 }
