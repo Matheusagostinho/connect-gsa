@@ -34,7 +34,7 @@ export function AnnouncementsPage() {
   return (
     <AppShell
       profile={profile}
-      width="lg"
+
       title="Avisos do programa"
       subtitle="Comunicados da coordenação, fora do feed para não se perderem na rolagem"
     >

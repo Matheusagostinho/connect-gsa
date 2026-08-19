@@ -1,8 +1,9 @@
-import { Search, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ListFilter, Search, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { AmbassadorCardItem } from '../components/AmbassadorCardItem.tsx';
 import { AppShell } from '../components/AppShell.tsx';
-import { Button, Card, Field, cn } from '../components/ui.tsx';
+import { SkillFilterPanel } from '../components/SkillFilterPanel.tsx';
+import { Button, cn } from '../components/ui.tsx';
 import { useDirectory, useSkills, type DirectoryFilters } from '../lib/directory.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -12,6 +13,9 @@ export function DirectoryPage() {
 
   const [termo, setTermo] = useState('');
   const [filtros, setFiltros] = useState<DirectoryFilters>({});
+  const [buscaAberta, setBuscaAberta] = useState(false);
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+  const campoBusca = useRef<HTMLInputElement>(null);
 
   // Espera a digitação parar antes de buscar: sem isso, cada tecla vira uma
   // requisição e o limite de taxa da rota fecha na cara de quem digita rápido.
@@ -34,50 +38,96 @@ export function DirectoryPage() {
   const pessoas = data?.pages.flatMap((p) => p.people) ?? [];
   const habilidadeAtiva = filtros.skill;
 
+  const nomeDaHabilidade = skills.find((s) => s.slug === habilidadeAtiva)?.name;
+
   return (
     <AppShell
       profile={profile}
-      width="xl"
       title="Quem está na rede"
-      subtitle="Procure por nome, curso, instituição — ou filtre por habilidade"
+      lead={
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => {
+              setBuscaAberta((estava) => !estava);
+              // O foco vai para o campo no mesmo gesto que o abre: abrir uma
+              // busca e ainda exigir um toque para digitar é meio caminho.
+              requestAnimationFrame(() => campoBusca.current?.focus());
+            }}
+            aria-expanded={buscaAberta}
+            aria-label="Buscar embaixadores"
+            className={cn(
+              'flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-pill',
+              'transition-colors duration-200',
+              buscaAberta ? 'bg-surface-subtle text-ink' : 'text-ink-muted hover:text-ink',
+            )}
+          >
+            <Search className="size-5" aria-hidden="true" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setFiltrosAbertos(true)}
+            aria-label={
+              nomeDaHabilidade ? `Filtros, filtrando por ${nomeDaHabilidade}` : 'Filtros'
+            }
+            className={cn(
+              'relative flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-pill',
+              'transition-colors duration-200',
+              habilidadeAtiva ? 'bg-surface-subtle text-ink' : 'text-ink-muted hover:text-ink',
+            )}
+          >
+            <ListFilter className="size-5" aria-hidden="true" />
+            {habilidadeAtiva ? (
+              <span
+                aria-hidden="true"
+                className="spark-gradient absolute top-1.5 right-1.5 size-2 rounded-pill"
+              />
+            ) : null}
+          </button>
+        </div>
+      }
     >
+      {buscaAberta ? (
+        <div className="border-b border-border px-4 py-3 sm:px-5">
+          <label htmlFor="busca" className="sr-only">
+            Buscar por nome, curso ou instituição
+          </label>
+          <input
+            ref={campoBusca}
+            id="busca"
+            type="search"
+            value={termo}
+            placeholder="Nome, curso ou instituição"
+            onChange={(event) => setTermo(event.target.value)}
+            className="w-full bg-transparent py-1 text-lg text-ink outline-none placeholder:text-ink-muted"
+          />
+        </div>
+      ) : null}
 
-      <div className="mb-4">
-        <Field
-          id="busca"
-          label="Buscar"
-          value={termo}
-          placeholder="Nome, curso ou instituição"
-          onChange={(event) => setTermo(event.target.value)}
-        />
-      </div>
-
-      <div className="mb-6 flex flex-wrap gap-2">
-        {habilidadeAtiva ? (
+      {habilidadeAtiva ? (
+        <div className="px-4 pt-4 sm:px-5">
           <button
             type="button"
             onClick={() => setFiltros(({ skill: _ignorada, ...resto }) => resto)}
             className="inline-flex min-h-9 cursor-pointer items-center gap-2 rounded-pill bg-action px-3 text-sm font-medium text-on-action"
           >
-            {skills.find((s) => s.slug === habilidadeAtiva)?.name ?? habilidadeAtiva}
+            {nomeDaHabilidade ?? habilidadeAtiva}
             <X className="size-3.5" aria-hidden="true" />
+            <span className="sr-only">Tirar este filtro</span>
           </button>
-        ) : (
-          skills.slice(0, 14).map((skill) => (
-            <button
-              key={skill.slug}
-              type="button"
-              onClick={() => setFiltros((f) => ({ ...f, skill: skill.slug }))}
-              className={cn(
-                'inline-flex min-h-9 cursor-pointer items-center rounded-pill border border-border px-3',
-                'text-sm text-ink-muted transition-colors duration-200 hover:text-ink',
-              )}
-            >
-              {skill.name}
-            </button>
-          ))
-        )}
-      </div>
+        </div>
+      ) : null}
+
+      <SkillFilterPanel
+        aberto={filtrosAbertos}
+        skills={skills}
+        selecionada={habilidadeAtiva}
+        onSelect={(slug) =>
+          setFiltros(({ skill: _ignorada, ...resto }) => (slug ? { ...resto, skill: slug } : resto))
+        }
+        onClose={() => setFiltrosAbertos(false)}
+      />
 
       {isPending ? (
         <p className="py-8 text-center text-ink-muted" role="status">
@@ -86,14 +136,14 @@ export function DirectoryPage() {
       ) : null}
 
       {!isPending && pessoas.length === 0 ? (
-        <Card className="text-center">
+        <div className="px-5 py-12 text-center">
           <Search className="mx-auto size-6 text-ink-muted" aria-hidden="true" />
           <h2 className="display mt-3 text-2xl">Ninguém por aqui</h2>
           <p className="mt-2 text-ink-muted">Tente outro termo ou tire os filtros.</p>
-        </Card>
+        </div>
       ) : null}
 
-      <ul className="grid gap-4 sm:grid-cols-2">
+      <ul className="grid gap-4 p-4 sm:grid-cols-2 sm:p-5">
         {pessoas.map((pessoa) => (
           <li key={pessoa.id}>
             <AmbassadorCardItem person={pessoa} />
@@ -104,7 +154,7 @@ export function DirectoryPage() {
       {hasNextPage ? (
         <Button
           variant="outline"
-          className="mx-auto mt-6"
+          className="mx-auto mb-6"
           disabled={isFetchingNextPage}
           onClick={() => void fetchNextPage()}
         >

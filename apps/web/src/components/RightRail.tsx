@@ -37,10 +37,11 @@ function Bloco({
  * Numa rede que está começando, o problema não é excesso de conteúdo, é a
  * pessoa não saber que existe mais alguém do outro lado.
  *
- * Some abaixo de 1280px em vez de espremer: entre uma coluna estreita e uma
- * coluna ausente, a ausente lê melhor. E, por ser secundária, fica DEPOIS do
- * conteúdo na ordem do documento — quem navega por teclado chega ao feed antes
- * de chegar às sugestões.
+ * Some abaixo de 1536px em vez de espremer: entre uma coluna estreita e uma
+ * coluna ausente, a ausente lê melhor. O limiar subiu junto com a largura do
+ * conteúdo, que passou a ser a mesma em todas as telas. E, por ser secundária,
+ * ela fica DEPOIS do conteúdo na ordem do documento — quem navega por teclado
+ * chega ao feed antes de chegar às sugestões.
  */
 export function RightRail() {
   const { data: eu } = useMyProfile();
@@ -54,7 +55,7 @@ export function RightRail() {
   const aviso = avisos?.[0];
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-80 shrink-0 flex-col gap-4 overflow-y-auto py-4 pl-6 xl:flex">
+    <aside className="sticky top-0 hidden h-screen w-80 shrink-0 flex-col gap-4 overflow-y-auto py-4 pl-6 2xl:flex">
       {sugestoes.length > 0 ? (
         <Bloco titulo="Embaixadores para conhecer">
           <ul className="flex flex-col gap-1">

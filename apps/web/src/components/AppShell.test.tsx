@@ -142,6 +142,34 @@ describe('uma moldura só para todas as telas', () => {
     expect(desenhamNavegacao).toEqual([]);
   });
 
+  it('Conexões não é destino de navegação; o perfil leva até ela @spec:AC-124', () => {
+    renderShell();
+
+    // Conexões é uma lista que pertence ao seu perfil, não uma seção da rede.
+    // Navegação que cresce com tudo que existe para de orientar.
+    expect(DESTINOS.some((d) => d.to === '/conexoes')).toBe(false);
+    expect(screen.queryByRole('link', { name: /conexões/i })).not.toBeInTheDocument();
+  });
+
+  it('uma largura só para toda tela @spec:AC-104', () => {
+    const fonte = readFileSync(caminhoDe('AppShell.tsx'), 'utf8');
+
+    // Eram duas, e a diferença aparecia como um salto do conteúdo ao trocar de
+    // seção. Nenhuma página escolhe a própria — a moldura não aceita mais.
+    expect(fonte).not.toMatch(/width\?:/);
+
+    const paginas = readdirSync(path.resolve(caminhoDe('..'), 'pages')).filter((f) =>
+      f.endsWith('.tsx'),
+    );
+    const escolhemLargura = paginas.filter((arquivo) =>
+      /<AppShell[^>]*width=/s.test(
+        readFileSync(path.resolve(caminhoDe('..'), 'pages', arquivo), 'utf8'),
+      ),
+    );
+
+    expect(escolhemLargura).toEqual([]);
+  });
+
   it('o modo imersivo entrega a altura da tela e flutua o cabeçalho @spec:AC-104', () => {
     const fonte = readFileSync(caminhoDe('AppShell.tsx'), 'utf8');
 

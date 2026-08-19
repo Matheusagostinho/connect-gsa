@@ -39,7 +39,7 @@ export function SettingsPage() {
   const podeConvidar = profile.role === 'admin' || profile.role === 'moderator';
 
   return (
-    <AppShell profile={profile} width="lg" title="Configurações">
+    <AppShell profile={profile} title="Configurações">
 
       <div className="flex flex-col gap-4">
         <Card>

@@ -6,10 +6,15 @@ import { RightRail } from './RightRail.tsx';
 import { SideNav } from './SideNav.tsx';
 import { cn } from './ui.tsx';
 
-const LARGURAS = {
-  lg: 'max-w-2xl',
-  xl: 'max-w-5xl',
-} as const;
+/**
+ * Uma largura, para toda tela.
+ *
+ * Havia duas — feed, avisos, perfil e configurações numa, diretório e conexões
+ * noutra —, e a diferença aparecia como um salto do conteúdo ao trocar de
+ * seção. Interface que muda de medida sozinha faz a pessoa reancorar o olho
+ * toda vez.
+ */
+const LARGURA = 'max-w-5xl';
 
 /**
  * A moldura de toda tela autenticada.
@@ -35,7 +40,6 @@ const LARGURAS = {
 export function AppShell({
   profile,
   children,
-  width = 'lg',
   variant = 'reading',
   rail = false,
   title,
@@ -45,7 +49,6 @@ export function AppShell({
 }: {
   profile: MyProfile;
   children: ReactNode;
-  width?: keyof typeof LARGURAS;
   variant?: 'reading' | 'immersive';
   /** Mostra a coluna de sugestões em telas muito largas. */
   rail?: boolean;
@@ -84,7 +87,7 @@ export function AppShell({
             // limite visível, e o mapa — que é cinza como o fundo da página —
             // parecia vazar para fora da grade.
             'lg:border-x lg:border-border',
-            imersivo ? 'relative h-full' : cn('mx-auto w-full', LARGURAS[width]),
+            imersivo ? 'relative h-full' : cn('mx-auto w-full', LARGURA),
           )}
         >
           {/*
@@ -96,7 +99,12 @@ export function AppShell({
           <div
             className={cn(
               imersivo && 'pointer-events-none absolute inset-x-0 top-0 z-30 [&>header]:border-0',
-              imersivo && '[&>header]:bg-transparent [&>header]:backdrop-blur-none',
+              // Fundo translúcido e desfocado, e NÃO transparente: sobre o mapa,
+              // a marca caía em cima dos rótulos das cidades e as duas coisas
+              // ficavam ilegíveis ao mesmo tempo. A margem descola a faixa da
+              // borda da tela.
+              imersivo && '[&>header]:m-3 [&>header]:rounded-card [&>header]:bg-surface/85',
+              imersivo && '[&>header]:border [&>header]:border-border',
               imersivo && '[&_a]:pointer-events-auto [&_button]:pointer-events-auto',
             )}
           >
