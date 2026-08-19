@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router';
 import { DESTINOS } from '../lib/navigation.js';
-import { useUnreadCount } from '../lib/notifications.js';
 import { Wordmark } from './Logo.tsx';
 import { cn } from './ui.tsx';
 
@@ -12,9 +11,6 @@ import { cn } from './ui.tsx';
  * tipo de atrito que faz não trocar.
  */
 export function SideNav() {
-  const { data } = useUnreadCount();
-  const naoLidas = data?.unreadCount ?? 0;
-
   return (
     <nav
       aria-label="Seções"
@@ -25,7 +21,7 @@ export function SideNav() {
       </NavLink>
 
       <ul className="flex flex-col gap-1">
-        {DESTINOS.map(({ to, label, Icon, badge }) => (
+        {DESTINOS.map(({ to, label, Icon }) => (
           <li key={to}>
             <NavLink
               to={to}
@@ -40,23 +36,8 @@ export function SideNav() {
                 )
               }
             >
-              <span className="relative flex shrink-0">
-                <Icon className="size-5" aria-hidden="true" />
-                {badge && naoLidas > 0 ? (
-                  <span
-                    aria-hidden="true"
-                    className="spark-gradient absolute -top-1 -right-1.5 flex min-w-4 items-center justify-center rounded-pill px-1 text-[0.6rem] leading-4 font-semibold text-white"
-                  >
-                    {naoLidas > 9 ? '9+' : naoLidas}
-                  </span>
-                ) : null}
-              </span>
+              <Icon className="size-5 shrink-0" aria-hidden="true" />
               {label}
-              {badge && naoLidas > 0 ? (
-                <span className="sr-only">
-                  {naoLidas} {naoLidas === 1 ? 'não lida' : 'não lidas'}
-                </span>
-              ) : null}
             </NavLink>
           </li>
         ))}

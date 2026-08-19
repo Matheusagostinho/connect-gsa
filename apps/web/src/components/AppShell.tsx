@@ -4,6 +4,7 @@ import { BottomNav } from './BottomNav.tsx';
 import { SideNav } from './SideNav.tsx';
 import { TopBar } from './TopBar.tsx';
 import { AccountMenu } from './AccountMenu.tsx';
+import { NotificationBell } from './NotificationBell.tsx';
 import { cn } from './ui.tsx';
 
 const LARGURAS = {
@@ -37,14 +38,19 @@ export function AppShell({
 }) {
   return (
     <div className="min-h-screen bg-surface">
-      <div className="mx-auto flex w-full max-w-7xl px-5 lg:px-8">
+      {/*
+        Menos respiro lateral no celular: numa tela de 390px, 20px de cada lado
+        custam 10% da largura do conteúdo — o cartão de publicação sente.
+      */}
+      <div className="mx-auto flex w-full max-w-7xl px-4 lg:px-8">
         <SideNav />
 
         <div className="flex min-w-0 flex-1 flex-col">
           <TopBar profile={profile} />
 
-          {/* No computador, a conta some da lateral e fica no alto do conteúdo. */}
-          <div className="hidden justify-end pt-8 lg:flex">
+          {/* No computador, notificações e conta ficam no alto do conteúdo. */}
+          <div className="hidden items-center justify-end gap-1 pt-8 lg:flex">
+            <NotificationBell />
             <AccountMenu profile={profile} />
           </div>
 

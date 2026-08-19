@@ -1,5 +1,4 @@
 import {
-  Bell,
   Compass,
   Map,
   Megaphone,
@@ -36,7 +35,6 @@ export const DESTINOS: readonly Destino[] = [
   { to: '/mapa', label: 'Mapa', Icon: Map, mobile: true },
   { to: '/avisos', label: 'Avisos', Icon: Megaphone, mobile: false },
   { to: '/conexoes', label: 'Conexões', Icon: Users, mobile: true },
-  { to: '/notificacoes', label: 'Notificações', Icon: Bell, badge: true, mobile: false },
   { to: '/perfil', label: 'Perfil', Icon: User, mobile: true },
   { to: '/configuracoes', label: 'Configurações', Icon: Settings, mobile: false },
 ];
