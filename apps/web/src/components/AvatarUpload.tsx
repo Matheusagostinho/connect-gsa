@@ -12,7 +12,16 @@ import { Avatar } from './Avatar.tsx';
  * uma foto que provavelmente saiu do celular dela, e merece saber que a
  * localização gravada nela é descartada antes de qualquer coisa ser guardada.
  */
-export function AvatarUpload({ profile, size = 72 }: { profile: MyProfile; size?: number }) {
+export function AvatarUpload({
+  profile,
+  size = 72,
+  ring = false,
+}: {
+  profile: MyProfile;
+  size?: number;
+  /** Anel em degradê da marca — quando o avatar é o assunto da tela. */
+  ring?: boolean;
+}) {
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const input = useRef<HTMLInputElement>(null);
@@ -34,7 +43,7 @@ export function AvatarUpload({ profile, size = 72 }: { profile: MyProfile; size?
   return (
     <div className="flex flex-col gap-2">
       <div className="relative w-fit">
-        <Avatar name={profile.name} imageUrl={profile.imageUrl} size={size} />
+        <Avatar name={profile.name} imageUrl={profile.imageUrl} size={size} ring={ring} />
 
         <input
           ref={input}

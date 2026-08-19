@@ -167,6 +167,37 @@ describe('apresentação do perfil', () => {
     expect(screen.getByRole('button', { name: /compartilhar/i })).toBeInTheDocument();
   });
 
+  it('o indicador da aba ocupa a aba inteira @spec:AC-130', () => {
+    renderPerfil();
+
+    const aba = screen.getByRole('tab', { name: /publicações/i });
+    const indicador = aba.querySelector('span[aria-hidden="true"]');
+
+    // Com três abas, um traço curto no centro lê como enfeite em vez de posição.
+    expect(indicador?.className).toContain('inset-x-0');
+    expect(indicador?.className).not.toMatch(/\bw-14\b/);
+  });
+
+  it('mostra o nome ao lado do avatar no celular', () => {
+    renderPerfil();
+
+    // Numa tela de 390px, avatar em cima e nome embaixo gastava duas faixas de
+    // altura para dizer uma coisa só. Os dois blocos existem na árvore; qual
+    // aparece é decidido pelo CSS.
+    expect(screen.getAllByRole('heading', { name: 'Ana Ribeiro' })).toHaveLength(2);
+  });
+
+  it('as ações não disputam a primeira linha com o nome', () => {
+    renderPerfil();
+
+    // No celular elas disputavam, o `flex-wrap` distribuía o que sobrava, e o
+    // que sobrava era nada: o nome era espremido até a largura zero e os botões
+    // ficavam por cima dele.
+    const acoes = screen.getByRole('button', { name: /compartilhar/i }).parentElement;
+    expect(acoes?.className).toContain('basis-full');
+    expect(acoes?.className).toContain('sm:basis-auto');
+  });
+
   it('não desenha capa nenhuma', () => {
     renderPerfil();
 

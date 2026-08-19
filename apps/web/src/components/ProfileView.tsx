@@ -70,16 +70,39 @@ export function ProfileView({
             lugar do nome, da bio e das habilidades, que é o que faz alguém
             decidir se quer se conectar.
           */}
+          {/*
+            No celular o nome vem AO LADO do avatar; a partir de `sm` ele desce
+            para baixo dele. Numa tela de 390px, avatar em cima e nome embaixo
+            gastava duas faixas de altura para dizer uma coisa só, e empurrava a
+            bio e as habilidades — que é o que a pessoa veio ler — para fora da
+            primeira tela.
+          */}
           <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
+            <div className="flex min-w-0 basis-full items-center gap-4 sm:basis-auto">
               {souEu ? (
-                <AvatarUpload profile={eu} size={88} />
+                <AvatarUpload profile={eu} size={88} ring />
               ) : (
-                <Avatar name={profile.name} imageUrl={profile.imageUrl} size={88} />
+                <Avatar name={profile.name} imageUrl={profile.imageUrl} size={88} ring />
               )}
+
+              <div className="min-w-0 sm:hidden">
+                <h1 className="display truncate text-2xl">{profile.name}</h1>
+                <p className="truncate text-sm text-ink-muted">@{profile.slug}</p>
+                {papel ? (
+                  <span className="mt-1 inline-block rounded-pill border border-border px-2 py-0.5 text-xs font-medium text-ink">
+                    {papel}
+                  </span>
+                ) : null}
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 pt-2">
+            {/*
+              `basis-full` no celular: os botões ganham uma linha inteira, em vez
+              de disputarem a primeira com o avatar e o nome. Disputando, o nome
+              era espremido até a largura ZERO e os botões ficavam por cima dele
+              — o `flex-wrap` distribui o que sobra, e o que sobrava era nada.
+            */}
+            <div className="flex basis-full flex-wrap gap-2 sm:basis-auto sm:pt-2">
               {/*
                 Um link, não um botão com `onClick` que navega: editar o perfil
                 é ir para outro endereço, e só o link dá o menu de contexto, o
@@ -133,8 +156,8 @@ export function ProfileView({
             </div>
           </div>
 
-          <div className="mt-3">
-            <h1 className="display text-2xl sm:text-3xl">{profile.name}</h1>
+          <div className="mt-3 max-sm:hidden">
+            <h1 className="display text-3xl">{profile.name}</h1>
             <p className="mt-0.5 flex flex-wrap items-center gap-2 text-sm text-ink-muted">
               <span>@{profile.slug}</span>
               {papel ? (
@@ -146,7 +169,7 @@ export function ProfileView({
           </div>
 
           {profile.bio ? (
-            <p className="mt-4 leading-relaxed break-words">{profile.bio}</p>
+            <p className="mt-4 leading-relaxed break-words max-sm:mt-3">{profile.bio}</p>
           ) : null}
 
           <dl className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-ink-muted">
@@ -227,10 +250,12 @@ export function ProfileView({
               >
                 {label}
                 <span className="ml-1.5 text-xs text-ink-muted">{total}</span>
+                {/* Largura inteira, como no feed: com três abas, um traço curto
+                    no centro lê como enfeite em vez de posição. */}
                 {ativa ? (
                   <span
                     aria-hidden="true"
-                    className="spark-gradient absolute inset-x-0 bottom-0 mx-auto h-1 w-14 rounded-pill"
+                    className="spark-gradient absolute inset-x-0 bottom-0 h-1 rounded-pill"
                   />
                 ) : null}
               </button>
