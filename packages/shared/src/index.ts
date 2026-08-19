@@ -5,3 +5,4 @@ export * from './reaction.js';
 export * from './post.schema.js';
 export * from './directory.schema.js';
 export * from './connection.schema.js';
+export * from './notification.schema.js';

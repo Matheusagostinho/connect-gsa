@@ -59,6 +59,14 @@ model User {
   /// funcionar é pior que slug desatualizado.
   slug String? @unique
 
+  /// Até quando esta pessoa já viu as próprias notificações.
+  ///
+  /// Uma coluna em vez de uma tabela de notificações. Nesta escala, manter
+  /// registros duplicados de algo que já está no banco — pedidos, reações,
+  /// comentários — custa mais do que consultá-los, e cria a chance de os dois
+  /// lados divergirem (ASM-019).
+  notificationsSeenAt DateTime?
+
   /// AC-015 / P-011: aparecer no mapa é escolha ativa. O default é, e precisa
   /// continuar sendo, `false`.
   visibleOnMap   Boolean @default(false)
