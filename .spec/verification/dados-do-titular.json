@@ -1,50 +1,55 @@
 {
-  "feature": "navegacao-e-notificacoes",
-  "timestamp": "2026-08-19T02:48:01.646Z",
+  "feature": "dados-do-titular",
+  "timestamp": "2026-08-19T02:49:10.150Z",
   "gitRev": "aceb187",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
   "testsParsed": 197,
   "results": {
-    "AC-061": {
+    "AC-069": {
       "status": "pass",
-      "testName": "moldura do aplicativo oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062 oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062",
+      "testName": "exportar meus dados devolve um arquivo estruturado, com data de geração @spec:AC-069 devolve um arquivo estruturado, com data de geração @spec:AC-069",
       "method": "vitest-json"
     },
-    "AC-062": {
+    "AC-070": {
       "status": "pass",
-      "testName": "moldura do aplicativo oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062 oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062",
+      "testName": "exportar meus dados traz perfil, publicações, comentários, reações e conexões @spec:AC-070 traz perfil, publicações, comentários, reações e conexões @spec:AC-070",
       "method": "vitest-json"
     },
-    "AC-063": {
+    "AC-071": {
       "status": "pass",
-      "testName": "moldura do aplicativo marca a seção atual para quem vê e para quem ouve @spec:AC-063 marca a seção atual para quem vê e para quem ouve @spec:AC-063",
+      "testName": "exportar meus dados não entrega e-mail de terceiros @spec:AC-071 @principle:P-002 não entrega e-mail de terceiros @spec:AC-071 @principle:P-002",
       "method": "vitest-json"
     },
-    "AC-064": {
+    "AC-072": {
       "status": "pass",
-      "testName": "mapa em tela cheia o mapa preenche o contêiner em vez de fixar a própria altura @spec:AC-064 o mapa preenche o contêiner em vez de fixar a própria altura @spec:AC-064",
+      "testName": "excluir minha conta apaga a conta e o perfil deixa de responder @spec:AC-072 apaga a conta e o perfil deixa de responder @spec:AC-072",
       "method": "vitest-json"
     },
-    "AC-065": {
+    "AC-073": {
       "status": "pass",
-      "testName": "notificações junta pedido de conexão, reação e comentário num lugar só @spec:AC-065 junta pedido de conexão, reação e comentário num lugar só @spec:AC-065",
+      "testName": "excluir minha conta leva junto publicações, comentários e reações @spec:AC-073 leva junto publicações, comentários e reações @spec:AC-073",
       "method": "vitest-json"
     },
-    "AC-066": {
+    "AC-074": {
       "status": "pass",
-      "testName": "moldura do aplicativo mostra quantas notificações estão por ler @spec:AC-066 mostra quantas notificações estão por ler @spec:AC-066",
+      "testName": "excluir minha conta apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012 apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012",
       "method": "vitest-json"
     },
-    "AC-067": {
+    "AC-075": {
       "status": "pass",
-      "testName": "notificações conta as não lidas e zera depois de olhar @spec:AC-066 @spec:AC-067 conta as não lidas e zera depois de olhar @spec:AC-066 @spec:AC-067",
+      "testName": "excluir minha conta mantém corretos os contadores das publicações de terceiros @spec:AC-075 mantém corretos os contadores das publicações de terceiros @spec:AC-075",
       "method": "vitest-json"
     },
-    "AC-068": {
+    "AC-076": {
       "status": "pass",
-      "testName": "notificações não me notifica do que eu mesmo fiz @spec:AC-068 não me notifica do que eu mesmo fiz @spec:AC-068",
+      "testName": "excluir minha conta recusa sem a confirmação escrita, e nada é apagado @spec:AC-076 recusa sem a confirmação escrita, e nada é apagado @spec:AC-076",
+      "method": "vitest-json"
+    },
+    "AC-077": {
+      "status": "pass",
+      "testName": "excluir minha conta encerra a sessão junto @spec:AC-077 encerra a sessão junto @spec:AC-077",
       "method": "vitest-json"
     }
   },

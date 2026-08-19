@@ -410,10 +410,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "acesso-e-perfil",
       "ref": "—",
-      "ocorrencias": 5,
+      "ocorrencias": 6,
       "primeiraVez": "2026-08-18T17:48:39.918Z",
-      "ultimaVez": "2026-08-19T01:29:02.037Z",
-      "gitRev": "9185688"
+      "ultimaVez": "2026-08-19T02:43:43.405Z",
+      "gitRev": "aceb187"
     },
     "ARQUIVO_ORFAO::—::apps/api/src/testing/app.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -842,10 +842,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "feed-e-reacoes",
       "ref": "—",
-      "ocorrencias": 1,
+      "ocorrencias": 2,
       "primeiraVez": "2026-08-19T01:29:02.037Z",
-      "ultimaVez": "2026-08-19T01:29:02.037Z",
-      "gitRev": "9185688"
+      "ultimaVez": "2026-08-19T02:43:43.406Z",
+      "gitRev": "aceb187"
     },
     "ARQUIVO_ORFAO::—::apps/api/src/modules/connection/connection.routes.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -1035,6 +1035,69 @@
       "primeiraVez": "2026-08-19T02:00:46.758Z",
       "ultimaVez": "2026-08-19T02:00:46.758Z",
       "gitRev": "a7c21d0"
+    },
+    "TASK_CONCLUIDA_SEM_PROVA::ajustes-de-produto::T-047": {
+      "codigo": "TASK_CONCLUIDA_SEM_PROVA",
+      "feature": "ajustes-de-produto",
+      "ref": "T-047",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-08-19T02:41:26.841Z",
+      "ultimaVez": "2026-08-19T02:41:26.842Z",
+      "gitRev": "aceb187"
+    },
+    "AC_SEM_TESTE::ajustes-de-produto::AC-080": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "ajustes-de-produto",
+      "ref": "AC-080",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T02:41:26.842Z",
+      "ultimaVez": "2026-08-19T02:41:26.842Z",
+      "gitRev": "aceb187"
+    },
+    "AC_SEM_TESTE::ajustes-de-produto::AC-081": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "ajustes-de-produto",
+      "ref": "AC-081",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T02:41:26.842Z",
+      "ultimaVez": "2026-08-19T02:41:26.842Z",
+      "gitRev": "aceb187"
+    },
+    "AC_SEM_TESTE::ajustes-de-produto::AC-082": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "ajustes-de-produto",
+      "ref": "AC-082",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T02:41:26.842Z",
+      "ultimaVez": "2026-08-19T02:41:26.842Z",
+      "gitRev": "aceb187"
+    },
+    "VERIFY_OBSOLETO::dados-do-titular::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "dados-do-titular",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T02:43:43.406Z",
+      "ultimaVez": "2026-08-19T02:43:43.406Z",
+      "gitRev": "aceb187"
+    },
+    "VERIFY_OBSOLETO::diretorio-mapa-e-conexoes::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T02:43:43.406Z",
+      "ultimaVez": "2026-08-19T02:43:43.406Z",
+      "gitRev": "aceb187"
+    },
+    "VERIFY_OBSOLETO::navegacao-e-notificacoes::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "navegacao-e-notificacoes",
+      "ref": "—",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-19T02:43:43.406Z",
+      "ultimaVez": "2026-08-19T02:43:43.406Z",
+      "gitRev": "aceb187"
     }
   }
 }

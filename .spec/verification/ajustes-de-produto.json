@@ -1,50 +1,40 @@
 {
-  "feature": "navegacao-e-notificacoes",
-  "timestamp": "2026-08-19T02:48:01.646Z",
+  "feature": "ajustes-de-produto",
+  "timestamp": "2026-08-19T02:50:11.774Z",
   "gitRev": "aceb187",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
   "testsParsed": 197,
   "results": {
-    "AC-061": {
+    "AC-078": {
       "status": "pass",
-      "testName": "moldura do aplicativo oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062 oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062",
+      "testName": "apagar o que é meu × moderar o que é de outro separa as duas coisas para quem tem poder de moderação @spec:AC-078 separa as duas coisas para quem tem poder de moderação @spec:AC-078",
       "method": "vitest-json"
     },
-    "AC-062": {
+    "AC-079": {
       "status": "pass",
-      "testName": "moldura do aplicativo oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062 oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062",
+      "testName": "apagar o que é meu × moderar o que é de outro não oferece nada em publicação alheia para embaixador comum @spec:AC-079 não oferece nada em publicação alheia para embaixador comum @spec:AC-079",
       "method": "vitest-json"
     },
-    "AC-063": {
+    "AC-080": {
       "status": "pass",
-      "testName": "moldura do aplicativo marca a seção atual para quem vê e para quem ouve @spec:AC-063 marca a seção atual para quem vê e para quem ouve @spec:AC-063",
+      "testName": "texto com links transforma endereço em link clicável, que abre em outra aba @spec:AC-080 transforma endereço em link clicável, que abre em outra aba @spec:AC-080",
       "method": "vitest-json"
     },
-    "AC-064": {
+    "AC-081": {
       "status": "pass",
-      "testName": "mapa em tela cheia o mapa preenche o contêiner em vez de fixar a própria altura @spec:AC-064 o mapa preenche o contêiner em vez de fixar a própria altura @spec:AC-064",
+      "testName": "texto com links encurta endereço comprido sem perder o destino @spec:AC-081 encurta endereço comprido sem perder o destino @spec:AC-081",
       "method": "vitest-json"
     },
-    "AC-065": {
+    "AC-082": {
       "status": "pass",
-      "testName": "notificações junta pedido de conexão, reação e comentário num lugar só @spec:AC-065 junta pedido de conexão, reação e comentário num lugar só @spec:AC-065",
+      "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006",
       "method": "vitest-json"
     },
-    "AC-066": {
+    "AC-083": {
       "status": "pass",
-      "testName": "moldura do aplicativo mostra quantas notificações estão por ler @spec:AC-066 mostra quantas notificações estão por ler @spec:AC-066",
-      "method": "vitest-json"
-    },
-    "AC-067": {
-      "status": "pass",
-      "testName": "notificações conta as não lidas e zera depois de olhar @spec:AC-066 @spec:AC-067 conta as não lidas e zera depois de olhar @spec:AC-066 @spec:AC-067",
-      "method": "vitest-json"
-    },
-    "AC-068": {
-      "status": "pass",
-      "testName": "notificações não me notifica do que eu mesmo fiz @spec:AC-068 não me notifica do que eu mesmo fiz @spec:AC-068",
+      "testName": "barra de reações usa ícone desenhado, não emoji, para a reação aparecer em qualquer sistema @spec:AC-083 usa ícone desenhado, não emoji, para a reação aparecer em qualquer sistema @spec:AC-083",
       "method": "vitest-json"
     }
   },
