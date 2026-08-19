@@ -57,27 +57,56 @@ function criarPino(cidade: MapCity, aoClicar: () => void): HTMLElement {
   fotos.className = 'pino-mapa-fotos';
   fotos.setAttribute('aria-hidden', 'true');
 
+  /** A inicial, usada quando não há foto — e quando a foto não carrega. */
+  const inicialDe = (nome: string): HTMLElement => {
+    const inicial = document.createElement('span');
+    inicial.className = 'pino-mapa-inicial';
+    inicial.textContent = nome.charAt(0).toUpperCase();
+    return inicial;
+  };
+
   for (const pessoa of cidade.preview) {
     if (pessoa.imageUrl) {
       const img = document.createElement('img');
       img.src = pessoa.imageUrl;
       img.alt = '';
       img.loading = 'lazy';
+      // O mesmo recuo do componente `Avatar`, repetido aqui porque o pino é DOM
+      // criado à mão — os marcadores do MapLibre não passam pelo React. Sem
+      // ele, um arquivo que sumiu do armazenamento vira o ícone de imagem
+      // quebrada em cima do mapa, que é pior que não ter foto.
+      img.addEventListener('error', () => img.replaceWith(inicialDe(pessoa.name)), { once: true });
       fotos.append(img);
     } else {
-      const inicial = document.createElement('span');
-      inicial.className = 'pino-mapa-inicial';
-      inicial.textContent = pessoa.name.charAt(0).toUpperCase();
-      fotos.append(inicial);
+      fotos.append(inicialDe(pessoa.name));
     }
   }
 
-  const rotulo = document.createElement('span');
-  rotulo.className = 'pino-mapa-rotulo';
-  rotulo.setAttribute('aria-hidden', 'true');
-  rotulo.textContent = cidade.count > cidade.preview.length ? `+${cidade.count - cidade.preview.length}` : cidade.city;
+  botao.append(fotos);
 
-  botao.append(fotos, rotulo);
+  /*
+    O nome da cidade NÃO fica no pino. Com muitas cidades próximas, os rótulos
+    se sobrepõem e o mapa vira uma lista de nomes empilhados sobre o desenho —
+    e o que interessa ali são os rostos. O nome vem no `title` (ponteiro) e no
+    nome acessível (leitor de tela), e a lista inteira abre ao clicar.
+
+    O que fica ao lado dos rostos é quantas pessoas NÃO couberam. `+5` ao lado
+    de três fotos lê como "oito no total"; `+8` ao lado de três fotos faria a
+    conta parecer errada.
+  */
+  const restantes = cidade.count - cidade.preview.length;
+  if (restantes > 0) {
+    const rotulo = document.createElement('span');
+    rotulo.className = 'pino-mapa-rotulo';
+    rotulo.setAttribute('aria-hidden', 'true');
+    rotulo.textContent = `+${restantes}`;
+    botao.append(rotulo);
+  }
+
+  botao.title = `${cidade.city}/${cidade.state} · ${cidade.count} ${
+    cidade.count === 1 ? 'embaixador' : 'embaixadores'
+  }`;
+
   return botao;
 }
 

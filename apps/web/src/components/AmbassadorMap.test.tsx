@@ -56,3 +56,23 @@ describe('mapa em tela cheia', () => {
     expect(codigo).toContain('flex-1');
   });
 });
+
+describe('pino do mapa', () => {
+  const codigo = semComentarios(mapa);
+
+  it('não escreve o nome da cidade no pino @spec:AC-138', () => {
+    // Com muitas cidades próximas, os rótulos se sobrepõem e o mapa vira uma
+    // lista de nomes empilhados sobre o desenho — e o que interessa ali são os
+    // rostos. O nome vai para o `title` e para o nome acessível.
+    expect(codigo).not.toMatch(/rotulo\.textContent\s*=\s*[^;]*cidade\.city/);
+    expect(codigo).toMatch(/botao\.title\s*=/);
+    expect(codigo).toMatch(/aria-label/);
+  });
+
+  it('mostra quantas pessoas NÃO couberam, não o total @spec:AC-138', () => {
+    // `+5` ao lado de três fotos lê como "oito no total"; `+8` ao lado de três
+    // fotos faria a conta parecer errada.
+    expect(codigo).toMatch(/cidade\.count\s*-\s*cidade\.preview\.length/);
+    expect(codigo).toMatch(/restantes > 0/);
+  });
+});
