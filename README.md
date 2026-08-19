@@ -23,7 +23,7 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Envio de imagem em post e foto de perfil | Vídeo |
 | Diretório com busca e filtro por habilidade | Notificação de pedido de conexão |
 | Mapa por cidade, com pinos clicáveis | Mensagem direta |
-| Perfil público em `/e/{slug}` com as publicações | Mapa fora do Brasil |
+| Perfil público em `/perfil/{slug}` com as publicações | Mapa fora do Brasil |
 | Conexões: pedir, aceitar, recusar, desfazer | Exportar e excluir a própria conta |
 | Link de convite pronto para compartilhar | |
 | Notificações de reação, comentário e conexão | |
@@ -32,6 +32,8 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Página de apresentação e tela de configurações | |
 | Quadro de avisos oficiais | |
 | Controle de visibilidade no mapa | |
+| Feed em abas: "Para você" e "Seguindo" | |
+| Caixa de notificações no cabeçalho | |
 
 A especificação completa, com critérios de aceite e provas, está em
 `.spec/features/acesso-e-perfil/`.
@@ -152,13 +154,17 @@ O conjunto é próprio, e a escolha não é estética. Numa rede de **conexão**
 desperdiça a interação: as três primeiras reconhecem o post, e as duas últimas sinalizam
 disposição de trabalhar junto.
 
-| Reação | Diz | Peso no feed |
-|---|---|---|
-| 🚀 **Decolou** | Isso aqui é notável | 1 |
-| 💡 **Aprendi** | Aprendi alguma coisa com isso | 1,5 |
-| 👏 **Respeito** | Reconheço o esforço por trás disso | 1 |
-| 🤝 **Bora junto** | Quero construir isso com você | 3 |
-| 🙋 **Posso ajudar** | Tenho como ajudar nisso | 3 |
+| Reação | Diz | Peso no feed | Cor |
+|---|---|---|---|
+| **Decolou** | Isso aqui é notável | 1 | azul |
+| **Aprendi** | Aprendi alguma coisa com isso | 1,5 | amarelo |
+| **Respeito** | Reconheço o esforço por trás disso | 1 | verde |
+| **Bora junto** | Quero construir isso com você | 3 | roxo |
+| **Posso ajudar** | Tenho como ajudar nisso | 3 | vermelho |
+
+Cada uma é um **ícone desenhado, não emoji**: há sistema sem fonte de emoji instalada, onde
+o caractere vira quadrado vazio. A reação escolhida ganha a cor dela e o traço é redesenhado
+na troca — nunca para quem pediu menos movimento no sistema.
 
 Uma reação por pessoa por post, trocável: escolher outra substitui a anterior, escolher a
 mesma desfaz. Isso força a pessoa a dizer o que realmente quis dizer e mantém cada sinal
@@ -186,6 +192,17 @@ O que atravessou foram quatro ideias independentes de modelo:
 
 A função está em `apps/api/src/modules/feed/ranking.ts`. É pura, sem banco e sem relógio
 implícito — cada regra tem um teste próprio.
+
+## As duas abas do feed
+
+**"Seguindo"** filtra: só publicações de quem já é conexão, mais as suas. **"Para você"**
+não filtra nada — a afinidade (mesmo curso, mesmo estado, habilidade em comum, mesma
+instituição, mesma cidade) entra como *impulso no ranking*, não como cláusula de busca.
+
+A diferença importa: um filtro rígido deixaria a tela inicial de quem acabou de chegar
+completamente vazia, e quem acabou de chegar é justamente quem mais precisa ver a rede. Há
+teste garantindo que "Para você" continue mostrando a rede inteira mesmo para quem não tem
+afinidade com ninguém.
 
 ## O mapa
 

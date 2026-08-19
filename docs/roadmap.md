@@ -20,7 +20,7 @@ pelo que **destrava o lançamento**, e só então pelo que aumenta engajamento.
 | Escolher se aparece no mapa | pronto |
 
 Foram além do prometido: instituições **por campus** (628 entradas, com os 38 Institutos
-Federais), catálogo fechado de 78 habilidades, e perfil público em `/e/{slug}`.
+Federais), catálogo fechado de 78 habilidades, e perfil público em `/perfil/{slug}`.
 
 ### Feed e quadro de avisos — **completo**
 
@@ -86,6 +86,33 @@ afundaria.
 O custo desse desenho é o quadro virar um lugar que ninguém visita. Por isso o aviso mais
 recente também aparece no topo do feed, saindo do destaque depois de duas semanas: aviso
 velho fixo ensina a ignorar o espaço.
+
+### ~~Fatia 6.5 — Feed em abas e refino de interface~~ · **entregue**
+
+Nasceu de usar o produto, não de planejamento. O defeito mais grave era silencioso e
+derrubava **três fluxos de uma vez**: nenhuma exclusão funcionava pela tela — nem apagar
+publicação, nem apagar comentário, nem desfazer conexão. O cliente anunciava
+`Content-Type: application/json` numa requisição sem corpo e o servidor recusava antes de
+olhar a rota. Cada um parecia um bug isolado; era um só.
+
+O resto é refino, e vale registrar o que **não** é óbvio:
+
+- **Duas abas no feed.** "Para você" **ordena** por afinidade — curso, estado, habilidade,
+  instituição, cidade —, não filtra. Filtrar deixaria a tela inicial de quem acabou de
+  chegar completamente vazia, e quem acabou de chegar é justamente quem mais precisa ver a
+  rede. "Seguindo" filtra por conexões, e inclui as próprias publicações.
+- **Sino com caixa no cabeçalho**, no celular e no computador. Abrir a caixa zera o
+  contador: se não zerasse, o número estaria mentindo. Mostra cinco — mais que isso vira uma
+  segunda página dentro de um menu.
+- **Reações coloridas e desenhadas.** A cor sai do catálogo compartilhado, o mesmo que a API
+  usa; o traço é redesenhado só na troca, e nunca para quem pediu menos movimento.
+- **Conectar direto do cartão.** O momento de querer se conectar é quando algo publicado
+  chamou atenção — mandar procurar o perfil perde esse momento. No celular o botão fica só
+  com o ícone: com rótulo, ele comia largura suficiente para o nome virar "Carla Nog…".
+- **Mapa como fundo no celular**, com a marca e a conta flutuando e a cidade abrindo em
+  `dialog` nativo — que traz foco preso, Escape e ocultação do resto da página de graça.
+
+**232 testes, 97/97 critérios provados, auditoria limpa.**
 
 ### Fatia 7 — Publicação em produção · **bloqueado por você**
 

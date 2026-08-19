@@ -1,66 +1,61 @@
 {
-  "feature": "dados-do-titular",
-  "timestamp": "2026-08-19T13:24:34.190Z",
+  "feature": "feed-em-abas-e-refino",
+  "timestamp": "2026-08-19T13:17:20.206Z",
   "gitRev": "fb1b7bc",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
   "testsParsed": 232,
   "results": {
-    "AC-069": {
+    "AC-096": {
       "status": "pass",
-      "testName": "exportar meus dados devolve um arquivo estruturado, com data de geração @spec:AC-069 devolve um arquivo estruturado, com data de geração @spec:AC-069",
+      "testName": "cliente HTTP não anuncia JSON quando não manda corpo @spec:AC-096 não anuncia JSON quando não manda corpo @spec:AC-096",
       "method": "vitest-json"
     },
-    "AC-070": {
+    "AC-097": {
       "status": "pass",
-      "testName": "exportar meus dados traz perfil, publicações, comentários, reações e conexões @spec:AC-070 traz perfil, publicações, comentários, reações e conexões @spec:AC-070",
+      "testName": "abas do feed \"Seguindo\" traz só conexões e o próprio perfil @spec:AC-097 \"Seguindo\" traz só conexões e o próprio perfil @spec:AC-097",
       "method": "vitest-json"
     },
-    "AC-071": {
+    "AC-098": {
       "status": "pass",
-      "testName": "exportar meus dados não entrega e-mail de terceiros @spec:AC-071 @principle:P-002 não entrega e-mail de terceiros @spec:AC-071 @principle:P-002",
+      "testName": "afinidade habilidade em comum impulsiona, com teto @spec:AC-098 habilidade em comum impulsiona, com teto @spec:AC-098",
       "method": "vitest-json"
     },
-    "AC-072": {
+    "AC-099": {
       "status": "pass",
-      "testName": "excluir minha conta apaga a conta e o perfil deixa de responder @spec:AC-072 apaga a conta e o perfil deixa de responder @spec:AC-072",
+      "testName": "abas do feed \"Para você\" mostra a rede inteira, mesmo sem afinidade nenhuma @spec:AC-099 \"Para você\" mostra a rede inteira, mesmo sem afinidade nenhuma @spec:AC-099",
       "method": "vitest-json"
     },
-    "AC-073": {
+    "AC-100": {
       "status": "pass",
-      "testName": "excluir minha conta leva junto publicações, comentários e reações @spec:AC-073 leva junto publicações, comentários e reações @spec:AC-073",
+      "testName": "sino de notificações abre a caixa com as recentes sem sair da página @spec:AC-100 abre a caixa com as recentes sem sair da página @spec:AC-100",
       "method": "vitest-json"
     },
-    "AC-074": {
+    "AC-101": {
       "status": "pass",
-      "testName": "excluir minha conta apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012 apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012",
+      "testName": "abas do feed traz o estado da conexão com quem publicou, para o cartão poder convidar @spec:AC-101 traz o estado da conexão com quem publicou, para o cartão poder convidar @spec:AC-101",
       "method": "vitest-json"
     },
-    "AC-075": {
+    "AC-102": {
       "status": "pass",
-      "testName": "excluir minha conta mantém corretos os contadores das publicações de terceiros @spec:AC-075 mantém corretos os contadores das publicações de terceiros @spec:AC-075",
+      "testName": "cor e desenho da reação pinta a reação escolhida com a cor dela, e deixa as outras neutras @spec:AC-102 pinta a reação escolhida com a cor dela, e deixa as outras neutras @spec:AC-102",
       "method": "vitest-json"
     },
-    "AC-076": {
+    "AC-103": {
       "status": "pass",
-      "testName": "excluir minha conta recusa sem a confirmação escrita, e nada é apagado @spec:AC-076 recusa sem a confirmação escrita, e nada é apagado @spec:AC-076",
-      "method": "vitest-json"
-    },
-    "AC-077": {
-      "status": "pass",
-      "testName": "excluir minha conta encerra a sessão junto @spec:AC-077 encerra a sessão junto @spec:AC-077",
+      "testName": "modal da cidade abre com quem está naquela cidade @spec:AC-103 abre com quem está naquela cidade @spec:AC-103",
       "method": "vitest-json"
     }
   },
   "principles": {
-    "P-008": {
-      "status": "pass",
-      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
-    },
     "P-006": {
       "status": "pass",
       "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006"
+    },
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
     },
     "P-003": {
       "status": "pass",

@@ -26,9 +26,11 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
 4. **Componente não usa hexadecimal cru.** Só as variáveis de `styles/tokens.css`.
 5. **A cidade vem de lista, nunca do GPS.** O `Permissions-Policy` do Firebase Hosting
    inclusive nega `geolocation=()` para o navegador inteiro (P-001).
-6. **Nenhuma reação depende só do emoji.** A fileira mostra emoji **e** rótulo. Dois
-   motivos: "Bora junto" e "Posso ajudar" são intenções que emoji nenhum comunica sozinho,
-   e há sistema Linux sem fonte de emoji instalada, onde o ícone vira quadrado vazio.
+6. **Reação é ícone desenhado, nunca emoji.** Há sistema Linux sem fonte de emoji
+   instalada, onde o caractere vira quadrado vazio — e o rótulo continua junto porque
+   "Bora junto" e "Posso ajudar" são intenções que desenho nenhum comunica sozinho. A cor
+   de cada uma mora em `REACTION_META`, no pacote compartilhado: é o mesmo dado que a API
+   usa para descrever a reação, e não um valor solto no componente.
 7. **A fileira de reações abre por clique, não por hover.** Hover não existe em celular nem
    no teclado, e as reações de intenção — o diferencial desta rede — ficariam inalcançáveis
    para metade das pessoas. O botão grande aplica "Decolou" num toque; o chevron abre o resto.
@@ -49,7 +51,19 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
     ninguém perceber.
 12. **O mapa não fixa a própria altura.** Ela vem do contêiner (`FullBleed`), senão sobra
     uma faixa vazia embaixo. Há teste estrutural impedindo a volta da altura fixa.
-13. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
+13. **`Content-Type` só entra quando há corpo.** Anunciar `application/json` numa
+    requisição sem corpo faz o Fastify recusar com "Body cannot be empty" ANTES de olhar a
+    rota — o que quebrou, de uma vez só, apagar publicação, apagar comentário e desfazer
+    conexão. Cada um parecia bug próprio; era um só. Ver `lib/api.ts` e seu teste.
+14. **O modal da cidade é `dialog` nativo.** Ele traz foco preso, Escape e ocultação do
+    resto da página sem uma linha de JavaScript — três coisas que uma `div` com aparência
+    de modal costuma reimplementar errado. No celular o mapa é o FUNDO da tela e a marca,
+    o sino e a conta flutuam por cima; numa tela de 390px, um cabeçalho fixo come um quinto
+    do mapa.
+15. **A aba "Para você" ordena, não filtra.** Afinidade impulsiona no ranking do servidor;
+    filtrar deixaria a tela inicial de quem acabou de chegar vazia — e é justamente quem
+    acabou de chegar que mais precisa ver a rede.
+16. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
    então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
    registrada pela API lá.
 

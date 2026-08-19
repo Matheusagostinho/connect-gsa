@@ -68,6 +68,18 @@ O raciocínio veio do `xai-org/x-algorithm`, **sem copiar os pesos**: lá eles m
 probabilidades previstas por um modelo, aqui temos contagens. Copiar a tabela produziria
 ordenação sem sentido, e o próprio comentário do código deles avisa isso.
 
+### As duas abas
+
+`buildFeed` recebe `tab`. **"Seguindo" filtra** — só conexões e o próprio perfil, porque um
+feed de conexões sem o que você mesmo publicou parece quebrado. **"Para você" NÃO filtra**:
+a afinidade entra como impulso no ranking (`PROXIMITY_BOOST`), nunca como cláusula `where`.
+Um filtro rígido deixaria a tela inicial de quem acabou de chegar completamente vazia — e é
+justamente quem acabou de chegar que mais precisa ver a rede. Há teste (AC-099) impedindo
+essa regressão.
+
+Habilidade em comum tem **teto** (`sharedSkillsCap`): sem ele, quem cadastra vinte
+habilidades apareceria acima de todo mundo para todo mundo, e a afinidade viraria ruído.
+
 O cursor do feed carrega o **instante da montagem**, não a data do último post. Como a
 ordenação é por nota e não por data, um post publicado entre uma página e outra se
 intercalaria no meio da lista — e você veria de novo o que já viu. Congelar o instante é o
