@@ -137,6 +137,23 @@
   --color-ring: var(--color-ring);
 }
 
+/*
+ * A calha da barra de rolagem é reservada SEMPRE.
+ *
+ * Sem isto, o layout salta ao trocar de seção: o feed rola e tem barra, o
+ * diretório e o mapa não têm, e o contêiner centralizado se desloca por metade
+ * da largura da barra a cada navegação. O efeito é pequeno e constante, que é o
+ * pior tipo — parece que a interface está mal encaixada sem que dê para dizer
+ * por quê.
+ *
+ * Não aparece em navegador com barra sobreposta (macOS, e o Chromium headless
+ * dos nossos testes), o que torna isto exatamente o tipo de coisa que só o
+ * usuário percebe.
+ */
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   background-color: var(--color-surface);
   color: var(--color-ink);

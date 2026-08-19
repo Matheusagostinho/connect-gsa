@@ -151,6 +151,25 @@ describe('uma moldura só para todas as telas', () => {
     expect(screen.queryByRole('link', { name: /conexões/i })).not.toBeInTheDocument();
   });
 
+  it('reserva a calha da barra de rolagem, para o layout não saltar entre seções', () => {
+    const css = readFileSync(path.resolve(caminhoDe('..'), 'styles/tokens.css'), 'utf8');
+
+    // O feed rola e tem barra; o diretório e o mapa não têm. Sem a calha
+    // reservada, o contêiner centralizado se desloca a cada navegação — pequeno,
+    // constante, e invisível em navegador de barra sobreposta, que é onde os
+    // nossos testes de navegador rodam.
+    expect(css).toMatch(/scrollbar-gutter:\s*stable/);
+  });
+
+  it('Avisos sai do menu, mas a rota continua existindo', () => {
+    renderShell();
+
+    // Adiado para a v2. Tirar a ROTA junto quebraria os dois caminhos que
+    // sobraram: o aviso na coluna de sugestões e o link do banner.
+    expect(DESTINOS.some((d) => d.to === '/avisos')).toBe(false);
+    expect(screen.queryByRole('link', { name: /avisos/i })).not.toBeInTheDocument();
+  });
+
   it('uma largura só para toda tela @spec:AC-104', () => {
     const fonte = readFileSync(caminhoDe('AppShell.tsx'), 'utf8');
 
