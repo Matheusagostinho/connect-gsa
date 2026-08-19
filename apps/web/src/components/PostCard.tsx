@@ -1,13 +1,13 @@
 import type { Comment, Post } from '@connect-gsa/shared';
 import { useMutation } from '@tanstack/react-query';
-import { MessageCircle, ShieldMinus, Trash2 } from 'lucide-react';
+import { Megaphone, MessageCircle, ShieldMinus, Trash2 } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 import { api } from '../lib/api.js';
 import { useDeletePost, useReact } from '../lib/feed.js';
 import { Avatar } from './Avatar.tsx';
 import { RichText } from './RichText.tsx';
 import { ReactionBar } from './ReactionBar.tsx';
-import { Button, Card } from './ui.tsx';
+import { Button, Card, cn } from './ui.tsx';
 
 /** "há 3 min", "há 2 h", "12 de ago" — sem biblioteca de datas para 20 linhas. */
 function quandoFoi(iso: string): string {
@@ -62,8 +62,19 @@ export function PostCard({ post }: { post: Post }) {
   const totalComentarios = comentarios?.length ?? post.commentCount;
 
   return (
-    <Card className="p-5">
+    <Card className={cn('p-5', post.kind === 'announcement' && 'border-border-strong')}>
       <article>
+        {/*
+          Comunicado oficial se identifica. Sem a marca, ele parece publicação
+          pessoal de quem por acaso é da coordenação — e perde o peso que tem.
+        */}
+        {post.kind === 'announcement' ? (
+          <p className="mb-4 flex items-center gap-2 text-xs font-medium tracking-wide text-ink-muted uppercase">
+            <Megaphone className="size-3.5" aria-hidden="true" />
+            Aviso do programa
+          </p>
+        ) : null}
+
         <header className="flex items-start gap-3">
           <Avatar name={post.author.name} imageUrl={post.author.imageUrl} />
 

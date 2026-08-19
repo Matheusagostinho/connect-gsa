@@ -1,3 +1,4 @@
+import { AnnouncementBanner } from '../components/AnnouncementBanner.tsx';
 import { AppShell } from '../components/AppShell.tsx';
 import { Composer } from '../components/Composer.tsx';
 import { PostCard } from '../components/PostCard.tsx';
@@ -15,6 +16,8 @@ export function FeedPage() {
 
   return (
     <AppShell profile={profile} width="lg">
+      <AnnouncementBanner />
+
       <Composer authorName={profile.name} authorImage={profile.imageUrl} />
 
       <div className="mt-4 flex flex-col gap-4">

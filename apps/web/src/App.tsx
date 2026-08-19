@@ -6,6 +6,7 @@ import { useMyProfile } from './lib/session.js';
 import { InvitePage } from './pages/Invite.tsx';
 import { LoginPage } from './pages/Login.tsx';
 import { OnboardingPage } from './pages/Onboarding.tsx';
+import { AnnouncementsPage } from './pages/Announcements.tsx';
 import { ConnectionsPage } from './pages/Connections.tsx';
 import { DevLoginPage } from './pages/DevLogin.tsx';
 import { DirectoryPage } from './pages/Directory.tsx';
@@ -123,6 +124,14 @@ export function App() {
             element={
               <ProtectedRoute>
                 <NotificationsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/avisos"
+            element={
+              <ProtectedRoute>
+                <AnnouncementsPage />
               </ProtectedRoute>
             }
           />
