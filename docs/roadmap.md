@@ -1,6 +1,6 @@
 # Roadmap do ConnectGSA
 
-> Situação em 19 de agosto de 2026 · 197 testes · 83/83 critérios de aceite provados
+> Situação em 19 de agosto de 2026 · 206 testes · 89/89 critérios de aceite provados
 
 Este documento compara o que o MVP prometeu com o que existe hoje, e ordena o que falta.
 A ordem não é por tamanho nem por vontade: começa pelo que é **exigência legal**, passa
@@ -22,7 +22,7 @@ pelo que **destrava o lançamento**, e só então pelo que aumenta engajamento.
 Foram além do prometido: instituições **por campus** (628 entradas, com os 38 Institutos
 Federais), catálogo fechado de 78 habilidades, e perfil público em `/e/{slug}`.
 
-### Feed e quadro de avisos — **metade**
+### Feed e quadro de avisos — **completo**
 
 | Item | Estado |
 |---|---|
@@ -30,10 +30,9 @@ Federais), catálogo fechado de 78 habilidades, e perfil público em `/e/{slug}`
 | Publicar texto e imagem | pronto |
 | Reações próprias (Decolou, Aprendi, Respeito, Bora junto, Posso ajudar) | pronto |
 | Comentários | pronto |
-| **Quadro de avisos oficiais** | **falta** |
+| Quadro de avisos oficiais | pronto |
 
-O campo `kind` do post já distingue `feed` de `announcement` no banco — mas não existe rota
-nem tela. É a fatia mais curta das que faltam.
+Entregue na Fatia 6.
 
 ### Gamificação — **não começou**
 
@@ -78,10 +77,15 @@ lidas na navegação. Derivadas do que já está no banco — sem tabela própri
 "visto até aqui" no usuário. Nesta escala, manter registros duplicados custa mais do que
 consultá-los e abre a chance de os dois lados divergirem.
 
-### Fatia 6 — Quadro de avisos
+### ~~Fatia 6 — Quadro de avisos~~ · **entregue**
 
-Comunicados oficiais que só a coordenação publica. Curto, porque o schema já suporta — e dá
-ao programa um motivo institucional para usar a rede.
+Comunicados oficiais que só a coordenação publica, separados do feed e em ordem cronológica
+— comunicado não disputa atenção por engajamento, e um aviso importante que ninguém curtiu
+afundaria.
+
+O custo desse desenho é o quadro virar um lugar que ninguém visita. Por isso o aviso mais
+recente também aparece no topo do feed, saindo do destaque depois de duas semanas: aviso
+velho fixo ensina a ignorar o espaço.
 
 ### Fatia 7 — Publicação em produção · **bloqueado por você**
 

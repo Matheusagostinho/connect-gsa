@@ -88,6 +88,19 @@ O destino é escolhido por driver: disco local em desenvolvimento, Cloud Storage
 Sem essa costura, ou o ambiente local exigiria credencial do Google, ou o código de produção
 teria um `if` sobre ambiente por dentro.
 
+## Quadro de avisos
+
+`Post.kind` distingue publicação comum de comunicado oficial, e o feed filtra por
+`kind: 'feed'` — se algum dia surgir outra consulta de feed, ela precisa filtrar também,
+senão o comunicado volta a competir com publicação pessoal.
+
+A autorização não é nova: reusa `manage Announcement` do CASL, que já era de moderação e
+administração.
+
+O aviso mais recente é servido separado, em `/announcements/latest`, e some do destaque
+depois de 14 dias. O prazo está no código, não na tela: quem decide o que é notícia é o
+servidor.
+
 ## Notificações
 
 Não existe tabela de notificação. Pedidos, reações e comentários já estão no banco com data

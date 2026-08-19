@@ -15,9 +15,9 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Entregue | Ainda não |
 |---|---|
 | Monorepo, CI/CD e publicação | Busca no diretório e mapa |
-| Login social (Google, LinkedIn, GitHub) | Quadro de avisos oficiais |
-| Acesso restrito por convite ou lista aprovada | Gamificação (pontos, badges, ranking) |
-| Perfil: criar, ver, editar, sair da conta | Presença online em tempo real |
+| Login social (Google, LinkedIn, GitHub) | Gamificação (pontos, badges, ranking) |
+| Acesso restrito por convite ou lista aprovada | Presença online em tempo real |
+| Perfil: criar, ver, editar, sair da conta | Notificar a rede sobre um aviso novo |
 | Feed com ranking, posts, comentários | Notificação de reação e comentário |
 | Cinco reações próprias | Sugerir conexão a partir de "Bora junto" |
 | Envio de imagem em post e foto de perfil | Vídeo |
@@ -30,6 +30,7 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Navegação lateral no computador, inferior no celular | |
 | Exportar e excluir a conta (LGPD art. 18, V e VI) | |
 | Página de apresentação e tela de configurações | |
+| Quadro de avisos oficiais | |
 | Controle de visibilidade no mapa | |
 
 A especificação completa, com critérios de aceite e provas, está em
