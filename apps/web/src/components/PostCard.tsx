@@ -1,10 +1,11 @@
 import type { Comment, Post } from '@connect-gsa/shared';
 import { useMutation } from '@tanstack/react-query';
-import { MessageCircle, Trash2 } from 'lucide-react';
+import { MessageCircle, ShieldMinus, Trash2 } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 import { api } from '../lib/api.js';
 import { useDeletePost, useReact } from '../lib/feed.js';
 import { Avatar } from './Avatar.tsx';
+import { RichText } from './RichText.tsx';
 import { ReactionBar } from './ReactionBar.tsx';
 import { Button, Card } from './ui.tsx';
 
@@ -78,7 +79,7 @@ export function PostCard({ post }: { post: Post }) {
           {post.canDelete ? (
             <button
               type="button"
-              aria-label="Apagar post"
+              aria-label="Apagar minha publicação"
               disabled={apagar.isPending}
               onClick={() => apagar.mutate(post.id)}
               className="flex size-10 cursor-pointer items-center justify-center rounded-pill text-ink-muted transition-colors duration-200 hover:text-danger"
@@ -86,9 +87,41 @@ export function PostCard({ post }: { post: Post }) {
               <Trash2 className="size-4" aria-hidden="true" />
             </button>
           ) : null}
+
+          {/*
+            Moderação usa ícone e confirmação diferentes de propósito. Com o
+            mesmo botão de "apagar", a coordenação acha que está removendo o
+            próprio conteúdo — e remove o de outra pessoa sem perceber.
+          */}
+          {post.canModerate ? (
+            <button
+              type="button"
+              aria-label={`Remover a publicação de ${post.author.name} como moderação`}
+              title="Remover como moderação"
+              disabled={apagar.isPending}
+              onClick={() => {
+                if (
+                  window.confirm(
+                    `Remover a publicação de ${post.author.name}? Esta ação é de moderação e não pode ser desfeita.`,
+                  )
+                ) {
+                  apagar.mutate(post.id);
+                }
+              }}
+              className="flex size-10 cursor-pointer items-center justify-center rounded-pill text-ink-muted transition-colors duration-200 hover:text-danger"
+            >
+              <ShieldMinus className="size-4" aria-hidden="true" />
+            </button>
+          ) : null}
         </header>
 
-        <p className="mt-4 text-base whitespace-pre-wrap">{post.content}</p>
+        {/*
+          `break-words` não é detalhe: uma URL de busca do Google tem centenas
+          de caracteres sem espaço, e sem isso ela estoura a largura do cartão.
+        */}
+        <p className="mt-4 text-base break-words whitespace-pre-wrap">
+          <RichText text={post.content} />
+        </p>
 
         {post.mediaUrl ? (
           <img
@@ -141,12 +174,18 @@ export function PostCard({ post }: { post: Post }) {
                       <span className="font-medium">{comentario.author.name}</span>{' '}
                       <span className="text-ink-muted">{quandoFoi(comentario.createdAt)}</span>
                     </p>
-                    <p className="mt-0.5 text-sm whitespace-pre-wrap">{comentario.content}</p>
+                    <p className="mt-0.5 text-sm break-words whitespace-pre-wrap">
+                      <RichText text={comentario.content} />
+                    </p>
                   </div>
-                  {comentario.canDelete ? (
+                  {comentario.canDelete || comentario.canModerate ? (
                     <button
                       type="button"
-                      aria-label="Apagar comentário"
+                      aria-label={
+                        comentario.canDelete
+                          ? 'Apagar meu comentário'
+                          : `Remover o comentário de ${comentario.author.name} como moderação`
+                      }
                       onClick={() => apagarComentario.mutate(comentario.id)}
                       className="cursor-pointer text-ink-muted transition-colors duration-200 hover:text-danger"
                     >

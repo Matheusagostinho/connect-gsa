@@ -1,6 +1,7 @@
 import { REACTION_META, REACTION_ORDER, type Reaction } from '@connect-gsa/shared';
 import { ChevronUp } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { ReactionIcon } from './ReactionIcon.tsx';
 import { cn } from './ui.tsx';
 
 /** A reação aplicada por um toque só, sem escolher nada. */
@@ -101,9 +102,7 @@ export function ReactionBar({
                     mine === reaction && 'bg-surface-subtle',
                   )}
                 >
-                  <span aria-hidden="true" className="text-xl leading-none">
-                    {meta.emoji}
-                  </span>
+                  <ReactionIcon reaction={reaction} className="size-5" />
                   {/*
                     O rótulo não é redundante com o emoji: "Bora junto" e "Posso
                     ajudar" são intenções, e nenhum emoji as comunica sozinho.
@@ -136,8 +135,8 @@ export function ReactionBar({
               mine ? 'text-ink' : 'text-ink-muted hover:text-ink',
             )}
           >
-            <span aria-hidden="true" className={cn(pulsando && 'reacao-escolhida', 'inline-block')}>
-              {atual.emoji}
+            <span className={cn(pulsando && 'reacao-escolhida', 'inline-flex')}>
+              <ReactionIcon reaction={mine ?? PRINCIPAL} />
             </span>
             {mine ? atual.label : 'Reagir'}
           </button>
@@ -161,11 +160,9 @@ export function ReactionBar({
 
       {total > 0 ? (
         <p className="flex items-center gap-1.5 text-sm text-ink-muted">
-          <span aria-hidden="true" className="flex">
+          <span className="flex gap-0.5">
             {presentes.map((reaction) => (
-              <span key={reaction} className="text-base">
-                {REACTION_META[reaction].emoji}
-              </span>
+              <ReactionIcon key={reaction} reaction={reaction} className="size-3.5" />
             ))}
           </span>
           <span>{total}</span>

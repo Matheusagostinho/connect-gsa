@@ -19,8 +19,14 @@ export const reactionSchema = z.enum(REACTIONS);
 export type Reaction = z.infer<typeof reactionSchema>;
 
 export interface ReactionMeta {
-  /** Emoji de apoio. O rótulo é que carrega o significado — emoji sozinho é ambíguo. */
-  emoji: string;
+  /**
+   * Identificador do ícone, resolvido pelo cliente.
+   *
+   * Não é emoji: emoji depende de fonte instalada no sistema — há Linux que
+   * não tem nenhuma, e ali a reação vira quadrado vazio. Ícone desenhado
+   * sempre aparece, herda a cor do tema e alinha com o resto da interface.
+   */
+  icon: 'rocket' | 'lightbulb' | 'award' | 'handshake' | 'helpingHand';
   label: string;
   /** Frase curta que aparece ao passar o cursor, explicando o que a reação diz. */
   description: string;
@@ -37,31 +43,31 @@ export interface ReactionMeta {
 
 export const REACTION_META: Record<Reaction, ReactionMeta> = {
   liftoff: {
-    emoji: '🚀',
+    icon: 'rocket',
     label: 'Decolou',
     description: 'Isso aqui é notável',
     weight: 1,
   },
   learned: {
-    emoji: '💡',
+    icon: 'lightbulb',
     label: 'Aprendi',
     description: 'Aprendi alguma coisa com isso',
     weight: 1.5,
   },
   respect: {
-    emoji: '👏',
+    icon: 'award',
     label: 'Respeito',
     description: 'Reconheço o esforço por trás disso',
     weight: 1,
   },
   together: {
-    emoji: '🤝',
+    icon: 'handshake',
     label: 'Bora junto',
     description: 'Quero construir isso com você',
     weight: 3,
   },
   offerHelp: {
-    emoji: '🙋',
+    icon: 'helpingHand',
     label: 'Posso ajudar',
     description: 'Tenho como ajudar nisso',
     weight: 3,

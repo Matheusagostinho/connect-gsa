@@ -5,6 +5,15 @@ import { describe, expect, it, vi } from 'vitest';
 import { ReactionBar } from './ReactionBar.tsx';
 
 describe('barra de reações', () => {
+  it('usa ícone desenhado, não emoji, para a reação aparecer em qualquer sistema @spec:AC-083', () => {
+    render(<ReactionBar counts={{}} mine="together" onReact={vi.fn()} />);
+
+    // Emoji depende de fonte instalada; ícone desenhado sempre aparece.
+    const botao = screen.getByRole('button', { name: /bora junto/i });
+    expect(botao.querySelector('svg')).not.toBeNull();
+    expect(botao.textContent).not.toMatch(/[\u{1F300}-\u{1FAFF}]/u);
+  });
+
   it('mostra "Reagir" quando ainda não reagi', () => {
     render(<ReactionBar counts={{}} mine={null} onReact={vi.fn()} />);
 
