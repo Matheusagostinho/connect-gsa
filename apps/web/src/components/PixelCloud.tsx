@@ -68,6 +68,8 @@ export function PixelCloud({ className }: { className?: string }) {
     let pontos: Ponto[] = [];
     let quadro = 0;
     let tempo = 0;
+    /** Com que tamanho a malha foi construída — para perceber quando ele muda. */
+    let montadoCom = { largura: 0, altura: 0 };
     const cursor = { x: -9999, y: -9999 };
 
     /** Lê a cor do texto secundário: a nuvem acompanha o tema sem saber dele. */
@@ -92,6 +94,7 @@ export function PixelCloud({ className }: { className?: string }) {
         ? PASSO * Math.sqrt((colunas * linhas) / MAXIMO_PONTOS)
         : PASSO;
 
+      montadoCom = { largura, altura };
       pontos = [];
       for (let x = passo / 2; x < largura; x += passo) {
         for (let y = passo / 2; y < altura; y += passo) {
@@ -125,6 +128,24 @@ export function PixelCloud({ className }: { className?: string }) {
     }
 
     function passoDaAnimacao() {
+      /*
+        Reconstrói se o tamanho mudou desde a montagem.
+        
+        O `ResizeObserver` cobre o caso normal, mas não todos: abrir e fechar as
+        ferramentas de desenvolvimento, mudar o zoom da página ou entrar em tela
+        cheia mexem no tamanho por caminhos em que ele pode não disparar. Quando
+        isso acontece, a malha continua do tamanho antigo e a nuvem termina numa
+        borda reta no meio da tela — exatamente o defeito que este componente
+        existe para não ter. Duas comparações de inteiro por quadro é barato
+        demais para não fazer.
+      */
+      if (
+        tela.clientWidth !== montadoCom.largura ||
+        tela.clientHeight !== montadoCom.altura
+      ) {
+        montar();
+      }
+
       tempo += 0.006;
 
       for (const ponto of pontos) {
@@ -210,8 +231,18 @@ export function PixelCloud({ className }: { className?: string }) {
     <canvas
       ref={canvas}
       aria-hidden="true"
-      // Decoração pura: `aria-hidden` e sem eventos de ponteiro.
-      className={`pointer-events-none text-ink-muted ${className ?? ''}`}
+      /*
+        `size-full` faz parte do componente, não da chamada.
+        
+        Um `<canvas>` tem tamanho INTRÍNSECO (300×150), e por isso `inset-0`
+        sozinho não o estica: `width: auto` num elemento substituído resolve
+        para a dimensão própria dele, não para a caixa que o contém. Sem esta
+        classe a nuvem nasce com 300×150 no canto da tela — e como ela é
+        transparente e decorativa, ninguém percebe que ela está lá, pequena.
+        
+        Decoração pura: `aria-hidden` e sem eventos de ponteiro.
+      */
+      className={`pointer-events-none size-full text-ink-muted ${className ?? ''}`}
     />
   );
 }

@@ -40,33 +40,36 @@ const DESTAQUES = [
  */
 export function LandingPage() {
   return (
-    <div className="min-h-screen bg-surface">
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-5 py-6 sm:px-8">
+    <div className="relative isolate min-h-screen overflow-x-clip bg-surface">
+      {/*
+        A nuvem cobre a PÁGINA inteira, atrás de tudo. Presa à seção do título
+        ela terminava numa borda reta no meio da tela, e o corte denunciava que
+        era um retângulo — o efeito só funciona quando não se vê onde ele acaba.
+        
+        `fixed` e não `absolute`: assim ela não estica com a rolagem nem obriga a
+        pintar uma malha do tamanho do documento inteiro.
+      */}
+      {/*
+        `w-screen` e não `w-full`: com `scrollbar-gutter: stable` reservando a
+        calha, 100% da caixa que contém para quinze pixels antes da borda — e a
+        nuvem terminava numa faixa vazia à direita. `100vw` inclui a calha.
+        
+        Isso não cria rolagem horizontal porque o elemento é `fixed` e a página
+        recorta o excesso: `overflow-x: clip` no invólucro.
+      */}
+      <PixelCloud className="fixed inset-0 z-0 h-dvh w-screen opacity-70" />
+
+      <header className="relative z-10 mx-auto flex max-w-5xl items-center justify-between px-5 py-6 sm:px-8">
         <Wordmark />
         <ThemeToggle />
       </header>
 
-      <main className="mx-auto max-w-5xl px-5 pb-16 sm:px-8">
-        <section className="relative isolate py-12 sm:py-20">
-          {/*
-            A nuvem ocupa a área do título, sangrando para fora da coluna de
-            leitura.
-            
-            `z-0` com o conteúdo em `z-10`, e NÃO `-z-10`: índice negativo joga o
-            elemento para trás do fundo do próprio ancestral, e a nuvem
-            simplesmente não aparecia. `isolate` na seção prende esse empilhamento
-            aqui dentro, para ele não competir com o cabeçalho fixo do produto.
-            
-            `pointer-events: none` está no componente: a nuvem cobre a área dos
-            botões, e sem isso roubaria o clique deles.
-          */}
-          <PixelCloud className="absolute -inset-x-8 -top-10 z-0 h-[24rem] w-[calc(100%+4rem)] opacity-80 sm:h-[28rem]" />
-
-          <div className="relative z-10">
+      <main className="relative z-10 mx-auto max-w-5xl px-5 pb-16 sm:px-8">
+        <section className="py-12 sm:py-20">
           <LogoMark className="mb-8 size-16" />
 
           <h1 className="display max-w-3xl text-4xl sm:text-6xl">
-            A rede dos <span className="spark-text">embaixadores</span> do programa
+            A rede dos <span className="spark-text-vivo">embaixadores</span> do programa
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg text-ink-muted">
@@ -81,7 +84,6 @@ export function LandingPage() {
             <Link to="/entrar">
               <Button variant="outline">Já faço parte</Button>
             </Link>
-          </div>
           </div>
         </section>
 
@@ -118,7 +120,7 @@ export function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-border py-8">
+      <footer className="relative z-10 border-t border-border py-8">
         <UnofficialNotice />
       </footer>
     </div>

@@ -204,6 +204,48 @@ body {
 }
 
 /*
+ * O degradê percorrendo a palavra.
+ *
+ * O truque é o mesmo do `spark-text`, com duas diferenças: a faixa é larga o
+ * bastante para a repetição não aparecer como emenda, e é a POSIÇÃO do fundo
+ * que anima — não a cor. Animar `background-position` corre na composição; um
+ * degradê recalculado a cada quadro repintaria o texto inteiro.
+ *
+ * O amarelo continua fora, pelo mesmo motivo de sempre: 1,71:1 sobre branco.
+ */
+.spark-text-vivo {
+  background-image: linear-gradient(
+    95deg,
+    var(--color-spark-blue),
+    var(--color-spark-violet) 25%,
+    var(--color-spark-red) 50%,
+    var(--color-spark-violet) 75%,
+    var(--color-spark-blue)
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: spark-corre 7s linear infinite;
+}
+
+@keyframes spark-corre {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 300% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spark-text-vivo {
+    animation: none;
+    background-position: 0% 50%;
+  }
+}
+
+/*
  * Foco sempre visível. Remover o anel de foco é o atalho que quebra a navegação
  * por teclado — e uma rede fechada de estudantes inclui quem depende dela.
  */
@@ -415,9 +457,14 @@ body {
   border-radius: var(--radius-pill);
   border: 1px solid var(--color-border);
   background-color: var(--color-surface-raised);
-  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  padding: 0.25rem;
   box-shadow: var(--shadow-card);
   transition: transform 150ms ease;
+}
+
+/* Sem rótulo, o pino é só os rostos: o respiro extra à direita sobraria. */
+.pino-mapa:has(.pino-mapa-rotulo) {
+  padding-right: 0.5rem;
 }
 
 .pino-mapa:hover {
