@@ -105,10 +105,22 @@ simultâneas exploram.
 Todo campo pessoal novo tem, na spec da feature que o introduz, a justificativa
 de por que a rede não funciona sem ele (LGPD art. 6º, III).
 
-## P-011 [RECOMENDADO] Aparecer no mapa é opt-in consciente
+## P-011 [RECOMENDADO] Estar no mapa é padrão, e sair é sempre possível
 
-O embaixador escolhe se entra no mapa, e o padrão de um perfil recém-criado é
-não aparecer. Sair do mapa tem efeito imediato.
+O perfil recém-criado **aparece** no mapa, pela cidade. Sair tem efeito imediato,
+e o formulário de entrada diz à pessoa que ela vai aparecer.
+
+**Este princípio foi invertido em 2026-08-19, e o motivo fica registrado.** Ele
+dizia o contrário: aparecer era escolha ativa, e o padrão era ficar fora. A razão
+era boa — um padrão pré-marcado em algo de localização é o que "opt-in
+consciente" existe para evitar. A inversão foi decisão do dono do produto, com o
+custo apresentado, porque um mapa vazio no primeiro dia não mostra que a rede
+existe.
+
+O que sustenta a decisão, e **não pode ser afrouxado junto**: o mapa conhece
+apenas o município (P-001 continua intacto), a pessoa é avisada no formulário de
+que vai aparecer, e sair é imediato. Quem já tinha perfil não foi migrado — ligar
+o mapa de quem escolheu ficar fora seria desfazer a decisão dela pelas costas.
 
 ## P-012 [DEVE] Titular pode exportar e excluir seus dados
 

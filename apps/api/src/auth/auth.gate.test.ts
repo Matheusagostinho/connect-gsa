@@ -47,7 +47,11 @@ describe('portão de entrada da rede', () => {
     // Todo mundo entra como embaixador; promoção é ato deliberado da coordenação.
     expect(gravado.role).toBe('ambassador');
     expect(gravado.profileComplete).toBe(false);
-    expect(gravado.visibleOnMap).toBe(false);
+    // O mapa passou a ser o padrão (P-011, invertido em 2026-08-19). Uma conta
+    // recém-criada ainda não tem cidade, então ela não aparece em lugar nenhum
+    // até concluir o perfil — a bandeira só passa a valer a partir dali.
+    expect(gravado.visibleOnMap).toBe(true);
+    expect(gravado.cityId).toBeNull();
   });
 
   it('entrega a sessão em cookie httpOnly e autentica a requisição @spec:AC-001 @principle:P-008', async () => {

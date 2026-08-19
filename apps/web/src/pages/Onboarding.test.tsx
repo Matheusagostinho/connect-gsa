@@ -121,6 +121,19 @@ describe('formulário do perfil', () => {
     expect(screen.queryByLabelText('GitHub')).not.toBeInTheDocument();
   });
 
+  it('avisa que a pessoa vai aparecer no mapa, e que pode sair @spec:AC-128', async () => {
+    renderOnboarding(false);
+
+    // O aviso é a contrapartida de o mapa vir ligado (P-011, invertido em
+    // 2026-08-19). Nascer visível só é aceitável se a pessoa souber ao
+    // preencher; descobrir por acidente depois é o que não pode acontecer.
+    const aviso = await screen.findByText(/vai aparecer no mapa/i);
+
+    expect(aviso).toHaveTextContent(/pode sair/i);
+    expect(aviso).toHaveTextContent(/cidade/i);
+    expect(aviso).toHaveTextContent(/nunca a localização do seu aparelho/i);
+  });
+
   it('o primeiro preenchimento não oferece navegação que só recusa @spec:AC-107', async () => {
     renderOnboarding(false);
 

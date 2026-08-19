@@ -209,7 +209,7 @@ describe('rotas de perfil', () => {
     expect(proprio.json()).not.toHaveProperty('email');
   });
 
-  it('deixa o perfil novo fora do mapa @spec:AC-015 @principle:P-001', async () => {
+  it('coloca o perfil novo no mapa, pela cidade @spec:AC-127 @principle:P-001', async () => {
     const ana = await createTestUser();
     const { city, institution } = await reference();
 
@@ -220,8 +220,15 @@ describe('rotas de perfil', () => {
       payload: validProfile(city.id, institution.id),
     });
 
-    // Concluir o onboarding NÃO coloca ninguém no mapa.
-    expect(response.json()).toMatchObject({ visibleOnMap: false });
+    // O padrão foi INVERTIDO em 2026-08-19 (P-011): concluir o onboarding
+    // coloca a pessoa no mapa. O que sustenta a decisão continua valendo, e é o
+    // que este teste guarda junto: o que a rede conhece é o município, e a
+    // resposta não carrega coordenada nenhuma da PESSOA.
+    const perfil = response.json<{ visibleOnMap: boolean; city: { id: string } }>();
+
+    expect(perfil.visibleOnMap).toBe(true);
+    expect(perfil.city.id).toBe(city.id);
+    expect(JSON.stringify(perfil)).not.toMatch(/"(latitude|longitude)":\s*null/);
   });
 
   it('liga e desliga a presença no mapa na hora @spec:AC-016', async () => {
@@ -453,5 +460,47 @@ describe('trocar o nome de usuário', () => {
       });
       expect(resposta.statusCode).toBe(200);
     }
+  });
+});
+
+describe('padrão do mapa', () => {
+  it('cumpre também o critério antigo, agora invertido @spec:AC-015', async () => {
+    const ana = await createTestUser();
+    const { city, institution } = await reference();
+
+    const response = await app.inject({
+      method: 'PATCH',
+      url: '/api/me',
+      headers: asUser(ana.id),
+      payload: validProfile(city.id, institution.id),
+    });
+
+    expect(response.json()).toMatchObject({ visibleOnMap: true });
+  });
+
+  it('sair do mapa continua tendo efeito imediato — é o que sustenta o padrão @spec:AC-127', async () => {
+    const ana = await createTestUser();
+    const { city, institution } = await reference();
+    await app.inject({
+      method: 'PATCH',
+      url: '/api/me',
+      headers: asUser(ana.id),
+      payload: validProfile(city.id, institution.id),
+    });
+
+    const saiu = await app.inject({
+      method: 'PATCH',
+      url: '/api/me/privacy',
+      headers: asUser(ana.id),
+      payload: { visibleOnMap: false },
+    });
+
+    expect(saiu.json()).toMatchObject({ visibleOnMap: false });
+
+    const mapa = await app.inject({ method: 'GET', url: '/api/map', headers: asUser(ana.id) });
+    const cidades = mapa.json<{ cityId: string }[]>();
+
+    // Nascer no mapa só é aceitável porque sair funciona de verdade.
+    expect(cidades.some((c) => c.cityId === city.id)).toBe(false);
   });
 });

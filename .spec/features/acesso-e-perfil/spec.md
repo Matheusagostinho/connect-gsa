@@ -131,11 +131,17 @@ informações continuem corretas ao longo do programa.
 Como embaixador, quero decidir se apareço no mapa da rede, para que minha
 localização só seja visível se eu quiser.
 
-#### AC-015 — Perfil novo nasce fora do mapa
+#### AC-015 — Perfil novo nasce visível no mapa
+
+> **Invertido em 2026-08-19.** Este critério dizia o contrário: aparecer era
+> escolha ativa e o padrão era ficar fora. A mudança foi decisão do dono do
+> produto, com o custo apresentado, e está descrita em `landing-e-ajustes`
+> (AC-127) e no P-011. O que a sustenta continua valendo: só município, aviso no
+> formulário, saída imediata, e nenhuma migração de quem já tinha perfil.
 
 - **Dado** que acabei de preencher meu perfil e não mexi em nada de privacidade
 - **Quando** consulto minhas preferências
-- **Então** eu **não** estou visível no mapa — aparecer é uma escolha ativa minha
+- **Então** eu **estou** visível no mapa, pela minha cidade — nunca por endereço
 
 #### AC-016 — Ligar e desligar tem efeito na hora
 

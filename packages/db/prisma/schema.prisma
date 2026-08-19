@@ -80,7 +80,12 @@ model User {
 
   /// AC-015 / P-011: aparecer no mapa é escolha ativa. O default é, e precisa
   /// continuar sendo, `false`.
-  visibleOnMap   Boolean @default(false)
+  /// Perfil novo NASCE no mapa (P-011, invertido em 2026-08-19).
+  ///
+  /// O padrão mudou de `false` para `true`. Quem já tinha perfil não foi
+  /// migrado: ligar o mapa de quem escolheu ficar fora seria desfazer a decisão
+  /// dessa pessoa pelas costas.
+  visibleOnMap   Boolean @default(true)
   profileComplete Boolean @default(false)
 
   sessions       Session[]

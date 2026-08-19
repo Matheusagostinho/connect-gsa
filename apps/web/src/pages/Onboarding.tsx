@@ -239,9 +239,15 @@ export function OnboardingPage() {
             </fieldset>
           ) : null}
 
+          {/*
+            O aviso é a contrapartida de o mapa vir ligado (P-011, invertido em
+            2026-08-19). Nascer visível só é aceitável se a pessoa souber disso
+            ao preencher — descobrir por acidente depois é o que não pode
+            acontecer.
+          */}
           <p className="rounded-field bg-surface-subtle p-4 text-xs text-ink-muted">
-            Guardamos apenas a sua cidade — nunca a localização do seu aparelho. Você começa fora
-            do mapa e decide depois se quer aparecer.
+            Guardamos apenas a sua cidade — nunca a localização do seu aparelho. Você vai aparecer
+            no mapa da rede pela sua cidade, e pode sair quando quiser em Configurações.
           </p>
 
           {save.error instanceof Error ? (

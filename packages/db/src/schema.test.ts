@@ -44,8 +44,12 @@ describe('schema do banco', () => {
     expect(city).toMatch(/ibgeCode\s+String\s+@unique/);
   });
 
-  it('deixa o perfil fora do mapa por padrão @spec:AC-015', () => {
-    expect(modelBody('User')).toMatch(/visibleOnMap\s+Boolean\s+@default\(false\)/);
+  it('coloca o perfil no mapa por padrão @spec:AC-015 @spec:AC-127', () => {
+    // Invertido em 2026-08-19 (P-011). O padrão era `false`, e a razão era boa:
+    // padrão pré-marcado em algo de localização é o que "opt-in consciente"
+    // existe para evitar. A troca foi decisão do dono do produto, e o que a
+    // sustenta continua no schema — o mapa conhece o município, nunca endereço.
+    expect(modelBody('User')).toMatch(/visibleOnMap\s+Boolean\s+@default\(true\)/);
   });
 
   it('guarda apenas o hash do convite, nunca o código em claro @principle:P-009', () => {
