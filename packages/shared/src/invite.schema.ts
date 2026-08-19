@@ -37,6 +37,15 @@ export type CreateInvite = z.infer<typeof createInviteSchema>;
 export const createdInviteSchema = z.object({
   id: z.uuid(),
   code: z.string(),
+  /**
+   * Endereço pronto para colar no grupo.
+   *
+   * Montado no servidor a partir da URL pública configurada — não no cliente:
+   * um link gerado a partir de `window.location` sairia com `localhost` quando
+   * a coordenação estivesse testando, e ninguém perceberia até alguém tentar
+   * abrir (AC-059).
+   */
+  shareUrl: z.url(),
   expiresAt: z.iso.datetime(),
   note: z.string().nullable(),
 });

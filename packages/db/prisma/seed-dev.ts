@@ -20,9 +20,9 @@ const PESSOAS = [
     role: 'admin' as const,
     course: 'Ciência da Computação',
     bio: 'Coordeno o capítulo e organizo os encontros do programa.',
-    skills: ['Comunidade', 'Python', 'Gemini'],
+    skills: ['gestao-de-comunidade', 'python', 'gemini'],
     city: { name: 'Recife', state: 'PE' },
-    institution: 'UFPE',
+    institution: { acronym: 'UFPE', campus: '' },
     visibleOnMap: true,
   },
   {
@@ -31,9 +31,9 @@ const PESSOAS = [
     role: 'moderator' as const,
     course: 'Sistemas de Informação',
     bio: 'Modero o quadro de avisos e ajudo quem está chegando agora.',
-    skills: ['Android', 'Kotlin'],
+    skills: ['android', 'kotlin'],
     city: { name: 'Belo Horizonte', state: 'MG' },
-    institution: 'UFMG',
+    institution: { acronym: 'UFMG', campus: '' },
     visibleOnMap: true,
   },
   {
@@ -42,9 +42,9 @@ const PESSOAS = [
     role: 'ambassador' as const,
     course: 'Engenharia de Software',
     bio: 'Estudo IA aplicada a acessibilidade e adoro falar sobre isso.',
-    skills: ['React', 'TypeScript', 'Acessibilidade'],
+    skills: ['react', 'typescript', 'acessibilidade-web'],
     city: { name: 'São Paulo', state: 'SP' },
-    institution: 'USP',
+    institution: { acronym: 'USP', campus: '' },
     visibleOnMap: false,
   },
   {
@@ -79,10 +79,17 @@ async function main(): Promise<void> {
         : null;
       const institution = pessoa.institution
         ? await prisma.institution.findFirst({
-            where: { acronym: pessoa.institution },
+            where: { acronym: pessoa.institution.acronym, campus: pessoa.institution.campus },
             select: { id: true },
           })
         : null;
+
+      const skills = pessoa.skills.length
+        ? await prisma.skill.findMany({
+            where: { slug: { in: pessoa.skills } },
+            select: { id: true },
+          })
+        : [];
 
       const dados = {
         name: pessoa.name,
@@ -90,17 +97,26 @@ async function main(): Promise<void> {
         role: pessoa.role,
         course: pessoa.course,
         bio: pessoa.bio,
-        skills: pessoa.skills,
+        // O endereço público do perfil (`/e/ana-ribeiro`).
+        slug: pessoa.name
+          .normalize('NFKD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, ''),
         visibleOnMap: pessoa.visibleOnMap,
         profileComplete: city !== null && institution !== null,
         cityId: city?.id ?? null,
         institutionId: institution?.id ?? null,
       };
 
+      // `set` só existe na atualização; na criação a ligação é `connect`.
+      const habilidades = skills.map((s) => ({ id: s.id }));
+
       await prisma.user.upsert({
         where: { email: pessoa.email },
-        update: dados,
-        create: { email: pessoa.email, ...dados },
+        update: { ...dados, skills: { set: habilidades } },
+        create: { email: pessoa.email, ...dados, skills: { connect: habilidades } },
       });
     }
 

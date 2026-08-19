@@ -1,0 +1,392 @@
+[
+ {
+  "slug": "python",
+  "name": "Python",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "javascript",
+  "name": "JavaScript",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "typescript",
+  "name": "TypeScript",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "java",
+  "name": "Java",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "kotlin",
+  "name": "Kotlin",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "swift",
+  "name": "Swift",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "go",
+  "name": "Go",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "rust",
+  "name": "Rust",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "c-lang",
+  "name": "C",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "cpp",
+  "name": "C++",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "csharp",
+  "name": "C#",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "php",
+  "name": "PHP",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "ruby",
+  "name": "Ruby",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "dart",
+  "name": "Dart",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "r-lang",
+  "name": "R",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "sql",
+  "name": "SQL",
+  "category": "Linguagens"
+ },
+ {
+  "slug": "gemini",
+  "name": "Gemini",
+  "category": "Google"
+ },
+ {
+  "slug": "firebase",
+  "name": "Firebase",
+  "category": "Google"
+ },
+ {
+  "slug": "google-cloud",
+  "name": "Google Cloud",
+  "category": "Google"
+ },
+ {
+  "slug": "android",
+  "name": "Android",
+  "category": "Google"
+ },
+ {
+  "slug": "flutter",
+  "name": "Flutter",
+  "category": "Google"
+ },
+ {
+  "slug": "google-workspace",
+  "name": "Google Workspace",
+  "category": "Google"
+ },
+ {
+  "slug": "bigquery",
+  "name": "BigQuery",
+  "category": "Google"
+ },
+ {
+  "slug": "vertex-ai",
+  "name": "Vertex AI",
+  "category": "Google"
+ },
+ {
+  "slug": "tensorflow",
+  "name": "TensorFlow",
+  "category": "Google"
+ },
+ {
+  "slug": "google-analytics",
+  "name": "Google Analytics",
+  "category": "Google"
+ },
+ {
+  "slug": "apps-script",
+  "name": "Apps Script",
+  "category": "Google"
+ },
+ {
+  "slug": "extensoes-do-chrome",
+  "name": "Extensões do Chrome",
+  "category": "Google"
+ },
+ {
+  "slug": "react",
+  "name": "React",
+  "category": "Web"
+ },
+ {
+  "slug": "vue",
+  "name": "Vue",
+  "category": "Web"
+ },
+ {
+  "slug": "angular",
+  "name": "Angular",
+  "category": "Web"
+ },
+ {
+  "slug": "next-js",
+  "name": "Next.js",
+  "category": "Web"
+ },
+ {
+  "slug": "node-js",
+  "name": "Node.js",
+  "category": "Web"
+ },
+ {
+  "slug": "tailwind-css",
+  "name": "Tailwind CSS",
+  "category": "Web"
+ },
+ {
+  "slug": "html-css",
+  "name": "HTML e CSS",
+  "category": "Web"
+ },
+ {
+  "slug": "acessibilidade-web",
+  "name": "Acessibilidade web",
+  "category": "Web"
+ },
+ {
+  "slug": "progressive-web-apps",
+  "name": "Progressive Web Apps",
+  "category": "Web"
+ },
+ {
+  "slug": "ciencia-de-dados",
+  "name": "Ciência de dados",
+  "category": "Dados e IA"
+ },
+ {
+  "slug": "aprendizado-de-maquina",
+  "name": "Aprendizado de máquina",
+  "category": "Dados e IA"
+ },
+ {
+  "slug": "visao-computacional",
+  "name": "Visão computacional",
+  "category": "Dados e IA"
+ },
+ {
+  "slug": "processamento-de-linguagem-natural",
+  "name": "Processamento de linguagem natural",
+  "category": "Dados e IA"
+ },
+ {
+  "slug": "engenharia-de-dados",
+  "name": "Engenharia de dados",
+  "category": "Dados e IA"
+ },
+ {
+  "slug": "estatistica",
+  "name": "Estatística",
+  "category": "Dados e IA"
+ },
+ {
+  "slug": "analise-de-dados",
+  "name": "Análise de dados",
+  "category": "Dados e IA"
+ },
+ {
+  "slug": "docker",
+  "name": "Docker",
+  "category": "Infraestrutura"
+ },
+ {
+  "slug": "kubernetes",
+  "name": "Kubernetes",
+  "category": "Infraestrutura"
+ },
+ {
+  "slug": "ci-cd",
+  "name": "CI/CD",
+  "category": "Infraestrutura"
+ },
+ {
+  "slug": "linux",
+  "name": "Linux",
+  "category": "Infraestrutura"
+ },
+ {
+  "slug": "redes",
+  "name": "Redes",
+  "category": "Infraestrutura"
+ },
+ {
+  "slug": "seguranca-da-informacao",
+  "name": "Segurança da informação",
+  "category": "Infraestrutura"
+ },
+ {
+  "slug": "computacao-em-nuvem",
+  "name": "Computação em nuvem",
+  "category": "Infraestrutura"
+ },
+ {
+  "slug": "ux-design",
+  "name": "UX design",
+  "category": "Produto e design"
+ },
+ {
+  "slug": "ui-design",
+  "name": "UI design",
+  "category": "Produto e design"
+ },
+ {
+  "slug": "pesquisa-com-usuarios",
+  "name": "Pesquisa com usuários",
+  "category": "Produto e design"
+ },
+ {
+  "slug": "figma",
+  "name": "Figma",
+  "category": "Produto e design"
+ },
+ {
+  "slug": "design-de-produto",
+  "name": "Design de produto",
+  "category": "Produto e design"
+ },
+ {
+  "slug": "prototipagem",
+  "name": "Prototipagem",
+  "category": "Produto e design"
+ },
+ {
+  "slug": "design-grafico",
+  "name": "Design gráfico",
+  "category": "Produto e design"
+ },
+ {
+  "slug": "android-nativo",
+  "name": "Android nativo",
+  "category": "Mobile"
+ },
+ {
+  "slug": "ios-nativo",
+  "name": "iOS nativo",
+  "category": "Mobile"
+ },
+ {
+  "slug": "react-native",
+  "name": "React Native",
+  "category": "Mobile"
+ },
+ {
+  "slug": "desenvolvimento-de-jogos",
+  "name": "Desenvolvimento de jogos",
+  "category": "Mobile"
+ },
+ {
+  "slug": "oratoria",
+  "name": "Oratória",
+  "category": "Comunidade"
+ },
+ {
+  "slug": "organizacao-de-eventos",
+  "name": "Organização de eventos",
+  "category": "Comunidade"
+ },
+ {
+  "slug": "mentoria",
+  "name": "Mentoria",
+  "category": "Comunidade"
+ },
+ {
+  "slug": "criacao-de-conteudo",
+  "name": "Criação de conteúdo",
+  "category": "Comunidade"
+ },
+ {
+  "slug": "gestao-de-comunidade",
+  "name": "Gestão de comunidade",
+  "category": "Comunidade"
+ },
+ {
+  "slug": "redacao",
+  "name": "Redação",
+  "category": "Comunidade"
+ },
+ {
+  "slug": "producao-de-video",
+  "name": "Produção de vídeo",
+  "category": "Comunidade"
+ },
+ {
+  "slug": "fotografia",
+  "name": "Fotografia",
+  "category": "Comunidade"
+ },
+ {
+  "slug": "midias-sociais",
+  "name": "Mídias sociais",
+  "category": "Comunidade"
+ },
+ {
+  "slug": "empreendedorismo",
+  "name": "Empreendedorismo",
+  "category": "Negócios e pesquisa"
+ },
+ {
+  "slug": "gestao-de-projetos",
+  "name": "Gestão de projetos",
+  "category": "Negócios e pesquisa"
+ },
+ {
+  "slug": "metodologias-ageis",
+  "name": "Metodologias ágeis",
+  "category": "Negócios e pesquisa"
+ },
+ {
+  "slug": "pesquisa-academica",
+  "name": "Pesquisa acadêmica",
+  "category": "Negócios e pesquisa"
+ },
+ {
+  "slug": "escrita-cientifica",
+  "name": "Escrita científica",
+  "category": "Negócios e pesquisa"
+ },
+ {
+  "slug": "extensao-universitaria",
+  "name": "Extensão universitária",
+  "category": "Negócios e pesquisa"
+ },
+ {
+  "slug": "inovacao-social",
+  "name": "Inovação social",
+  "category": "Negócios e pesquisa"
+ }
+]

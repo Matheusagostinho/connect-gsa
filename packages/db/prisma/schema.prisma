@@ -44,7 +44,6 @@ model User {
   role           Role     @default(ambassador)
   course         String?
   bio            String   @default("")
-  skills         String[] @default([])
   /// Lista de `{ label, url }` validada pelo `linkSchema` de @connect-gsa/shared.
   links          Json     @default("[]")
 
@@ -52,6 +51,13 @@ model User {
   institution   Institution? @relation(fields: [institutionId], references: [id], onDelete: SetNull)
   cityId        String?
   city          City?        @relation(fields: [cityId], references: [id], onDelete: SetNull)
+
+  /// Endereço público e estável do perfil (`/e/ana-ribeiro`).
+  ///
+  /// Derivado do nome no primeiro salvamento e NÃO reescrito quando a pessoa
+  /// muda o nome de exibição (ASM-016): endereço compartilhado que deixa de
+  /// funcionar é pior que slug desatualizado.
+  slug String? @unique
 
   /// AC-015 / P-011: aparecer no mapa é escolha ativa. O default é, e precisa
   /// continuar sendo, `false`.
@@ -65,12 +71,17 @@ model User {
   posts          Post[]
   reactions      PostReaction[]
   comments       Comment[]
+  /// Catálogo fechado — ver o modelo `Skill`.
+  skills         Skill[]
+  institutionsProposed Institution[] @relation("InstitutionProposer")
+  connectionsAsA Connection[]  @relation("ConnectionA")
+  connectionsAsB Connection[]  @relation("ConnectionB")
+  connectionsRequested Connection[] @relation("ConnectionRequester")
 
   @@index([institutionId])
   @@index([cityId])
   // Filtro do diretório e do mapa: só perfis completos e visíveis interessam.
   @@index([visibleOnMap, profileComplete])
-  @@index([skills], type: Gin)
 }
 
 model Session {
@@ -154,13 +165,96 @@ model AllowedEmail {
   createdAt DateTime @default(now())
 }
 
+enum InstitutionStatus {
+  /// Curada por nós ou aprovada pela coordenação — aparece para todo mundo.
+  approved
+  /// Proposta por um embaixador; só quem propôs a enxerga até ser aprovada.
+  pending
+}
+
+/// Uma instituição de ensino — no nível do CAMPUS, não da reitoria.
+///
+/// Um registro por campus (ASM-013). Quem estuda no IFNMG em Pirapora procura
+/// "IFNMG Pirapora" de uma vez, não uma instituição e depois um campus numa
+/// segunda lista.
+///
+/// `status` existe porque nenhuma lista de instituições do Brasil fica completa:
+/// perseguir o dataset perfeito é trabalho sem fim, deixar propor é o conserto
+/// durável (ASM-014).
 model Institution {
   id      String  @id @default(uuid())
-  name    String  @unique
+  name    String
+  /// Nome do campus, quando a instituição tem mais de um. Vazio quando não há.
+  ///
+  /// String vazia em vez de `null` de propósito: no Postgres, NULLs são
+  /// distintos entre si num índice único, então `@@unique([name, campus])` com
+  /// campus nulo NÃO impediria duplicatas — que é justamente o que ele existe
+  /// para impedir.
+  campus  String  @default("")
   acronym String?
-  users   User[]
 
-  @@index([name])
+  status       InstitutionStatus @default(approved)
+  proposedById String?
+  proposedBy   User?             @relation("InstitutionProposer", fields: [proposedById], references: [id], onDelete: SetNull)
+
+  users User[]
+
+  createdAt DateTime @default(now())
+
+  @@unique([name, campus])
+  @@index([status, name])
+  @@index([acronym])
+  @@index([proposedById])
+}
+
+/// Catálogo fechado de habilidades.
+///
+/// Texto livre parecia mais flexível e destruía a busca: "React", "react" e
+/// "ReactJS" nunca se cruzavam, então filtrar por habilidade não encontrava
+/// ninguém (ASM-015). O `slug` é a identidade estável; o `name` é só rótulo.
+model Skill {
+  id       String @id @default(uuid())
+  slug     String @unique
+  name     String
+  category String
+
+  users User[]
+
+  @@index([category, name])
+}
+
+/// O laço entre dois embaixadores.
+///
+/// Guardado com `userAId` < `userBId` SEMPRE, o que torna o índice único uma
+/// garantia de que não existem dois registros opostos para o mesmo par
+/// (AC-057). Sem essa normalização, A→B e B→A seriam duas linhas distintas e o
+/// banco não teria como recusar a segunda.
+///
+/// `requestedById` guarda quem pediu, que a ordenação canônica apaga — e é do
+/// que a outra pessoa precisa para saber que tem um pedido a responder.
+model Connection {
+  id     String           @id @default(uuid())
+  status ConnectionStatus @default(pending)
+
+  userAId String
+  userA   User   @relation("ConnectionA", fields: [userAId], references: [id], onDelete: Cascade)
+  userBId String
+  userB   User   @relation("ConnectionB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  requestedById String
+  requestedBy   User   @relation("ConnectionRequester", fields: [requestedById], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime  @default(now())
+  acceptedAt DateTime?
+
+  @@unique([userAId, userBId])
+  @@index([userAId, status])
+  @@index([userBId, status])
+}
+
+enum ConnectionStatus {
+  pending
+  accepted
 }
 
 /// Município brasileiro (ASM-001/ASM-005), com o centroide oficial do IBGE.

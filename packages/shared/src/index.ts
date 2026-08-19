@@ -3,3 +3,5 @@ export * from './profile.schema.js';
 export * from './invite.schema.js';
 export * from './reaction.js';
 export * from './post.schema.js';
+export * from './directory.schema.js';
+export * from './connection.schema.js';

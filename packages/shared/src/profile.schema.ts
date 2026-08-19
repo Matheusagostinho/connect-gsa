@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { connectionStateSchema } from './connection.schema.js';
+import { skillSchema } from './directory.schema.js';
 import { roleSchema } from './role.js';
 
 /**
@@ -47,7 +49,14 @@ export const updateProfileSchema = z.object({
   cityId: z.uuid(),
   course: z.string().trim().min(2).max(PROFILE_LIMITS.courseMax),
   bio: z.string().trim().max(PROFILE_LIMITS.bioMax).default(''),
-  skills: z
+  /**
+   * Identificadores do catálogo de habilidades, não texto livre.
+   *
+   * Texto livre parecia mais flexível e destruía a busca: "React", "react" e
+   * "ReactJS" nunca se cruzavam, então filtrar por habilidade não encontrava
+   * ninguém. A API recusa qualquer identificador fora do catálogo (AC-045).
+   */
+  skillSlugs: z
     .array(z.string().trim().min(1).max(PROFILE_LIMITS.skillMax))
     .max(PROFILE_LIMITS.skillsMax)
     .default([]),
@@ -71,14 +80,21 @@ export type PrivacyPreferences = z.infer<typeof privacyPreferencesSchema>;
  */
 export const publicProfileSchema = z.object({
   id: z.uuid(),
+  /** Endereço público e estável do perfil: `/e/{slug}`. */
+  slug: z.string(),
   name: z.string(),
   imageUrl: z.url().nullable(),
   role: roleSchema,
   course: z.string(),
   bio: z.string(),
-  skills: z.array(z.string()),
+  skills: z.array(skillSchema),
   links: z.array(linkSchema),
-  institution: z.object({ id: z.uuid(), name: z.string(), acronym: z.string().nullable() }),
+  institution: z.object({
+    id: z.uuid(),
+    name: z.string(),
+    campus: z.string(),
+    acronym: z.string().nullable(),
+  }),
   city: z.object({
     id: z.uuid(),
     name: z.string(),
@@ -90,6 +106,8 @@ export const publicProfileSchema = z.object({
   visibleOnMap: z.boolean(),
   profileComplete: z.boolean(),
   createdAt: z.iso.datetime(),
+  /** Relação de quem está lendo com esta pessoa. */
+  connection: connectionStateSchema.default('none'),
 });
 
 export type PublicProfile = z.infer<typeof publicProfileSchema>;

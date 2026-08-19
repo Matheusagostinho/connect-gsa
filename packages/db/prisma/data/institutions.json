@@ -1,96 +1,3142 @@
 [
-  { "name": "Universidade de São Paulo", "acronym": "USP" },
-  { "name": "Universidade Estadual de Campinas", "acronym": "Unicamp" },
-  { "name": "Universidade Estadual Paulista", "acronym": "Unesp" },
-  { "name": "Universidade Federal do Rio de Janeiro", "acronym": "UFRJ" },
-  { "name": "Universidade Federal Fluminense", "acronym": "UFF" },
-  { "name": "Universidade do Estado do Rio de Janeiro", "acronym": "UERJ" },
-  { "name": "Universidade Federal de Minas Gerais", "acronym": "UFMG" },
-  { "name": "Universidade Federal de Viçosa", "acronym": "UFV" },
-  { "name": "Universidade Federal de Uberlândia", "acronym": "UFU" },
-  { "name": "Universidade Federal de Juiz de Fora", "acronym": "UFJF" },
-  { "name": "Universidade Federal de Ouro Preto", "acronym": "UFOP" },
-  { "name": "Universidade Federal de Lavras", "acronym": "UFLA" },
-  { "name": "Universidade Federal de São Paulo", "acronym": "Unifesp" },
-  { "name": "Universidade Federal de São Carlos", "acronym": "UFSCar" },
-  { "name": "Universidade Federal do ABC", "acronym": "UFABC" },
-  { "name": "Universidade Federal do Rio Grande do Sul", "acronym": "UFRGS" },
-  { "name": "Universidade Federal de Santa Maria", "acronym": "UFSM" },
-  { "name": "Universidade Federal de Pelotas", "acronym": "UFPel" },
-  { "name": "Universidade Federal do Rio Grande", "acronym": "FURG" },
-  { "name": "Universidade Federal de Santa Catarina", "acronym": "UFSC" },
-  { "name": "Universidade Federal do Paraná", "acronym": "UFPR" },
-  { "name": "Universidade Estadual de Londrina", "acronym": "UEL" },
-  { "name": "Universidade Estadual de Maringá", "acronym": "UEM" },
-  { "name": "Universidade Tecnológica Federal do Paraná", "acronym": "UTFPR" },
-  { "name": "Universidade Federal de Pernambuco", "acronym": "UFPE" },
-  { "name": "Universidade Federal Rural de Pernambuco", "acronym": "UFRPE" },
-  { "name": "Universidade de Pernambuco", "acronym": "UPE" },
-  { "name": "Universidade Federal da Bahia", "acronym": "UFBA" },
-  { "name": "Universidade Estadual de Feira de Santana", "acronym": "UEFS" },
-  { "name": "Universidade Federal do Ceará", "acronym": "UFC" },
-  { "name": "Universidade Estadual do Ceará", "acronym": "UECE" },
-  { "name": "Universidade Federal do Rio Grande do Norte", "acronym": "UFRN" },
-  { "name": "Universidade Federal da Paraíba", "acronym": "UFPB" },
-  { "name": "Universidade Federal de Campina Grande", "acronym": "UFCG" },
-  { "name": "Universidade Federal de Alagoas", "acronym": "UFAL" },
-  { "name": "Universidade Federal de Sergipe", "acronym": "UFS" },
-  { "name": "Universidade Federal do Piauí", "acronym": "UFPI" },
-  { "name": "Universidade Federal do Maranhão", "acronym": "UFMA" },
-  { "name": "Universidade Federal do Pará", "acronym": "UFPA" },
-  { "name": "Universidade Federal do Amazonas", "acronym": "UFAM" },
-  { "name": "Universidade do Estado do Amazonas", "acronym": "UEA" },
-  { "name": "Universidade Federal de Rondônia", "acronym": "UNIR" },
-  { "name": "Universidade Federal do Acre", "acronym": "UFAC" },
-  { "name": "Universidade Federal de Roraima", "acronym": "UFRR" },
-  { "name": "Universidade Federal do Amapá", "acronym": "UNIFAP" },
-  { "name": "Universidade Federal do Tocantins", "acronym": "UFT" },
-  { "name": "Universidade de Brasília", "acronym": "UnB" },
-  { "name": "Universidade Federal de Goiás", "acronym": "UFG" },
-  { "name": "Universidade Federal de Mato Grosso", "acronym": "UFMT" },
-  { "name": "Universidade Federal de Mato Grosso do Sul", "acronym": "UFMS" },
-  { "name": "Universidade Federal do Espírito Santo", "acronym": "UFES" },
-  { "name": "Universidade Federal Rural do Rio de Janeiro", "acronym": "UFRRJ" },
-  { "name": "Instituto Tecnológico de Aeronáutica", "acronym": "ITA" },
-  { "name": "Instituto Militar de Engenharia", "acronym": "IME" },
-  { "name": "Pontifícia Universidade Católica de São Paulo", "acronym": "PUC-SP" },
-  { "name": "Pontifícia Universidade Católica do Rio de Janeiro", "acronym": "PUC-Rio" },
-  { "name": "Pontifícia Universidade Católica do Rio Grande do Sul", "acronym": "PUCRS" },
-  { "name": "Pontifícia Universidade Católica de Minas Gerais", "acronym": "PUC Minas" },
-  { "name": "Pontifícia Universidade Católica do Paraná", "acronym": "PUCPR" },
-  { "name": "Pontifícia Universidade Católica de Campinas", "acronym": "PUC-Campinas" },
-  { "name": "Universidade Presbiteriana Mackenzie", "acronym": "Mackenzie" },
-  { "name": "Fundação Getulio Vargas", "acronym": "FGV" },
-  { "name": "Insper", "acronym": "Insper" },
-  { "name": "Universidade do Vale do Rio dos Sinos", "acronym": "Unisinos" },
-  { "name": "Universidade de Fortaleza", "acronym": "Unifor" },
-  { "name": "Universidade Católica de Pernambuco", "acronym": "Unicap" },
-  { "name": "Universidade Católica de Brasília", "acronym": "UCB" },
-  { "name": "Universidade Estadual do Rio Grande do Norte", "acronym": "UERN" },
-  { "name": "Universidade Estadual de Santa Cruz", "acronym": "UESC" },
-  { "name": "Universidade Estadual de Montes Claros", "acronym": "Unimontes" },
-  { "name": "Universidade Estadual do Piauí", "acronym": "UESPI" },
-  { "name": "Universidade Estadual de Goiás", "acronym": "UEG" },
-  { "name": "Universidade Estadual do Pará", "acronym": "UEPA" },
-  { "name": "Universidade Estadual de Ponta Grossa", "acronym": "UEPG" },
-  { "name": "Universidade do Estado de Santa Catarina", "acronym": "UDESC" },
-  { "name": "Universidade Estadual do Oeste do Paraná", "acronym": "Unioeste" },
-  { "name": "Universidade Federal da Fronteira Sul", "acronym": "UFFS" },
-  { "name": "Universidade Federal do Recôncavo da Bahia", "acronym": "UFRB" },
-  { "name": "Universidade Federal do Vale do São Francisco", "acronym": "UNIVASF" },
-  { "name": "Universidade Federal Rural do Semi-Árido", "acronym": "UFERSA" },
-  { "name": "Universidade da Integração Internacional da Lusofonia Afro-Brasileira", "acronym": "UNILAB" },
-  { "name": "Universidade Federal da Integração Latino-Americana", "acronym": "UNILA" },
-  { "name": "Centro Federal de Educação Tecnológica de Minas Gerais", "acronym": "CEFET-MG" },
-  { "name": "Centro Federal de Educação Tecnológica Celso Suckow da Fonseca", "acronym": "CEFET-RJ" },
-  { "name": "Instituto Federal de São Paulo", "acronym": "IFSP" },
-  { "name": "Instituto Federal de Santa Catarina", "acronym": "IFSC" },
-  { "name": "Instituto Federal de Minas Gerais", "acronym": "IFMG" },
-  { "name": "Instituto Federal de Pernambuco", "acronym": "IFPE" },
-  { "name": "Instituto Federal do Ceará", "acronym": "IFCE" },
-  { "name": "Instituto Federal da Bahia", "acronym": "IFBA" },
-  { "name": "Instituto Federal do Rio Grande do Sul", "acronym": "IFRS" },
-  { "name": "Instituto Federal do Paraná", "acronym": "IFPR" },
-  { "name": "Instituto Federal de Goiás", "acronym": "IFG" },
-  { "name": "Instituto Federal de Brasília", "acronym": "IFB" }
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Almenara",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Araçuaí",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Arinos",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Diamantina",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Janaúba",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Januária",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Montes Claros",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Pirapora",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Salinas",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal do Norte de Minas Gerais",
+  "campus": "Teófilo Otoni",
+  "acronym": "IFNMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Arcos",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Bambuí",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Betim",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Congonhas",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Conselheiro Lafaiete",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Formiga",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Governador Valadares",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Ibirité",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Itabirito",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Ouro Branco",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Ouro Preto",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Piumhi",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Ponte Nova",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Ribeirão das Neves",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Sabará",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "Santa Luzia",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "São João Evangelista",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Araraquara",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Avaré",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Barretos",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Birigui",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Boituva",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Bragança Paulista",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Campinas",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Campos do Jordão",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Capivari",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Caraguatatuba",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Catanduva",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Cubatão",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Guarulhos",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Hortolândia",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Itapetininga",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Itaquaquecetuba",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Jacareí",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Jundiaí",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Matão",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Piracicaba",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Pirituba",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Presidente Epitácio",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Registro",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Ribeirão Preto",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Salto",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Santos",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Sertãozinho",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Sorocaba",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Suzano",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "São Carlos",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "São José dos Campos",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "São João da Boa Vista",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "São Paulo",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "São Roque",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Tupã",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "Votuporanga",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Araranguá",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Canoinhas",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Caçador",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Chapecó",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Criciúma",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Florianópolis",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Garopaba",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Gaspar",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Itajaí",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Jaraguá do Sul",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Joinville",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Lages",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "São Carlos",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "São José",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "São Lourenço do Oeste",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "São Miguel do Oeste",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Tubarão",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Urupema",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "Xanxerê",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Abreu e Lima",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Afogados da Ingazeira",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Barreiros",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Belo Jardim",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Cabo de Santo Agostinho",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Caruaru",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Garanhuns",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Igarassu",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Ipojuca",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Jaboatão dos Guararapes",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Olinda",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Palmares",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Paulista",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Pesqueira",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Recife",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "Vitória de Santo Antão",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Acaraú",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Acopiara",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Aracati",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Baturité",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Camocim",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Canindé",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Caucaia",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Cedro",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Crateús",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Crato",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Fortaleza",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Guaramiranga",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Horizonte",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Iguatu",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Itapipoca",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Jaguaribe",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Juazeiro do Norte",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Limoeiro do Norte",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Maracanaú",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Maranguape",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Morada Nova",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Paracuru",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Pecém",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Quixadá",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Sobral",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Tabuleiro do Norte",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Tauá",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Tianguá",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Ubajara",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "Umirim",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Barreiras",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Brumado",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Camaçari",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Euclides da Cunha",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Feira de Santana",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Ilhéus",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Irecê",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Jacobina",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Jequié",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Juazeiro",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Lauro de Freitas",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Paulo Afonso",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Porto Seguro",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Salvador",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Santo Amaro",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Seabra",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Simões Filho",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Ubaitaba",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Valença",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "Vitória da Conquista",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Alvorada",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Bento Gonçalves",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Canoas",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Caxias do Sul",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Erechim",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Farroupilha",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Feliz",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Ibirubá",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Osório",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Porto Alegre",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Restinga",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Rio Grande",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Rolante",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Sertão",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Vacaria",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Veranópolis",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "Viamão",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Assis Chateaubriand",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Astorga",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Barracão",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Campo Largo",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Capanema",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Cascavel",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Colombo",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Coronel Vivida",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Curitiba",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Foz do Iguaçu",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Goioerê",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Irati",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Ivaiporã",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Jacarezinho",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Jaguariaíva",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Londrina",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Palmas",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Paranaguá",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Paranavaí",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Pinhais",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Pitanga",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Quedas do Iguaçu",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Telêmaco Borba",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "Umuarama",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "União da Vitória",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Anápolis",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Aparecida de Goiânia",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Cidade de Goiás",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Formosa",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Goiânia",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Inhumas",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Itumbiara",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Jataí",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Luziânia",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Senador Canedo",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Uruaçu",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Valparaíso",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "Águas Lindas",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "Brasília",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "Ceilândia",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "Estrutural",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "Gama",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "Planaltina",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "Recanto das Emas",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "Riacho Fundo",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "Samambaia",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "São Sebastião",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "Taguatinga",
+  "acronym": "IFB"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Apodi",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Caicó",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Canguaretama",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Ceará-Mirim",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Currais Novos",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Ipanguaçu",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "João Câmara",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Lajes",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Macau",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Mossoró",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Natal",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Nova Cruz",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Parelhas",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Parnamirim",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Pau dos Ferros",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "Santa Cruz",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "São Gonçalo do Amarante",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Norte",
+  "campus": "São Paulo do Potengi",
+  "acronym": "IFRN"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Areia",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Cabedelo",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Cajazeiras",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Campina Grande",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Catolé do Rocha",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Esperança",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Guarabira",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Itabaiana",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Itaporanga",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "João Pessoa",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Monteiro",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Patos",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Picuí",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Princesa Isabel",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Santa Luzia",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Santa Rita",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal da Paraíba",
+  "campus": "Sousa",
+  "acronym": "IFPB"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Arapiraca",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Batalha",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Benedito Bentes",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Coruripe",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Maceió",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Maragogi",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Murici",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Palmeira dos Índios",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Penedo",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Piranhas",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Rio Largo",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Santana do Ipanema",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Satuba",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "São Miguel dos Campos",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "União dos Palmares",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal de Alagoas",
+  "campus": "Viçosa",
+  "acronym": "IFAL"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Alegre",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Aracruz",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Barra de São Francisco",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Cachoeiro de Itapemirim",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Cariacica",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Colatina",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Guarapari",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Ibatiba",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Itapina",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Linhares",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Montanha",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Nova Venécia",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Piúma",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Santa Teresa",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Serra",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "São Mateus",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Venda Nova do Imigrante",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Viana",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Vila Velha",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal do Espírito Santo",
+  "campus": "Vitória",
+  "acronym": "IFES"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Bom Jesus do Itabapoana",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Cabo Frio",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Cambuci",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Campos Centro",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Campos Guarus",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Itaperuna",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Macaé",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Maricá",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Quissamã",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "Santo Antônio de Pádua",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal Fluminense",
+  "campus": "São João da Barra",
+  "acronym": "IFF"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Arraial do Cabo",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Belford Roxo",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Duque de Caxias",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Engenheiro Paulo de Frontin",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Mesquita",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Nilópolis",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Niterói",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Paracambi",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Pinheiral",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Realengo",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Resende",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Rio de Janeiro",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "São Gonçalo",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "São João de Meriti",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal do Rio de Janeiro",
+  "campus": "Volta Redonda",
+  "acronym": "IFRJ"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Alta Floresta",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Barra do Garças",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Campo Novo do Parecis",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Confresa",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Cuiabá",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Cáceres",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Diamantino",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Guarantã do Norte",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Juína",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Lucas do Rio Verde",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Pontes e Lacerda",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Primavera do Leste",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Rondonópolis",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Sorriso",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "São Vicente",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Tangará da Serra",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso",
+  "campus": "Várzea Grande",
+  "acronym": "IFMT"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Aquidauana",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Campo Grande",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Corumbá",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Coxim",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Dourados",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Jardim",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Naviraí",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Nova Andradina",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Ponta Porã",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal de Mato Grosso do Sul",
+  "campus": "Três Lagoas",
+  "acronym": "IFMS"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Abaetetuba",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Altamira",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Ananindeua",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Belém",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Bragança",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Breves",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Cametá",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Castanhal",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Conceição do Araguaia",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Itaituba",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Marabá",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Paragominas",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Parauapebas",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Santarém",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Tucuruí",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Pará",
+  "campus": "Óbidos",
+  "acronym": "IFPA"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Coari",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Eirunepé",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Humaitá",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Itacoatiara",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Lábrea",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Manacapuru",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Manaus",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Maués",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Parintins",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Presidente Figueiredo",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "São Gabriel da Cachoeira",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Tabatinga",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Amazonas",
+  "campus": "Tefé",
+  "acronym": "IFAM"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Alcântara",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Açailândia",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Bacabal",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Balsas",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Barra do Corda",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Barreirinhas",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Buriticupu",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Caxias",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Codó",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Coelho Neto",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Grajaú",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Imperatriz",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Itapecuru-Mirim",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Pedreiras",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Pinheiro",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Presidente Dutra",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Rosário",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Santa Inês",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "São João dos Patos",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "São Luís",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "São Raimundo das Mangabeiras",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Timon",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Viana",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Maranhão",
+  "campus": "Zé Doca",
+  "acronym": "IFMA"
+ },
+ {
+  "name": "Instituto Federal do Piauí",
+  "campus": "Angical do Piauí",
+  "acronym": "IFPI"
+ },
+ {
+  "name": "Instituto Federal do Piauí",
+  "campus": "Campo Maior",
+  "acronym": "IFPI"
+ },
+ {
+  "name": "Instituto Federal do Piauí",
+  "campus": "Cocal",
+  "acronym": "IFPI"
+ },
+ {
+  "name": "Instituto Federal do Piauí",
+  "campus": "Corrente",
+  "acronym": "IFPI"
+ },
+ {
+  "name": "Instituto Federal do Piauí",
+  "campus": "Dirceu Arcoverde",
+  "acronym": "IFPI"
+ },
+ {
+  "name": "Instituto Federal do Piauí",
+  "campus": "Floriano",
+  "acronym": "IFPI"
+ },
+ {
+  "name": "Instituto Federal do Piauí",
+  "campus": "José de Freitas",
+  "acronym": "IFPI"
+ },
+ {
+  "name": "Instituto Federal do Piauí",
+  "campus": "Oeiras",
+  "acronym": "IFPI"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Aracaju",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Estância",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Glória",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Itabaiana",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Lagarto",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Nossa Senhora da Glória",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Poço Redondo",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Propriá",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Socorro",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "São Cristóvão",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Sergipe",
+  "campus": "Tobias Barreto",
+  "acronym": "IFS"
+ },
+ {
+  "name": "Instituto Federal de Rondônia",
+  "campus": "Ariquemes",
+  "acronym": "IFRO"
+ },
+ {
+  "name": "Instituto Federal de Rondônia",
+  "campus": "Cacoal",
+  "acronym": "IFRO"
+ },
+ {
+  "name": "Instituto Federal de Rondônia",
+  "campus": "Colorado do Oeste",
+  "acronym": "IFRO"
+ },
+ {
+  "name": "Instituto Federal de Rondônia",
+  "campus": "Guajará-Mirim",
+  "acronym": "IFRO"
+ },
+ {
+  "name": "Instituto Federal de Rondônia",
+  "campus": "Jaru",
+  "acronym": "IFRO"
+ },
+ {
+  "name": "Instituto Federal de Rondônia",
+  "campus": "Ji-Paraná",
+  "acronym": "IFRO"
+ },
+ {
+  "name": "Instituto Federal de Rondônia",
+  "campus": "Porto Velho",
+  "acronym": "IFRO"
+ },
+ {
+  "name": "Instituto Federal de Rondônia",
+  "campus": "Vilhena",
+  "acronym": "IFRO"
+ },
+ {
+  "name": "Instituto Federal do Acre",
+  "campus": "Cruzeiro do Sul",
+  "acronym": "IFAC"
+ },
+ {
+  "name": "Instituto Federal do Acre",
+  "campus": "Rio Branco",
+  "acronym": "IFAC"
+ },
+ {
+  "name": "Instituto Federal do Acre",
+  "campus": "Sena Madureira",
+  "acronym": "IFAC"
+ },
+ {
+  "name": "Instituto Federal do Acre",
+  "campus": "Tarauacá",
+  "acronym": "IFAC"
+ },
+ {
+  "name": "Instituto Federal do Acre",
+  "campus": "Xapuri",
+  "acronym": "IFAC"
+ },
+ {
+  "name": "Instituto Federal de Roraima",
+  "campus": "Amajari",
+  "acronym": "IFRR"
+ },
+ {
+  "name": "Instituto Federal de Roraima",
+  "campus": "Boa Vista",
+  "acronym": "IFRR"
+ },
+ {
+  "name": "Instituto Federal de Roraima",
+  "campus": "Novo Paraíso",
+  "acronym": "IFRR"
+ },
+ {
+  "name": "Instituto Federal do Amapá",
+  "campus": "Laranjal do Jari",
+  "acronym": "IFAP"
+ },
+ {
+  "name": "Instituto Federal do Amapá",
+  "campus": "Macapá",
+  "acronym": "IFAP"
+ },
+ {
+  "name": "Instituto Federal do Amapá",
+  "campus": "Oiapoque",
+  "acronym": "IFAP"
+ },
+ {
+  "name": "Instituto Federal do Amapá",
+  "campus": "Porto Grande",
+  "acronym": "IFAP"
+ },
+ {
+  "name": "Instituto Federal do Amapá",
+  "campus": "Santana",
+  "acronym": "IFAP"
+ },
+ {
+  "name": "Instituto Federal do Tocantins",
+  "campus": "Araguatins",
+  "acronym": "IFTO"
+ },
+ {
+  "name": "Instituto Federal do Tocantins",
+  "campus": "Araguaína",
+  "acronym": "IFTO"
+ },
+ {
+  "name": "Instituto Federal do Tocantins",
+  "campus": "Colinas do Tocantins",
+  "acronym": "IFTO"
+ },
+ {
+  "name": "Instituto Federal do Tocantins",
+  "campus": "Dianópolis",
+  "acronym": "IFTO"
+ },
+ {
+  "name": "Instituto Federal do Tocantins",
+  "campus": "Formoso do Araguaia",
+  "acronym": "IFTO"
+ },
+ {
+  "name": "Instituto Federal do Tocantins",
+  "campus": "Gurupi",
+  "acronym": "IFTO"
+ },
+ {
+  "name": "Instituto Federal do Tocantins",
+  "campus": "Palmas",
+  "acronym": "IFTO"
+ },
+ {
+  "name": "Instituto Federal do Tocantins",
+  "campus": "Paraíso do Tocantins",
+  "acronym": "IFTO"
+ },
+ {
+  "name": "Instituto Federal do Tocantins",
+  "campus": "Porto Nacional",
+  "acronym": "IFTO"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Araquari",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Blumenau",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Brusque",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Camboriú",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Concórdia",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Fraiburgo",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Ibirama",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Luzerna",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Rio do Sul",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Santa Rosa do Sul",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Sombrio",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "São Bento do Sul",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "São Francisco do Sul",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Catarinense",
+  "campus": "Videira",
+  "acronym": "IFC"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "Alegrete",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "Frederico Westphalen",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "Jaguari",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "Júlio de Castilhos",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "Panambi",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "Santa Rosa",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "Santo Augusto",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "Santo Ângelo",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "São Borja",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "São Vicente do Sul",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Farroupilha",
+  "campus": "Uruguaiana",
+  "acronym": "IFFar"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Bagé",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Camaquã",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Charqueadas",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Gravataí",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Jaguarão",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Lajeado",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Novo Hamburgo",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Passo Fundo",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Pelotas",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Santana do Livramento",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Sapiranga",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Sapucaia do Sul",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal Sul-rio-grandense",
+  "campus": "Venâncio Aires",
+  "acronym": "IFSul"
+ },
+ {
+  "name": "Instituto Federal do Sertão Pernambucano",
+  "campus": "Floresta",
+  "acronym": "IFSertãoPE"
+ },
+ {
+  "name": "Instituto Federal do Sertão Pernambucano",
+  "campus": "Ouricuri",
+  "acronym": "IFSertãoPE"
+ },
+ {
+  "name": "Instituto Federal do Sertão Pernambucano",
+  "campus": "Petrolina",
+  "acronym": "IFSertãoPE"
+ },
+ {
+  "name": "Instituto Federal do Sertão Pernambucano",
+  "campus": "Salgueiro",
+  "acronym": "IFSertãoPE"
+ },
+ {
+  "name": "Instituto Federal do Sertão Pernambucano",
+  "campus": "Santa Maria da Boa Vista",
+  "acronym": "IFSertãoPE"
+ },
+ {
+  "name": "Instituto Federal do Sertão Pernambucano",
+  "campus": "Serra Talhada",
+  "acronym": "IFSertãoPE"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Alagoinhas",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Bom Jesus da Lapa",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Catu",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Governador Mangabeira",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Guanambi",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Itaberaba",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Itapetinga",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Santa Inês",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Senhor do Bonfim",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Serrinha",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Teixeira de Freitas",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Uruçuca",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Valença",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal Baiano",
+  "campus": "Xique-Xique",
+  "acronym": "IFBaiano"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "Barbacena",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "Bom Sucesso",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "Cataguases",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "Juiz de Fora",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "Manhuaçu",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "Muriaé",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "Rio Pomba",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "Santos Dumont",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "São João del-Rei",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sudeste de Minas Gerais",
+  "campus": "Ubá",
+  "acronym": "IFSudesteMG"
+ },
+ {
+  "name": "Instituto Federal do Sul de Minas Gerais",
+  "campus": "Carmo de Minas",
+  "acronym": "IFSuldeMinas"
+ },
+ {
+  "name": "Instituto Federal do Sul de Minas Gerais",
+  "campus": "Inconfidentes",
+  "acronym": "IFSuldeMinas"
+ },
+ {
+  "name": "Instituto Federal do Sul de Minas Gerais",
+  "campus": "Machado",
+  "acronym": "IFSuldeMinas"
+ },
+ {
+  "name": "Instituto Federal do Sul de Minas Gerais",
+  "campus": "Muzambinho",
+  "acronym": "IFSuldeMinas"
+ },
+ {
+  "name": "Instituto Federal do Sul de Minas Gerais",
+  "campus": "Passos",
+  "acronym": "IFSuldeMinas"
+ },
+ {
+  "name": "Instituto Federal do Sul de Minas Gerais",
+  "campus": "Pouso Alegre",
+  "acronym": "IFSuldeMinas"
+ },
+ {
+  "name": "Instituto Federal do Sul de Minas Gerais",
+  "campus": "Poços de Caldas",
+  "acronym": "IFSuldeMinas"
+ },
+ {
+  "name": "Instituto Federal do Sul de Minas Gerais",
+  "campus": "Três Corações",
+  "acronym": "IFSuldeMinas"
+ },
+ {
+  "name": "Instituto Federal do Triângulo Mineiro",
+  "campus": "Campina Verde",
+  "acronym": "IFTM"
+ },
+ {
+  "name": "Instituto Federal do Triângulo Mineiro",
+  "campus": "Ituiutaba",
+  "acronym": "IFTM"
+ },
+ {
+  "name": "Instituto Federal do Triângulo Mineiro",
+  "campus": "Paracatu",
+  "acronym": "IFTM"
+ },
+ {
+  "name": "Instituto Federal do Triângulo Mineiro",
+  "campus": "Patos de Minas",
+  "acronym": "IFTM"
+ },
+ {
+  "name": "Instituto Federal do Triângulo Mineiro",
+  "campus": "Patrocínio",
+  "acronym": "IFTM"
+ },
+ {
+  "name": "Instituto Federal do Triângulo Mineiro",
+  "campus": "Uberaba",
+  "acronym": "IFTM"
+ },
+ {
+  "name": "Instituto Federal do Triângulo Mineiro",
+  "campus": "Uberlândia",
+  "acronym": "IFTM"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Campos Belos",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Catalão",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Ceres",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Cristalina",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Hidrolândia",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Ipameri",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Iporá",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Morrinhos",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Posse",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Rio Verde",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Trindade",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Instituto Federal Goiano",
+  "campus": "Urutaí",
+  "acronym": "IFGoiano"
+ },
+ {
+  "name": "Universidade de São Paulo",
+  "campus": "",
+  "acronym": "USP"
+ },
+ {
+  "name": "Universidade Estadual de Campinas",
+  "campus": "",
+  "acronym": "Unicamp"
+ },
+ {
+  "name": "Universidade Estadual Paulista",
+  "campus": "",
+  "acronym": "Unesp"
+ },
+ {
+  "name": "Universidade Federal do Rio de Janeiro",
+  "campus": "",
+  "acronym": "UFRJ"
+ },
+ {
+  "name": "Universidade Federal Fluminense",
+  "campus": "",
+  "acronym": "UFF"
+ },
+ {
+  "name": "Universidade do Estado do Rio de Janeiro",
+  "campus": "",
+  "acronym": "UERJ"
+ },
+ {
+  "name": "Universidade Federal de Minas Gerais",
+  "campus": "",
+  "acronym": "UFMG"
+ },
+ {
+  "name": "Universidade Federal de Viçosa",
+  "campus": "",
+  "acronym": "UFV"
+ },
+ {
+  "name": "Universidade Federal de Uberlândia",
+  "campus": "",
+  "acronym": "UFU"
+ },
+ {
+  "name": "Universidade Federal de Juiz de Fora",
+  "campus": "",
+  "acronym": "UFJF"
+ },
+ {
+  "name": "Universidade Federal de Ouro Preto",
+  "campus": "",
+  "acronym": "UFOP"
+ },
+ {
+  "name": "Universidade Federal de Lavras",
+  "campus": "",
+  "acronym": "UFLA"
+ },
+ {
+  "name": "Universidade Federal de São Paulo",
+  "campus": "",
+  "acronym": "Unifesp"
+ },
+ {
+  "name": "Universidade Federal de São Carlos",
+  "campus": "",
+  "acronym": "UFSCar"
+ },
+ {
+  "name": "Universidade Federal do ABC",
+  "campus": "",
+  "acronym": "UFABC"
+ },
+ {
+  "name": "Universidade Federal do Rio Grande do Sul",
+  "campus": "",
+  "acronym": "UFRGS"
+ },
+ {
+  "name": "Universidade Federal de Santa Maria",
+  "campus": "",
+  "acronym": "UFSM"
+ },
+ {
+  "name": "Universidade Federal de Pelotas",
+  "campus": "",
+  "acronym": "UFPel"
+ },
+ {
+  "name": "Universidade Federal do Rio Grande",
+  "campus": "",
+  "acronym": "FURG"
+ },
+ {
+  "name": "Universidade Federal de Santa Catarina",
+  "campus": "",
+  "acronym": "UFSC"
+ },
+ {
+  "name": "Universidade Federal do Paraná",
+  "campus": "",
+  "acronym": "UFPR"
+ },
+ {
+  "name": "Universidade Estadual de Londrina",
+  "campus": "",
+  "acronym": "UEL"
+ },
+ {
+  "name": "Universidade Estadual de Maringá",
+  "campus": "",
+  "acronym": "UEM"
+ },
+ {
+  "name": "Universidade Tecnológica Federal do Paraná",
+  "campus": "",
+  "acronym": "UTFPR"
+ },
+ {
+  "name": "Universidade Federal de Pernambuco",
+  "campus": "",
+  "acronym": "UFPE"
+ },
+ {
+  "name": "Universidade Federal Rural de Pernambuco",
+  "campus": "",
+  "acronym": "UFRPE"
+ },
+ {
+  "name": "Universidade de Pernambuco",
+  "campus": "",
+  "acronym": "UPE"
+ },
+ {
+  "name": "Universidade Federal da Bahia",
+  "campus": "",
+  "acronym": "UFBA"
+ },
+ {
+  "name": "Universidade Estadual de Feira de Santana",
+  "campus": "",
+  "acronym": "UEFS"
+ },
+ {
+  "name": "Universidade Federal do Ceará",
+  "campus": "",
+  "acronym": "UFC"
+ },
+ {
+  "name": "Universidade Estadual do Ceará",
+  "campus": "",
+  "acronym": "UECE"
+ },
+ {
+  "name": "Universidade Federal do Rio Grande do Norte",
+  "campus": "",
+  "acronym": "UFRN"
+ },
+ {
+  "name": "Universidade Federal da Paraíba",
+  "campus": "",
+  "acronym": "UFPB"
+ },
+ {
+  "name": "Universidade Federal de Campina Grande",
+  "campus": "",
+  "acronym": "UFCG"
+ },
+ {
+  "name": "Universidade Federal de Alagoas",
+  "campus": "",
+  "acronym": "UFAL"
+ },
+ {
+  "name": "Universidade Federal de Sergipe",
+  "campus": "",
+  "acronym": "UFS"
+ },
+ {
+  "name": "Universidade Federal do Piauí",
+  "campus": "",
+  "acronym": "UFPI"
+ },
+ {
+  "name": "Universidade Federal do Maranhão",
+  "campus": "",
+  "acronym": "UFMA"
+ },
+ {
+  "name": "Universidade Federal do Pará",
+  "campus": "",
+  "acronym": "UFPA"
+ },
+ {
+  "name": "Universidade Federal do Amazonas",
+  "campus": "",
+  "acronym": "UFAM"
+ },
+ {
+  "name": "Universidade do Estado do Amazonas",
+  "campus": "",
+  "acronym": "UEA"
+ },
+ {
+  "name": "Universidade Federal de Rondônia",
+  "campus": "",
+  "acronym": "UNIR"
+ },
+ {
+  "name": "Universidade Federal do Acre",
+  "campus": "",
+  "acronym": "UFAC"
+ },
+ {
+  "name": "Universidade Federal de Roraima",
+  "campus": "",
+  "acronym": "UFRR"
+ },
+ {
+  "name": "Universidade Federal do Amapá",
+  "campus": "",
+  "acronym": "UNIFAP"
+ },
+ {
+  "name": "Universidade Federal do Tocantins",
+  "campus": "",
+  "acronym": "UFT"
+ },
+ {
+  "name": "Universidade de Brasília",
+  "campus": "",
+  "acronym": "UnB"
+ },
+ {
+  "name": "Universidade Federal de Goiás",
+  "campus": "",
+  "acronym": "UFG"
+ },
+ {
+  "name": "Universidade Federal de Mato Grosso",
+  "campus": "",
+  "acronym": "UFMT"
+ },
+ {
+  "name": "Universidade Federal de Mato Grosso do Sul",
+  "campus": "",
+  "acronym": "UFMS"
+ },
+ {
+  "name": "Universidade Federal do Espírito Santo",
+  "campus": "",
+  "acronym": "UFES"
+ },
+ {
+  "name": "Universidade Federal Rural do Rio de Janeiro",
+  "campus": "",
+  "acronym": "UFRRJ"
+ },
+ {
+  "name": "Instituto Tecnológico de Aeronáutica",
+  "campus": "",
+  "acronym": "ITA"
+ },
+ {
+  "name": "Instituto Militar de Engenharia",
+  "campus": "",
+  "acronym": "IME"
+ },
+ {
+  "name": "Pontifícia Universidade Católica de São Paulo",
+  "campus": "",
+  "acronym": "PUC-SP"
+ },
+ {
+  "name": "Pontifícia Universidade Católica do Rio de Janeiro",
+  "campus": "",
+  "acronym": "PUC-Rio"
+ },
+ {
+  "name": "Pontifícia Universidade Católica do Rio Grande do Sul",
+  "campus": "",
+  "acronym": "PUCRS"
+ },
+ {
+  "name": "Pontifícia Universidade Católica de Minas Gerais",
+  "campus": "",
+  "acronym": "PUC Minas"
+ },
+ {
+  "name": "Pontifícia Universidade Católica do Paraná",
+  "campus": "",
+  "acronym": "PUCPR"
+ },
+ {
+  "name": "Pontifícia Universidade Católica de Campinas",
+  "campus": "",
+  "acronym": "PUC-Campinas"
+ },
+ {
+  "name": "Universidade Presbiteriana Mackenzie",
+  "campus": "",
+  "acronym": "Mackenzie"
+ },
+ {
+  "name": "Fundação Getulio Vargas",
+  "campus": "",
+  "acronym": "FGV"
+ },
+ {
+  "name": "Insper",
+  "campus": "",
+  "acronym": "Insper"
+ },
+ {
+  "name": "Universidade do Vale do Rio dos Sinos",
+  "campus": "",
+  "acronym": "Unisinos"
+ },
+ {
+  "name": "Universidade de Fortaleza",
+  "campus": "",
+  "acronym": "Unifor"
+ },
+ {
+  "name": "Universidade Católica de Pernambuco",
+  "campus": "",
+  "acronym": "Unicap"
+ },
+ {
+  "name": "Universidade Católica de Brasília",
+  "campus": "",
+  "acronym": "UCB"
+ },
+ {
+  "name": "Universidade Estadual do Rio Grande do Norte",
+  "campus": "",
+  "acronym": "UERN"
+ },
+ {
+  "name": "Universidade Estadual de Santa Cruz",
+  "campus": "",
+  "acronym": "UESC"
+ },
+ {
+  "name": "Universidade Estadual de Montes Claros",
+  "campus": "",
+  "acronym": "Unimontes"
+ },
+ {
+  "name": "Universidade Estadual do Piauí",
+  "campus": "",
+  "acronym": "UESPI"
+ },
+ {
+  "name": "Universidade Estadual de Goiás",
+  "campus": "",
+  "acronym": "UEG"
+ },
+ {
+  "name": "Universidade Estadual do Pará",
+  "campus": "",
+  "acronym": "UEPA"
+ },
+ {
+  "name": "Universidade Estadual de Ponta Grossa",
+  "campus": "",
+  "acronym": "UEPG"
+ },
+ {
+  "name": "Universidade do Estado de Santa Catarina",
+  "campus": "",
+  "acronym": "UDESC"
+ },
+ {
+  "name": "Universidade Estadual do Oeste do Paraná",
+  "campus": "",
+  "acronym": "Unioeste"
+ },
+ {
+  "name": "Universidade Federal da Fronteira Sul",
+  "campus": "",
+  "acronym": "UFFS"
+ },
+ {
+  "name": "Universidade Federal do Recôncavo da Bahia",
+  "campus": "",
+  "acronym": "UFRB"
+ },
+ {
+  "name": "Universidade Federal do Vale do São Francisco",
+  "campus": "",
+  "acronym": "UNIVASF"
+ },
+ {
+  "name": "Universidade Federal Rural do Semi-Árido",
+  "campus": "",
+  "acronym": "UFERSA"
+ },
+ {
+  "name": "Universidade da Integração Internacional da Lusofonia Afro-Brasileira",
+  "campus": "",
+  "acronym": "UNILAB"
+ },
+ {
+  "name": "Universidade Federal da Integração Latino-Americana",
+  "campus": "",
+  "acronym": "UNILA"
+ },
+ {
+  "name": "Centro Federal de Educação Tecnológica de Minas Gerais",
+  "campus": "",
+  "acronym": "CEFET-MG"
+ },
+ {
+  "name": "Centro Federal de Educação Tecnológica Celso Suckow da Fonseca",
+  "campus": "",
+  "acronym": "CEFET-RJ"
+ },
+ {
+  "name": "Instituto Federal de São Paulo",
+  "campus": "",
+  "acronym": "IFSP"
+ },
+ {
+  "name": "Instituto Federal de Santa Catarina",
+  "campus": "",
+  "acronym": "IFSC"
+ },
+ {
+  "name": "Instituto Federal de Minas Gerais",
+  "campus": "",
+  "acronym": "IFMG"
+ },
+ {
+  "name": "Instituto Federal de Pernambuco",
+  "campus": "",
+  "acronym": "IFPE"
+ },
+ {
+  "name": "Instituto Federal do Ceará",
+  "campus": "",
+  "acronym": "IFCE"
+ },
+ {
+  "name": "Instituto Federal da Bahia",
+  "campus": "",
+  "acronym": "IFBA"
+ },
+ {
+  "name": "Instituto Federal do Rio Grande do Sul",
+  "campus": "",
+  "acronym": "IFRS"
+ },
+ {
+  "name": "Instituto Federal do Paraná",
+  "campus": "",
+  "acronym": "IFPR"
+ },
+ {
+  "name": "Instituto Federal de Goiás",
+  "campus": "",
+  "acronym": "IFG"
+ },
+ {
+  "name": "Instituto Federal de Brasília",
+  "campus": "",
+  "acronym": "IFB"
+ }
 ]

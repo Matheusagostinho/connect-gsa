@@ -21,7 +21,14 @@ interface CitySeed {
 
 interface InstitutionSeed {
   name: string;
+  campus: string;
   acronym: string;
+}
+
+interface SkillSeed {
+  slug: string;
+  name: string;
+  category: string;
 }
 
 async function readJson<T>(relativePath: string): Promise<T> {
@@ -40,6 +47,7 @@ async function main(): Promise<void> {
   try {
     const cities = await readJson<CitySeed[]>('./data/cities.json');
     const institutions = await readJson<InstitutionSeed[]>('./data/institutions.json');
+    const skills = await readJson<SkillSeed[]>('./data/skills.json');
 
     // `skipDuplicates` sobre a chave única `ibgeCode` é o que torna o seed
     // repetível: reexecutar não recria nem sobrescreve o que já existe.
@@ -48,10 +56,12 @@ async function main(): Promise<void> {
       data: institutions,
       skipDuplicates: true,
     });
+    const skillsResult = await prisma.skill.createMany({ data: skills, skipDuplicates: true });
 
     process.stdout.write(
       `municípios inseridos: ${citiesResult.count} (total no arquivo: ${cities.length})\n` +
-        `instituições inseridas: ${institutionsResult.count} (total no arquivo: ${institutions.length})\n`,
+        `instituições e campi inseridos: ${institutionsResult.count} (total: ${institutions.length})\n` +
+        `habilidades inseridas: ${skillsResult.count} (total: ${skills.length})\n`,
     );
   } finally {
     await prisma.$disconnect();
