@@ -87,23 +87,34 @@ function baseProfile(row: ProfileRow) {
  * incompleto não tem o que fazer no diretório, e inventar um valor de fachada
  * só esconderia o defeito.
  */
+export interface ProfileCounts {
+  connectionCount: number;
+  postCount: number;
+}
+
+/** Zero, e não ausente: um perfil sem conexão tem zero conexões. */
+const SEM_CONTAGEM: ProfileCounts = { connectionCount: 0, postCount: 0 };
+
 export function toPublicProfile(
   row: ProfileRow,
   connection: PublicProfile['connection'] = 'none',
+  counts: ProfileCounts = SEM_CONTAGEM,
 ): PublicProfile {
   return publicProfileSchema.parse({
     ...baseProfile(row),
     institution: row.institution,
     city: row.city,
     connection,
+    ...counts,
   });
 }
 
 /** O próprio perfil, que pode estar a meio caminho do onboarding (AC-009). */
-export function toMyProfile(row: ProfileRow): MyProfile {
+export function toMyProfile(row: ProfileRow, counts: ProfileCounts = SEM_CONTAGEM): MyProfile {
   return myProfileSchema.parse({
     ...baseProfile(row),
     institution: row.institution,
     city: row.city,
+    ...counts,
   });
 }

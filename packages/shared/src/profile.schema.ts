@@ -106,6 +106,10 @@ export const publicProfileSchema = z.object({
   visibleOnMap: z.boolean(),
   profileComplete: z.boolean(),
   createdAt: z.iso.datetime(),
+  /** Laços ACEITOS. Pedido pendente não conta — ninguém tem conexão com quem ainda não respondeu. */
+  connectionCount: z.number().int().nonnegative().default(0),
+  /** Publicações do feed. Comunicado oficial não entra: ele é da coordenação, não da pessoa. */
+  postCount: z.number().int().nonnegative().default(0),
   /** Relação de quem está lendo com esta pessoa. */
   connection: connectionStateSchema.default('none'),
 });

@@ -33,9 +33,42 @@ export async function getPublicProfile(
 
   if (!row) throw notFound('Perfil não encontrado.');
 
-  const connection = viewerId ? await connectionStateFor(prisma, viewerId, row.id) : 'none';
+  const [connection, counts] = await Promise.all([
+    viewerId ? connectionStateFor(prisma, viewerId, row.id) : Promise.resolve('none' as const),
+    contarPerfil(prisma, row.id),
+  ]);
 
-  return toPublicProfile(row, connection);
+  return toPublicProfile(row, connection, counts);
+}
+
+/**
+ * Quantas conexões e quantas publicações a pessoa tem.
+ *
+ * As duas contagens são consultadas, não guardadas em coluna. Contador
+ * denormalizado paga por si onde é lido a cada item de uma lista — o caso do
+ * feed —, mas aqui ele é lido uma vez por visita a um perfil, e o preço passa a
+ * ser manter dois lugares em sincronia para sempre. Divergir é questão de
+ * tempo, e um número errado no perfil é pior que uma consulta a mais.
+ *
+ * Só laço ACEITO conta como conexão: pedido pendente é intenção de um lado só.
+ * E só publicação do feed conta — comunicado oficial pertence à coordenação, e
+ * inflaria o perfil de quem por acaso tem o papel.
+ */
+export async function contarPerfil(
+  prisma: PrismaClient,
+  userId: string,
+): Promise<{ connectionCount: number; postCount: number }> {
+  const [connectionCount, postCount] = await Promise.all([
+    prisma.connection.count({
+      where: {
+        status: 'accepted',
+        OR: [{ userAId: userId }, { userBId: userId }],
+      },
+    }),
+    prisma.post.count({ where: { authorId: userId, kind: 'feed' } }),
+  ]);
+
+  return { connectionCount, postCount };
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -44,7 +77,7 @@ const isUuid = (valor: string): boolean => UUID.test(valor);
 export async function getMyProfile(prisma: PrismaClient, userId: string): Promise<MyProfile> {
   const row = await prisma.user.findUnique({ where: { id: userId }, select: PROFILE_SELECT });
   if (!row) throw notFound('Perfil não encontrado.');
-  return toMyProfile(row);
+  return toMyProfile(row, await contarPerfil(prisma, userId));
 }
 
 /**

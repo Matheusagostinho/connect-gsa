@@ -259,3 +259,98 @@ describe('rotas de perfil', () => {
     expect(response.statusCode).toBe(404);
   });
 });
+
+describe('contagens do perfil', () => {
+  /**
+   * Perfil completo — sem isso a pessoa não aparece para terceiros nem aceita
+   * conexão.
+   *
+   * Recebe o nome porque o slug é derivado dele: três pessoas chamadas
+   * "Ana Souza" criadas ao mesmo tempo disputam o mesmo slug, e a que perde a
+   * corrida fica com o perfil incompleto — que some do `/profiles/:id` e o teste
+   * falha com um 404 que não tem nada a ver com o que ele mede.
+   */
+  async function comPerfil(name: string) {
+    const user = await createTestUser();
+    const { city, institution } = await reference();
+    await app.inject({
+      method: 'PATCH',
+      url: '/api/me',
+      headers: asUser(user.id),
+      payload: { ...validProfile(city.id, institution.id), name },
+    });
+    return user;
+  }
+
+  it('conta apenas conexões aceitas, nunca pedidos pendentes @spec:AC-109', async () => {
+    const ana = await comPerfil('Ana Souza');
+    const bruno = await comPerfil('Bruno Lima');
+    const carla = await comPerfil('Carla Nogueira');
+
+    // Bruno pede e Ana aceita; Carla pede e ninguém responde.
+    await app.inject({
+      method: 'POST',
+      url: `/api/connections/${ana.id}`,
+      headers: asUser(bruno.id),
+    });
+    await app.inject({
+      method: 'POST',
+      url: `/api/connections/${bruno.id}/accept`,
+      headers: asUser(ana.id),
+    });
+    await app.inject({
+      method: 'POST',
+      url: `/api/connections/${ana.id}`,
+      headers: asUser(carla.id),
+    });
+
+    const resposta = await app.inject({
+      method: 'GET',
+      url: `/api/profiles/${ana.id}`,
+      headers: asUser(bruno.id),
+    });
+
+    // Duas pessoas se relacionam com Ana, mas só uma tem conexão com ela.
+    expect(resposta.json<{ connectionCount: number }>().connectionCount).toBe(1);
+  });
+
+  it('conta publicações do feed, e não comunicado oficial @spec:AC-109', async () => {
+    const ana = await createTestUser({ role: 'admin' });
+    const { city, institution } = await reference();
+    await app.inject({
+      method: 'PATCH',
+      url: '/api/me',
+      headers: asUser(ana.id),
+      payload: validProfile(city.id, institution.id),
+    });
+
+    await app.inject({
+      method: 'POST',
+      url: '/api/posts',
+      headers: asUser(ana.id),
+      payload: { content: 'Publicação minha' },
+    });
+    await app.inject({
+      method: 'POST',
+      url: '/api/announcements',
+      headers: asUser(ana.id),
+      payload: { content: 'Comunicado da coordenação' },
+    });
+
+    const resposta = await app.inject({ method: 'GET', url: '/api/me', headers: asUser(ana.id) });
+
+    // O comunicado pertence à coordenação, não à pessoa: contá-lo inflaria o
+    // perfil de quem por acaso tem o papel.
+    expect(resposta.json<{ postCount: number }>().postCount).toBe(1);
+  });
+
+  it('devolve zero para quem ainda não fez nada, e não campo ausente @spec:AC-109', async () => {
+    const ana = await comPerfil('Ana Souza');
+
+    const resposta = await app.inject({ method: 'GET', url: '/api/me', headers: asUser(ana.id) });
+    const perfil = resposta.json<{ connectionCount: number; postCount: number }>();
+
+    expect(perfil.connectionCount).toBe(0);
+    expect(perfil.postCount).toBe(0);
+  });
+});
