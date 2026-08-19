@@ -66,7 +66,14 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
+          {/*
+            Duas rotas para a mesma tela. `/convite/CODIGO` é a forma nova, que
+            se lê e se dita; `/convite` sem código continua existindo para quem
+            digita o código à mão, e o `?c=` antigo é lido pela própria página —
+            um endereço que já circulou não pode deixar de funcionar.
+          */}
           <Route path="/convite" element={<InvitePage />} />
+          <Route path="/convite/:code" element={<InvitePage />} />
           {/*
             Só existe quando a API expõe /dev/* — ou seja, fora de produção.
             A tela lida com a rota ausente mostrando o erro, sem quebrar.

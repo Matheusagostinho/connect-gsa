@@ -176,11 +176,17 @@ mandar no grupo sem ter que explicar onde colar o código.
 - **Então** recebo um endereço completo que já leva a pessoa para a entrada com o código
   preenchido
 
-#### AC-060 — Abrir o link preenche o código sozinho
+#### AC-060 — Abrir o link não pede nada
+
+> **Revisado em 2026-08-19.** Dizia "já vem com o código preenchido". Com o
+> endereço `/convite/CODIGO` a tela deixou de ter campo a preencher: ela
+> reconhece o convite, diz quem convidou e leva ao login (ver `convite-simples`,
+> AC-134 e AC-135). Pedir que a pessoa confira o que está na barra de endereço
+> era trabalho inventado.
 
 - **Dado** um link de convite
 - **Quando** alguém o abre
-- **Então** a tela de convite já vem com o código, restando só continuar
+- **Então** o convite já está reconhecido e não há código a digitar
 
 ## Fora de escopo
 

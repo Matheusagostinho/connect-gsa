@@ -1,6 +1,7 @@
 import type { MyProfile } from '@connect-gsa/shared';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { ApiError, api } from './api.js';
+import { esquecerConvite } from './invite-guardado.js';
 
 /**
  * O perfil da sessão atual.
@@ -16,7 +17,12 @@ export function useMyProfile(): UseQueryResult<MyProfile | null> {
       !(error instanceof ApiError && error.status === 401) && failureCount < 2,
     queryFn: async () => {
       try {
-        return await api.get<MyProfile>('/me');
+        const perfil = await api.get<MyProfile>('/me');
+        // Existe sessão: o convite cumpriu o papel dele e sai do navegador.
+        // Deixá-lo ali faria a tela de login continuar anunciando um convite
+        // guardado para alguém que já entrou.
+        esquecerConvite();
+        return perfil;
       } catch (error) {
         if (error instanceof ApiError && error.status === 401) return null;
         throw error;
