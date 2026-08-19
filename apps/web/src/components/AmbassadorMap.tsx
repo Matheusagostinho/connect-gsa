@@ -150,7 +150,10 @@ export function AmbassadorMap({
       ref={container}
       role="application"
       aria-label="Mapa dos embaixadores por cidade"
-      className="h-[28rem] w-full overflow-hidden rounded-card border border-border sm:h-[34rem]"
+      // Altura vem do contêiner, não daqui: o mapa preenche o espaço que a
+      // página reservou para ele (AC-064). Fixá-la aqui faria a página perder
+      // o controle e sobrar uma faixa vazia embaixo.
+      className="size-full"
     />
   );
 }

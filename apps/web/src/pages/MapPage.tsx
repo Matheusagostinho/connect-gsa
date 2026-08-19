@@ -2,8 +2,8 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 import { AmbassadorCardItem } from '../components/AmbassadorCardItem.tsx';
 import { AmbassadorMap } from '../components/AmbassadorMap.tsx';
-import { AppNav } from '../components/AppNav.tsx';
-import { Card, Shell } from '../components/ui.tsx';
+import { AppShell, FullBleed } from '../components/AppShell.tsx';
+import { Card } from '../components/ui.tsx';
 import { useCityPeople, useMap } from '../lib/directory.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -19,21 +19,26 @@ export function MapPage() {
   const total = cities.reduce((soma, c) => soma + c.count, 0);
 
   return (
-    <Shell width="xl">
-      <AppNav profile={profile} />
-
-      <h1 className="display mb-2 text-3xl sm:text-4xl">Onde estamos</h1>
-      <p className="mb-6 text-base text-ink-muted">
+    <AppShell profile={profile} bleed>
+      <FullBleed>
+        <div className="px-5 pb-3 lg:px-8">
+          <h1 className="display text-2xl sm:text-3xl">Onde estamos</h1>
+          <p className="mt-1 text-sm text-ink-muted">
         {isPending
           ? 'Carregando o mapa…'
           : `${total} ${total === 1 ? 'embaixador' : 'embaixadores'} em ${cities.length} ${cities.length === 1 ? 'cidade' : 'cidades'}.`}{' '}
-        O mapa mostra a cidade de cada pessoa — nunca um endereço.
-      </p>
+            O mapa mostra a cidade de cada pessoa — nunca um endereço.
+          </p>
+        </div>
 
-      <AmbassadorMap cities={cities} onSelectCity={setCidadeAberta} />
+        {/* O mapa toma toda a altura que sobra (AC-064). */}
+        <div className="min-h-0 flex-1 overflow-hidden border-y border-border">
+          <AmbassadorMap cities={cities} onSelectCity={setCidadeAberta} />
+        </div>
+      </FullBleed>
 
       {cidadeAberta ? (
-        <section className="mt-6" aria-live="polite">
+        <section className="mx-auto w-full max-w-5xl px-5 py-6 lg:px-8" aria-live="polite">
           <div className="mb-4 flex items-center justify-between gap-4">
             <h2 className="text-xl font-medium">
               {cidade ? `${cidade.city}/${cidade.state}` : 'Cidade'}
@@ -70,13 +75,13 @@ export function MapPage() {
       ) : null}
 
       {!isPending && cities.length === 0 ? (
-        <Card className="mt-6 text-center">
+        <Card className="mx-auto mt-6 max-w-md text-center">
           <h2 className="display text-2xl">Ninguém no mapa ainda</h2>
           <p className="mt-2 text-ink-muted">
             Aparecer no mapa é uma escolha de cada pessoa. Você pode ligar a sua em Meu perfil.
           </p>
         </Card>
       ) : null}
-    </Shell>
+    </AppShell>
   );
 }

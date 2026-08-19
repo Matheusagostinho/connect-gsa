@@ -51,9 +51,7 @@ export function AccountMenu({ profile }: { profile: MyProfile }) {
   });
 
   return (
-    <div className="flex items-center gap-2">
-      <ThemeToggle />
-
+    <div className="flex items-center">
       <div ref={container} className="relative">
         <button
           type="button"
@@ -75,6 +73,18 @@ export function AccountMenu({ profile }: { profile: MyProfile }) {
             )}
           >
             <p className="truncate px-3 py-2 text-sm font-medium text-ink">{profile.name}</p>
+
+            {/*
+              O tema mora aqui, e não na barra do topo: no celular são três
+              botões disputando espaço com o sino e o avatar, e tema é ajuste —
+              não ação principal.
+            */}
+            <div className="flex items-center justify-between gap-2 px-3 py-2">
+              <span className="text-sm text-ink-muted">Tema</span>
+              <ThemeToggle />
+            </div>
+
+            <div className="my-1 border-t border-border" />
 
             <Link
               to="/perfil"

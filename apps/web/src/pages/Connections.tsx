@@ -1,8 +1,8 @@
 import type { AmbassadorCard } from '@connect-gsa/shared';
 import { Users } from 'lucide-react';
 import { AmbassadorCardItem } from '../components/AmbassadorCardItem.tsx';
-import { AppNav } from '../components/AppNav.tsx';
-import { Card, Shell } from '../components/ui.tsx';
+import { AppShell } from '../components/AppShell.tsx';
+import { Card } from '../components/ui.tsx';
 import { useConnections } from '../lib/directory.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -36,8 +36,7 @@ export function ConnectionsPage() {
     (data?.connected.length ?? 0) + (data?.received.length ?? 0) + (data?.sent.length ?? 0) === 0;
 
   return (
-    <Shell width="xl">
-      <AppNav profile={profile} />
+    <AppShell profile={profile} width="xl">
 
       <h1 className="display mb-6 text-3xl sm:text-4xl">Minhas conexões</h1>
 
@@ -61,6 +60,6 @@ export function ConnectionsPage() {
           </p>
         </Card>
       ) : null}
-    </Shell>
+    </AppShell>
   );
 }

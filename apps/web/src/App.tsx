@@ -9,6 +9,7 @@ import { ConnectionsPage } from './pages/Connections.tsx';
 import { DevLoginPage } from './pages/DevLogin.tsx';
 import { DirectoryPage } from './pages/Directory.tsx';
 import { FeedPage } from './pages/Feed.tsx';
+import { NotificationsPage } from './pages/Notifications.tsx';
 
 import { PublicProfilePage } from './pages/PublicProfile.tsx';
 import { ProfilePage } from './pages/Profile.tsx';
@@ -93,6 +94,14 @@ export function App() {
                 >
                   <MapPage />
                 </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notificacoes"
+            element={
+              <ProtectedRoute>
+                <NotificationsPage />
               </ProtectedRoute>
             }
           />

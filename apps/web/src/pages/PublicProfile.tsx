@@ -1,9 +1,9 @@
 import { Check, Clock, GraduationCap, MapPin, UserPlus, X } from 'lucide-react';
 import { useParams } from 'react-router';
-import { AppNav } from '../components/AppNav.tsx';
+import { AppShell } from '../components/AppShell.tsx';
 import { Avatar } from '../components/Avatar.tsx';
 import { PostCard } from '../components/PostCard.tsx';
-import { Button, Card, Shell } from '../components/ui.tsx';
+import { Button, Card } from '../components/ui.tsx';
 import { useAuthorPosts, useConnectionAction, usePublicProfile } from '../lib/directory.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -26,8 +26,7 @@ export function PublicProfilePage() {
   const ocupado = request.isPending || accept.isPending || remove.isPending;
 
   return (
-    <Shell width="lg">
-      <AppNav profile={me} />
+    <AppShell profile={me} width="lg">
 
       {isPending ? (
         <p className="py-8 text-center text-ink-muted" role="status">
@@ -159,6 +158,6 @@ export function PublicProfilePage() {
           )}
         </>
       ) : null}
-    </Shell>
+    </AppShell>
   );
 }

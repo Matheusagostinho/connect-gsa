@@ -1,8 +1,8 @@
 import { Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { AmbassadorCardItem } from '../components/AmbassadorCardItem.tsx';
-import { AppNav } from '../components/AppNav.tsx';
-import { Button, Card, Field, Shell, cn } from '../components/ui.tsx';
+import { AppShell } from '../components/AppShell.tsx';
+import { Button, Card, Field, cn } from '../components/ui.tsx';
 import { useDirectory, useSkills, type DirectoryFilters } from '../lib/directory.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -35,8 +35,7 @@ export function DirectoryPage() {
   const habilidadeAtiva = filtros.skill;
 
   return (
-    <Shell width="xl">
-      <AppNav profile={profile} />
+    <AppShell profile={profile} width="xl">
 
       <h1 className="display mb-2 text-3xl sm:text-4xl">Quem está na rede</h1>
       <p className="mb-6 text-base text-ink-muted">
@@ -112,6 +111,6 @@ export function DirectoryPage() {
           {isFetchingNextPage ? 'Carregando…' : 'Ver mais'}
         </Button>
       ) : null}
-    </Shell>
+    </AppShell>
   );
 }

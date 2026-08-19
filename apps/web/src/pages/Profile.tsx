@@ -2,10 +2,10 @@ import type { MyProfile } from '@connect-gsa/shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GraduationCap, MapPin } from 'lucide-react';
 import { Link } from 'react-router';
-import { AppNav } from '../components/AppNav.tsx';
+import { AppShell } from '../components/AppShell.tsx';
 import { AvatarUpload } from '../components/AvatarUpload.tsx';
 import { InviteShare } from '../components/InviteShare.tsx';
-import { Button, Card, Shell, UnofficialNotice } from '../components/ui.tsx';
+import { Button, Card, UnofficialNotice } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -35,8 +35,7 @@ export function ProfilePage() {
   if (!profile) return null;
 
   return (
-    <Shell width="lg">
-      <AppNav profile={profile} />
+    <AppShell profile={profile} width="lg">
 
       <Card className="mb-4">
         <div className="flex items-start gap-5">
@@ -125,6 +124,6 @@ export function ProfilePage() {
       ) : null}
 
       <UnofficialNotice className="mt-16" />
-    </Shell>
+    </AppShell>
   );
 }

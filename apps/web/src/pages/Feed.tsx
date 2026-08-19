@@ -1,8 +1,7 @@
-import { Link } from 'react-router';
-import { AccountMenu } from '../components/AccountMenu.tsx';
+import { AppShell } from '../components/AppShell.tsx';
 import { Composer } from '../components/Composer.tsx';
 import { PostCard } from '../components/PostCard.tsx';
-import { Button, Card, Shell, UnofficialNotice, Wordmark } from '../components/ui.tsx';
+import { Button, Card, UnofficialNotice } from '../components/ui.tsx';
 import { useFeed } from '../lib/feed.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -15,14 +14,7 @@ export function FeedPage() {
   const posts = data?.pages.flatMap((page) => page.posts) ?? [];
 
   return (
-    <Shell width="lg">
-      <header className="mb-8 flex items-center justify-between">
-        <Link to="/" aria-label="ConnectGSA">
-          <Wordmark />
-        </Link>
-        <AccountMenu profile={profile} />
-      </header>
-
+    <AppShell profile={profile} width="lg">
       <Composer authorName={profile.name} authorImage={profile.imageUrl} />
 
       <div className="mt-4 flex flex-col gap-4">
@@ -66,6 +58,6 @@ export function FeedPage() {
       </div>
 
       <UnofficialNotice className="mt-16" />
-    </Shell>
+    </AppShell>
   );
 }
