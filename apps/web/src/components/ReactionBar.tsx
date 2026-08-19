@@ -38,6 +38,8 @@ export function ReactionBar({
 }) {
   const [aberta, setAberta] = useState(false);
   const [pulsando, setPulsando] = useState(false);
+  /** Muda a cada escolha, para o ícone ser remontado e a animação reiniciar. */
+  const [desenho, setDesenho] = useState(0);
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,6 +67,7 @@ export function ReactionBar({
 
   function escolher(reaction: Reaction) {
     setPulsando(true);
+    setDesenho((n) => n + 1);
     setAberta(false);
     onReact(reaction);
     window.setTimeout(() => setPulsando(false), 340);
@@ -102,7 +105,7 @@ export function ReactionBar({
                     mine === reaction && 'bg-surface-subtle',
                   )}
                 >
-                  <ReactionIcon reaction={reaction} className="size-5" />
+                  <ReactionIcon reaction={reaction} className="size-5" colored={mine === reaction} />
                   {/*
                     O rótulo não é redundante com o emoji: "Bora junto" e "Posso
                     ajudar" são intenções, e nenhum emoji as comunica sozinho.
@@ -136,7 +139,17 @@ export function ReactionBar({
             )}
           >
             <span className={cn(pulsando && 'reacao-escolhida', 'inline-flex')}>
-              <ReactionIcon reaction={mine ?? PRINCIPAL} />
+              {/*
+                A chave inclui o contador: trocar a chave remonta o ícone, e é o
+                que faz o traço ser redesenhado a cada escolha em vez de animar
+                só na primeira.
+              */}
+              <ReactionIcon
+                key={`${mine ?? PRINCIPAL}-${desenho}`}
+                reaction={mine ?? PRINCIPAL}
+                colored={mine !== null}
+                drawing={desenho > 0}
+              />
             </span>
             {mine ? atual.label : 'Reagir'}
           </button>
@@ -162,7 +175,7 @@ export function ReactionBar({
         <p className="flex items-center gap-1.5 text-sm text-ink-muted">
           <span className="flex gap-0.5">
             {presentes.map((reaction) => (
-              <ReactionIcon key={reaction} reaction={reaction} className="size-3.5" />
+              <ReactionIcon key={reaction} reaction={reaction} className="size-3.5" colored />
             ))}
           </span>
           <span>{total}</span>

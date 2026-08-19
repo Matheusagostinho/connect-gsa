@@ -94,3 +94,37 @@ describe('barra de reações', () => {
     expect(onReact).toHaveBeenCalledExactlyOnceWith('respect');
   });
 });
+
+describe('cor e desenho da reação', () => {
+  it('pinta a reação escolhida com a cor dela, e deixa as outras neutras @spec:AC-102', () => {
+    render(<ReactionBar counts={{ together: 1 }} mine="together" onReact={vi.fn()} />);
+
+    const botao = screen.getByRole('button', { name: /bora junto/i });
+    const icone = botao.querySelector('svg');
+
+    // A cor sai do catálogo compartilhado, não de um valor solto no componente:
+    // é o mesmo dado que a API usa para descrever a reação.
+    expect(icone).toHaveStyle({ color: REACTION_META.together.color });
+  });
+
+  it('não pinta nada quando ainda não reagi — cor é sinal de escolha', () => {
+    render(<ReactionBar counts={{}} mine={null} onReact={vi.fn()} />);
+
+    const icone = screen.getByRole('button', { name: /^reagir$/i }).querySelector('svg');
+    expect(icone?.getAttribute('style')).toBeFalsy();
+  });
+
+  it('desenha o traço ao trocar de reação, e só então @spec:AC-102', async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<ReactionBar counts={{}} mine={null} onReact={vi.fn()} />);
+
+    const parado = screen.getByRole('button', { name: /^reagir$/i }).querySelector('svg');
+    expect(parado?.classList.contains('reacao-desenha')).toBe(false);
+
+    await user.click(screen.getByRole('button', { name: /^reagir$/i }));
+    rerender(<ReactionBar counts={{ liftoff: 1 }} mine="liftoff" onReact={vi.fn()} />);
+
+    const desenhando = screen.getByRole('button', { name: /decolou/i }).querySelector('svg');
+    expect(desenhando?.classList.contains('reacao-desenha')).toBe(true);
+  });
+});

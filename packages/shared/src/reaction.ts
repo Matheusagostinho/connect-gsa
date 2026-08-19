@@ -27,6 +27,13 @@ export interface ReactionMeta {
    * sempre aparece, herda a cor do tema e alinha com o resto da interface.
    */
   icon: 'rocket' | 'lightbulb' | 'award' | 'handshake' | 'helpingHand';
+  /**
+   * A cor que a reação assume quando escolhida.
+   *
+   * Escolhida só a partir daí: colorir tudo o tempo todo faria a barra virar um
+   * arco-íris e apagaria o sinal de qual foi a SUA reação.
+   */
+  color: string;
   label: string;
   /** Frase curta que aparece ao passar o cursor, explicando o que a reação diz. */
   description: string;
@@ -44,30 +51,35 @@ export interface ReactionMeta {
 export const REACTION_META: Record<Reaction, ReactionMeta> = {
   liftoff: {
     icon: 'rocket',
+    color: '#4285F4',
     label: 'Decolou',
     description: 'Isso aqui é notável',
     weight: 1,
   },
   learned: {
     icon: 'lightbulb',
+    color: '#F9AB00',
     label: 'Aprendi',
     description: 'Aprendi alguma coisa com isso',
     weight: 1.5,
   },
   respect: {
     icon: 'award',
+    color: '#34A853',
     label: 'Respeito',
     description: 'Reconheço o esforço por trás disso',
     weight: 1,
   },
   together: {
     icon: 'handshake',
+    color: '#7C4DFF',
     label: 'Bora junto',
     description: 'Quero construir isso com você',
     weight: 3,
   },
   offerHelp: {
     icon: 'helpingHand',
+    color: '#EA4335',
     label: 'Posso ajudar',
     description: 'Tenho como ajudar nisso',
     weight: 3,
