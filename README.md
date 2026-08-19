@@ -36,6 +36,8 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Caixa de notificações no cabeçalho | |
 | Perfil com publicações, abas e contagens | |
 | Coluna de sugestões no computador | |
+| Nome de usuário editável, com o antigo respondendo | |
+| Cinco campos de link no perfil | |
 
 A especificação completa, com critérios de aceite e provas, está em
 `.spec/features/acesso-e-perfil/`.
@@ -198,6 +200,12 @@ O que atravessou foram quatro ideias independentes de modelo:
 4. **Proximidade em vez de punição** — no X, quem você não segue leva desconto, porque lá
    são centenas de milhões de contas. Aqui a rede cabe numa sala: quem é da sua instituição
    ou cidade sobe, e ninguém desce.
+
+A recência tem **meia-vida de 2 horas**, e o engajamento entra em **logaritmo**. As duas
+coisas juntas são o que faz o recém-publicado aparecer no topo: com soma linear, um post
+muito reagido ficava imbatível e a rede reencontrava o assunto de ontem toda manhã. Em log,
+a diferença entre 0 e 5 interações continua grande — que é a que importa — e a diferença
+entre 40 e 80 quase some, que é a que não importa para quem está lendo.
 
 A função está em `apps/api/src/modules/feed/ranking.ts`. É pura, sem banco e sem relógio
 implícito — cada regra tem um teste próprio.

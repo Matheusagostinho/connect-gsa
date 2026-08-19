@@ -142,6 +142,33 @@ O que mais mudou, e por quê:
 
 **253 testes, 108/108 critérios provados, auditoria limpa.**
 
+### ~~Fatia 6.7 — Refino de interface e identidade editável~~ · **entregue**
+
+Duas mudanças de regra e um lote de desenho.
+
+**Regra.** O feed passou a favorecer o recém-publicado: meia-vida da recência de
+12h para 2h. Encurtá-la não bastou — o engajamento somado cresce linear e um post
+com muitas reações continuava imbatível —, então ele entrou em **logaritmo**: a
+diferença entre 0 e 5 interações continua grande, a de 40 para 80 quase some. E o
+**nome de usuário virou editável**, contrariando a decisão original de nunca
+reescrevê-lo; a troca vem com as duas defesas que evitam o estrago — o endereço
+anterior continua respondendo, e há 30 dias entre trocas.
+
+**Desenho.** Uma largura só para todas as telas. Publicação deixou de ser cartão.
+O quadro de avisos saiu do feed, a caixa de escrever perdeu a moldura, entraram
+puxar-para-atualizar e um botão de publicar que aparece ao rolar. As reações
+ganharam resposta ao mouse e o "Decolou" ganhou um foguete que decola. O
+diretório escondeu as 78 habilidades atrás de um painel. O perfil perdeu a capa e
+ganhou compartilhar. "Conexões" saiu da navegação — pertence ao perfil.
+
+Dois defeitos apareceram no caminho: **editar o perfil não funcionava** (o
+formulário nunca semeava instituição, cidade e habilidades, e salvar era recusado
+com "Escolha sua instituição" num perfil que já tinha uma), e o mapa ficou sem
+tiles porque o servidor de desenvolvimento servia o worker compartilhado como
+`text/html` — cache dele, não regressão de código.
+
+**287 testes, 118/118 critérios provados, auditoria limpa.**
+
 ### Fatia 7 — Publicação em produção · **bloqueado por você**
 
 > Os três workflows estão **desligados no automático** desde 19/08/2026, a pedido: rodam só

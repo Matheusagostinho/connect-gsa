@@ -89,7 +89,19 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
 21. **Hash para cor: o resto por 360 vai no FIM.** Aplicá-lo a cada passo derrete
     a entropia — `soma * 31 % 360` entra em ciclo curto, e dois identificadores
     diferentes caíam no mesmo tom na faixa do perfil.
-22. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
+22. **Uma largura só, e a moldura não aceita parâmetro.** Havia duas, e a
+    diferença aparecia como um salto do conteúdo ao trocar de seção. Há teste
+    varrendo `pages/` atrás de `width=` num `<AppShell>`.
+23. **Publicação não é cartão.** Numa lista longa, um cartão por post vira uma
+    sequência de caixas com sombra e o olho passa a contar molduras em vez de
+    ler. Fio separa; moldura isolaria.
+24. **`public/` só é lido pelo servidor de desenvolvimento quando ele começa.**
+    Se `public/maplibre/` nasceu DEPOIS de o `pnpm dev` subir, o
+    `maplibre-gl-shared.mjs` volta como `index.html` com `text/html`, o worker
+    morre ao importar e o mapa fica sem um único tile — o mesmo sintoma de
+    sempre, agora por cache do servidor e não por arquivo faltando. Reiniciar o
+    dev resolve; antes de investigar o código, confira o `Content-Type`.
+25. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
    então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
    registrada pela API lá.
 

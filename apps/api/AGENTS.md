@@ -85,6 +85,23 @@ ordenação é por nota e não por data, um post publicado entre uma página e o
 intercalaria no meio da lista — e você veria de novo o que já viu. Congelar o instante é o
 que torna a página 2 uma continuação real da página 1.
 
+## Nome de usuário
+
+O slug nasce derivado do nome e a pessoa **pode** trocá-lo — o que contraria a
+decisão original de nunca reescrevê-lo. Aquela decisão tinha razão, e por isso a
+troca vem com duas defesas: o endereço anterior fica em `previousSlug` e continua
+encontrando o perfil, e há intervalo mínimo entre trocas.
+
+`previousSlug` é `@unique` de propósito: enquanto ele responde, ninguém mais pode
+tomá-lo. Um link antigo levando ao perfil ERRADO é pior que um link que não leva
+a lugar nenhum.
+
+Guardamos **um só** endereço anterior. É por isso que o intervalo existe: trocar
+duas vezes seguidas jogaria fora justamente o que mais circulou.
+
+Salvar o perfil sem mexer no campo não conta como troca — o cliente só manda
+`slug` quando ele mudou. Sem isso, editar a bio duas vezes esgotaria o intervalo.
+
 ## Contagens do perfil
 
 `connectionCount` e `postCount` são **consultados**, não guardados em coluna.

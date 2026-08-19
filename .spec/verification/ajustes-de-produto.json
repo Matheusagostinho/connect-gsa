@@ -1,11 +1,11 @@
 {
   "feature": "ajustes-de-produto",
-  "timestamp": "2026-08-19T16:09:47.348Z",
-  "gitRev": "91d91d3",
+  "timestamp": "2026-08-19T20:40:59.672Z",
+  "gitRev": "a4c8db2",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 253,
+  "testsParsed": 287,
   "results": {
     "AC-078": {
       "status": "pass",
@@ -39,13 +39,13 @@
     }
   },
   "principles": {
-    "P-008": {
-      "status": "pass",
-      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
-    },
     "P-006": {
       "status": "pass",
       "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006"
+    },
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
     },
     "P-003": {
       "status": "pass",

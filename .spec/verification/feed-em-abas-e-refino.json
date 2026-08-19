@@ -1,11 +1,11 @@
 {
   "feature": "feed-em-abas-e-refino",
-  "timestamp": "2026-08-19T16:05:53.039Z",
-  "gitRev": "91d91d3",
+  "timestamp": "2026-08-19T20:53:50.471Z",
+  "gitRev": "a4c8db2",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 253,
+  "testsParsed": 287,
   "results": {
     "AC-096": {
       "status": "pass",

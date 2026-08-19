@@ -1,40 +1,60 @@
 {
-  "feature": "quadro-de-avisos",
-  "timestamp": "2026-08-19T20:58:23.805Z",
+  "feature": "refino-de-interface",
+  "timestamp": "2026-08-19T20:36:50.332Z",
   "gitRev": "a4c8db2",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
   "testsParsed": 287,
   "results": {
-    "AC-090": {
+    "AC-115": {
       "status": "pass",
-      "testName": "quadro de avisos só a coordenação publica @spec:AC-090 @principle:P-004 só a coordenação publica @spec:AC-090 @principle:P-004",
+      "testName": "recência forte o recém-publicado vence o engajado de seis horas atrás @spec:AC-115 o recém-publicado vence o engajado de seis horas atrás @spec:AC-115",
       "method": "vitest-json"
     },
-    "AC-091": {
+    "AC-116": {
       "status": "pass",
-      "testName": "quadro de avisos não mistura aviso com o feed comum @spec:AC-091 não mistura aviso com o feed comum @spec:AC-091",
+      "testName": "puxar para atualizar recarrega quando o arrasto passa do limiar @spec:AC-116 recarrega quando o arrasto passa do limiar @spec:AC-116",
       "method": "vitest-json"
     },
-    "AC-092": {
+    "AC-117": {
       "status": "pass",
-      "testName": "quadro de avisos lista do mais recente para o mais antigo @spec:AC-092 lista do mais recente para o mais antigo @spec:AC-092",
+      "testName": "trocar o nome de usuário recusa nome de usuário que já é de outra pessoa @spec:AC-117 recusa nome de usuário que já é de outra pessoa @spec:AC-117",
       "method": "vitest-json"
     },
-    "AC-093": {
+    "AC-118": {
       "status": "pass",
-      "testName": "quadro de avisos destaca o aviso mais recente para quem abre o feed @spec:AC-093 destaca o aviso mais recente para quem abre o feed @spec:AC-093",
+      "testName": "trocar o nome de usuário o endereço antigo continua encontrando o perfil @spec:AC-118 o endereço antigo continua encontrando o perfil @spec:AC-118",
       "method": "vitest-json"
     },
-    "AC-094": {
+    "AC-119": {
       "status": "pass",
-      "testName": "quadro de avisos aceita reação e comentário como qualquer publicação @spec:AC-094 aceita reação e comentário como qualquer publicação @spec:AC-094",
+      "testName": "trocar o nome de usuário recusa segunda troca antes do intervalo mínimo @spec:AC-119 recusa segunda troca antes do intervalo mínimo @spec:AC-119",
       "method": "vitest-json"
     },
-    "AC-095": {
+    "AC-120": {
       "status": "pass",
-      "testName": "quadro de avisos só a coordenação remove um aviso @spec:AC-095 só a coordenação remove um aviso @spec:AC-095",
+      "testName": "formulário do perfil traz os cinco campos de link com o que já estava guardado @spec:AC-120 traz os cinco campos de link com o que já estava guardado @spec:AC-120",
+      "method": "vitest-json"
+    },
+    "AC-121": {
+      "status": "pass",
+      "testName": "resposta ao mouse e decolagem a barra tem resposta ao passar o mouse @spec:AC-121 a barra tem resposta ao passar o mouse @spec:AC-121",
+      "method": "vitest-json"
+    },
+    "AC-122": {
+      "status": "pass",
+      "testName": "apresentação do perfil o contador de conexões é um link, e se anuncia como tal @spec:AC-122 o contador de conexões é um link, e se anuncia como tal @spec:AC-122",
+      "method": "vitest-json"
+    },
+    "AC-123": {
+      "status": "pass",
+      "testName": "apresentação do perfil oferece compartilhar o endereço do perfil @spec:AC-123 oferece compartilhar o endereço do perfil @spec:AC-123",
+      "method": "vitest-json"
+    },
+    "AC-124": {
+      "status": "pass",
+      "testName": "uma moldura só para todas as telas Conexões não é destino de navegação; o perfil leva até ela @spec:AC-124 Conexões não é destino de navegação; o perfil leva até ela @spec:AC-124",
       "method": "vitest-json"
     }
   },
