@@ -13,6 +13,7 @@ export const POST_SELECT = {
   author: {
     select: {
       id: true,
+      slug: true,
       name: true,
       image: true,
       course: true,
@@ -31,6 +32,7 @@ export interface PostRow {
   authorId: string;
   author: {
     id: string;
+    slug: string | null;
     name: string;
     image: string | null;
     course: string | null;
@@ -61,6 +63,7 @@ export function toPost(
   storage: StorageDriver,
   reactionCounts: Partial<Record<Reaction, number>>,
   myReaction: Reaction | null,
+  connection: Post['author']['connection'] = 'none',
 ): Post {
   return {
     id: row.id,
@@ -70,10 +73,12 @@ export function toPost(
     createdAt: row.createdAt.toISOString(),
     author: {
       id: row.author.id,
+      slug: row.author.slug ?? row.author.id,
       name: row.author.name,
       imageUrl: row.author.image,
       course: row.author.course,
       institutionAcronym: row.author.institution?.acronym ?? row.author.institution?.name ?? null,
+      connection: row.author.id === viewer.userId ? 'self' : connection,
     },
     reactionCounts,
     myReaction,

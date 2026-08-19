@@ -1,4 +1,12 @@
-import type { Comment, FeedPage, MyProfile, Post, Reaction, UploadResult } from '@connect-gsa/shared';
+import type {
+  Comment,
+  FeedPage,
+  FeedTab,
+  MyProfile,
+  Post,
+  Reaction,
+  UploadResult,
+} from '@connect-gsa/shared';
 import {
   useInfiniteQuery,
   useMutation,
@@ -9,12 +17,17 @@ import { api, upload } from './api.js';
 
 export const FEED_KEY = ['feed'] as const;
 
-export function useFeed() {
+export function useFeed(tab: FeedTab) {
   return useInfiniteQuery({
-    queryKey: FEED_KEY,
+    // A aba entra na chave: cada uma tem o próprio cache, então alternar não
+    // rebusca o que já foi carregado nem mistura os resultados das duas.
+    queryKey: [...FEED_KEY, tab],
     initialPageParam: undefined as string | undefined,
-    queryFn: ({ pageParam }) =>
-      api.get<FeedPage>(pageParam ? `/feed?cursor=${encodeURIComponent(pageParam)}` : '/feed'),
+    queryFn: ({ pageParam }) => {
+      const params = new URLSearchParams({ tab });
+      if (pageParam) params.set('cursor', pageParam);
+      return api.get<FeedPage>(`/feed?${params.toString()}`);
+    },
     getNextPageParam: (last: FeedPage) => last.nextCursor ?? undefined,
   });
 }
@@ -53,9 +66,14 @@ export function useReact(postId: string) {
         reaction,
       }),
     onSuccess: (resultado) => {
-      queryClient.setQueryData<InfiniteData<FeedPage, string | undefined>>(FEED_KEY, (data) =>
-        patchPost(data, postId, (post) => ({ ...post, ...resultado })),
-      );
+      // As duas abas podem ter o mesmo post em cache; a reação precisa alcançar
+      // ambas, senão trocar de aba mostra a contagem antiga.
+      for (const tab of ['forYou', 'following'] as const) {
+        queryClient.setQueryData<InfiniteData<FeedPage, string | undefined>>(
+          [...FEED_KEY, tab],
+          (data) => patchPost(data, postId, (post) => ({ ...post, ...resultado })),
+        );
+      }
     },
   });
 }
@@ -93,9 +111,12 @@ export function useComments(postId: string, enabled: boolean) {
   const create = useMutation({
     mutationFn: (content: string) => api.post<Comment[]>(`/posts/${postId}/comments`, { content }),
     onSuccess: (comments) => {
-      queryClient.setQueryData<InfiniteData<FeedPage, string | undefined>>(FEED_KEY, (data) =>
-        patchPost(data, postId, (post) => ({ ...post, commentCount: comments.length })),
-      );
+      for (const tab of ['forYou', 'following'] as const) {
+        queryClient.setQueryData<InfiniteData<FeedPage, string | undefined>>(
+          [...FEED_KEY, tab],
+          (data) => patchPost(data, postId, (post) => ({ ...post, commentCount: comments.length })),
+        );
+      }
     },
   });
 

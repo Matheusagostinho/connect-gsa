@@ -58,9 +58,23 @@ export const PRIOR_MEAN = 1;
 export const AUTHOR_DIVERSITY_DECAY = 0.5;
 export const AUTHOR_DIVERSITY_FLOOR = 0.25;
 
+/**
+ * Afinidade: o que faz alguém ser "para você".
+ *
+ * Basta um sinal para contar, e mais de um soma — quem é do seu curso E do seu
+ * estado sobe mais que quem só divide o estado. São impulsos, nunca filtros:
+ * quem não tem nada em comum continua aparecendo, só mais abaixo (AC-099).
+ */
 export const PROXIMITY_BOOST = {
   sameInstitution: 0.15,
   sameCity: 0.1,
+  sameCourse: 0.2,
+  sameState: 0.1,
+  /** Por habilidade em comum, até o teto abaixo. */
+  perSharedSkill: 0.12,
+  sharedSkillsCap: 0.36,
+  /** Já conectados: o que a pessoa escolheu acompanhar pesa mais que o resto. */
+  connected: 0.35,
 } as const;
 
 export interface RankablePost {
@@ -72,6 +86,10 @@ export interface RankablePost {
   commentCount: number;
   sameInstitution: boolean;
   sameCity: boolean;
+  sameCourse: boolean;
+  sameState: boolean;
+  sharedSkills: number;
+  connected: boolean;
 }
 
 export interface ScoredPost {
@@ -101,10 +119,31 @@ export function recencyFactor(post: RankablePost, now: Date): number {
 }
 
 export function proximityFactor(post: RankablePost): number {
+  const porHabilidade = Math.min(
+    post.sharedSkills * PROXIMITY_BOOST.perSharedSkill,
+    PROXIMITY_BOOST.sharedSkillsCap,
+  );
+
   return (
     1 +
     (post.sameInstitution ? PROXIMITY_BOOST.sameInstitution : 0) +
-    (post.sameCity ? PROXIMITY_BOOST.sameCity : 0)
+    (post.sameCity ? PROXIMITY_BOOST.sameCity : 0) +
+    (post.sameCourse ? PROXIMITY_BOOST.sameCourse : 0) +
+    (post.sameState ? PROXIMITY_BOOST.sameState : 0) +
+    (post.connected ? PROXIMITY_BOOST.connected : 0) +
+    porHabilidade
+  );
+}
+
+/** `true` quando há pelo menos um sinal de afinidade — o "se enquadra". */
+export function hasAffinity(post: RankablePost): boolean {
+  return (
+    post.sameInstitution ||
+    post.sameCity ||
+    post.sameCourse ||
+    post.sameState ||
+    post.connected ||
+    post.sharedSkills > 0
   );
 }
 

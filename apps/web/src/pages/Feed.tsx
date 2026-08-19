@@ -1,6 +1,9 @@
+import type { FeedTab } from '@connect-gsa/shared';
+import { useState } from 'react';
 import { AnnouncementBanner } from '../components/AnnouncementBanner.tsx';
 import { AppShell } from '../components/AppShell.tsx';
 import { Composer } from '../components/Composer.tsx';
+import { FeedTabs } from '../components/FeedTabs.tsx';
 import { PostCard } from '../components/PostCard.tsx';
 import { Button, Card, UnofficialNotice } from '../components/ui.tsx';
 import { useFeed } from '../lib/feed.js';
@@ -8,7 +11,8 @@ import { useMyProfile } from '../lib/session.js';
 
 export function FeedPage() {
   const { data: profile } = useMyProfile();
-  const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useFeed();
+  const [aba, setAba] = useState<FeedTab>('forYou');
+  const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useFeed(aba);
 
   if (!profile) return null;
 
@@ -16,6 +20,8 @@ export function FeedPage() {
 
   return (
     <AppShell profile={profile} width="lg">
+      <FeedTabs atual={aba} onChange={setAba} />
+
       <AnnouncementBanner />
 
       <Composer authorName={profile.name} authorImage={profile.imageUrl} />
@@ -37,9 +43,13 @@ export function FeedPage() {
 
         {!isPending && posts.length === 0 ? (
           <Card className="text-center">
-            <h2 className="display text-2xl">Silêncio por aqui</h2>
+            <h2 className="display text-2xl">
+              {aba === 'following' ? 'Nada das suas conexões' : 'Silêncio por aqui'}
+            </h2>
             <p className="mt-2 text-ink-muted">
-              Seja a primeira pessoa a contar o que está construindo.
+              {aba === 'following'
+                ? 'Conecte com mais gente no diretório, ou volte para “Para você”.'
+                : 'Seja a primeira pessoa a contar o que está construindo.'}
             </p>
           </Card>
         ) : null}

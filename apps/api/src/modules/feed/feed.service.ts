@@ -1,8 +1,9 @@
 import type { PrismaClient } from '@connect-gsa/db';
-import { POST_LIMITS, type FeedPage, type Reaction } from '@connect-gsa/shared';
+import { POST_LIMITS, type FeedPage, type FeedTab, type Reaction } from '@connect-gsa/shared';
 import { badRequest } from '../../plugins/errors.js';
 import type { StorageDriver } from '../media/storage.js';
 import { POST_SELECT, toPost, type ViewerContext } from '../post/post.mapper.js';
+import { connectionBuckets } from '../connection/connection.service.js';
 import { loadReactions } from '../post/post.service.js';
 import { rankFeed, type RankablePost } from './ranking.js';
 
@@ -56,6 +57,7 @@ export async function buildFeed(
   viewer: ViewerContext,
   storage: StorageDriver,
   rawCursor: string | undefined,
+  tab: FeedTab = 'forYou',
 ): Promise<FeedPage> {
   if (rawCursor !== undefined && decodeCursor(rawCursor) === null) {
     throw badRequest('Cursor inválido.', 'INVALID_CURSOR');
@@ -65,14 +67,33 @@ export async function buildFeed(
   const geradoEm = cursor ? new Date(cursor.at) : new Date();
   const offset = cursor?.offset ?? 0;
 
-  const [leitor, candidatos] = await Promise.all([
+  const [leitor, conexoes] = await Promise.all([
     prisma.user.findUnique({
       where: { id: viewer.userId },
-      select: { institutionId: true, cityId: true },
+      select: {
+        institutionId: true,
+        cityId: true,
+        course: true,
+        city: { select: { state: true } },
+        skills: { select: { slug: true } },
+      },
     }),
+    connectionBuckets(prisma, viewer.userId),
+  ]);
+
+  const conectados = new Set(conexoes.connected);
+  const minhasHabilidades = new Set(leitor?.skills.map((s) => s.slug) ?? []);
+
+  const candidatos = await (async () =>
     prisma.post.findMany({
       where: {
         kind: 'feed',
+        // "Seguindo" filtra de verdade: só conexões e o próprio perfil — um
+        // feed de conexões sem o que você mesmo publicou parece quebrado.
+        // "Para você" não filtra; a afinidade entra no ranking (AC-099).
+        ...(tab === 'following'
+          ? { authorId: { in: [...conectados, viewer.userId] } }
+          : {}),
         // Só o que já existia quando a página 1 foi montada — post novo entra
         // na próxima visita, não no meio da rolagem.
         createdAt: {
@@ -87,20 +108,24 @@ export async function buildFeed(
         author: {
           select: {
             id: true,
+            slug: true,
             name: true,
             image: true,
             course: true,
             institutionId: true,
             cityId: true,
             institution: { select: { acronym: true, name: true } },
+            city: { select: { state: true } },
+            skills: { select: { slug: true } },
           },
         },
       },
-    }),
-  ]);
+    }))();
 
   const institutionIdDoLeitor = leitor?.institutionId;
   const cityIdDoLeitor = leitor?.cityId;
+  const cursoDoLeitor = leitor?.course?.trim().toLowerCase();
+  const ufDoLeitor = leitor?.city?.state;
 
   const paraRanquear: RankablePost[] = candidatos.map((post) => ({
     id: post.id,
@@ -110,8 +135,16 @@ export async function buildFeed(
     commentCount: post.commentCount,
     // Ids são UUID, nunca string vazia — a checagem de verdade cobre tanto o
     // leitor sem instituição quanto o autor sem instituição.
-    sameInstitution: Boolean(institutionIdDoLeitor) && post.author.institutionId === institutionIdDoLeitor,
+    sameInstitution:
+      Boolean(institutionIdDoLeitor) && post.author.institutionId === institutionIdDoLeitor,
     sameCity: Boolean(cityIdDoLeitor) && post.author.cityId === cityIdDoLeitor,
+    // Curso comparado sem caixa nem espaço: "Ciência da Computação" e
+    // "ciencia da computacao " são o mesmo curso para quem escreveu.
+    sameCourse:
+      Boolean(cursoDoLeitor) && post.author.course?.trim().toLowerCase() === cursoDoLeitor,
+    sameState: Boolean(ufDoLeitor) && post.author.city?.state === ufDoLeitor,
+    sharedSkills: post.author.skills.filter((s) => minhasHabilidades.has(s.slug)).length,
+    connected: conectados.has(post.authorId),
   }));
 
   // As contagens por reação alimentam o ranking, então precisam vir antes dele.

@@ -6,6 +6,7 @@ import type {
   Post,
   Reaction,
 } from '@connect-gsa/shared';
+import { connectionStatesFor } from '../connection/connection.service.js';
 import { forbidden, notFound } from '../../plugins/errors.js';
 import { sanitizeText } from '../profile/sanitize.js';
 import type { StorageDriver } from '../media/storage.js';
@@ -56,14 +57,26 @@ export async function hydratePosts(
   viewer: ViewerContext,
   storage: StorageDriver,
 ): Promise<Post[]> {
-  const { counts, mine } = await loadReactions(
-    prisma,
-    rows.map((r) => r.id),
-    viewer.userId,
-  );
+  // Reações e estado de conexão em duas consultas para a página inteira — o
+  // cartão precisa dos dois, e uma consulta por post seria uma por linha exibida.
+  const [{ counts, mine }, conexoes] = await Promise.all([
+    loadReactions(
+      prisma,
+      rows.map((r) => r.id),
+      viewer.userId,
+    ),
+    connectionStatesFor(prisma, viewer.userId, [...new Set(rows.map((r) => r.author.id))]),
+  ]);
 
   return rows.map((row) =>
-    toPost(row, viewer, storage, counts.get(row.id) ?? {}, mine.get(row.id) ?? null),
+    toPost(
+      row,
+      viewer,
+      storage,
+      counts.get(row.id) ?? {},
+      mine.get(row.id) ?? null,
+      conexoes.get(row.author.id) ?? 'none',
+    ),
   );
 }
 
@@ -171,6 +184,7 @@ export async function listComments(
       author: {
         select: {
           id: true,
+          slug: true,
           name: true,
           image: true,
           course: true,
@@ -186,11 +200,14 @@ export async function listComments(
     createdAt: linha.createdAt.toISOString(),
     author: {
       id: linha.author.id,
+      slug: linha.author.slug ?? linha.author.id,
       name: linha.author.name,
       imageUrl: linha.author.image,
       course: linha.author.course,
       institutionAcronym:
         linha.author.institution?.acronym ?? linha.author.institution?.name ?? null,
+      // O cartão de comentário não oferece conectar; o do post é que oferece.
+      connection: linha.authorId === viewer.userId ? 'self' : 'none',
     },
     canDelete: linha.authorId === viewer.userId,
     canModerate: linha.authorId !== viewer.userId && viewer.isModerator,

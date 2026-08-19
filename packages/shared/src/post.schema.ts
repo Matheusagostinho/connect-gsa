@@ -12,6 +12,17 @@ export const POST_LIMITS = {
   pageSize: 20,
 } as const;
 
+/**
+ * As duas leituras do feed.
+ *
+ * `forYou` ORDENA por afinidade, não filtra: um filtro rígido deixaria a tela
+ * inicial de quem acabou de chegar vazia — e quem chega agora é justamente quem
+ * mais precisa ver a rede. `following` filtra de verdade, para conexões.
+ */
+export const feedTabSchema = z.enum(['forYou', 'following']);
+
+export type FeedTab = z.infer<typeof feedTabSchema>;
+
 /** Publicação comum ou comunicado oficial do programa. */
 export const postKindSchema = z.enum(['feed', 'announcement']);
 
@@ -45,10 +56,13 @@ export const reactToPostSchema = z.object({
 /** Autor resumido — o mesmo formato em post e comentário. E sem e-mail (P-002). */
 export const postAuthorSchema = z.object({
   id: z.uuid(),
+  slug: z.string(),
   name: z.string(),
   imageUrl: z.url().nullable(),
   course: z.string().nullable(),
   institutionAcronym: z.string().nullable(),
+  /** Relação de quem lê com quem publicou — é o que decide se cabe convidar. */
+  connection: z.enum(['none', 'pendingSent', 'pendingReceived', 'connected', 'self']),
 });
 
 export const commentSchema = z.object({

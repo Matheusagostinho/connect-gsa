@@ -4,6 +4,8 @@ import {
   RECENCY_HALF_LIFE_HOURS,
   baseScore,
   engagementValue,
+  hasAffinity,
+  proximityFactor,
   rankFeed,
   recencyFactor,
   type RankablePost,
@@ -19,6 +21,10 @@ function post(overrides: Partial<RankablePost> & { id: string }): RankablePost {
     commentCount: 0,
     sameInstitution: false,
     sameCity: false,
+    sameCourse: false,
+    sameState: false,
+    sharedSkills: 0,
+    connected: false,
     ...overrides,
   };
 }
@@ -133,5 +139,48 @@ describe('ranking do feed', () => {
 
   it('aguenta feed vazio', () => {
     expect(rankFeed([], AGORA)).toEqual([]);
+  });
+});
+
+describe('afinidade', () => {
+  it('conta quando há qualquer sinal em comum, e soma quando há mais de um', () => {
+    const nenhum = post({ id: 'a' });
+    const soCurso = post({ id: 'b', sameCourse: true });
+    const cursoEEstado = post({ id: 'c', sameCourse: true, sameState: true });
+
+    expect(hasAffinity(nenhum)).toBe(false);
+    expect(hasAffinity(soCurso)).toBe(true);
+
+    // Mais sinais, mais impulso — quem divide curso E estado sobe mais.
+    expect(proximityFactor(cursoEEstado)).toBeGreaterThan(proximityFactor(soCurso));
+    expect(proximityFactor(soCurso)).toBeGreaterThan(proximityFactor(nenhum));
+  });
+
+  it('habilidade em comum impulsiona, com teto @spec:AC-098', () => {
+    const uma = post({ id: 'a', sharedSkills: 1 });
+    const tres = post({ id: 'b', sharedSkills: 3 });
+    const dez = post({ id: 'c', sharedSkills: 10 });
+
+    expect(proximityFactor(tres)).toBeGreaterThan(proximityFactor(uma));
+    // Sem teto, quem cadastrasse dez habilidades dominaria o feed de todo mundo.
+    expect(proximityFactor(dez)).toBe(proximityFactor(tres));
+  });
+
+  it('sobe quem tem afinidade acima de quem não tem, com igual engajamento @spec:AC-098', () => {
+    const afim = post({ id: 'afim', sameCourse: true, reactionCounts: { liftoff: 3 } });
+    const distante = post({ id: 'distante', reactionCounts: { liftoff: 3 } });
+
+    const ordem = rankFeed([distante, afim], AGORA).map((s) => s.post.id);
+
+    expect(ordem).toEqual(['afim', 'distante']);
+  });
+
+  it('quem não tem afinidade nenhuma continua na lista @spec:AC-099', () => {
+    const distante = post({ id: 'distante' });
+
+    // Afinidade ordena, não exclui: um filtro deixaria a tela de quem chegou
+    // agora completamente vazia.
+    expect(rankFeed([distante], AGORA)).toHaveLength(1);
+    expect(proximityFactor(distante)).toBe(1);
   });
 });

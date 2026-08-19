@@ -1,0 +1,64 @@
+import type { FeedTab } from '@connect-gsa/shared';
+import { cn } from './ui.tsx';
+
+const ABAS: { value: FeedTab; label: string; descricao: string }[] = [
+  {
+    value: 'forYou',
+    label: 'Para você',
+    descricao: 'Gente do seu curso, do seu estado e com as suas habilidades aparece primeiro',
+  },
+  {
+    value: 'following',
+    label: 'Seguindo',
+    descricao: 'Só quem já é sua conexão',
+  },
+];
+
+/**
+ * As duas leituras do feed.
+ *
+ * `tablist` de verdade, não dois links: quem navega por teclado espera trocar
+ * de aba com as setas, e um leitor de tela precisa saber que são duas visões do
+ * mesmo conteúdo — não duas páginas diferentes.
+ */
+export function FeedTabs({
+  atual,
+  onChange,
+}: {
+  atual: FeedTab;
+  onChange: (tab: FeedTab) => void;
+}) {
+  return (
+    <div
+      role="tablist"
+      aria-label="Como ver o feed"
+      className="sticky top-0 z-20 -mx-4 mb-4 flex border-b border-border bg-surface/90 backdrop-blur-sm lg:top-0 lg:mx-0 lg:rounded-t-card"
+    >
+      {ABAS.map(({ value, label, descricao }) => {
+        const ativa = atual === value;
+        return (
+          <button
+            key={value}
+            type="button"
+            role="tab"
+            aria-selected={ativa}
+            title={descricao}
+            onClick={() => onChange(value)}
+            className={cn(
+              'relative flex-1 cursor-pointer px-4 py-3.5 text-sm transition-colors duration-200',
+              ativa ? 'font-medium text-ink' : 'text-ink-muted hover:text-ink',
+            )}
+          >
+            {label}
+            {ativa ? (
+              <span
+                aria-hidden="true"
+                className="spark-gradient absolute inset-x-0 bottom-0 mx-auto h-1 w-14 rounded-pill"
+              />
+            ) : null}
+          </button>
+        );
+      })}
+    </div>
+  );
+}

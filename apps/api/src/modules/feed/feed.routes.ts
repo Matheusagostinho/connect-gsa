@@ -1,5 +1,5 @@
 import type { PrismaClient } from '@connect-gsa/db';
-import { feedPageSchema } from '@connect-gsa/shared';
+import { feedPageSchema, feedTabSchema } from '@connect-gsa/shared';
 import { z } from 'zod';
 import { requireAuth } from '../../auth/session.js';
 import type { AppInstance } from '../../types.js';
@@ -15,7 +15,10 @@ export function registerFeedRoutes(
     '/feed',
     {
       schema: {
-        querystring: z.object({ cursor: z.string().max(500).optional() }),
+        querystring: z.object({
+          cursor: z.string().max(500).optional(),
+          tab: feedTabSchema.default('forYou'),
+        }),
         response: { 200: feedPageSchema },
       },
       config: { rateLimit: { max: 120, timeWindow: '1 minute' } },
@@ -27,6 +30,7 @@ export function registerFeedRoutes(
         { userId: user.id, isModerator: user.role === 'moderator' || user.role === 'admin' },
         storage,
         request.query.cursor,
+        request.query.tab,
       );
     },
   );

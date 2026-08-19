@@ -146,3 +146,97 @@ describe('feed', () => {
     expect(dela.posts[0]?.myReaction).toBeNull();
   });
 });
+
+describe('abas do feed', () => {
+  /** Conexão exige perfil concluído dos dois lados — como em produção. */
+  async function comPerfil(nome: string) {
+    const [city, institution] = await Promise.all([
+      prisma.city.findFirstOrThrow({ where: { name: 'Recife', state: 'PE' } }),
+      prisma.institution.findFirstOrThrow({ where: { acronym: 'UFPE' } }),
+    ]);
+    const user = await createTestUser();
+    return prisma.user.update({
+      where: { id: user.id },
+      data: {
+        name: nome,
+        slug: `${nome.toLowerCase()}-${user.id.slice(0, 6)}`,
+        course: 'Engenharia',
+        profileComplete: true,
+        cityId: city.id,
+        institutionId: institution.id,
+      },
+    });
+  }
+
+  const pagina = async (userId: string, tab: string): Promise<FeedPage> =>
+    (
+      await app.inject({ method: 'GET', url: `/api/feed?tab=${tab}`, headers: asUser(userId) })
+    ).json<FeedPage>();
+
+  it('"Seguindo" traz só conexões e o próprio perfil @spec:AC-097', async () => {
+    const [ana, conexao, estranho] = await Promise.all([
+      comPerfil('Ana'),
+      comPerfil('Conexao'),
+      comPerfil('Estranho'),
+    ]);
+
+    await Promise.all([
+      semeiaPosts(ana.id, 1),
+      semeiaPosts(conexao.id, 1),
+      semeiaPosts(estranho.id, 1),
+    ]);
+
+    await app.inject({
+      method: 'POST',
+      url: `/api/connections/${conexao.id}`,
+      headers: asUser(ana.id),
+    });
+    await app.inject({
+      method: 'POST',
+      url: `/api/connections/${ana.id}/accept`,
+      headers: asUser(conexao.id),
+    });
+
+    const seguindo = await pagina(ana.id, 'following');
+    const autores = new Set(seguindo.posts.map((p) => p.author.id));
+
+    expect(autores).toEqual(new Set([ana.id, conexao.id]));
+    expect(autores.has(estranho.id)).toBe(false);
+  });
+
+  it('"Para você" mostra a rede inteira, mesmo sem afinidade nenhuma @spec:AC-099', async () => {
+    const [ana, estranho] = await Promise.all([createTestUser(), createTestUser()]);
+    await semeiaPosts(estranho.id, 3);
+
+    const paraVoce = await pagina(ana.id, 'forYou');
+
+    // Um filtro rígido deixaria a tela inicial de quem chegou agora vazia.
+    expect(paraVoce.posts).toHaveLength(3);
+  });
+
+  it('recusa aba desconhecida em vez de escolher uma por conta própria', async () => {
+    const ana = await createTestUser();
+
+    const resposta = await app.inject({
+      method: 'GET',
+      url: '/api/feed?tab=inventada',
+      headers: asUser(ana.id),
+    });
+
+    expect(resposta.statusCode).toBe(400);
+  });
+
+  it('traz o estado da conexão com quem publicou, para o cartão poder convidar @spec:AC-101', async () => {
+    const [ana, outro] = await Promise.all([createTestUser(), createTestUser()]);
+    await semeiaPosts(outro.id, 1);
+    await semeiaPosts(ana.id, 1);
+
+    const { posts } = await pagina(ana.id, 'forYou');
+
+    const meu = posts.find((p) => p.author.id === ana.id);
+    const alheio = posts.find((p) => p.author.id === outro.id);
+
+    expect(meu?.author.connection).toBe('self');
+    expect(alheio?.author.connection).toBe('none');
+  });
+});
