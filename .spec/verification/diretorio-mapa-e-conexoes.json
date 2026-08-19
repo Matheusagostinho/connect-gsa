@@ -1,11 +1,11 @@
 {
   "feature": "diretorio-mapa-e-conexoes",
-  "timestamp": "2026-08-19T02:46:58.428Z",
-  "gitRev": "aceb187",
+  "timestamp": "2026-08-19T10:53:57.723Z",
+  "gitRev": "d578269",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 197,
+  "testsParsed": 206,
   "results": {
     "AC-041": {
       "status": "pass",

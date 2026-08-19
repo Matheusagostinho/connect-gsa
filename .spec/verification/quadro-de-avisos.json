@@ -1,51 +1,51 @@
 {
-  "feature": "ajustes-de-produto",
-  "timestamp": "2026-08-19T10:57:38.441Z",
+  "feature": "quadro-de-avisos",
+  "timestamp": "2026-08-19T10:58:34.851Z",
   "gitRev": "d578269",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
   "testsParsed": 206,
   "results": {
-    "AC-078": {
+    "AC-090": {
       "status": "pass",
-      "testName": "apagar o que é meu × moderar o que é de outro separa as duas coisas para quem tem poder de moderação @spec:AC-078 separa as duas coisas para quem tem poder de moderação @spec:AC-078",
+      "testName": "quadro de avisos só a coordenação publica @spec:AC-090 @principle:P-004 só a coordenação publica @spec:AC-090 @principle:P-004",
       "method": "vitest-json"
     },
-    "AC-079": {
+    "AC-091": {
       "status": "pass",
-      "testName": "apagar o que é meu × moderar o que é de outro não oferece nada em publicação alheia para embaixador comum @spec:AC-079 não oferece nada em publicação alheia para embaixador comum @spec:AC-079",
+      "testName": "quadro de avisos não mistura aviso com o feed comum @spec:AC-091 não mistura aviso com o feed comum @spec:AC-091",
       "method": "vitest-json"
     },
-    "AC-080": {
+    "AC-092": {
       "status": "pass",
-      "testName": "texto com links transforma endereço em link clicável, que abre em outra aba @spec:AC-080 transforma endereço em link clicável, que abre em outra aba @spec:AC-080",
+      "testName": "quadro de avisos lista do mais recente para o mais antigo @spec:AC-092 lista do mais recente para o mais antigo @spec:AC-092",
       "method": "vitest-json"
     },
-    "AC-081": {
+    "AC-093": {
       "status": "pass",
-      "testName": "texto com links encurta endereço comprido sem perder o destino @spec:AC-081 encurta endereço comprido sem perder o destino @spec:AC-081",
+      "testName": "quadro de avisos destaca o aviso mais recente para quem abre o feed @spec:AC-093 destaca o aviso mais recente para quem abre o feed @spec:AC-093",
       "method": "vitest-json"
     },
-    "AC-082": {
+    "AC-094": {
       "status": "pass",
-      "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006",
+      "testName": "quadro de avisos aceita reação e comentário como qualquer publicação @spec:AC-094 aceita reação e comentário como qualquer publicação @spec:AC-094",
       "method": "vitest-json"
     },
-    "AC-083": {
+    "AC-095": {
       "status": "pass",
-      "testName": "barra de reações usa ícone desenhado, não emoji, para a reação aparecer em qualquer sistema @spec:AC-083 usa ícone desenhado, não emoji, para a reação aparecer em qualquer sistema @spec:AC-083",
+      "testName": "quadro de avisos só a coordenação remove um aviso @spec:AC-095 só a coordenação remove um aviso @spec:AC-095",
       "method": "vitest-json"
     }
   },
   "principles": {
-    "P-008": {
-      "status": "pass",
-      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
-    },
     "P-006": {
       "status": "pass",
       "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006"
+    },
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
     },
     "P-003": {
       "status": "pass",

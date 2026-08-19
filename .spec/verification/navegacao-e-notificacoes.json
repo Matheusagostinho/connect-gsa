@@ -1,11 +1,11 @@
 {
   "feature": "navegacao-e-notificacoes",
-  "timestamp": "2026-08-19T02:48:01.646Z",
-  "gitRev": "aceb187",
+  "timestamp": "2026-08-19T10:55:15.029Z",
+  "gitRev": "d578269",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 197,
+  "testsParsed": 206,
   "results": {
     "AC-061": {
       "status": "pass",

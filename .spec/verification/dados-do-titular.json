@@ -1,11 +1,11 @@
 {
   "feature": "dados-do-titular",
-  "timestamp": "2026-08-19T02:49:10.150Z",
-  "gitRev": "aceb187",
+  "timestamp": "2026-08-19T10:56:30.242Z",
+  "gitRev": "d578269",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 197,
+  "testsParsed": 206,
   "results": {
     "AC-069": {
       "status": "pass",
