@@ -97,6 +97,16 @@ describe('modal da cidade', () => {
     expect(onClose).toHaveBeenCalled();
   });
 
+  it('centraliza em vez de encostar numa borda @spec:AC-105', () => {
+    renderModal(CIDADE);
+
+    // O `dialog` nativo se centraliza com `margin: auto` nos quatro lados.
+    // Declarar `mt-auto mb-0` para colar no rodapé do celular derrubava também
+    // a centralização horizontal, e o modal encostava na borda esquerda do
+    // computador — metade dele fora da área útil.
+    expect(screen.getByRole('dialog').className).toContain('mx-auto');
+  });
+
   it('concorda em português com o número de pessoas', () => {
     renderModal({ ...CIDADE, count: 1 });
 

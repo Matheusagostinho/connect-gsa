@@ -40,7 +40,11 @@ export function CityModal({ city, onClose }: { city: MapCity | null; onClose: ()
       className={cn(
         'w-full max-w-lg rounded-t-card border border-border bg-surface-raised p-0 text-ink',
         'backdrop:bg-black/40 backdrop:backdrop-blur-[2px]',
-        'mt-auto mb-0 sm:my-auto sm:rounded-card',
+        // O `dialog` nativo se centraliza com `margin: auto` nos QUATRO lados.
+        // Declarar `mt-auto mb-0` para colar no rodapé do celular derrubava
+        // também a centralização horizontal, e o modal encostava na borda
+        // esquerda do computador. Daí `mx-auto` explícito nos dois casos.
+        'mx-auto mt-auto mb-0 max-sm:max-w-none sm:my-auto sm:rounded-card',
         'max-h-[75dvh] overflow-hidden',
       )}
       aria-label={city ? `Embaixadores em ${city.city}` : 'Embaixadores da cidade'}
