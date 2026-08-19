@@ -85,6 +85,29 @@ ordenação é por nota e não por data, um post publicado entre uma página e o
 intercalaria no meio da lista — e você veria de novo o que já viu. Congelar o instante é o
 que torna a página 2 uma continuação real da página 1.
 
+## Convites
+
+**Todo embaixador convida.** Antes era privilégio da coordenação, e o botão era
+invisível para quase todo mundo. Quem conhece outro participante do programa é
+quem está NELE.
+
+O que segura o portão deixou de ser a permissão e passou a ser o **teto por
+período** (`INVITE_QUOTA`). Ele vive no SERVIÇO, não no CASL: o CASL decide sobre
+o que já está em memória, e contar convites criados exige ir ao banco. O teto
+conta convites **criados**, não usados — contar usados deixaria alguém gerar cem
+links de uma vez, e o teto só apareceria depois do estrago.
+
+**Oito caracteres**, de um alfabeto de 32 sem I, L, O e U. O raciocínio completo,
+com os números que descartaram cinco caracteres, está no `inviteCodeSchema`. O
+sorteio usa `randomInt` do `node:crypto` — `randomBytes` com resto por 32
+pareceria equivalente e enviesaria o alfabeto no dia em que alguém tirasse uma
+letra dele. Há teste provando que todos os 32 símbolos saem.
+
+`GET /invites/:code` devolve **só o primeiro nome** de quem convidou. Nome
+completo transformaria o link num jeito de descobrir quem está na rede sem
+entrar nela. E a recusa é a MESMA para não existe, já usado e expirado: distinguir
+os três entregaria de graça o oráculo que o limite de tentativas nega.
+
 ## Nome de usuário
 
 O slug nasce derivado do nome e a pessoa **pode** trocá-lo — o que contraria a

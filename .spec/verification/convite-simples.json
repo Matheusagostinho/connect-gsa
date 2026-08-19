@@ -1,51 +1,61 @@
 {
-  "feature": "landing-e-ajustes",
-  "timestamp": "2026-08-19T23:48:01.592Z",
+  "feature": "convite-simples",
+  "timestamp": "2026-08-19T23:38:38.303Z",
   "gitRev": "dacd9e9",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
   "testsParsed": 323,
   "results": {
-    "AC-125": {
+    "AC-131": {
       "status": "pass",
-      "testName": "nuvem de pixels desenha a malha de pontos @spec:AC-125 desenha a malha de pontos @spec:AC-125",
+      "testName": "rotas de convite deixa o embaixador comum gerar convite @spec:AC-017 @spec:AC-131 deixa o embaixador comum gerar convite @spec:AC-017 @spec:AC-131",
       "method": "vitest-json"
     },
-    "AC-126": {
+    "AC-132": {
       "status": "pass",
-      "testName": "nuvem de pixels não anima para quem pediu menos movimento — mas ainda desenha @spec:AC-126 não anima para quem pediu menos movimento — mas ainda desenha @spec:AC-126",
+      "testName": "rotas de convite coordenação e moderação não têm teto @spec:AC-132 coordenação e moderação não têm teto @spec:AC-132",
       "method": "vitest-json"
     },
-    "AC-127": {
+    "AC-133": {
       "status": "pass",
-      "testName": "rotas de perfil coloca o perfil novo no mapa, pela cidade @spec:AC-127 @principle:P-001 coloca o perfil novo no mapa, pela cidade @spec:AC-127 @principle:P-001",
+      "testName": "código de convite tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009 tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009",
       "method": "vitest-json"
     },
-    "AC-128": {
+    "AC-134": {
       "status": "pass",
-      "testName": "formulário do perfil avisa que a pessoa vai aparecer no mapa, e que pode sair @spec:AC-128 avisa que a pessoa vai aparecer no mapa, e que pode sair @spec:AC-128",
+      "testName": "página do convite não pede o código que já está no endereço @spec:AC-134 @spec:AC-060 não pede o código que já está no endereço @spec:AC-134 @spec:AC-060",
       "method": "vitest-json"
     },
-    "AC-129": {
+    "AC-135": {
       "status": "pass",
-      "testName": "cartão de publicação conectar pelo cartão atualiza o feed em cache @spec:AC-129 conectar pelo cartão atualiza o feed em cache @spec:AC-129",
+      "testName": "página do convite cumprimenta dizendo quem convidou @spec:AC-135 cumprimenta dizendo quem convidou @spec:AC-135",
       "method": "vitest-json"
     },
-    "AC-130": {
+    "AC-136": {
       "status": "pass",
-      "testName": "apresentação do perfil o indicador da aba ocupa a aba inteira @spec:AC-130 o indicador da aba ocupa a aba inteira @spec:AC-130",
+      "testName": "página do convite recusa sem revelar nada e oferece digitar outro @spec:AC-136 recusa sem revelar nada e oferece digitar outro @spec:AC-136",
+      "method": "vitest-json"
+    },
+    "AC-137": {
+      "status": "pass",
+      "testName": "página do convite guarda o código para ele sobreviver ao login social @spec:AC-137 guarda o código para ele sobreviver ao login social @spec:AC-137",
+      "method": "vitest-json"
+    },
+    "AC-138": {
+      "status": "pass",
+      "testName": "pino do mapa não escreve o nome da cidade no pino @spec:AC-138 não escreve o nome da cidade no pino @spec:AC-138",
       "method": "vitest-json"
     }
   },
   "principles": {
-    "P-006": {
-      "status": "pass",
-      "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006"
-    },
     "P-008": {
       "status": "pass",
       "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
+    "P-006": {
+      "status": "pass",
+      "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006"
     },
     "P-003": {
       "status": "pass",

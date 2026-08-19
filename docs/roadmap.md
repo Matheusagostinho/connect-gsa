@@ -201,6 +201,38 @@ quem chegou por um link de convite.
 
 **306 testes, 124/124 critérios provados, auditoria limpa.**
 
+### ~~Fatia 6.9 — Convite simples e apresentação animada~~ · **entregue**
+
+**Duas mudanças de regra, ambas com o custo apresentado antes.**
+
+*Quem convida.* Era privilégio da coordenação, e o botão era invisível para quase
+todo mundo — o dono do produto abriu o aplicativo procurando e não achou. Agora
+**todo embaixador convida**, com teto de 5 a cada 30 dias. O AC-017 foi invertido
+com o motivo registrado, e o que segura o portão deixou de ser a permissão: passou
+a ser o teto, para uma conta comprometida não virar torneira.
+
+*O código.* Eram 32 caracteres hexadecimais, impossíveis de ditar. Passaram a ser
+**8**, de um alfabeto sem I, L, O e U. Foram 8 e não 5 porque os números pesaram:
+com 5 caracteres e cinquenta convites ativos, um atacante acerta um em cerca de
+dois meses; com 8, leva milhares de anos. E como o banco guarda só o hash, 5
+caracteres seriam quebrados em segundos num vazamento. A diferença para quem
+digita é uma sílaba.
+
+**A página do convite** deixou de pedir o que já está no link: ela diz *"Olá,
+{quem convidou} te convidou"* e leva ao login, guardando o código no navegador
+para ele sobreviver ao vaivém do provedor social.
+
+**A apresentação** ganhou a nuvem de pixels como fundo da página inteira e o
+degradê de "embaixadores" em movimento. **O pino do mapa** perdeu o nome da
+cidade — ficam os rostos e quantos não couberam; o nome vem no hover e ao clicar.
+
+Dois defeitos de canvas apareceram: `<canvas>` tem tamanho intrínseco de 300×150
+e `inset-0` não estica elemento com dimensão própria (a nuvem nascia minúscula no
+canto); e `w-full` numa página com calha de barra reservada para quinze pixels
+antes da borda.
+
+**323 testes, 132/132 critérios provados, auditoria limpa.**
+
 ### Fatia 7 — Publicação em produção · **bloqueado por você**
 
 > Os três workflows estão **desligados no automático** desde 19/08/2026, a pedido: rodam só

@@ -1,11 +1,11 @@
 {
   "feature": "quadro-de-avisos",
-  "timestamp": "2026-08-19T21:51:07.618Z",
-  "gitRev": "bedb2d2",
+  "timestamp": "2026-08-19T23:52:52.994Z",
+  "gitRev": "dacd9e9",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 306,
+  "testsParsed": 323,
   "results": {
     "AC-090": {
       "status": "pass",
@@ -69,7 +69,7 @@
     },
     "P-009": {
       "status": "pass",
-      "testName": "convites gera código imprevisível e nunca guarda o código em claro @principle:P-009 gera código imprevisível e nunca guarda o código em claro @principle:P-009"
+      "testName": "código de convite tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009 tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009"
     }
   }
 }

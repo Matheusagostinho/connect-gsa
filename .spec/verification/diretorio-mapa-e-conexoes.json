@@ -1,11 +1,11 @@
 {
   "feature": "diretorio-mapa-e-conexoes",
-  "timestamp": "2026-08-19T21:40:57.475Z",
-  "gitRev": "bedb2d2",
+  "timestamp": "2026-08-19T23:41:59.414Z",
+  "gitRev": "dacd9e9",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 306,
+  "testsParsed": 323,
   "results": {
     "AC-041": {
       "status": "pass",
@@ -104,7 +104,7 @@
     },
     "AC-060": {
       "status": "pass",
-      "testName": "tela de convite preenche o código quando a pessoa chega pelo link @spec:AC-060 preenche o código quando a pessoa chega pelo link @spec:AC-060",
+      "testName": "página do convite não pede o código que já está no endereço @spec:AC-134 @spec:AC-060 não pede o código que já está no endereço @spec:AC-134 @spec:AC-060",
       "method": "vitest-json"
     }
   },
@@ -139,7 +139,7 @@
     },
     "P-009": {
       "status": "pass",
-      "testName": "convites gera código imprevisível e nunca guarda o código em claro @principle:P-009 gera código imprevisível e nunca guarda o código em claro @principle:P-009"
+      "testName": "código de convite tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009 tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009"
     }
   }
 }

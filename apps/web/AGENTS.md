@@ -117,7 +117,23 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
 28. **Avatar recua para a inicial quando a foto não carrega.** Um arquivo que
     sumiu do armazenamento virava o ícone de imagem quebrada do navegador, que
     é pior que não ter foto: parece defeito do produto.
-29. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
+29. **`<canvas>` tem tamanho intrínseco de 300×150.** `inset-0` não estica
+    elemento com dimensão própria — `width: auto` num elemento substituído
+    resolve para a dimensão dele, não para a caixa que o contém. Sem `size-full`
+    a nuvem nasce minúscula no canto, e por ser transparente ninguém vê que ela
+    está lá. E `w-full` não basta em página com calha de barra reservada: são
+    quinze pixels a menos que a janela, e a nuvem termina numa faixa vazia.
+    `w-screen` cobre a calha; a rolagem horizontal é barrada por `overflow-x:
+    clip` no invólucro.
+30. **Animação em canvas se reconstrói sozinha quando o tamanho muda.** O
+    `ResizeObserver` cobre o caso normal, mas abrir as ferramentas de
+    desenvolvimento, mudar o zoom ou entrar em tela cheia podem escapar dele —
+    e a malha fica do tamanho antigo. Duas comparações de inteiro por quadro é
+    barato demais para não fazer.
+31. **Avatar quebrado tem recuo em DOIS lugares.** O componente `Avatar` e o
+    pino do mapa, que monta `<img>` à mão porque marcador do MapLibre não passa
+    pelo React. Corrigir só um deixa o defeito vivo no outro.
+32. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
    então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
    registrada pela API lá.
 

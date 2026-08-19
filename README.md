@@ -39,6 +39,7 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Nome de usuário editável, com o antigo respondendo | |
 | Cinco campos de link no perfil | |
 | Apresentação com nuvem de pixels interativa | |
+| Convite de 8 caracteres, gerado por qualquer embaixador | |
 
 A especificação completa, com critérios de aceite e provas, está em
 `.spec/features/acesso-e-perfil/`.
@@ -228,6 +229,24 @@ MapLibre GL com tiles do **OpenFreeMap** (estilo Positron). A escolha não é s�
 o OpenFreeMap serve **sem chave de API, sem cadastro e sem cookies** — numa rede de
 estudantes, não introduzir um rastreador de terceiros pesa mais que qualquer conveniência.
 O Mapbox GL virou licença proprietária na versão 2 e exigiria token com faturamento.
+
+## Convites
+
+Todo embaixador convida, até **5 a cada 30 dias** — coordenação e moderação sem
+teto. O que segura o portão não é mais a permissão, e sim o teto: uma conta
+comprometida não vira torneira.
+
+O código tem **8 caracteres** de um alfabeto sem I, L, O e U — as três primeiras se
+confundem com 1 e 0 na leitura, e a última com V ao ditar, que é como um convite
+circula. Oito e não cinco porque o convite é o único portão da rede: com 5
+caracteres e cinquenta convites ativos, um atacante acerta um em cerca de dois
+meses; com 8, leva milhares de anos. E como o banco guarda só o hash, 5 caracteres
+seriam quebrados por força bruta em segundos num vazamento.
+
+O link é `/convite/ABC5EK9M`. Abri-lo mostra quem convidou — só o primeiro nome,
+para o link não virar um jeito de descobrir quem está na rede sem entrar nela. Um
+convite inexistente, usado ou expirado recebe **a mesma recusa**: distinguir os
+três entregaria de graça o oráculo que o limite de tentativas existe para negar.
 
 **O perfil nasce visível no mapa** — padrão invertido em 19/08/2026. O princípio
 anterior dizia o contrário, e a mudança está registrada na constituição com o motivo,
