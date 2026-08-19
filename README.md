@@ -26,6 +26,8 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Perfil público em `/e/{slug}` com as publicações | Mapa fora do Brasil |
 | Conexões: pedir, aceitar, recusar, desfazer | Exportar e excluir a própria conta |
 | Link de convite pronto para compartilhar | |
+| Notificações de reação, comentário e conexão | |
+| Navegação lateral no computador, inferior no celular | |
 | Controle de visibilidade no mapa | |
 
 A especificação completa, com critérios de aceite e provas, está em

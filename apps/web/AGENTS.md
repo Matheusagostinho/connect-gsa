@@ -43,7 +43,13 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
    desenvolvimento o problema não aparece.
 10. **O mapa é carregado sob demanda** (`lazy` + `Suspense`). Ele pesa mais que todo o
     resto do aplicativo junto, e o plano gratuito do Hosting cobra isso em transferência.
-11. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
+11. **A navegação é uma estrutura só, com dois arranjos.** `AppShell` decide por consulta
+    de mídia: coluna lateral no computador, barra inferior no celular. Os destinos vêm de
+    `lib/navigation.ts` — se um deles existisse só num dos arranjos, sumiria no outro sem
+    ninguém perceber.
+12. **O mapa não fixa a própria altura.** Ela vem do contêiner (`FullBleed`), senão sobra
+    uma faixa vazia embaixo. Há teste estrutural impedindo a volta da altura fixa.
+13. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
    então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
    registrada pela API lá.
 

@@ -88,6 +88,17 @@ O destino é escolhido por driver: disco local em desenvolvimento, Cloud Storage
 Sem essa costura, ou o ambiente local exigiria credencial do Google, ou o código de produção
 teria um `if` sobre ambiente por dentro.
 
+## Notificações
+
+Não existe tabela de notificação. Pedidos, reações e comentários já estão no banco com data
+e autor; o que faltava era juntá-los e saber até onde a pessoa olhou — daí
+`User.notificationsSeenAt`, uma coluna.
+
+O limite é conhecido e está escrito no serviço: a consulta cresce com o volume de
+interações. Para algumas centenas de embaixadores é barata; passando de alguns milhares, o
+desenho precisa virar escrita antecipada. O sinal de que chegou a hora é o tempo da rota,
+não um palpite.
+
 ## Conexões
 
 O par é guardado SEMPRE com o menor id primeiro (`canonicalPair`). Com a ordenação
