@@ -88,6 +88,15 @@ O destino é escolhido por driver: disco local em desenvolvimento, Cloud Storage
 Sem essa costura, ou o ambiente local exigiria credencial do Google, ou o código de produção
 teria um `if` sobre ambiente por dentro.
 
+## Conexões
+
+O par é guardado SEMPRE com o menor id primeiro (`canonicalPair`). Com a ordenação
+canônica, o índice único do banco passa a garantir que A→B e B→A são o mesmo registro —
+sem ela, seriam duas linhas e nada impediria dois pedidos opostos coexistirem.
+
+`requestedById` guarda quem pediu, que a ordenação canônica apaga. É dele que a outra
+pessoa precisa para saber que há um pedido a responder.
+
 ## Cinco coisas que não podem ser desfeitas
 
 1. **`profile.mapper.ts` é a única saída de perfil.** Ele valida contra

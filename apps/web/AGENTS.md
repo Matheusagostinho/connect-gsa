@@ -36,7 +36,14 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
    pessoa anterior ficariam em memória e apareceriam por um instante para quem entrasse
    depois — num produto feito para computador compartilhado de laboratório, é o pior lugar
    possível para um vazamento.
-9. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
+9. **O worker do MapLibre é copiado à mão para `public/`.** Ele importa um módulo irmão;
+   deixar o empacotador copiar só um dos dois quebra o import DENTRO do worker, e o mapa
+   fica cinza sem erro nenhum. Ver `scripts/copiar-worker-do-mapa.mjs` — e não troque por
+   `?url` nem por `?worker` sem verificar os tiles no build de PRODUÇÃO, porque em
+   desenvolvimento o problema não aparece.
+10. **O mapa é carregado sob demanda** (`lazy` + `Suspense`). Ele pesa mais que todo o
+    resto do aplicativo junto, e o plano gratuito do Hosting cobra isso em transferência.
+11. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
    então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
    registrada pela API lá.
 

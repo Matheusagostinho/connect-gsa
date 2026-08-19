@@ -58,3 +58,6 @@ packages/db/src/generated/
 
 # Imagens gravadas em disco no desenvolvimento
 .media/
+
+# Worker do MapLibre, copiado do node_modules em cada build
+apps/web/public/maplibre/

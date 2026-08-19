@@ -21,7 +21,12 @@ Primeira fatia vertical em produção: **acesso e perfil**.
 | Feed com ranking, posts, comentários | Notificação de reação e comentário |
 | Cinco reações próprias | Sugerir conexão a partir de "Bora junto" |
 | Envio de imagem em post e foto de perfil | Vídeo |
-| Controle de visibilidade no mapa | Exportar e excluir a própria conta |
+| Diretório com busca e filtro por habilidade | Notificação de pedido de conexão |
+| Mapa por cidade, com pinos clicáveis | Mensagem direta |
+| Perfil público em `/e/{slug}` com as publicações | Mapa fora do Brasil |
+| Conexões: pedir, aceitar, recusar, desfazer | Exportar e excluir a própria conta |
+| Link de convite pronto para compartilhar | |
+| Controle de visibilidade no mapa | |
 
 A especificação completa, com critérios de aceite e provas, está em
 `.spec/features/acesso-e-perfil/`.
@@ -176,6 +181,47 @@ O que atravessou foram quatro ideias independentes de modelo:
 
 A função está em `apps/api/src/modules/feed/ranking.ts`. É pura, sem banco e sem relógio
 implícito — cada regra tem um teste próprio.
+
+## O mapa
+
+MapLibre GL com tiles do **OpenFreeMap** (estilo Positron). A escolha não é só de custo:
+o OpenFreeMap serve **sem chave de API, sem cadastro e sem cookies** — numa rede de
+estudantes, não introduzir um rastreador de terceiros pesa mais que qualquer conveniência.
+O Mapbox GL virou licença proprietária na versão 2 e exigiria token com faturamento.
+
+**Um pino por cidade, nunca por pessoa.** Isso não é agrupamento visual: a API não devolve
+posição individual porque ela não existe no sistema. Desenhar uma pessoa num ponto exigiria
+inventar uma coordenada — exatamente o que o P-001 proíbe.
+
+O MapLibre pesa ~250 KB e é carregado **sob demanda**: quem só abre o feed não baixa um
+motor de mapa que não vai usar. Contra o teto de 360 MB/dia do Firebase Hosting, isso é a
+diferença entre ~1.400 e ~30.000 visitas por dia.
+
+### Uma armadilha que custou caro
+
+O worker do MapLibre importa um módulo irmão (`maplibre-gl-shared.mjs`). Deixar o
+empacotador cuidar disso copia só um dos dois arquivos, e o import falha **dentro do
+worker** — onde o erro não chega ao console. O mapa aparece normalmente, cinza, sem um
+único tile e sem aviso.
+
+Daí duas defesas: `apps/web/scripts/copiar-worker-do-mapa.mjs` copia o par junto para
+`public/`, e o `firebase.json` **não** reescreve `/assets/**` para o `index.html` — assim
+um arquivo ausente responde 404 honesto em vez de HTML com status 200, que o navegador
+tentaria executar como script.
+
+## Instituições e habilidades
+
+A lista de instituições é **por campus**: quem estuda no IFNMG em Pirapora encontra o campus
+dele, não só a reitoria. São 628 entradas, incluindo os 38 Institutos Federais com seus campi.
+
+Nenhuma lista de instituições do Brasil fica completa, e perseguir o dataset perfeito é
+trabalho sem fim — as fontes oficiais do MEC e do INEP não expõem os campi de forma
+consultável. O conserto durável foi outro: **quem não achar a sua propõe**, usa na hora, e a
+coordenação aprova depois. Proposta pendente só aparece para quem propôs.
+
+Habilidades vêm de um **catálogo fechado** de 78 opções em 9 categorias. Texto livre parecia
+mais flexível e destruía a busca: "React", "react" e "ReactJS" nunca se cruzavam, então
+filtrar o diretório por habilidade não encontrava ninguém.
 
 ## Segurança e privacidade
 
