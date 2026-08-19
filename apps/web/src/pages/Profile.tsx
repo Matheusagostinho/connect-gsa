@@ -2,9 +2,10 @@ import type { MyProfile } from '@connect-gsa/shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GraduationCap, MapPin } from 'lucide-react';
 import { Link } from 'react-router';
-import { AccountMenu } from '../components/AccountMenu.tsx';
+import { AppNav } from '../components/AppNav.tsx';
 import { AvatarUpload } from '../components/AvatarUpload.tsx';
-import { Button, Card, Shell, UnofficialNotice, Wordmark } from '../components/ui.tsx';
+import { InviteShare } from '../components/InviteShare.tsx';
+import { Button, Card, Shell, UnofficialNotice } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
 import { useMyProfile } from '../lib/session.js';
 
@@ -35,12 +36,7 @@ export function ProfilePage() {
 
   return (
     <Shell width="lg">
-      <header className="mb-12 flex items-center justify-between">
-        <Link to="/" aria-label="ConnectGSA">
-          <Wordmark />
-        </Link>
-        <AccountMenu profile={profile} />
-      </header>
+      <AppNav profile={profile} />
 
       <Card className="mb-4">
         <div className="flex items-start gap-5">
@@ -80,10 +76,10 @@ export function ProfilePage() {
           <ul className="mt-6 flex flex-wrap gap-2">
             {profile.skills.map((skill) => (
               <li
-                key={skill}
+                key={skill.slug}
                 className="rounded-pill border border-border px-3 py-1.5 text-xs font-medium text-ink-muted"
               >
-                {skill}
+                {skill.name}
               </li>
             ))}
           </ul>
@@ -121,6 +117,12 @@ export function ProfilePage() {
           </Button>
         </div>
       </Card>
+
+      {profile.role === 'admin' || profile.role === 'moderator' ? (
+        <div className="mt-4">
+          <InviteShare />
+        </div>
+      ) : null}
 
       <UnofficialNotice className="mt-16" />
     </Shell>

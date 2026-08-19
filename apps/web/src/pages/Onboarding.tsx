@@ -3,6 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Autocomplete } from '../components/Autocomplete.tsx';
+import { InstitutionPicker } from '../components/InstitutionPicker.tsx';
+import { SkillPicker } from '../components/SkillPicker.tsx';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { Button, Card, Field, Shell, Wordmark } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
@@ -13,11 +15,7 @@ interface City {
   name: string;
   state: string;
 }
-interface Institution {
-  id: string;
-  name: string;
-  acronym: string | null;
-}
+import type { Institution } from '@connect-gsa/shared';
 
 /**
  * Onboarding do perfil (US-003).
@@ -36,6 +34,7 @@ export function OnboardingPage() {
   const [bio, setBio] = useState(profile?.bio ?? '');
   const [city, setCity] = useState<City | null>(null);
   const [institution, setInstitution] = useState<Institution | null>(null);
+  const [skillSlugs, setSkillSlugs] = useState<string[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const save = useMutation({
@@ -58,7 +57,7 @@ export function OnboardingPage() {
       bio,
       cityId: city?.id ?? '',
       institutionId: institution?.id ?? '',
-      skills: [],
+      skillSlugs,
       links: [],
     });
 
@@ -99,13 +98,9 @@ export function OnboardingPage() {
             {...(errors['name'] ? { error: errors['name'] } : {})}
           />
 
-          <Autocomplete<Institution>
-            id="instituicao"
-            label="Instituição de ensino"
-            endpoint="/institutions"
+          <InstitutionPicker
             value={institution}
             onSelect={setInstitution}
-            render={(item) => (item.acronym ? `${item.acronym} — ${item.name}` : item.name)}
             {...(errors['institutionId'] ? { error: 'Escolha sua instituição.' } : {})}
           />
 
@@ -126,6 +121,12 @@ export function OnboardingPage() {
             onSelect={setCity}
             render={(item) => `${item.name}/${item.state}`}
             {...(errors['cityId'] ? { error: 'Escolha sua cidade.' } : {})}
+          />
+
+          <SkillPicker
+            selected={skillSlugs}
+            onChange={setSkillSlugs}
+            {...(errors['skillSlugs'] ? { error: errors['skillSlugs'] } : {})}
           />
 
           <Field

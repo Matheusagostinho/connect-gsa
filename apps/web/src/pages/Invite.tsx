@@ -1,7 +1,7 @@
 import { inviteCodeSchema } from '@connect-gsa/shared';
 import { useMutation } from '@tanstack/react-query';
 import { type FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { Button, Card, Field, Shell, UnofficialNotice, Wordmark } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
@@ -16,7 +16,10 @@ import { api } from '../lib/api.js';
  */
 export function InvitePage() {
   const navigate = useNavigate();
-  const [code, setCode] = useState('');
+  const [params] = useSearchParams();
+  // Link de convite traz o código pronto: quem chegou por ele não deveria ter
+  // que copiar nada à mão (AC-060).
+  const [code, setCode] = useState(() => params.get('c') ?? '');
   const [validationError, setValidationError] = useState<string | undefined>();
 
   const check = useMutation({

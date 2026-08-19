@@ -96,13 +96,26 @@ export function Card({ children, className }: { children: ReactNode; className?:
   );
 }
 
+const LARGURAS = {
+  /** Formulários e entrada — linha curta lê melhor. */
+  md: 'max-w-md',
+  /** Feed e perfil: uma coluna de leitura. */
+  lg: 'max-w-2xl',
+  /** Mapa e diretório: grade de duas colunas, e o mapa merece espaço. */
+  xl: 'max-w-5xl',
+} as const;
+
 /** Página centrada com a goteira generosa da referência. */
-export function Shell({ children, width = 'md' }: { children: ReactNode; width?: 'md' | 'lg' }) {
+export function Shell({
+  children,
+  width = 'md',
+}: {
+  children: ReactNode;
+  width?: keyof typeof LARGURAS;
+}) {
   return (
     <div className="min-h-screen bg-surface px-5 py-10 sm:px-gutter">
-      <div className={cn('mx-auto w-full', width === 'md' ? 'max-w-md' : 'max-w-2xl')}>
-        {children}
-      </div>
+      <div className={cn('mx-auto w-full', LARGURAS[width])}>{children}</div>
     </div>
   );
 }

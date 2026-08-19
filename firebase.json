@@ -4,7 +4,8 @@
     "ignore": ["**/.*", "**/node_modules/**", "**/*.map"],
     "rewrites": [
       {
-        "source": "**",
+        "//": "Só o que NÃO é arquivo vai para o index.html. Sem a exclusão, um asset ausente responde HTML com status 200 — e o navegador tenta executá-lo como script. Foi assim que um worker faltante deixou o mapa cinza, sem erro nenhum.",
+        "source": "!/assets/**",
         "destination": "/index.html"
       }
     ],

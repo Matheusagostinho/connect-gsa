@@ -1,12 +1,29 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Suspense, lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import { ProtectedRoute } from './components/ProtectedRoute.tsx';
 import { InvitePage } from './pages/Invite.tsx';
 import { LoginPage } from './pages/Login.tsx';
 import { OnboardingPage } from './pages/Onboarding.tsx';
+import { ConnectionsPage } from './pages/Connections.tsx';
 import { DevLoginPage } from './pages/DevLogin.tsx';
+import { DirectoryPage } from './pages/Directory.tsx';
 import { FeedPage } from './pages/Feed.tsx';
+
+import { PublicProfilePage } from './pages/PublicProfile.tsx';
 import { ProfilePage } from './pages/Profile.tsx';
+
+/**
+ * O mapa é carregado sob demanda.
+ *
+ * O MapLibre sozinho pesa mais que todo o resto do aplicativo junto. Deixá-lo
+ * no pacote principal faria quem só abre o feed baixar um motor de mapa que
+ * nunca vai usar — e o plano gratuito do Firebase Hosting cobra isso em
+ * transferência diária, com o site saindo do ar ao estourar.
+ */
+const MapPage = lazy(() =>
+  import('./pages/MapPage.tsx').then((modulo) => ({ default: modulo.MapPage })),
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +69,47 @@ export function App() {
             element={
               <ProtectedRoute>
                 <FeedPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/diretorio"
+            element={
+              <ProtectedRoute>
+                <DirectoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mapa"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <p className="p-10 text-center text-ink-muted" role="status">
+                      Carregando o mapa…
+                    </p>
+                  }
+                >
+                  <MapPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/conexoes"
+            element={
+              <ProtectedRoute>
+                <ConnectionsPage />
+              </ProtectedRoute>
+            }
+          />
+          {/* Endereço público e estável de um perfil — o que circula em conversa. */}
+          <Route
+            path="/e/:slug"
+            element={
+              <ProtectedRoute>
+                <PublicProfilePage />
               </ProtectedRoute>
             }
           />
