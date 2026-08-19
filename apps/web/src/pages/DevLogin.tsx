@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ShieldAlert } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import { Button, Card, Shell, Wordmark } from '../components/ui.tsx';
+import { Wordmark } from '../components/Logo.tsx';
+import { Button, Card, Shell, } from '../components/ui.tsx';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { api } from '../lib/api.js';
 

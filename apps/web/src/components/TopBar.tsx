@@ -3,7 +3,8 @@ import { Bell } from 'lucide-react';
 import { NavLink } from 'react-router';
 import { AccountMenu } from './AccountMenu.tsx';
 import { useUnreadCount } from '../lib/notifications.js';
-import { cn, Wordmark } from './ui.tsx';
+import { Wordmark } from './Logo.tsx';
+import { cn } from './ui.tsx';
 
 /**
  * Barra do topo, só no celular.

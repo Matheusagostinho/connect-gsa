@@ -3,7 +3,8 @@ import { useMutation } from '@tanstack/react-query';
 import { type FormEvent, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
-import { Button, Card, Field, Shell, UnofficialNotice, Wordmark } from '../components/ui.tsx';
+import { Wordmark } from '../components/Logo.tsx';
+import { Button, Card, Field, Shell, UnofficialNotice, } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
 
 /**

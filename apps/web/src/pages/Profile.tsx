@@ -1,12 +1,8 @@
-import type { MyProfile } from '@connect-gsa/shared';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GraduationCap, MapPin } from 'lucide-react';
 import { Link } from 'react-router';
 import { AppShell } from '../components/AppShell.tsx';
 import { AvatarUpload } from '../components/AvatarUpload.tsx';
-import { InviteShare } from '../components/InviteShare.tsx';
-import { Button, Card, UnofficialNotice } from '../components/ui.tsx';
-import { api } from '../lib/api.js';
+import { Card, UnofficialNotice } from '../components/ui.tsx';
 import { useMyProfile } from '../lib/session.js';
 
 const PAPEL: Record<string, string> = {
@@ -24,13 +20,8 @@ const PAPEL: Record<string, string> = {
  * seria mentir para quem está justamente tentando se proteger.
  */
 export function ProfilePage() {
-  const queryClient = useQueryClient();
   const { data: profile } = useMyProfile();
 
-  const privacy = useMutation({
-    mutationFn: (visibleOnMap: boolean) => api.patch<MyProfile>('/me/privacy', { visibleOnMap }),
-    onSuccess: (updated) => queryClient.setQueryData(['me'], updated),
-  });
 
   if (!profile) return null;
 
@@ -84,44 +75,23 @@ export function ProfilePage() {
           </ul>
         ) : null}
 
-        <Link
-          to="/onboarding"
-          className="mt-8 inline-flex min-h-11 cursor-pointer items-center text-sm font-medium text-ink underline"
-        >
-          Editar perfil
-        </Link>
-      </Card>
-
-      <Card>
-        <h2 className="text-xl font-medium">Privacidade</h2>
-        <p className="mt-2 text-sm text-ink-muted">
-          Se você aparecer no mapa, os outros embaixadores veem a sua cidade — nunca um endereço.
-        </p>
-
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-          <span className="text-sm font-medium">
-            {profile.visibleOnMap ? 'Você aparece no mapa' : 'Você não aparece no mapa'}
-          </span>
-          <Button
-            variant={profile.visibleOnMap ? 'outline' : 'primary'}
-            disabled={privacy.isPending}
-            aria-pressed={profile.visibleOnMap}
-            onClick={() => privacy.mutate(!profile.visibleOnMap)}
+        <div className="mt-8 flex flex-wrap gap-4">
+          <Link
+            to="/onboarding"
+            className="inline-flex min-h-11 cursor-pointer items-center text-sm font-medium text-ink underline"
           >
-            {privacy.isPending
-              ? 'Salvando…'
-              : profile.visibleOnMap
-                ? 'Sair do mapa'
-                : 'Aparecer no mapa'}
-          </Button>
+            Editar perfil
+          </Link>
+          <Link
+            to="/configuracoes"
+            className="inline-flex min-h-11 cursor-pointer items-center text-sm font-medium text-ink-muted underline"
+          >
+            Privacidade e configurações
+          </Link>
         </div>
       </Card>
 
-      {profile.role === 'admin' || profile.role === 'moderator' ? (
-        <div className="mt-4">
-          <InviteShare />
-        </div>
-      ) : null}
+
 
       <UnofficialNotice className="mt-16" />
     </AppShell>

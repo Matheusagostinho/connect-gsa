@@ -19,12 +19,12 @@ export function AmbassadorCardItem({ person }: { person: AmbassadorCard }) {
   return (
     <Card className="flex h-full flex-col gap-4 p-5">
       <div className="flex items-start gap-3">
-        <Link to={`/e/${person.slug}`} aria-label={`Ver o perfil de ${person.name}`}>
+        <Link to={`/perfil/${person.slug}`} aria-label={`Ver o perfil de ${person.name}`}>
           <Avatar name={person.name} imageUrl={person.imageUrl} size={48} />
         </Link>
 
         <div className="min-w-0 flex-1">
-          <Link to={`/e/${person.slug}`} className="block truncate font-medium text-ink hover:underline">
+          <Link to={`/perfil/${person.slug}`} className="block truncate font-medium text-ink hover:underline">
             {person.name}
           </Link>
           <p className="truncate text-sm text-ink-muted">

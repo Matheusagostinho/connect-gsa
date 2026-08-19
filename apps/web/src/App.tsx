@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Suspense, lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import { ProtectedRoute } from './components/ProtectedRoute.tsx';
+import { useMyProfile } from './lib/session.js';
 import { InvitePage } from './pages/Invite.tsx';
 import { LoginPage } from './pages/Login.tsx';
 import { OnboardingPage } from './pages/Onboarding.tsx';
@@ -9,6 +10,8 @@ import { ConnectionsPage } from './pages/Connections.tsx';
 import { DevLoginPage } from './pages/DevLogin.tsx';
 import { DirectoryPage } from './pages/Directory.tsx';
 import { FeedPage } from './pages/Feed.tsx';
+import { LandingPage } from './pages/Landing.tsx';
+import { SettingsPage } from './pages/Settings.tsx';
 import { NotificationsPage } from './pages/Notifications.tsx';
 
 import { PublicProfilePage } from './pages/PublicProfile.tsx';
@@ -36,6 +39,26 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+/**
+ * A raiz do aplicativo.
+ *
+ * Enquanto a sessão é verificada não mostramos nem uma coisa nem outra: piscar
+ * a apresentação para quem já está autenticado é pior do que esperar um quadro.
+ */
+function Raiz() {
+  const { data: profile, isPending } = useMyProfile();
+
+  if (isPending) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-surface" role="status">
+        <span className="text-ink-muted">Carregando…</span>
+      </div>
+    );
+  }
+
+  return profile ? <FeedPage /> : <LandingPage />;
+}
 
 export function App() {
   return (
@@ -65,14 +88,12 @@ export function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <FeedPage />
-              </ProtectedRoute>
-            }
-          />
+          {/*
+            A raiz decide pelo estado da sessão: quem não entrou vê a
+            apresentação, quem entrou vê o feed. Duas URLs para a mesma porta de
+            entrada dividiria os links compartilhados sem ganho nenhum.
+          */}
+          <Route path="/" element={<Raiz />} />
           <Route
             path="/diretorio"
             element={
@@ -113,9 +134,17 @@ export function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/configuracoes"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
           {/* Endereço público e estável de um perfil — o que circula em conversa. */}
           <Route
-            path="/e/:slug"
+            path="/perfil/:slug"
             element={
               <ProtectedRoute>
                 <PublicProfilePage />

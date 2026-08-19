@@ -1,6 +1,6 @@
 import type { MyProfile } from '@connect-gsa/shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { LogOut, User } from 'lucide-react';
+import { LogOut, Settings, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { logout } from '../lib/api.js';
@@ -94,6 +94,16 @@ export function AccountMenu({ profile }: { profile: MyProfile }) {
             >
               <User className="size-4" aria-hidden="true" />
               Meu perfil
+            </Link>
+
+            <Link
+              to="/configuracoes"
+              role="menuitem"
+              onClick={() => setAberto(false)}
+              className="flex min-h-11 cursor-pointer items-center gap-3 rounded-field px-3 text-sm text-ink transition-colors duration-200 hover:bg-surface-subtle"
+            >
+              <Settings className="size-4" aria-hidden="true" />
+              Configurações
             </Link>
 
             <button

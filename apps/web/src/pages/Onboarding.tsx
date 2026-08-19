@@ -6,7 +6,8 @@ import { Autocomplete } from '../components/Autocomplete.tsx';
 import { InstitutionPicker } from '../components/InstitutionPicker.tsx';
 import { SkillPicker } from '../components/SkillPicker.tsx';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
-import { Button, Card, Field, Shell, Wordmark } from '../components/ui.tsx';
+import { Wordmark } from '../components/Logo.tsx';
+import { Button, Card, Field, Shell, } from '../components/ui.tsx';
 import { api } from '../lib/api.js';
 import { useMyProfile } from '../lib/session.js';
 

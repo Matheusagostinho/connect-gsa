@@ -1,4 +1,4 @@
-import { Bell, Compass, Map, Newspaper, User, Users, type LucideIcon } from 'lucide-react';
+import { Bell, Compass, Map, Newspaper, Settings, User, Users, type LucideIcon } from 'lucide-react';
 
 export interface Destino {
   to: string;
@@ -27,4 +27,5 @@ export const DESTINOS: readonly Destino[] = [
   { to: '/conexoes', label: 'Conexões', Icon: Users, mobile: true },
   { to: '/notificacoes', label: 'Notificações', Icon: Bell, badge: true, mobile: false },
   { to: '/perfil', label: 'Perfil', Icon: User, mobile: true },
+  { to: '/configuracoes', label: 'Configurações', Icon: Settings, mobile: false },
 ];

@@ -1,6 +1,7 @@
 import { GitHubMark, GoogleMark, LinkedInMark } from '../components/BrandMarks.tsx';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
-import { Button, Card, Shell, UnofficialNotice, Wordmark } from '../components/ui.tsx';
+import { Wordmark } from '../components/Logo.tsx';
+import { Button, Card, Shell, UnofficialNotice, } from '../components/ui.tsx';
 import { socialSignInUrl } from '../lib/api.js';
 
 const PROVEDORES = [

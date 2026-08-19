@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router';
 import { DESTINOS } from '../lib/navigation.js';
 import { useUnreadCount } from '../lib/notifications.js';
-import { cn, Wordmark } from './ui.tsx';
+import { Wordmark } from './Logo.tsx';
+import { cn } from './ui.tsx';
 
 /**
  * Navegação lateral, para telas largas.

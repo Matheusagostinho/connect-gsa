@@ -120,20 +120,6 @@ export function Shell({
   );
 }
 
-/**
- * A marca do ConnectGSA.
- *
- * As quatro cores aparecem em gradiente, como acento — não há logotipo do
- * Google aqui, nem tratamento que imite a marca dele. O projeto não é oficial.
- */
-export function Wordmark({ className }: { className?: string }) {
-  return (
-    <span className={cn('inline-flex items-baseline gap-1.5', className)}>
-      <span aria-hidden="true" className="spark-gradient size-2.5 self-center rounded-full" />
-      <span className="text-base font-medium tracking-tight text-ink">ConnectGSA</span>
-    </span>
-  );
-}
 
 /** Aviso obrigatório enquanto não houver aval do programa (Q-003). */
 export function UnofficialNotice({ className }: { className?: string }) {
