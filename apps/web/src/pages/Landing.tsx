@@ -1,6 +1,7 @@
 import { Compass, Map, Users } from 'lucide-react';
 import { Link } from 'react-router';
 import { LogoMark, Wordmark } from '../components/Logo.tsx';
+import { PixelCloud } from '../components/PixelCloud.tsx';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { Button, Card, UnofficialNotice } from '../components/ui.tsx';
 
@@ -15,7 +16,7 @@ const DESTAQUES = [
     Icon: Map,
     titulo: 'Veja quem está perto',
     texto:
-      'Um mapa por cidade, nunca por endereço. Você escolhe se aparece — e a rede só conhece o seu município.',
+      'Um mapa por cidade, nunca por endereço. A rede conhece só o seu município, e sair do mapa é um toque em Configurações.',
   },
   {
     Icon: Users,
@@ -31,6 +32,11 @@ const DESTAQUES = [
  * Curta de propósito: a rede é fechada, então esta página não vende — ela
  * explica o que existe do outro lado para quem recebeu um convite e quer saber
  * onde está entrando.
+ *
+ * A nuvem de pixels é o único movimento do produto que existe por si. Aqui ele
+ * cabe: é a primeira impressão de uma rede sobre tecnologia, e a linguagem do
+ * antigravity.google — de onde este design system veio. Dentro do aplicativo,
+ * o mesmo efeito seria movimento competindo com conteúdo.
  */
 export function LandingPage() {
   return (
@@ -41,7 +47,22 @@ export function LandingPage() {
       </header>
 
       <main className="mx-auto max-w-5xl px-5 pb-16 sm:px-8">
-        <section className="py-12 sm:py-20">
+        <section className="relative isolate py-12 sm:py-20">
+          {/*
+            A nuvem ocupa a área do título, sangrando para fora da coluna de
+            leitura.
+            
+            `z-0` com o conteúdo em `z-10`, e NÃO `-z-10`: índice negativo joga o
+            elemento para trás do fundo do próprio ancestral, e a nuvem
+            simplesmente não aparecia. `isolate` na seção prende esse empilhamento
+            aqui dentro, para ele não competir com o cabeçalho fixo do produto.
+            
+            `pointer-events: none` está no componente: a nuvem cobre a área dos
+            botões, e sem isso roubaria o clique deles.
+          */}
+          <PixelCloud className="absolute -inset-x-8 -top-10 z-0 h-[24rem] w-[calc(100%+4rem)] opacity-80 sm:h-[28rem]" />
+
+          <div className="relative z-10">
           <LogoMark className="mb-8 size-16" />
 
           <h1 className="display max-w-3xl text-4xl sm:text-6xl">
@@ -60,6 +81,7 @@ export function LandingPage() {
             <Link to="/entrar">
               <Button variant="outline">Já faço parte</Button>
             </Link>
+          </div>
           </div>
         </section>
 
