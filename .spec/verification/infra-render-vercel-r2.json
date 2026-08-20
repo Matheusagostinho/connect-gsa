@@ -1,50 +1,30 @@
 {
-  "feature": "navegacao-e-notificacoes",
-  "timestamp": "2026-08-20T17:32:55.966Z",
+  "feature": "infra-render-vercel-r2",
+  "timestamp": "2026-08-20T17:40:51.395Z",
   "gitRev": "a65ca1a",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
   "testsParsed": 351,
   "results": {
-    "AC-061": {
+    "AC-151": {
       "status": "pass",
-      "testName": "moldura do aplicativo oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062 oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062",
+      "testName": "variáveis de ambiente recusa subir em produção sem qualquer uma das cinco variáveis do R2 @spec:AC-151 recusa subir em produção sem qualquer uma das cinco variáveis do R2 @spec:AC-151",
       "method": "vitest-json"
     },
-    "AC-062": {
+    "AC-152": {
       "status": "pass",
-      "testName": "moldura do aplicativo oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062 oferece os destinos principais nas duas navegações @spec:AC-061 @spec:AC-062",
+      "testName": "variáveis de ambiente não exige bucket fora de produção @spec:AC-152 não exige bucket fora de produção @spec:AC-152",
       "method": "vitest-json"
     },
-    "AC-063": {
+    "AC-153": {
       "status": "pass",
-      "testName": "moldura do aplicativo marca a seção atual para quem vê e para quem ouve @spec:AC-063 marca a seção atual para quem vê e para quem ouve @spec:AC-063",
+      "testName": "armazenamento no R2 trata 404 na exclusão como sucesso @spec:AC-153 @principle:P-012 trata 404 na exclusão como sucesso @spec:AC-153 @principle:P-012",
       "method": "vitest-json"
     },
-    "AC-064": {
+    "AC-154": {
       "status": "pass",
-      "testName": "mapa em tela cheia o mapa preenche o contêiner em vez de fixar a própria altura @spec:AC-064 o mapa preenche o contêiner em vez de fixar a própria altura @spec:AC-064",
-      "method": "vitest-json"
-    },
-    "AC-065": {
-      "status": "pass",
-      "testName": "notificações junta pedido de conexão, reação e comentário num lugar só @spec:AC-065 junta pedido de conexão, reação e comentário num lugar só @spec:AC-065",
-      "method": "vitest-json"
-    },
-    "AC-066": {
-      "status": "pass",
-      "testName": "moldura do aplicativo mostra quantas notificações estão por ler @spec:AC-066 mostra quantas notificações estão por ler @spec:AC-066",
-      "method": "vitest-json"
-    },
-    "AC-067": {
-      "status": "pass",
-      "testName": "notificações conta as não lidas e zera depois de olhar @spec:AC-066 @spec:AC-067 conta as não lidas e zera depois de olhar @spec:AC-066 @spec:AC-067",
-      "method": "vitest-json"
-    },
-    "AC-068": {
-      "status": "pass",
-      "testName": "notificações não me notifica do que eu mesmo fiz @spec:AC-068 não me notifica do que eu mesmo fiz @spec:AC-068",
+      "testName": "armazenamento no R2 lança com o status, e nunca com o corpo da resposta @spec:AC-154 @principle:P-005 lança com o status, e nunca com o corpo da resposta @spec:AC-154 @principle:P-005",
       "method": "vitest-json"
     }
   },

@@ -18,7 +18,7 @@
 ## T-018 — Guarda de imagens: driver de armazenamento e reprocessamento [concluida]
 
 - Refs: US-011, AC-026, AC-027, AC-028
-- Arquivos: apps/api/src/modules/media/storage.ts, apps/api/src/modules/media/local-storage.ts, apps/api/src/modules/media/cloud-storage.ts, apps/api/src/modules/media/image.ts, apps/api/src/modules/media/image.test.ts
+- Arquivos: apps/api/src/modules/media/storage.ts, apps/api/src/modules/media/local-storage.ts, apps/api/src/modules/media/image.ts, apps/api/src/modules/media/image.test.ts
 - Notas: Toda imagem é REPROCESSADA — foto de celular carrega GPS no EXIF, e guardá-la
   crua vazaria a coordenada exata de um estudante (P-001). O tipo é decidido pelos bytes
   do arquivo, nunca pela extensão nem pelo cabeçalho do navegador.

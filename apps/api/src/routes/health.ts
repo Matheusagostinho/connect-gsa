@@ -11,7 +11,7 @@ const healthResponseSchema = z.object({
  *
  * Deliberadamente raso: não consulta o banco nem reporta dependências. Um
  * health check que expõe estado interno vira reconhecimento gratuito para quem
- * está sondando, e um que consulta o banco derruba o serviço no Cloud Run
+ * está sondando, e um que consulta o banco derruba o serviço no Render
  * quando o banco tem um soluço.
  */
 export function registerHealthRoutes(app: AppInstance, version: string): void {

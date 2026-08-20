@@ -1,11 +1,11 @@
 {
   "feature": "acesso-e-perfil",
-  "timestamp": "2026-08-19T23:35:20.092Z",
-  "gitRev": "dacd9e9",
+  "timestamp": "2026-08-20T17:22:55.734Z",
+  "gitRev": "a65ca1a",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 323,
+  "testsParsed": 351,
   "results": {
     "AC-001": {
       "status": "pass",
@@ -29,7 +29,7 @@
     },
     "AC-005": {
       "status": "pass",
-      "testName": "portão de entrada da rede recusa convite já usado no momento de criar a conta @spec:AC-005 recusa convite já usado no momento de criar a conta @spec:AC-005",
+      "testName": "portão de entrada da rede convite já usado continua valendo para a próxima pessoa @spec:AC-005 convite já usado continua valendo para a próxima pessoa @spec:AC-005",
       "method": "vitest-json"
     },
     "AC-006": {
@@ -39,7 +39,7 @@
     },
     "AC-007": {
       "status": "pass",
-      "testName": "convites sob corrida, o mesmo convite é reservado por exatamente uma tentativa @spec:AC-007 sob corrida, o mesmo convite é reservado por exatamente uma tentativa @spec:AC-007",
+      "testName": "convites sob corrida, todas as tentativas passam @spec:AC-007 @spec:AC-147 sob corrida, todas as tentativas passam @spec:AC-007 @spec:AC-147",
       "method": "vitest-json"
     },
     "AC-008": {
@@ -127,6 +127,10 @@
       "status": "pass",
       "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
     },
+    "P-005": {
+      "status": "pass",
+      "testName": "variáveis de ambiente nunca põe o VALOR da variável na mensagem de erro @principle:P-005 nunca põe o VALOR da variável na mensagem de erro @principle:P-005"
+    },
     "P-003": {
       "status": "pass",
       "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003"
@@ -137,7 +141,7 @@
     },
     "P-002": {
       "status": "pass",
-      "testName": "exportar meus dados não entrega e-mail de terceiros @spec:AC-071 @principle:P-002 não entrega e-mail de terceiros @spec:AC-071 @principle:P-002"
+      "testName": "exportar meus dados a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002 a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002"
     },
     "P-001": {
       "status": "pass",

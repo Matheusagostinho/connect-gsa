@@ -1,11 +1,11 @@
 {
   "feature": "refino-de-interface",
-  "timestamp": "2026-08-19T23:54:23.716Z",
-  "gitRev": "dacd9e9",
+  "timestamp": "2026-08-20T17:36:56.875Z",
+  "gitRev": "a65ca1a",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 323,
+  "testsParsed": 351,
   "results": {
     "AC-115": {
       "status": "pass",
@@ -59,13 +59,17 @@
     }
   },
   "principles": {
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
     "P-006": {
       "status": "pass",
       "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006"
     },
-    "P-008": {
+    "P-005": {
       "status": "pass",
-      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+      "testName": "variáveis de ambiente nunca põe o VALOR da variável na mensagem de erro @principle:P-005 nunca põe o VALOR da variável na mensagem de erro @principle:P-005"
     },
     "P-003": {
       "status": "pass",
@@ -77,7 +81,7 @@
     },
     "P-002": {
       "status": "pass",
-      "testName": "exportar meus dados não entrega e-mail de terceiros @spec:AC-071 @principle:P-002 não entrega e-mail de terceiros @spec:AC-071 @principle:P-002"
+      "testName": "exportar meus dados a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002 a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002"
     },
     "P-001": {
       "status": "pass",

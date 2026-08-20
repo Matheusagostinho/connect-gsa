@@ -1,11 +1,11 @@
 {
   "feature": "indicacao",
-  "timestamp": "2026-08-20T12:24:18.612Z",
-  "gitRev": "284cf57",
+  "timestamp": "2026-08-20T17:38:15.855Z",
+  "gitRev": "a65ca1a",
   "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
   "reporter": "vitest-json",
   "exitCode": 0,
-  "testsParsed": 337,
+  "testsParsed": 351,
   "results": {
     "AC-139": {
       "status": "pass",
@@ -51,6 +51,10 @@
     "P-008": {
       "status": "pass",
       "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
+    "P-005": {
+      "status": "pass",
+      "testName": "variáveis de ambiente nunca põe o VALOR da variável na mensagem de erro @principle:P-005 nunca põe o VALOR da variável na mensagem de erro @principle:P-005"
     },
     "P-003": {
       "status": "pass",

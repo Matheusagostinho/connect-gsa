@@ -12,14 +12,14 @@ import { parseEnv } from './env.js';
  * mesmo nos dois casos, em `src/` e em `dist/`.
  *
  * Em produção não há arquivo nenhum: as variáveis vêm do Secret Manager pelo
- * Cloud Run, e `quiet` evita o aviso de arquivo ausente.
+ * Render, e `quiet` evita o aviso de arquivo ausente.
  */
 loadEnvFile({ path: new URL('../../../.env', import.meta.url), quiet: true });
 
 /**
  * Ponto de entrada em produção.
  *
- * `host: '0.0.0.0'` não é detalhe: o Cloud Run encaminha tráfego para a
+ * `host: '0.0.0.0'` não é detalhe: o Render encaminha tráfego para a
  * interface externa do contêiner, e escutar apenas em localhost faria o
  * serviço subir "saudável" e recusar toda requisição.
  */

@@ -309,6 +309,26 @@ Três travas, e nenhuma depende de alguém lembrar:
    um erro sequer. Em desenvolvimento nunca acontece, porque o proxy do Vite faz
    tudo ser `localhost`. O dia de voltar para `lax` é o dia do domínio próprio.
 
+## Uma falha intermitente ainda não explicada (2026-08-20)
+
+`moderation.test.ts` (AC-078) falhou **uma vez** durante um laço que roda a suíte
+inteira quinze vezes seguidas. Não reproduz isolado (3 execuções) nem na suíte
+completa (5 execuções). Se você encontrar, isto é o que já foi descartado:
+
+- **Não é o teto de requisições.** `RATE_LIMIT_MAX` é elevado nos testes desde a
+  correção do mesmo dia, e o sintoma seria `TOO_MANY_REQUESTS`, que não apareceu.
+- **Não é o instante congelado do cursor do feed.** O filtro é `lte: geradoEm`,
+  inclusivo — um post criado no mesmo milissegundo entra.
+
+A pista que sobra é o teste depender de `feed()` devolver as DUAS publicações
+recém-criadas: se uma faltar, o `find` devolve `undefined` e o `toMatchObject`
+falha com uma mensagem que não explica nada. Um `expect(visto).toHaveLength(2)`
+antes das asserções transformaria o próximo caso numa mensagem útil — vale fazer
+quando alguém tocar neste arquivo.
+
+Está registrado aqui, e não escondido, porque um teste que falha às vezes ensina
+a ignorar o vermelho.
+
 ## Armadilhas conhecidas
 
 - `fileParallelism: false` no `vitest.config.ts`: os testes compartilham um Postgres, e

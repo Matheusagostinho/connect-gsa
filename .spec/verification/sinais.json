@@ -410,10 +410,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "acesso-e-perfil",
       "ref": "—",
-      "ocorrencias": 14,
+      "ocorrencias": 16,
       "primeiraVez": "2026-08-18T17:48:39.918Z",
-      "ultimaVez": "2026-08-19T23:15:29.636Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
     },
     "ARQUIVO_ORFAO::—::apps/api/src/testing/app.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -590,10 +590,10 @@
       "codigo": "PRINCIPIO_VIOLADO",
       "feature": "—",
       "ref": "P-007",
-      "ocorrencias": 3,
+      "ocorrencias": 4,
       "primeiraVez": "2026-08-18T17:49:40.042Z",
-      "ultimaVez": "2026-08-18T17:51:02.628Z",
-      "gitRev": null
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
     },
     "ARQUIVO_ORFAO::—::apps/api/src/__violacao.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -842,10 +842,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "feed-e-reacoes",
       "ref": "—",
-      "ocorrencias": 9,
+      "ocorrencias": 11,
       "primeiraVez": "2026-08-19T01:29:02.037Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
     },
     "ARQUIVO_ORFAO::—::apps/api/src/modules/connection/connection.routes.ts": {
       "codigo": "ARQUIVO_ORFAO",
@@ -1076,28 +1076,28 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "dados-do-titular",
       "ref": "—",
-      "ocorrencias": 9,
+      "ocorrencias": 11,
       "primeiraVez": "2026-08-19T02:43:43.406Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
     },
     "VERIFY_OBSOLETO::diretorio-mapa-e-conexoes::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "diretorio-mapa-e-conexoes",
       "ref": "—",
-      "ocorrencias": 7,
+      "ocorrencias": 9,
       "primeiraVez": "2026-08-19T02:43:43.406Z",
-      "ultimaVez": "2026-08-19T21:31:43.571Z",
-      "gitRev": "bedb2d2"
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
     },
     "VERIFY_OBSOLETO::navegacao-e-notificacoes::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "navegacao-e-notificacoes",
       "ref": "—",
-      "ocorrencias": 7,
+      "ocorrencias": 9,
       "primeiraVez": "2026-08-19T02:43:43.406Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
     },
     "STATUS_INVALIDO::feed-em-abas-e-refino::.spec/features/feed-em-abas-e-refino/spec.md": {
       "codigo": "STATUS_INVALIDO",
@@ -1130,10 +1130,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "ajustes-de-produto",
       "ref": "—",
-      "ocorrencias": 8,
+      "ocorrencias": 10,
       "primeiraVez": "2026-08-19T13:17:28.798Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
     },
     "ASM_ABERTA::feed-em-abas-e-refino::ASM-033": {
       "codigo": "ASM_ABERTA",
@@ -1193,10 +1193,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "quadro-de-avisos",
       "ref": "—",
-      "ocorrencias": 7,
+      "ocorrencias": 9,
       "primeiraVez": "2026-08-19T13:17:28.798Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.896Z",
+      "gitRev": "a65ca1a"
     },
     "ARQUIVO_INEXISTENTE::perfil-e-interacao::T-001": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -1445,10 +1445,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "feed-em-abas-e-refino",
       "ref": "—",
-      "ocorrencias": 5,
+      "ocorrencias": 7,
       "primeiraVez": "2026-08-19T16:03:17.306Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
     },
     "ARQUIVO_INEXISTENTE::navegacao-e-notificacoes::T-038": {
       "codigo": "ARQUIVO_INEXISTENTE",
@@ -1598,10 +1598,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "perfil-e-interacao",
       "ref": "—",
-      "ocorrencias": 4,
+      "ocorrencias": 6,
       "primeiraVez": "2026-08-19T20:37:02.092Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.896Z",
+      "gitRev": "a65ca1a"
     },
     "ASM_STATUS_INVALIDO::refino-de-interface::ASM-041": {
       "codigo": "ASM_STATUS_INVALIDO",
@@ -1706,10 +1706,10 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "refino-de-interface",
       "ref": "—",
-      "ocorrencias": 3,
+      "ocorrencias": 5,
       "primeiraVez": "2026-08-19T21:31:43.571Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.896Z",
+      "gitRev": "a65ca1a"
     },
     "TASK_CONCLUIDA_SEM_PROVA::diretorio-mapa-e-conexoes::T-034": {
       "codigo": "TASK_CONCLUIDA_SEM_PROVA",
@@ -1724,19 +1724,244 @@
       "codigo": "VERIFY_OBSOLETO",
       "feature": "convite-simples",
       "ref": "—",
-      "ocorrencias": 2,
+      "ocorrencias": 4,
       "primeiraVez": "2026-08-19T23:15:18.743Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
     },
     "VERIFY_OBSOLETO::landing-e-ajustes::—": {
       "codigo": "VERIFY_OBSOLETO",
       "feature": "landing-e-ajustes",
       "ref": "—",
-      "ocorrencias": 2,
+      "ocorrencias": 4,
       "primeiraVez": "2026-08-19T23:15:18.743Z",
-      "ultimaVez": "2026-08-19T23:15:29.637Z",
-      "gitRev": "dacd9e9"
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
+    },
+    "ASM_STATUS_INVALIDO::convite-aberto::ASM-055": {
+      "codigo": "ASM_STATUS_INVALIDO",
+      "feature": "convite-aberto",
+      "ref": "ASM-055",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "ASM_STATUS_INVALIDO::convite-aberto::ASM-056": {
+      "codigo": "ASM_STATUS_INVALIDO",
+      "feature": "convite-aberto",
+      "ref": "ASM-056",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "ASM_STATUS_INVALIDO::convite-aberto::ASM-057": {
+      "codigo": "ASM_STATUS_INVALIDO",
+      "feature": "convite-aberto",
+      "ref": "ASM-057",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "ASM_STATUS_INVALIDO::convite-aberto::ASM-058": {
+      "codigo": "ASM_STATUS_INVALIDO",
+      "feature": "convite-aberto",
+      "ref": "ASM-058",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "Q_ABERTA::convite-aberto::Q-035": {
+      "codigo": "Q_ABERTA",
+      "feature": "convite-aberto",
+      "ref": "Q-035",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "Q_ABERTA::convite-aberto::Q-036": {
+      "codigo": "Q_ABERTA",
+      "feature": "convite-aberto",
+      "ref": "Q-036",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "VERIFY_OBSOLETO::convite-aberto::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "convite-aberto",
+      "ref": "—",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
+    },
+    "ASM_STATUS_INVALIDO::indicacao::ASM-051": {
+      "codigo": "ASM_STATUS_INVALIDO",
+      "feature": "indicacao",
+      "ref": "ASM-051",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "ASM_STATUS_INVALIDO::indicacao::ASM-052": {
+      "codigo": "ASM_STATUS_INVALIDO",
+      "feature": "indicacao",
+      "ref": "ASM-052",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "ASM_STATUS_INVALIDO::indicacao::ASM-053": {
+      "codigo": "ASM_STATUS_INVALIDO",
+      "feature": "indicacao",
+      "ref": "ASM-053",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "ASM_STATUS_INVALIDO::indicacao::ASM-054": {
+      "codigo": "ASM_STATUS_INVALIDO",
+      "feature": "indicacao",
+      "ref": "ASM-054",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "Q_ABERTA::indicacao::Q-033": {
+      "codigo": "Q_ABERTA",
+      "feature": "indicacao",
+      "ref": "Q-033",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "Q_ABERTA::indicacao::Q-034": {
+      "codigo": "Q_ABERTA",
+      "feature": "indicacao",
+      "ref": "Q-034",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T13:07:41.075Z",
+      "gitRev": "7c25957"
+    },
+    "VERIFY_OBSOLETO::indicacao::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "indicacao",
+      "ref": "—",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-08-20T13:07:41.075Z",
+      "ultimaVez": "2026-08-20T17:21:28.895Z",
+      "gitRev": "a65ca1a"
+    },
+    "VERIFY_FALHOU::refino-de-interface::P-004": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "refino-de-interface",
+      "ref": "P-004",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:32:11.810Z",
+      "ultimaVez": "2026-08-20T13:32:11.810Z",
+      "gitRev": "7c25957"
+    },
+    "VERIFY_FALHOU::refino-de-interface::P-002": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "refino-de-interface",
+      "ref": "P-002",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T13:32:11.810Z",
+      "ultimaVez": "2026-08-20T13:32:11.810Z",
+      "gitRev": "7c25957"
+    },
+    "VERIFY_FALHOU::convite-simples::AC-132": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "convite-simples",
+      "ref": "AC-132",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T14:11:40.217Z",
+      "ultimaVez": "2026-08-20T14:11:40.217Z",
+      "gitRev": "267eb1a"
+    },
+    "VERIFY_FALHOU::convite-simples::AC-134": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "convite-simples",
+      "ref": "AC-134",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T14:11:40.217Z",
+      "ultimaVez": "2026-08-20T14:11:40.217Z",
+      "gitRev": "267eb1a"
+    },
+    "ARQUIVO_INEXISTENTE::acesso-e-perfil::T-012": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "acesso-e-perfil",
+      "ref": "T-012",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-08-20T17:18:34.098Z",
+      "ultimaVez": "2026-08-20T17:18:34.098Z",
+      "gitRev": "a65ca1a"
+    },
+    "ARQUIVO_INEXISTENTE::diretorio-mapa-e-conexoes::T-032": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "diretorio-mapa-e-conexoes",
+      "ref": "T-032",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T17:18:34.098Z",
+      "ultimaVez": "2026-08-20T17:18:34.098Z",
+      "gitRev": "a65ca1a"
+    },
+    "ARQUIVO_INEXISTENTE::feed-e-reacoes::T-018": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "feed-e-reacoes",
+      "ref": "T-018",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T17:18:34.098Z",
+      "ultimaVez": "2026-08-20T17:18:34.098Z",
+      "gitRev": "a65ca1a"
+    },
+    "ARQUIVO_ORFAO::—::apps/api/src/modules/media/r2-storage.ts": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "apps/api/src/modules/media/r2-storage.ts",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T17:18:34.098Z",
+      "ultimaVez": "2026-08-20T17:18:34.098Z",
+      "gitRev": "a65ca1a"
+    },
+    "VERIFY_FALHOU::ajustes-de-produto::AC-078": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "ajustes-de-produto",
+      "ref": "AC-078",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T17:24:09.977Z",
+      "ultimaVez": "2026-08-20T17:24:09.977Z",
+      "gitRev": "a65ca1a"
+    },
+    "TASK_CONCLUIDA_SEM_PROVA::ajustes-de-produto::T-046": {
+      "codigo": "TASK_CONCLUIDA_SEM_PROVA",
+      "feature": "ajustes-de-produto",
+      "ref": "T-046",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T17:40:52.206Z",
+      "ultimaVez": "2026-08-20T17:40:52.207Z",
+      "gitRev": "a65ca1a"
+    },
+    "AC_SEM_PROVA::ajustes-de-produto::AC-078": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "ajustes-de-produto",
+      "ref": "AC-078",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-08-20T17:40:52.207Z",
+      "ultimaVez": "2026-08-20T17:40:52.207Z",
+      "gitRev": "a65ca1a"
     }
   }
 }

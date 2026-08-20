@@ -80,10 +80,13 @@
 - Notas: `RotaProtegida` empurra para o onboarding enquanto o perfil estiver incompleto
   (AC-009). Depende de T-010.
 
-## T-012 — Publicação: Dockerfile, Cloud Run, Firebase Hosting e CI/CD [concluida]
+## T-012 — Publicação: Dockerfile, hospedagem e CI/CD [concluida]
 
 - Refs: AC-018
-- Arquivos: apps/api/Dockerfile, apps/api/.dockerignore, firebase.json, .firebaserc, .github/workflows/ci.yml, .github/workflows/deploy-api.yml, .github/workflows/deploy-web.yml
+- Arquivos: apps/api/Dockerfile, apps/api/.dockerignore, render.yaml, vercel.json, .github/workflows/ci.yml
+- Notas: os destinos mudaram em 20/08/2026 (Cloud Run → Render, Firebase Hosting →
+  Vercel). Render e Vercel publicam direto do Git, então os dois workflows de deploy
+  deixaram de existir. Ver `infra-render-vercel-r2`.
 - Notas: Cloud Run em `us-east1` (única região grátis perto do Brasil). Autenticação do CI
   por Workload Identity Federation — nenhuma chave de service account no repositório (P-007).
   Segredos no Secret Manager. Depende de T-004.

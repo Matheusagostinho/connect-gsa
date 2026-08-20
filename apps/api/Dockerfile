@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 #
-# Imagem da API para o Cloud Run.
+# Imagem da API para o Render.
 #
 # Multi-estágio por dois motivos: a imagem final não carrega compilador,
 # dependências de desenvolvimento nem código-fonte TypeScript (menos superfície
@@ -41,7 +41,8 @@ WORKDIR /app
 COPY --from=build /app ./
 # Usuário sem privilégios: se algo escapar do processo, escapa sem poder root.
 USER node
-# O Cloud Run injeta PORT; 8080 é o padrão dele.
-ENV PORT=8080
-EXPOSE 8080
+# O Render injeta PORT em tempo de execução; este valor é só o padrão de quem
+# rodar a imagem à mão. `env.ts` lê a variável, então não há porta fixa no código.
+ENV PORT=10000
+EXPOSE 10000
 CMD ["node", "dist/server.js"]

@@ -24,7 +24,7 @@ import { registerConnectionRoutes } from './modules/connection/connection.routes
 import { registerDirectoryRoutes } from './modules/directory/directory.routes.js';
 import { registerAccountRoutes } from './modules/account/account.routes.js';
 import { registerNotificationRoutes } from './modules/notification/notification.routes.js';
-import { CloudStorageDriver } from './modules/media/cloud-storage.js';
+import { R2StorageDriver } from './modules/media/r2-storage.js';
 import { LocalStorageDriver } from './modules/media/local-storage.js';
 import type { StorageDriver } from './modules/media/storage.js';
 import { registerReferenceRoutes } from './routes/reference.js';
@@ -69,7 +69,7 @@ export async function buildApp({
         censor: '[Redacted]',
       },
     },
-    // O Cloud Run termina o TLS e repassa o IP real no X-Forwarded-For. Sem
+    // O Render termina o TLS e repassa o IP real no X-Forwarded-For. Sem
     // isto, o limitador de taxa veria o IP do balanceador e trataria a
     // internet inteira como um cliente só.
     trustProxy: true,
@@ -97,7 +97,7 @@ export async function buildApp({
   await app.register(sessionPlugin, { resolve: resolver, prisma });
 
   // Na raiz ficam só as rotas que não pertencem ao aplicativo:
-  //   /health  — sonda de infraestrutura (o Cloud Run consulta esta URL)
+  //   /health  — sonda de infraestrutura (o Render consulta esta URL)
   //   /s/...   — link de compartilhamento, que vai colado em conversa
   //   /api/auth — o Better Auth, cujo `basePath` já inclui o prefixo
   registerHealthRoutes(app, version);
@@ -142,12 +142,25 @@ export async function buildApp({
  * Escolhe onde as imagens ficam.
  *
  * Sem bucket configurado, cai no disco local. Isso é o que permite desenvolver
- * e rodar os testes sem uma credencial do Google — e o `README` avisa que
- * produção exige `MEDIA_BUCKET`.
+ * e rodar os testes sem credencial de nuvem nenhuma — e em produção o `env.ts`
+ * **recusa a subida** se faltar qualquer uma das cinco variáveis, para este
+ * recuo silencioso não acontecer lá.
  */
 function createStorage(env: Env): StorageDriver {
-  if (env.MEDIA_BUCKET && env.MEDIA_PUBLIC_URL) {
-    return new CloudStorageDriver(env.MEDIA_BUCKET, env.MEDIA_PUBLIC_URL);
+  if (
+    env.MEDIA_BUCKET &&
+    env.MEDIA_PUBLIC_URL &&
+    env.R2_ACCOUNT_ID &&
+    env.R2_ACCESS_KEY_ID &&
+    env.R2_SECRET_ACCESS_KEY
+  ) {
+    return new R2StorageDriver(
+      env.MEDIA_BUCKET,
+      env.MEDIA_PUBLIC_URL,
+      env.R2_ACCOUNT_ID,
+      env.R2_ACCESS_KEY_ID,
+      env.R2_SECRET_ACCESS_KEY,
+    );
   }
   return new LocalStorageDriver(env.MEDIA_LOCAL_DIR, env.API_URL);
 }
@@ -155,7 +168,7 @@ function createStorage(env: Env): StorageDriver {
 /**
  * Serve as imagens do disco local em `/media/*`.
  *
- * Só existe quando não há bucket: em produção, quem serve é o Cloud Storage
+ * Só existe quando não há bucket: em produção, quem serve é o Cloudflare R2
  * atrás do CDN, e a API não gasta requisição com isso.
  */
 async function registerMediaHosting(

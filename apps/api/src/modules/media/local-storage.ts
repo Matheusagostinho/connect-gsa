@@ -6,8 +6,8 @@ import type { StorageDriver } from './storage.js';
  * Armazenamento em disco, para desenvolvimento e testes.
  *
  * Serve os arquivos pela própria API, em `/media/*`. Não é adequado a produção —
- * o Cloud Run tem sistema de arquivos efêmero, então um deploy apagaria tudo.
- * Em produção quem responde é o `CloudStorageDriver`.
+ * o contêiner tem sistema de arquivos efêmero, então um reinício apagaria tudo.
+ * Em produção quem responde é o `R2StorageDriver`.
  */
 export class LocalStorageDriver implements StorageDriver {
   constructor(

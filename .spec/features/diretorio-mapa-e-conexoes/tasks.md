@@ -49,7 +49,7 @@
 ## T-032 — Mapa na tela [concluida]
 
 - Refs: US-020, AC-051, AC-052
-- Arquivos: apps/web/src/components/AmbassadorMap.tsx, apps/web/src/pages/MapPage.tsx, apps/web/scripts/copiar-worker-do-mapa.mjs, apps/web/vite.config.ts, firebase.json
+- Arquivos: apps/web/src/components/AmbassadorMap.tsx, apps/web/src/pages/MapPage.tsx, apps/web/scripts/copiar-worker-do-mapa.mjs, apps/web/vite.config.ts, vercel.json
 - Notas: MapLibre com tiles do OpenFreeMap — sem chave, sem cadastro e sem cookies. O worker
   precisa do módulo irmão copiado junto, senão o import falha DENTRO dele e o mapa fica
   cinza sem erro nenhum. O `firebase.json` deixou de reescrever `/assets/**` para o

@@ -4,10 +4,14 @@ import { randomUUID } from 'node:crypto';
  * Onde as imagens ficam guardadas.
  *
  * A interface existe porque os dois ambientes têm necessidades incompatíveis:
- * em produção o destino é o Cloud Storage, e em desenvolvimento não há (nem
- * deveria haver) credencial do Google só para você testar um upload. Sem esta
- * costura, ou o ambiente local exigiria uma conta na nuvem, ou o código de
- * produção teria um `if` sobre ambiente espalhado por dentro.
+ * em produção o destino é o Cloudflare R2, e em desenvolvimento não há (nem
+ * deveria haver) credencial de nuvem só para você testar um upload. Sem esta
+ * costura, ou o ambiente local exigiria uma conta em algum provedor, ou o
+ * código de produção teria um `if` sobre ambiente espalhado por dentro.
+ *
+ * Ela já provou o valor uma vez: a troca de Cloud Storage por R2 foi um arquivo
+ * novo e uma linha no `app.ts`. Nenhuma rota, nenhum serviço e nenhuma linha do
+ * banco souberam que o provedor mudou.
  *
  * A CHAVE é o que fica no banco; a URL é montada na saída. Trocar de provedor
  * não deveria exigir reescrever linhas da tabela de posts.

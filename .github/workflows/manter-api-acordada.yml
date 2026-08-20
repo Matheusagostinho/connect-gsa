@@ -1,0 +1,46 @@
+# Mantém a API acordada no plano gratuito do Render.
+#
+# ## Por que isto existe
+#
+# O plano gratuito do Render hiberna o serviço depois de ~15 min sem tráfego, e
+# acordar leva ~50 segundos. Numa rede onde a pessoa chega por um link de
+# convite, 50s de tela branca é o pior momento possível.
+#
+# ## Por que isto NÃO é suficiente sozinho
+#
+# O cron do GitHub Actions tem intervalo mínimo de 5 minutos, mas é entregue com
+# "melhor esforço": sob carga, um agendamento de 10 em 10 minutos chega a atrasar
+# 20 ou 30. Como a hibernação acontece aos 15, este workflow reduz muito a
+# chance de encontrar a API dormindo — e não a elimina.
+#
+# O README recomenda um monitor externo (UptimeRobot, gratuito, intervalo de 5
+# min de verdade) como principal, com este aqui de reforço. Prometer que o cron
+# do GitHub resolve seria mentira.
+#
+# Requer a variável `API_URL` em Settings → Secrets and variables → Actions.
+
+name: Manter a API acordada
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: manter-api-acordada
+  cancel-in-progress: true
+
+jobs:
+  acordar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar a sonda de saúde
+        run: |
+          if [ -z "${{ vars.API_URL }}" ]; then
+            echo "::warning::vars.API_URL não está configurada — nada a fazer."
+            exit 0
+          fi
+          # `--max-time 90` porque acordar do zero leva ~50s: um timeout curto
+          # abortaria justamente na única vez em que a chamada importa.
+          curl --silent --show-error --fail --max-time 90 \
+            "${{ vars.API_URL }}/health" | tee /dev/stderr | grep -q '"status":"ok"'
