@@ -16,8 +16,12 @@ consome; a indicação é um fato. E a chave estrangeira é `SET NULL`, nunca
 `CASCADE`: com cascade, excluir um embaixador apagaria em silêncio todo mundo
 que ele convidou.
 
-O convite continua sendo de **uma pessoa só** — isso não mudou, e há teste de
-corrida provando desde a primeira fatia.
+> **Nota de 2026-08-20.** Quando esta spec foi escrita, o convite ainda era de
+> uma pessoa só. Ele deixou de ser no dia seguinte (`convite-aberto`), e é
+> justamente por isso que a decisão desta fatia se sustentou: com um convite
+> atendendo várias pessoas, guardar a indicação NO convite passaria a ser
+> impossível — um convite teria vários indicados. A indicação já morava no lugar
+> certo antes de a razão maior aparecer.
 
 **A quebra de linha.** Quem escrevia uma publicação em parágrafos via tudo virar
 uma linha só. A causa não estava na exibição — que já usa `whitespace-pre-wrap` —

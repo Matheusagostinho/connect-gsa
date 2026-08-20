@@ -86,17 +86,38 @@ persistência. A sessão é cookie `httpOnly` + `Secure` + `SameSite`.
 - verificação(proibido): `(local|session)Storage\.[gs]etItem\([^)]*(token|session|jwt|auth)` em `apps/web/src/**/*.ts`
 - verificação(proibido): `(local|session)Storage\.[gs]etItem\([^)]*(token|session|jwt|auth)` em `apps/web/src/**/*.tsx`
 
-## P-009 [DEVE] Convite é imprevisível, guardado como hash e de uso único
+## P-009 [DEVE] Convite é imprevisível, guardado como hash e tem prazo curto
 
-Código de convite tem no mínimo 128 bits de entropia vinda de gerador
-criptográfico e expira. O banco guarda apenas o SHA-256 do código, nunca o
-código em claro: um dump vazado não entrega convite utilizável, e nem nós
-conseguimos recuperar um código já emitido.
+Código de convite vem de gerador criptográfico (`randomInt` do `node:crypto`) e
+expira. O banco guarda apenas o SHA-256 do código, nunca o código em claro: um
+dump vazado não entrega convite utilizável, e nem nós conseguimos recuperar um
+código já emitido.
 
-A reserva do convite é um compare-and-set atômico executado pelo Postgres, na
-criação da conta. Checar-e-depois-gravar em dois passos deixaria uma janela
-entre a leitura e a escrita — e é exatamente essa janela que duas tentativas
-simultâneas exploram.
+**Este princípio foi emendado duas vezes, e os dois motivos ficam registrados —
+não apagados.**
+
+*2026-08-19 — a entropia.* Ele exigia no mínimo 128 bits, e o código tinha 32
+caracteres hexadecimais. Passou a ter 8 caracteres de um alfabeto de 32, que são
+40 bits. A razão: um convite precisa ser DITADO por telefone, e 32 caracteres
+não são. Os 40 bits bastam porque não são a única defesa — são 1,1 trilhão de
+combinações contra um limite agressivo de tentativas, o que dá milhares de anos
+para acertar um convite ativo. O texto anterior continuou dizendo 128 bits por
+mais um dia, e essa distância entre princípio e código é exatamente o que este
+registro existe para não repetir.
+
+*2026-08-20 — o uso único.* Ele exigia que o convite servisse a uma pessoa só, e
+a reserva era um compare-and-set atômico no Postgres. Passou a valer para
+quantas pessoas receberem o link, por decisão do dono do produto: um embaixador
+que quisesse trazer o capítulo inteiro precisava de quarenta links e só podia
+criar cinco.
+
+O custo dessa segunda emenda é real e não deve ser minimizado por quem ler isto
+depois: **o uso único era o que continha um link vazado, e ele não existe mais.**
+Um link colado num grupo de trezentas pessoas entrega trezentos acessos, e
+nenhuma outra camada impede isso. O que ficou no lugar é o PRAZO — que por causa
+disso caiu de 30 para 15 dias — e o teto de criação por período. Não é
+equivalente, e está escrito aqui para que quem mexer nisto depois saiba o que já
+foi trocado por quê.
 
 - verificação(teste): @principle:P-009
 

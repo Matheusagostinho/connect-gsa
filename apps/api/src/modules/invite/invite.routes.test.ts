@@ -28,7 +28,7 @@ async function createInviteAs(userId: string) {
     method: 'POST',
     url: '/api/invites',
     headers: asUser(userId),
-    payload: { validityDays: 30 },
+    payload: {},
   });
 }
 
@@ -73,7 +73,7 @@ describe('rotas de convite', () => {
     const response = await app.inject({
       method: 'POST',
       url: '/api/invites',
-      payload: { validityDays: 30 },
+      payload: {},
     });
 
     expect(response.statusCode).toBe(401);
@@ -101,9 +101,9 @@ describe('rotas de convite', () => {
     expect(cookie?.value).not.toContain(code);
     expect(readInviteTicket(cookie?.value, testEnv.BETTER_AUTH_SECRET)).toBe(hashInviteCode(code));
 
-    // Conferir NÃO consome: um login abandonado no meio não queima o convite.
+    // Conferir não marca nada: o convite só é datado quando alguém de fato entra.
     const invite = await prisma.inviteCode.findFirstOrThrow();
-    expect(invite.usedAt).toBeNull();
+    expect(invite.lastUsedAt).toBeNull();
   });
 
   it('recusa convite inexistente com a mesma resposta de um expirado', async () => {
@@ -114,7 +114,7 @@ describe('rotas de convite', () => {
     });
 
     expect(response.statusCode).toBe(400);
-    expect(response.json<{ message: string }>().message).toMatch(/inválido, expirado ou já/i);
+    expect(response.json<{ message: string }>().message).toMatch(/inválido ou expirado/i);
     expect(response.cookies.find((c) => c.name === INVITE_COOKIE)).toBeUndefined();
   });
 
@@ -138,6 +138,21 @@ describe('rotas de convite', () => {
     const ultimo = respostas.at(-1);
     expect(ultimo).toBe(429);
   });
+
+  it('o convite nasce valendo quinze dias @spec:AC-149', async () => {
+    const embaixador = await createTestUser({ role: 'ambassador' });
+
+    // Corpo vazio de propósito: é o que a tela manda, e quem aplica o padrão é
+    // o `createInviteSchema`. O prazo é o que sobrou segurando o portão depois
+    // que o uso único saiu (P-009), então ele merece prova própria.
+    const resposta = await createInviteAs(embaixador.id);
+
+    const { expiresAt } = resposta.json<{ expiresAt: string }>();
+    const dias = (new Date(expiresAt).getTime() - Date.now()) / (24 * 60 * 60 * 1000);
+
+    expect(dias).toBeGreaterThan(14.9);
+    expect(dias).toBeLessThan(15.1);
+  });
 });
 
 describe('quem convidou', () => {
@@ -146,7 +161,7 @@ describe('quem convidou', () => {
       method: 'POST',
       url: '/api/invites',
       headers: asUser(userId),
-      payload: { validityDays: 30 },
+      payload: {},
     });
     return resposta.json<{ code: string; shareUrl: string }>();
   }
@@ -173,20 +188,13 @@ describe('quem convidou', () => {
     expect(resposta.body).not.toContain('Souza');
   });
 
-  it('não vira oráculo: inexistente, usado e expirado respondem igual @spec:AC-136', async () => {
+  it('não vira oráculo: inexistente e expirado respondem igual @spec:AC-136 @spec:AC-150', async () => {
     const ana = await createTestUser({ role: 'admin' });
 
     const inexistente = await app.inject({
       method: 'GET',
       url: `/api/invites/${generateInviteCode()}`,
     });
-
-    const { code: usado } = await conviteDe(ana.id);
-    await prisma.inviteCode.updateMany({
-      where: { codeHash: hashInviteCode(usado) },
-      data: { usedAt: new Date() },
-    });
-    const jaUsado = await app.inject({ method: 'GET', url: `/api/invites/${usado}` });
 
     const { code: vencido } = await conviteDe(ana.id);
     await prisma.inviteCode.updateMany({
@@ -195,14 +203,28 @@ describe('quem convidou', () => {
     });
     const expirado = await app.inject({ method: 'GET', url: `/api/invites/${vencido}` });
 
-    // Distinguir os três motivos entregaria de graça o oráculo que o limite de
+    // Sobraram dois motivos de recusa — "já usado" saiu da lista em 2026-08-20.
+    // Distinguir os dois entregaria de graça o oráculo que o limite de
     // tentativas existe para negar.
-    for (const resposta of [inexistente, jaUsado, expirado]) {
+    for (const resposta of [inexistente, expirado]) {
       expect(resposta.statusCode).toBe(400);
-      expect(resposta.json<{ message: string }>().message).toBe(
-        'Convite inválido, expirado ou já utilizado.',
-      );
+      expect(resposta.json<{ message: string }>().message).toBe('Convite inválido ou expirado.');
     }
+  });
+
+  it('o convite já usado continua mostrando quem convidou @spec:AC-146', async () => {
+    const ana = await createTestUser({ role: 'admin' });
+    await prisma.user.update({ where: { id: ana.id }, data: { name: 'Ana Ribeiro' } });
+    const { code } = await conviteDe(ana.id);
+    await prisma.inviteCode.updateMany({
+      where: { codeHash: hashInviteCode(code) },
+      data: { lastUsedAt: new Date() },
+    });
+
+    const resposta = await app.inject({ method: 'GET', url: `/api/invites/${code}` });
+
+    expect(resposta.statusCode).toBe(200);
+    expect(resposta.json<{ invitedBy: string }>().invitedBy).toBe('Ana');
   });
 
   it('não revela nome nenhum quando o convite não presta @spec:AC-136', async () => {
@@ -211,7 +233,7 @@ describe('quem convidou', () => {
     const { code } = await conviteDe(ana.id);
     await prisma.inviteCode.updateMany({
       where: { codeHash: hashInviteCode(code) },
-      data: { usedAt: new Date() },
+      data: { expiresAt: new Date(Date.now() - 1000) },
     });
 
     const resposta = await app.inject({ method: 'GET', url: `/api/invites/${code}` });

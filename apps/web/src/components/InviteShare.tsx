@@ -1,4 +1,9 @@
-import { INVITE_QUOTA, type CreatedInvite, type InviteStatus } from '@connect-gsa/shared';
+import {
+  INVITE_QUOTA,
+  INVITE_VALIDITY_DAYS,
+  type CreatedInvite,
+  type InviteStatus,
+} from '@connect-gsa/shared';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Check, Copy, Share2 } from 'lucide-react';
 import { useState } from 'react';
@@ -26,7 +31,8 @@ export function InviteShare() {
   });
 
   const gerar = useMutation({
-    mutationFn: () => api.post<CreatedInvite>('/invites', { validityDays: 30 }),
+    mutationFn: () =>
+      api.post<CreatedInvite>('/invites', { validityDays: INVITE_VALIDITY_DAYS }),
     onSuccess: async () => {
       setCopiado(false);
       // O teto acabou de mudar: reler é mais barato que adivinhar.
@@ -65,11 +71,21 @@ export function InviteShare() {
     <Card>
       <h2 className="text-xl font-medium">Convidar alguém</h2>
       <p className="mt-2 text-sm text-ink-muted">
-        Gere um link e mande para quem é do programa. Vale por 30 dias e serve para{' '}
-        <strong className="font-medium text-ink">uma pessoa só</strong>.
+        Gere um link e mande para quem é do programa. Ele vale por{' '}
+        <strong className="font-medium text-ink">{INVITE_VALIDITY_DAYS} dias</strong> e serve para{' '}
+        <strong className="font-medium text-ink">quantas pessoas você mandar</strong>.
         {restantes === null
           ? ' Você não tem limite de convites.'
           : ` Você pode criar até ${INVITE_QUOTA.max} a cada ${INVITE_QUOTA.days} dias — restam ${restantes}.`}
+      </p>
+
+      {/*
+        O aviso não é rodapé decorativo: com o convite valendo para quem
+        receber, quem segura o portão é quem compartilha o link. Dizer isso na
+        hora de gerar é mais barato que descobrir depois quem entrou.
+      */}
+      <p className="mt-2 text-sm text-ink-muted">
+        Como qualquer pessoa com o link entra, mande em conversa direta — não em grupo aberto.
       </p>
 
       {/*

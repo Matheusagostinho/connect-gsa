@@ -1,6 +1,6 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { generateInviteCode, hashInviteCode } from '../modules/invite/invite.code.js';
-import { createInvite } from '../modules/invite/invite.service.js';
+import { createInvite, resolveInvite } from '../modules/invite/invite.service.js';
 import { testAuth, testHelpers } from '../testing/auth.js';
 import { closeTestDb, createTestUser, resetTestData, testDb } from '../testing/db.js';
 
@@ -72,19 +72,22 @@ describe('portão de entrada da rede', () => {
     expect(persisted).not.toBeNull();
   });
 
-  it('recusa convite já usado no momento de criar a conta @spec:AC-005', async () => {
+  it('convite já usado continua valendo para a próxima pessoa @spec:AC-005', async () => {
     const admin = await createTestUser({ role: 'admin' });
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
+    const invite = await createInvite(prisma, admin.id, { validityDays: 15 }, 'http://localhost:5173');
 
-    // Simula o convite já consumido por outra pessoa.
+    // Simula o convite já usado por outra pessoa. Invertido em 2026-08-20: isto
+    // recusava o acesso, e agora não recusa mais (P-009).
     await prisma.inviteCode.update({
       where: { id: invite.id },
-      data: { usedAt: new Date(), usedById: admin.id },
+      data: { lastUsedAt: new Date() },
     });
 
     const stored = await prisma.inviteCode.findUniqueOrThrow({ where: { id: invite.id } });
     expect(stored.codeHash).toBe(hashInviteCode(invite.code));
-    expect(stored.usedAt).not.toBeNull();
+    await expect(resolveInvite(prisma, invite.code)).resolves.toMatchObject({
+      inviteId: invite.id,
+    });
   });
 
   it('mantém um e-mail ligado a uma única conta, sem perfil duplicado @spec:AC-003', async () => {

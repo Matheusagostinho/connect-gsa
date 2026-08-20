@@ -50,11 +50,17 @@ a rede continue restrita aos embaixadores e o diretório não vire lista públic
 - **Então** o acesso é recusado com uma mensagem explicando que a rede é restrita
   ao programa, e **nenhum registro de usuário é criado** no banco
 
-#### AC-005 — Convite já usado não serve de novo
+#### AC-005 — Convite já usado continua servindo
 
-- **Dado** um convite que já foi consumido por outra pessoa
+> **Invertido em 2026-08-20.** Este critério dizia o contrário: o convite era de
+> uso único e a segunda pessoa era recusada. A mudança foi decisão do dono do
+> produto, com o custo apresentado, e está descrita em `convite-aberto` (AC-146)
+> e no P-009. O que sobrou segurando o portão é o PRAZO, que por isso caiu de 30
+> para 15 dias, e o teto de criação por período.
+
+- **Dado** um convite que já foi usado por outra pessoa e ainda não venceu
 - **Quando** tento entrar com ele
-- **Então** o acesso é recusado e nenhuma conta é criada
+- **Então** eu entro — o convite vale para quantas pessoas receberem o link
 
 #### AC-006 — Convite vencido não serve
 
@@ -62,12 +68,16 @@ a rede continue restrita aos embaixadores e o diretório não vire lista públic
 - **Quando** tento entrar com ele
 - **Então** o acesso é recusado e nenhuma conta é criada
 
-#### AC-007 — Um convite cria no máximo uma conta, mesmo sob corrida
+#### AC-007 — Um convite atende várias contas, inclusive sob corrida
 
-- **Dado** um convite válido usado por duas tentativas de cadastro ao mesmo tempo
-- **Quando** as duas tentativas rodam em paralelo
-- **Então** exatamente uma cria conta e a outra é recusada (a reserva do convite é
-  um compare-and-set atômico no banco, feito no momento da criação da conta)
+> **Invertido em 2026-08-20**, pelo mesmo motivo do AC-005. A reserva atômica
+> (compare-and-set no `usedAt`) deixou de existir junto com o uso único; o que
+> este critério prova agora é que a ausência dela não introduziu erro sob
+> concorrência.
+
+- **Dado** um convite válido usado por várias tentativas de cadastro ao mesmo tempo
+- **Quando** as tentativas rodam em paralelo
+- **Então** todas passam, e cada pessoa fica registrada como tendo entrado por ele
 
 #### AC-008 — Ficar chutando convite é bloqueado
 

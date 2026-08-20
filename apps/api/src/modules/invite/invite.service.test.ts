@@ -1,12 +1,14 @@
+import { INVITE_VALIDITY_DAYS } from '@connect-gsa/shared';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { closeTestDb, createTestUser, resetTestData, testDb } from '../../testing/db.js';
 import { generateInviteCode, hashInviteCode } from './invite.code.js';
 import {
   attachInviteToUser,
-  claimInvite,
   contarIndicacoes,
+  contarUsos,
   createInvite,
   isEmailAllowed,
+  resolveInvite,
 } from './invite.service.js';
 
 const prisma = testDb();
@@ -23,9 +25,10 @@ describe('convites', () => {
   it('gera código imprevisível e nunca guarda o código em claro @principle:P-009', async () => {
     const admin = await createTestUser({ role: 'admin' });
 
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
+    const invite = await createInvite(prisma, admin.id, { validityDays: INVITE_VALIDITY_DAYS }, 'http://localhost:5173');
 
-    // 32 hexadecimais = 128 bits de entropia.
+    // 8 caracteres de um alfabeto de 32, sem I, L, O e U: 40 bits. O P-009
+    // registra por que 40 bastam e por que já foram 128.
     expect(invite.code).toMatch(/^[0-9A-HJKMNP-TV-Z]{8}$/);
 
     const stored = await prisma.inviteCode.findUniqueOrThrow({ where: { id: invite.id } });
@@ -36,16 +39,21 @@ describe('convites', () => {
     expect(JSON.stringify(stored)).not.toContain(invite.code);
 
     // Dois convites seguidos não se parecem.
-    const outro = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
+    const outro = await createInvite(prisma, admin.id, { validityDays: INVITE_VALIDITY_DAYS }, 'http://localhost:5173');
     expect(outro.code).not.toBe(invite.code);
   });
 
-  it('aceita um convite válido uma vez e recusa a segunda @spec:AC-005', async () => {
+  it('o mesmo convite serve para mais de uma pessoa @spec:AC-005 @spec:AC-146', async () => {
     const admin = await createTestUser({ role: 'admin' });
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
+    const invite = await createInvite(prisma, admin.id, { validityDays: INVITE_VALIDITY_DAYS }, 'http://localhost:5173');
 
-    await expect(claimInvite(prisma, invite.code)).resolves.toMatchObject({ inviteId: invite.id });
-    await expect(claimInvite(prisma, invite.code)).rejects.toThrow(/inválido, expirado ou já/i);
+    // Invertido em 2026-08-20 (P-009). Antes a segunda chamada era recusada.
+    await expect(resolveInvite(prisma, invite.code)).resolves.toMatchObject({
+      inviteId: invite.id,
+    });
+    await expect(resolveInvite(prisma, invite.code)).resolves.toMatchObject({
+      inviteId: invite.id,
+    });
   });
 
   it('recusa convite vencido @spec:AC-006', async () => {
@@ -59,36 +67,41 @@ describe('convites', () => {
       },
     });
 
-    await expect(claimInvite(prisma, code)).rejects.toThrow(/inválido, expirado ou já/i);
+    await expect(resolveInvite(prisma, code)).rejects.toThrow(/inválido ou expirado/i);
   });
 
-  it('recusa código inexistente sem revelar o motivo', async () => {
-    const inexistente = generateInviteCode();
-    await expect(claimInvite(prisma, inexistente)).rejects.toThrow(/inválido, expirado ou já/i);
-
-    // A mesma mensagem do convite já usado: nada de oráculo para quem varre.
+  it('recusa inexistente e vencido com a MESMA mensagem @spec:AC-150', async () => {
     const admin = await createTestUser({ role: 'admin' });
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
-    await claimInvite(prisma, invite.code);
+    const vencido = generateInviteCode();
+    await prisma.inviteCode.create({
+      data: {
+        codeHash: hashInviteCode(vencido),
+        expiresAt: new Date(Date.now() - 1000),
+        createdById: admin.id,
+      },
+    });
 
-    const [erroInexistente, erroUsado] = await Promise.all([
-      claimInvite(prisma, generateInviteCode()).catch((e: Error) => e.message),
-      claimInvite(prisma, invite.code).catch((e: Error) => e.message),
+    // Sobraram dois motivos de recusa, e eles precisam ser indistinguíveis:
+    // responder diferente entrega o oráculo que o limite de tentativas nega.
+    const [erroInexistente, erroVencido] = await Promise.all([
+      resolveInvite(prisma, generateInviteCode()).catch((e: Error) => e.message),
+      resolveInvite(prisma, vencido).catch((e: Error) => e.message),
     ]);
-    expect(erroInexistente).toBe(erroUsado);
+    expect(erroInexistente).toBe(erroVencido);
   });
 
-  it('sob corrida, o mesmo convite é reservado por exatamente uma tentativa @spec:AC-007', async () => {
+  it('sob corrida, todas as tentativas passam @spec:AC-007 @spec:AC-147', async () => {
     const admin = await createTestUser({ role: 'admin' });
-    const invite = await createInvite(prisma, admin.id, { validityDays: 30 }, 'http://localhost:5173');
+    const invite = await createInvite(prisma, admin.id, { validityDays: INVITE_VALIDITY_DAYS }, 'http://localhost:5173');
 
     const tentativas = await Promise.allSettled(
-      Array.from({ length: 12 }, () => claimInvite(prisma, invite.code)),
+      Array.from({ length: 12 }, () => resolveInvite(prisma, invite.code)),
     );
 
-    const aceitas = tentativas.filter((t) => t.status === 'fulfilled');
-    expect(aceitas).toHaveLength(1);
-    expect(tentativas.filter((t) => t.status === 'rejected')).toHaveLength(11);
+    // Invertido em 2026-08-20. Antes exatamente uma passava, e a trava era o
+    // compare-and-set no `usedAt`. O que este teste guarda agora é que tirar a
+    // trava não introduziu erro sob concorrência — nenhuma tentativa falha.
+    expect(tentativas.filter((t) => t.status === 'rejected')).toHaveLength(0);
   });
 
   it('reconhece e-mail pré-aprovado pelo programa', async () => {
@@ -108,7 +121,7 @@ describe('link de convite', () => {
     const invite = await createInvite(
       prisma,
       admin.id,
-      { validityDays: 30 },
+      { validityDays: INVITE_VALIDITY_DAYS },
       'https://connectgsa.web.app',
     );
 
@@ -121,7 +134,7 @@ describe('link de convite', () => {
     const invite = await createInvite(
       prisma,
       admin.id,
-      { validityDays: 30 },
+      { validityDays: INVITE_VALIDITY_DAYS },
       'https://connectgsa.web.app/',
     );
 
@@ -133,9 +146,9 @@ describe('indicação', () => {
   it('entrar por convite registra quem indicou @spec:AC-139', async () => {
     const ana = await createTestUser({ role: 'admin' });
     const bruno = await createTestUser();
-    const invite = await createInvite(prisma, ana.id, { validityDays: 30 }, 'http://localhost:5173');
+    const invite = await createInvite(prisma, ana.id, { validityDays: INVITE_VALIDITY_DAYS }, 'http://localhost:5173');
 
-    const { inviteId } = await claimInvite(prisma, invite.code);
+    const { inviteId } = await resolveInvite(prisma, invite.code);
     await attachInviteToUser(prisma, inviteId, bruno.id);
 
     const gravado = await prisma.user.findUniqueOrThrow({
@@ -162,8 +175,8 @@ describe('indicação', () => {
   it('excluir quem convidou NÃO apaga quem foi convidado @spec:AC-141', async () => {
     const ana = await createTestUser({ role: 'admin' });
     const bruno = await createTestUser();
-    const invite = await createInvite(prisma, ana.id, { validityDays: 30 }, 'http://localhost:5173');
-    const { inviteId } = await claimInvite(prisma, invite.code);
+    const invite = await createInvite(prisma, ana.id, { validityDays: INVITE_VALIDITY_DAYS }, 'http://localhost:5173');
+    const { inviteId } = await resolveInvite(prisma, invite.code);
     await attachInviteToUser(prisma, inviteId, bruno.id);
 
     await prisma.user.delete({ where: { id: ana.id } });
@@ -179,21 +192,19 @@ describe('indicação', () => {
     expect(sobreviveu?.invitedById).toBeNull();
   });
 
-  it('conta quantas pessoas entraram pelos meus convites', async () => {
+  it('três pessoas por UM convite dão três indicações @spec:AC-148', async () => {
     const ana = await createTestUser({ role: 'admin' });
+    const invite = await createInvite(prisma, ana.id, { validityDays: INVITE_VALIDITY_DAYS }, 'http://localhost:5173');
 
+    // Um link só, três pessoas. Antes isto exigia três convites: a indicação é
+    // por PESSOA, e é justamente por isso que ela não mora no convite.
     for (let i = 0; i < 3; i += 1) {
       const convidado = await createTestUser();
-      const invite = await createInvite(
-        prisma,
-        ana.id,
-        { validityDays: 30 },
-        'http://localhost:5173',
-      );
-      const { inviteId } = await claimInvite(prisma, invite.code);
+      const { inviteId } = await resolveInvite(prisma, invite.code);
       await attachInviteToUser(prisma, inviteId, convidado.id);
     }
 
     await expect(contarIndicacoes(prisma, ana.id)).resolves.toBe(3);
+    await expect(contarUsos(prisma, invite.id)).resolves.toBe(3);
   });
 });

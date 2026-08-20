@@ -57,8 +57,13 @@ describe('schema do banco', () => {
 
     expect(invite).toMatch(/codeHash\s+String\s+@unique/);
     expect(invite).not.toMatch(/^\s*code\s+String/m);
-    // `usedById @unique` é o que faz o BANCO recusar o segundo uso do convite,
-    // mesmo se duas requisições passarem pela checagem da aplicação juntas.
-    expect(invite).toMatch(/usedById\s+String\?\s+@unique/);
+
+    // O convite deixou de ser de uso único em 2026-08-20, e o que caiu junto foi
+    // `usedById @unique` — era ele que fazia o BANCO recusar o segundo uso. O
+    // que sobrou segurando o portão é o PRAZO, então `expiresAt` não pode ser
+    // opcional: um convite sem data seria um convite eterno e ilimitado.
+    expect(invite).not.toMatch(/usedById/);
+    expect(invite).toMatch(/expiresAt\s+DateTime\s*$/m);
+    expect(invite).toMatch(/usedBy\s+User\[\]/);
   });
 });

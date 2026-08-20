@@ -46,9 +46,25 @@ export type RedeemInvite = z.infer<typeof redeemInviteSchema>;
 /** Quantos convites um embaixador comum pode criar por período. */
 export const INVITE_QUOTA = { max: 5, days: 30 } as const;
 
+/**
+ * Por quantos dias um convite continua valendo.
+ *
+ * **Quinze, e não trinta.** O convite deixou de ser de uso único em 2026-08-20:
+ * um link atende quantas pessoas o receberem. Isso apagou o freio que limitava
+ * o estrago de um link vazado, e o prazo passou a ser o único que sobrou —
+ * então ele encurtou.
+ *
+ * O prazo não substitui o uso único e não se pretende substituto: ele não
+ * contém o link colado num grupo de trezentas pessoas, que entrega trezentos
+ * acessos em duas horas. O que ele contém é o vazamento LENTO — o print
+ * esquecido, o convite no e-mail de alguém que largou a conta. Para esse, prazo
+ * curto é exatamente a defesa certa.
+ */
+export const INVITE_VALIDITY_DAYS = 15;
+
 export const createInviteSchema = z.object({
   /** Quantos dias o convite continua válido. Convite eterno é convite vazado. */
-  validityDays: z.number().int().min(1).max(90).default(30),
+  validityDays: z.number().int().min(1).max(90).default(INVITE_VALIDITY_DAYS),
   note: z.string().trim().max(120).optional(),
 });
 

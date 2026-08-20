@@ -8,14 +8,17 @@ const DIA_EM_MS = 24 * 60 * 60 * 1000;
 /**
  * Mensagem única para todo motivo de recusa.
  *
- * Distinguir "não existe" de "já usado" de "expirado" entregaria, de graça, um
- * oráculo para quem estiver varrendo códigos: bastaria observar qual resposta
- * muda. O usuário legítimo recebe a orientação por outro canal (quem lhe deu o
+ * Distinguir "não existe" de "expirado" entregaria, de graça, um oráculo para
+ * quem estiver varrendo códigos: bastaria observar qual resposta muda. O
+ * usuário legítimo recebe a orientação por outro canal (quem lhe deu o
  * convite), então nada se perde.
+ *
+ * "Já utilizado" saiu da lista porque deixou de ser motivo de recusa — o
+ * convite atende quantas pessoas o receberem.
  */
-const CONVITE_RECUSADO = 'Convite inválido, expirado ou já utilizado.';
+const CONVITE_RECUSADO = 'Convite inválido ou expirado.';
 
-export interface ClaimedInvite {
+export interface ResolvedInvite {
   inviteId: string;
 }
 
@@ -85,51 +88,45 @@ export async function createInvite(
 }
 
 /**
- * Reserva um convite de forma atômica (AC-007).
+ * Confere se um convite pode ser usado. NÃO reserva nada.
  *
- * O `updateMany` com `usedAt: null` no filtro é um compare-and-set executado
- * pelo próprio Postgres: das duas requisições que chegarem juntas com o mesmo
- * código, exatamente uma verá `count === 1`. Checar antes e gravar depois, em
- * dois passos, deixaria uma janela entre a leitura e a escrita — e é
- * exatamente essa janela que o teste de corrida explora.
+ * Chamava-se `claimInvite` e era um compare-and-set atômico: o `updateMany` com
+ * `usedAt: null` no filtro fazia o Postgres deixar exatamente uma das
+ * requisições simultâneas passar. Essa trava saiu junto com o uso único
+ * (P-009, emendado em 2026-08-20) — o convite agora vale para quantas pessoas
+ * receberem o link, então não há o que disputar e "reservar" seria mentira no
+ * nome da função.
  *
- * A reserva é deliberadamente irreversível: se a criação do usuário falhar
- * depois disso, o convite é perdido. Falhar fechado custa um convite; falhar
- * aberto custa um acesso indevido.
+ * O que sobrou como portão é o PRAZO, conferido aqui e em toda outra leitura.
  */
-export async function claimInvite(prisma: PrismaClient, code: string): Promise<ClaimedInvite> {
+export async function resolveInvite(prisma: PrismaClient, code: string): Promise<ResolvedInvite> {
   if (!looksLikeInviteCode(code)) {
     // Barra a varredura de códigos malformados antes de tocar no banco.
     throw badRequest(CONVITE_RECUSADO, 'INVITE_REJECTED');
   }
 
-  return claimInviteByHash(prisma, hashInviteCode(code));
+  return resolveInviteByHash(prisma, hashInviteCode(code));
 }
 
 /**
- * Mesma reserva atômica, a partir do hash.
+ * Mesma conferência, a partir do hash.
  *
  * É esta a versão usada no fluxo de OAuth: o código em claro fica no cliente
  * apenas até a validação inicial, e o que atravessa o vaivém do login social é
  * só o hash, dentro de um cookie assinado.
  */
-export async function claimInviteByHash(
+export async function resolveInviteByHash(
   prisma: PrismaClient,
   codeHash: string,
-): Promise<ClaimedInvite> {
-  const result = await prisma.inviteCode.updateMany({
-    where: { codeHash, usedAt: null, expiresAt: { gt: new Date() } },
-    data: { usedAt: new Date() },
-  });
-
-  if (result.count !== 1) {
-    throw badRequest(CONVITE_RECUSADO, 'INVITE_REJECTED');
-  }
-
-  const invite = await prisma.inviteCode.findUniqueOrThrow({
-    where: { codeHash },
+): Promise<ResolvedInvite> {
+  const invite = await prisma.inviteCode.findFirst({
+    where: { codeHash, expiresAt: { gt: new Date() } },
     select: { id: true },
   });
+
+  if (!invite) {
+    throw badRequest(CONVITE_RECUSADO, 'INVITE_REJECTED');
+  }
 
   return { inviteId: invite.id };
 }
@@ -139,11 +136,12 @@ export async function claimInviteByHash(
  *
  * São dois registros com vidas diferentes, e é por isso que existem os dois:
  *
- * - `InviteCode.usedById` diz qual convite foi consumido por quem. Some junto
- *   com o convite se quem o emitiu excluir a conta (a linha tem cascade).
+ * - `User.invitedViaId` diz por qual convite a pessoa entrou. Vira nulo se o
+ *   convite sumir — e ele suma junto com quem o emitiu, porque a linha do
+ *   convite tem cascade.
  * - `User.invitedById` diz quem trouxe a pessoa para a rede. É um FATO, não um
- *   papel consumido: sobrevive à exclusão de quem convidou (vira nulo) e é o
- *   que vai alimentar a gamificação.
+ *   papel consumido: sobrevive à exclusão de quem convidou e é o que vai
+ *   alimentar a gamificação.
  *
  * A gravação é uma transação: o convite marcado como usado sem a indicação
  * registrada seria um buraco silencioso no histórico, descoberto só quando
@@ -163,15 +161,24 @@ export async function attachInviteToUser(
   await prisma.$transaction(async (tx) => {
     const invite = await tx.inviteCode.update({
       where: { id: inviteId },
-      data: { usedById: userId },
+      data: { lastUsedAt: new Date() },
       select: { createdById: true },
     });
 
-    // Convite que a pessoa gerou para si mesma não a indica: ninguém a trouxe.
-    if (invite.createdById === userId) return;
-
-    await tx.user.update({ where: { id: userId }, data: { invitedById: invite.createdById } });
+    await tx.user.update({
+      where: { id: userId },
+      data: {
+        invitedViaId: inviteId,
+        // Convite que a pessoa gerou para si mesma não a indica: ninguém a trouxe.
+        ...(invite.createdById === userId ? {} : { invitedById: invite.createdById }),
+      },
+    });
   });
+}
+
+/** Quantas pessoas entraram por este convite. */
+export async function contarUsos(prisma: PrismaClient, inviteId: string): Promise<number> {
+  return prisma.user.count({ where: { invitedViaId: inviteId } });
 }
 
 /** Quantas pessoas entraram pelos convites desta. */
@@ -179,37 +186,15 @@ export async function contarIndicacoes(prisma: PrismaClient, userId: string): Pr
   return prisma.user.count({ where: { invitedById: userId } });
 }
 
-/** Devolve a reserva quando o cadastro não chegou a acontecer. */
-export async function releaseInvite(prisma: PrismaClient, inviteId: string): Promise<void> {
-  await prisma.inviteCode.updateMany({
-    where: { id: inviteId, usedById: null },
-    data: { usedAt: null },
-  });
-}
-
 /**
- * Confere se um convite está utilizável, SEM reservá-lo.
+ * Confere o código digitado, no passo anterior ao login social.
  *
- * Serve ao passo anterior ao login social: o embaixador digita o código e
- * precisa de retorno imediato se ele não presta, mas a reserva só pode
- * acontecer quando a conta for de fato criada — senão um login abandonado no
- * meio do caminho queimaria o convite de alguém.
+ * Devolve o hash porque é ele — nunca o código em claro — que atravessa o
+ * vaivém do OAuth, dentro de um cookie assinado.
  */
 export async function checkInvite(prisma: PrismaClient, code: string): Promise<{ codeHash: string }> {
-  if (!looksLikeInviteCode(code)) {
-    throw badRequest(CONVITE_RECUSADO, 'INVITE_REJECTED');
-  }
-
   const codeHash = hashInviteCode(code);
-  const invite = await prisma.inviteCode.findFirst({
-    where: { codeHash, usedAt: null, expiresAt: { gt: new Date() } },
-    select: { id: true },
-  });
-
-  if (!invite) {
-    throw badRequest(CONVITE_RECUSADO, 'INVITE_REJECTED');
-  }
-
+  await resolveInvite(prisma, code);
   return { codeHash };
 }
 
@@ -219,9 +204,9 @@ export async function checkInvite(prisma: PrismaClient, code: string): Promise<{
  * Devolve só o PRIMEIRO NOME. O nome completo transformaria o link num jeito de
  * descobrir quem está na rede sem entrar nela — e a rede ser fechada é o ponto.
  *
- * A recusa é a mesma dos outros caminhos e para os três motivos (não existe, já
- * usado, expirado): responder diferente entregaria de graça o oráculo que o
- * limite de tentativas existe para negar (AC-136).
+ * A recusa é a mesma dos outros caminhos e para os dois motivos que restaram
+ * (não existe, expirado): responder diferente entregaria de graça o oráculo que
+ * o limite de tentativas existe para negar (AC-136).
  */
 export async function invitationFor(
   prisma: PrismaClient,
@@ -232,7 +217,7 @@ export async function invitationFor(
   }
 
   const invite = await prisma.inviteCode.findFirst({
-    where: { codeHash: hashInviteCode(code), usedAt: null, expiresAt: { gt: new Date() } },
+    where: { codeHash: hashInviteCode(code), expiresAt: { gt: new Date() } },
     select: { expiresAt: true, createdBy: { select: { name: true } } },
   });
 

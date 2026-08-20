@@ -5,7 +5,7 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import type { Env } from '../env.js';
 import {
   attachInviteToUser,
-  claimInviteByHash,
+  resolveInviteByHash,
   isEmailAllowed,
 } from '../modules/invite/invite.service.js';
 import { INVITE_COOKIE, readCookie, readInviteTicket } from './invite-ticket.js';
@@ -122,9 +122,9 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env) {
             }
 
             try {
-              // Reserva atômica: se dois cadastros chegarem com o mesmo
-              // convite, o Postgres deixa exatamente um passar (AC-007).
-              const { inviteId } = await claimInviteByHash(prisma, codeHash);
+              // Confere o prazo. Não reserva: o convite vale para quantas
+              // pessoas receberem o link (P-009, emendado em 2026-08-20).
+              const { inviteId } = await resolveInviteByHash(prisma, codeHash);
               pendingInvites.set(email, inviteId);
             } catch {
               throw new APIError('FORBIDDEN', { message: ACESSO_RESTRITO });

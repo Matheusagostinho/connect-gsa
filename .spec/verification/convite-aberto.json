@@ -1,0 +1,70 @@
+{
+  "feature": "convite-aberto",
+  "timestamp": "2026-08-20T12:38:39.885Z",
+  "gitRev": "8c8d8dd",
+  "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 339,
+  "results": {
+    "AC-146": {
+      "status": "pass",
+      "testName": "quem convidou o convite já usado continua mostrando quem convidou @spec:AC-146 o convite já usado continua mostrando quem convidou @spec:AC-146",
+      "method": "vitest-json"
+    },
+    "AC-147": {
+      "status": "pass",
+      "testName": "convites sob corrida, todas as tentativas passam @spec:AC-007 @spec:AC-147 sob corrida, todas as tentativas passam @spec:AC-007 @spec:AC-147",
+      "method": "vitest-json"
+    },
+    "AC-148": {
+      "status": "pass",
+      "testName": "indicação três pessoas por UM convite dão três indicações @spec:AC-148 três pessoas por UM convite dão três indicações @spec:AC-148",
+      "method": "vitest-json"
+    },
+    "AC-149": {
+      "status": "pass",
+      "testName": "rotas de convite o convite nasce valendo quinze dias @spec:AC-149 o convite nasce valendo quinze dias @spec:AC-149",
+      "method": "vitest-json"
+    },
+    "AC-150": {
+      "status": "pass",
+      "testName": "quem convidou não vira oráculo: inexistente e expirado respondem igual @spec:AC-136 @spec:AC-150 não vira oráculo: inexistente e expirado respondem igual @spec:AC-136 @spec:AC-150",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {
+    "P-006": {
+      "status": "pass",
+      "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006"
+    },
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
+    "P-003": {
+      "status": "pass",
+      "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003"
+    },
+    "P-004": {
+      "status": "pass",
+      "testName": "permissões deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004 deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004"
+    },
+    "P-002": {
+      "status": "pass",
+      "testName": "exportar meus dados a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002 a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002"
+    },
+    "P-001": {
+      "status": "pass",
+      "testName": "excluir minha conta apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012 apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012"
+    },
+    "P-012": {
+      "status": "pass",
+      "testName": "excluir minha conta apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012 apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012"
+    },
+    "P-009": {
+      "status": "pass",
+      "testName": "código de convite tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009 tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009"
+    }
+  }
+}

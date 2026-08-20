@@ -104,7 +104,16 @@ model User {
   sessions       Session[]
   accounts       Account[]
   invitesCreated InviteCode[] @relation("InviteCreator")
-  inviteUsed     InviteCode?  @relation("InviteConsumer")
+
+  /// Por qual convite esta pessoa entrou.
+  ///
+  /// Mora aqui, e não em `InviteCode.usedById`, porque o convite deixou de ser
+  /// de uso único: um link atende quantas pessoas o receberem, então o lado
+  /// "muitos" é o do usuário. `SetNull` porque perder o convite não pode
+  /// apagar quem entrou por ele — quem trouxe a pessoa é `invitedById`, que é
+  /// um registro separado e permanente.
+  invitedViaId String?
+  invitedVia   InviteCode? @relation("InviteConsumer", fields: [invitedViaId], references: [id], onDelete: SetNull)
   posts          Post[]
   reactions      PostReaction[]
   comments       Comment[]
@@ -121,6 +130,8 @@ model User {
   @@index([visibleOnMap, profileComplete])
   // "Quantas pessoas fulano trouxe" será consulta de gamificação, não de tela solta.
   @@index([invitedById])
+  // "Quantas pessoas entraram por este link" é lido na tela de convites.
+  @@index([invitedViaId])
 }
 
 model Session {
@@ -168,24 +179,33 @@ model Verification {
   @@index([identifier])
 }
 
-/// Convite de uso único para entrar na rede (US-002).
+/// Convite para entrar na rede (US-002).
 ///
 /// O código em claro NUNCA é persistido: guardamos o SHA-256 dele (P-009). Um
-/// dump do banco, portanto, não entrega nenhum convite utilizável. O `usedById`
-/// é único, o que faz o próprio banco recusar o segundo uso do mesmo convite
-/// mesmo sob corrida (AC-007).
+/// dump do banco, portanto, não entrega nenhum convite utilizável.
+///
+/// **Era de uso único até 2026-08-20.** `usedById` era `@unique`, e era o banco
+/// quem recusava o segundo uso. Passou a valer para quantas pessoas receberem o
+/// link, até expirar — decisão do dono do produto, registrada no P-009 com o
+/// custo que ela tem. O que segura o portão agora é só o PRAZO, e é por isso que
+/// ele encurtou de 30 para 15 dias.
 model InviteCode {
   id        String    @id @default(uuid())
   codeHash  String    @unique
   note      String?
   expiresAt DateTime
-  usedAt    DateTime?
+
+  /// A última vez que alguém entrou por este convite.
+  ///
+  /// Chamava-se `usedAt` e queria dizer "consumido em". Num convite que atende
+  /// várias pessoas esse nome mente: ele sugere que o convite acabou ali.
+  lastUsedAt DateTime?
 
   createdById String
   createdBy   User   @relation("InviteCreator", fields: [createdById], references: [id], onDelete: Cascade)
 
-  usedById String? @unique
-  usedBy   User?   @relation("InviteConsumer", fields: [usedById], references: [id], onDelete: SetNull)
+  /// Todo mundo que entrou por este convite. Era `usedBy User?`, um só.
+  usedBy User[] @relation("InviteConsumer")
 
   createdAt DateTime @default(now())
 
