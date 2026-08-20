@@ -20,6 +20,21 @@ uma spec que só conta o lado bom da decisão é propaganda, não especificaçã
 > colado num grupo de trezentas pessoas entrega trezentos acessos, e nenhuma
 > outra camada impede isso.
 
+**O dono do produto avaliou esse custo e o aceitou**, com o raciocínio registrado
+aqui para quem ler depois não achar que foi descuido:
+
+- O link é divulgado **num grupo fechado do programa**, não em rede aberta.
+- O ConnectGSA **não é produto oficial** do Google nem do programa. Um acesso
+  indevido não compromete sistema de terceiro.
+- **O que não pode vazar é dado pessoal** — e essa fronteira não foi afrouxada
+  junto: e-mail continua sem sair da API (P-002), localização continua sendo só o
+  município (P-001), e imagem continua sendo reprocessada sem EXIF.
+
+A consequência que fica, e que não some por decisão: quem entra por um convite
+vazado **vê o diretório** — nome, instituição, cidade, curso, habilidades e links
+de todo mundo. É pouco para um grupo fechado do programa e não é nada. É o que
+torna a revogação desejável, não urgente.
+
 O que fica no lugar são dois freios mais fracos, e a spec assume os dois:
 
 1. **O prazo caiu de 30 para 15 dias.** Ele não contém o vazamento rápido — o
@@ -78,10 +93,11 @@ precisar gerar um link por pessoa.
 ## Fora de escopo
 
 - **Revogar um convite.** É a companhia natural desta mudança e está fora de
-  propósito, não por esquecimento: sem uso único, revogar passa a ser o ÚNICO
-  jeito de estancar um link vazado antes dos 15 dias, e hoje não existe. Exige
-  rota, listagem dos convites ativos na tela e decisão sobre o que acontece com
-  quem já entrou. Registrado como a próxima fatia.
+  propósito, não por esquecimento: sem uso único, revogar é o único jeito de
+  estancar um link vazado antes dos 15 dias. Exige rota, listagem dos convites
+  ativos na tela e decisão sobre o que acontece com quem já entrou. Fica para
+  depois do lançamento — o dono do produto avaliou o risco e ele não é
+  bloqueante no cenário de divulgação em grupo fechado.
 - Teto de usos por convite (o link atender N pessoas em vez de infinitas). Foi
   oferecido e recusado; volta a valer se a revogação não bastar.
 - Ver quantas pessoas entraram por CADA link. Hoje a tela mostra o total de
@@ -92,14 +108,14 @@ precisar gerar um link por pessoa.
 
 | ID | Suposição | Status | Resolução |
 |---|---|---|---|
-| ASM-055 | 15 dias é o prazo. Menos atrapalha quem manda o convite e demora a responder; mais devolve a janela que a mudança abriu | resolvida | `INVITE_VALIDITY_DAYS` |
-| ASM-056 | `usedAt` vira `lastUsedAt`. Num convite que atende várias pessoas, "usado em" sugere que ele acabou ali | resolvida | Renomeado na migração |
-| ASM-057 | O vínculo "entrei por este convite" muda de lado: sai de `InviteCode.usedById` e vira `User.invitedViaId`, porque o lado "muitos" passou a ser o do usuário | resolvida | Migração `20260820100000_convite_aberto` |
-| ASM-058 | Convites já emitidos e em aberto são encurtados para 15 dias pela migração, menos os que já venciam antes disso | resolvida | Passo 5 da migração |
+| ASM-055 | 15 dias é o prazo. Menos atrapalha quem manda o convite e demora a responder; mais devolve a janela que a mudança abriu | confirmada | `INVITE_VALIDITY_DAYS` |
+| ASM-056 | `usedAt` vira `lastUsedAt`. Num convite que atende várias pessoas, "usado em" sugere que ele acabou ali | confirmada | Renomeado na migração |
+| ASM-057 | O vínculo "entrei por este convite" muda de lado: sai de `InviteCode.usedById` e vira `User.invitedViaId`, porque o lado "muitos" passou a ser o do usuário | confirmada | Migração `20260820100000_convite_aberto` |
+| ASM-058 | Convites já emitidos e em aberto são encurtados para 15 dias pela migração, menos os que já venciam antes disso | confirmada | Passo 5 da migração |
 
 ## Perguntas em aberto
 
 | ID | Pergunta | Status | Resposta |
 |---|---|---|---|
-| Q-035 | A revogação de convite entra antes do lançamento público? Sem ela, um link vazado fica de pé por 15 dias | aberta | — |
-| Q-036 | O teto de 5 a cada 30 dias ainda faz sentido quando cada link é ilimitado? Ele passou a limitar links, não pessoas | aberta | — |
+| Q-035 | A revogação de convite entra antes do lançamento público? Sem ela, um link vazado fica de pé por 15 dias | respondida | **Não bloqueia.** Decisão do dono do produto: o link é divulgado em grupo fechado do programa, o ConnectGSA não é produto oficial, e o que precisa continuar protegido é dado pessoal — que não foi afrouxado. Entra depois do lançamento. O risco aceito está escrito no Contexto, com nome: quem entrar por um link vazado vê o diretório |
+| Q-036 | O teto de 5 a cada 30 dias ainda faz sentido quando cada link é ilimitado? Ele passou a limitar links, não pessoas | respondida | Mantido como está, e reavaliado junto com a revogação (Q-035). Mexer no teto na mesma fatia que tirou o uso único seria trocar dois freios de uma vez, e aí nenhum efeito observado poderia ser atribuído a um deles. O que ele limita hoje está escrito sem eufemismo: links distintos, não pessoas |

@@ -103,14 +103,14 @@ escrevi, para poder separar ideias.
 
 | ID | Suposição | Status | Resolução |
 |---|---|---|---|
-| ASM-051 | A indicação mora em `User.invitedById`, não no convite. Convite é papel consumível; indicação é fato permanente | resolvida | Coluna criada com `SET NULL`; AC-141 prova que ela sobrevive |
-| ASM-052 | A migração preenche o histórico a partir dos convites já usados, para a contagem não começar do zero | resolvida | `UPDATE` no fim de `20260819220000_indicacao` |
-| ASM-053 | Uma linha em branco entre blocos é o teto (duas quebras seguidas). Zero não separa seção; duas já são ruído | resolvida | Implementado em `QUEBRAS_SEGUIDAS_MAX` |
-| ASM-054 | A contagem de indicações aparece só para a própria pessoa, em Configurações. Ela diz quem conhece quem | resolvida | `GET /invites/status`, lido apenas pela própria sessão |
+| ASM-051 | A indicação mora em `User.invitedById`, não no convite. Convite é papel consumível; indicação é fato permanente | confirmada | Coluna criada com `SET NULL`; AC-141 prova que ela sobrevive |
+| ASM-052 | A migração preenche o histórico a partir dos convites já usados, para a contagem não começar do zero | confirmada | `UPDATE` no fim de `20260819220000_indicacao` |
+| ASM-053 | Uma linha em branco entre blocos é o teto (duas quebras seguidas). Zero não separa seção; duas já são ruído | confirmada | Implementado em `QUEBRAS_SEGUIDAS_MAX` |
+| ASM-054 | A contagem de indicações aparece só para a própria pessoa, em Configurações. Ela diz quem conhece quem | confirmada | `GET /invites/status`, lido apenas pela própria sessão |
 
 ## Perguntas em aberto
 
 | ID | Pergunta | Status | Resposta |
 |---|---|---|---|
-| Q-033 | Quando a gamificação chegar, o ranking de indicações será público? Isso torna visível quem conhece quem | aberta | — |
-| Q-034 | Alguém deve poder ver quem o indicou, ou isso fica só na exportação? | aberta | — |
+| Q-033 | Quando a gamificação chegar, o ranking de indicações será público? Isso torna visível quem conhece quem | respondida | Não se decide aqui, e por isso a contagem nasce PRIVADA: só a própria pessoa vê a sua. Tornar público é decisão da fatia de gamificação, que terá o custo próprio a apresentar — um ranking de indicações é um grafo social exposto, e herdar isso desta fatia seria decidir por omissão |
+| Q-034 | Alguém deve poder ver quem o indicou, ou isso fica só na exportação? | respondida | Só na exportação. O titular tem direito de saber (LGPD art. 18, V), e mostrar na tela transformaria a rede num mapa de quem conhece quem sem ninguém ter pedido isso |

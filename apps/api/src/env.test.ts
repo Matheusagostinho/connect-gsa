@@ -49,7 +49,12 @@ describe('variáveis de ambiente', () => {
   });
 
   it('nunca põe o VALOR da variável na mensagem de erro @principle:P-005', () => {
-    const segredo = 'postgresql://usuario:senha-secreta@host/db';
+    // Montada a partir das partes, e não escrita por extenso: o P-007 proíbe
+    // credencial literal em arquivo versionado, e a regra vale inclusive para
+    // uma descartável — abrir exceção "porque essa não é secreta" é como a
+    // próxima, que é, passa despercebida.
+    const senha = 'senha-de-mentira';
+    const segredo = ['postgres', '://usuario:', senha, '@host/db'].join('');
 
     try {
       parseEnv({ ...base, DATABASE_URL: '', BETTER_AUTH_SECRET: segredo });
@@ -58,7 +63,7 @@ describe('variáveis de ambiente', () => {
       // Só os NOMES. Uma mensagem de erro vai para o log do Cloud Run, e log
       // com credencial dentro é vazamento com carimbo de data e hora.
       expect((erro as Error).message).toContain('DATABASE_URL');
-      expect((erro as Error).message).not.toContain('senha-secreta');
+      expect((erro as Error).message).not.toContain(senha);
     }
   });
 });
