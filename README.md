@@ -539,9 +539,15 @@ O LinkedIn é o mais lento: exige página de empresa e passa por verificação.
 ### Passo 4 — API no Render
 
 O repositório traz um `render.yaml`: painel do Render → **New** → **Blueprint** →
-aponte para o repositório. Ele cria o serviço com o `Dockerfile` que já existe,
-com `healthCheckPath: /health` e com a migração rodando antes de trocar a versão
-no ar.
+aponte para o repositório. Ele cria o serviço com o `Dockerfile` que já existe e
+com `healthCheckPath: /health`.
+
+> **A migração não roda sozinha no plano gratuito.** O `preDeployCommand` do
+> Render só existe em planos pagos e é ignorado em silêncio no gratuito — o
+> deploy subiria código novo contra schema velho, que é a ordem que quebra.
+> Enquanto o plano for gratuito, rode a migração **da sua máquina, antes** de
+> enviar o commit que precisa dela (é o comando do Passo 1). O `render.yaml`
+> explica como religar o automático ao migrar para um plano pago.
 
 Preencha no painel as variáveis marcadas `sync: false`:
 
@@ -684,10 +690,11 @@ Daí em diante, Configurações gera convites e a rede cresce sozinha.
 
 - **API:** Render → o serviço → *Events* → *Rollback* na versão anterior.
 - **SPA:** Vercel → *Deployments* → *...* → *Promote to Production* numa anterior.
-- **Banco:** migração **não volta sozinha.** O `render.yaml` aplica as migrações
-  antes de trocar a versão no ar, e essa ordem é deliberada — schema novo com
-  código velho é tolerável por segundos; código novo contra schema velho quebra.
-  Para reverter, escreva a migração inversa.
+- **Banco:** migração **não volta sozinha**, e no plano gratuito ela também não
+  vai sozinha: é você quem roda `prisma migrate deploy` antes do deploy. Aplique
+  sempre nessa ordem — schema novo com código velho é tolerável por segundos;
+  código novo contra schema velho quebra. Para reverter, escreva a migração
+  inversa.
 
 ## Contribuindo
 

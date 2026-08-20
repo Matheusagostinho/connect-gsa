@@ -1,0 +1,105 @@
+# Blueprint do Render — a API do ConnectGSA.
+#
+# Ele descreve o serviço, mas NÃO os segredos: tudo marcado `sync: false` é
+# preenchido à mão no painel do Render e nunca entra no repositório (P-007).
+#
+# Para usar: painel do Render → New → Blueprint → aponte para este repositório.
+#
+# ## Duas coisas que este arquivo não resolve sozinho
+#
+# 1. O plano gratuito HIBERNA depois de ~15 min sem tráfego, e voltar leva ~50s.
+#    Quem clicar num link de convite nesse intervalo vê tela branca. A mitigação
+#    escolhida foi um ping externo — ver `.github/workflows/manter-api-acordada.yml`
+#    e o README, que explica por que o cron do GitHub sozinho não basta.
+#
+# 2. `COOKIE_SAME_SITE` precisa ser `none` enquanto o SPA estiver num `.vercel.app`
+#    e a API num `.onrender.com`: são sites diferentes, e com `lax` o navegador
+#    aceita o cookie na volta do OAuth e não o manda em mais nenhuma chamada — o
+#    aplicativo abre deslogado, sem erro no console. Com domínio próprio nos dois
+#    (apex e `api.`), volte para `lax`.
+
+services:
+  - type: web
+    name: connect-gsa-api
+    runtime: docker
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+
+    # ATENÇÃO — a migração NÃO roda sozinha neste plano.
+    #
+    # O `preDeployCommand` do Render existe apenas em planos PAGOS. No gratuito
+    # ele é ignorado em silêncio, e o deploy subiria código novo contra schema
+    # velho — que é exatamente a ordem que quebra em produção.
+    #
+    # Enquanto o plano for gratuito, a migração é um passo MANUAL, feito ANTES
+    # de enviar o commit que precisa dela:
+    #
+    #   DATABASE_URL="...pooler...neon.tech/..." \
+    #     pnpm --filter @connect-gsa/db exec prisma migrate deploy
+    #
+    # Ao migrar para um plano pago, descomente:
+    #
+    # preDeployCommand: >-
+    #   npx --yes prisma@7 migrate deploy --schema packages/db/prisma/schema.prisma
+    #
+    # Rodar a migração no ENTRYPOINT do contêiner seria a alternativa tentadora,
+    # e foi descartada: no plano gratuito o contêiner reinicia a cada saída da
+    # hibernação, então a migração passaria a rodar várias vezes por dia, e duas
+    # instâncias subindo juntas disputariam o lock do Prisma.
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      # O Render injeta a porta; o Dockerfile já usa a variável.
+      - key: PORT
+        value: 10000
+
+      # --- Endereços. Preencha depois de saber as URLs finais. ---
+      - key: WEB_URL
+        sync: false
+      - key: WEB_ORIGINS
+        sync: false
+      - key: API_URL
+        sync: false
+
+      # --- Cookie de sessão. Leia o comentário no topo antes de mudar. ---
+      - key: COOKIE_SAME_SITE
+        value: none
+
+      # --- Banco (Neon, string do POOLER) e sessão ---
+      - key: DATABASE_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+
+      # --- Cloudflare R2 ---
+      # MEDIA_PUBLIC_URL é o host de LEITURA (`pub-….r2.dev` ou domínio próprio),
+      # não o endpoint de escrita. Trocar os dois faz toda imagem responder 401.
+      - key: MEDIA_BUCKET
+        sync: false
+      - key: MEDIA_PUBLIC_URL
+        sync: false
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+
+      # --- Provedores OAuth ---
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: LINKEDIN_CLIENT_ID
+        sync: false
+      - key: LINKEDIN_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
