@@ -24,6 +24,16 @@
         "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
       },
       {
+        "source": "/fonts/**",
+        "headers": [
+          {
+            "//": "A fonte tem o conteúdo no nome do arquivo e é servida do próprio domínio — pode ficar no cache para sempre.",
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      },
+      {
         "source": "**",
         "headers": [
           { "key": "X-Content-Type-Options", "value": "nosniff" },
@@ -32,6 +42,11 @@
           {
             "key": "Permissions-Policy",
             "value": "geolocation=(), camera=(), microphone=(), interest-cohort=()"
+          },
+          {
+            "//": "SEGUNDA camada, nunca a primeira: o que impede injeção é a sanitização na ENTRADA, no servidor. Esta política existe para o dia em que ela falhar. DUAS coisas precisam casar com o seu ambiente antes do primeiro deploy, e as duas falham CALADAS: (1) troque `https://API-DA-SUA-INSTALACAO` pela URL da sua API, senão o SPA não conversa com o servidor; (2) o host de `MEDIA_PUBLIC_URL` precisa estar em `img-src` — se você não usar `storage.googleapis.com`, acrescente o seu, senão toda foto de perfil vira a inicial e ninguém entende por quê. Política verificada em navegador com o mapa aberto: worker do MapLibre, tiles do OpenFreeMap e fontes locais passam sem violação. Ver README, seção 'Colocar no ar'.",
+            "key": "Content-Security-Policy",
+            "value": "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://storage.googleapis.com https://tiles.openfreemap.org https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://media.licdn.com; font-src 'self'; connect-src 'self' https://API-DA-SUA-INSTALACAO https://tiles.openfreemap.org; worker-src 'self' blob:; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
           }
         ]
       }
