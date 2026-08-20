@@ -1,7 +1,7 @@
 # apps/web — o SPA do ConnectGSA
 
-Vite + React 19 + Tailwind 4 + TanStack Query. Build **estático**, publicado no Firebase
-Hosting.
+Vite + React 19 + Tailwind 4 + TanStack Query. Build **estático**, publicado na
+Vercel.
 
 ## Por que SPA e não Next.js
 
@@ -24,7 +24,7 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
 3. **Validação vem de `@connect-gsa/shared`.** O formulário usa o MESMO schema Zod que a
    API. Reescrever a regra no cliente é como as duas pontas divergem em silêncio.
 4. **Componente não usa hexadecimal cru.** Só as variáveis de `styles/tokens.css`.
-5. **A cidade vem de lista, nunca do GPS.** O `Permissions-Policy` do Firebase Hosting
+5. **A cidade vem de lista, nunca do GPS.** O `Permissions-Policy` do `vercel.json`
    inclusive nega `geolocation=()` para o navegador inteiro (P-001).
 6. **Reação é ícone desenhado, nunca emoji.** Há sistema Linux sem fonte de emoji
    instalada, onde o caractere vira quadrado vazio — e o rótulo continua junto porque
@@ -135,7 +135,27 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
     pelo React. Corrigir só um deixa o defeito vivo no outro.
 32. **A tela `/dev` só existe fora de produção.** Ela está atrás de `import.meta.env.DEV`,
    então o Vite a remove do build de produção — e a rota que a alimenta nem sequer é
-   registrada pela API lá.
+   registrada pela API lá. Cuidado ao depurar um build: `import.meta.env.DEV` é falso em
+   QUALQUER `vite build`, inclusive com `--mode development`. Para entrar num bundle de
+   produção, chame `/api/dev/login` direto.
+33. **A marca existe em DOIS arquivos.** `components/Logo.tsx` (SVG inline, acompanha o
+   tema) e `public/logo.svg` (arquivo, para o ícone da aba e o README, que não executam
+   React). São o mesmo traço, e a única defesa contra divergirem é o comentário cruzado em
+   cada um.
+34. **A fonte é servida do próprio domínio**, de `public/fonts/`, e não do CDN do Google.
+   Não é preferência: é o mesmo argumento que escolheu o OpenFreeMap — numa rede de
+   estudantes, não entregar IP e User-Agent a um terceiro a cada visita. Só os subsets
+   latinos, e o download roda À MÃO (`scripts/baixar-fontes.mjs`) com o resultado
+   versionado. No build, um Google Fonts fora do ar viraria um build quebrado.
+35. **A CSP mora no `vercel.json` e tem dois valores acoplados ao ambiente**: o host da
+   API (Render) em `connect-src` e o do bucket R2 em `img-src`. Os dois falham CALADOS —
+   o primeiro deixa o SPA sem servidor, o segundo transforma toda foto de perfil na
+   inicial. Se for mexer na política, verifique num navegador com **o mapa aberto**: o
+   worker do MapLibre e as tiles do OpenFreeMap são o que ela mais tem chance de quebrar,
+   e o sintoma é o mapa cinza que este projeto já conhece.
+36. **`REPOSITORIO` mora em `lib/projeto.ts`.** O endereço aparece na coluna de navegação
+   e em Configurações — dois literais iguais viram um desatualizado no dia em que o
+   repositório mudar de lugar.
 
 ## Design system
 
@@ -167,11 +187,13 @@ temas**.
 
 ## Cuidado com a cota
 
-O plano gratuito do Firebase Hosting dá **360 MB/dia** de transferência, e ao estourar o
-site é **desligado** até o mês virar. Daí duas decisões no código: o React fica em chunk
-próprio (uma correção no app não invalida o cache dele no navegador de ninguém) e o
-autocompletar busca no servidor em vez de baixar os 5.571 municípios. Se o tráfego crescer,
-a saída é pôr um CDN gratuito na frente do domínio — não é aumentar o bundle.
+O plano gratuito da Vercel dá **100 GB/mês** de banda. Daí duas decisões no código: o React
+fica em chunk próprio (uma correção no app não invalida o cache dele no navegador de
+ninguém) e o autocompletar busca no servidor em vez de baixar os 5.571 municípios.
+
+O que aperta primeiro, porém, não é a banda: é a **hibernação do Render**. Sem tráfego por
+~15 min a API dorme e a primeira requisição espera ~50 s — e nenhuma otimização de bundle
+resolve isso, porque o problema está do outro lado. Ver README, "Colocar no ar", Passo 8.
 
 ## Testes
 

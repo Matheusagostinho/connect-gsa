@@ -1,6 +1,6 @@
 # Roadmap do ConnectGSA
 
-> Situação em 19 de agosto de 2026 · 206 testes · 89/89 critérios de aceite provados
+> Situação em 20 de agosto de 2026 · 347 testes · 137/137 critérios de aceite provados
 
 Este documento compara o que o MVP prometeu com o que existe hoje, e ordena o que falta.
 A ordem não é por tamanho nem por vontade: começa pelo que é **exigência legal**, passa
@@ -233,34 +233,95 @@ antes da borda.
 
 **323 testes, 132/132 critérios provados, auditoria limpa.**
 
+### ~~Fatia 6.10 — Indicação, convite aberto e prontidão para publicar~~ · **entregue**
+
+Três coisas, e a do meio é uma mudança de regra com custo.
+
+**A indicação.** Quem entra por um convite passa a constar como indicado por quem o gerou.
+O vínculo já existia em `InviteCode`, mas não sobrevivia: a linha do convite tem cascade, e
+excluir quem convidou apagava junto o registro de que essa pessoa trouxe cinco outras. Um
+convite é papel que se consome; a indicação é fato — daí `User.invitedById`, com `SET NULL`
+e nunca `CASCADE`.
+
+**O convite deixou de ser de uso único.** Decisão do dono do produto, com o custo
+apresentado antes: um embaixador que quisesse trazer as quarenta pessoas do capítulo dele
+precisava de quarenta links e só podia criar cinco. O que se perdeu está escrito no P-009 e
+não deve ser minimizado — **o uso único era o que continha um link vazado**. O que ficou no
+lugar é o prazo, encurtado de 30 para 15 dias, e o teto de criação por período.
+
+Isso torna **revogar convite** a companhia natural da mudança — sem uso único, é o único
+jeito de estancar um link vazado antes do prazo. O dono do produto avaliou e **não a tornou
+bloqueante**: a divulgação é em grupo fechado do programa, o ConnectGSA não é produto
+oficial, e a fronteira que importa (dado pessoal) não foi afrouxada. Fica como Fatia 9.
+
+**A prontidão.** Três defeitos que só existiriam em produção, encontrados ao preparar a
+publicação e nenhum deles com sintoma em desenvolvimento:
+
+- **O login abriria deslogado.** O cookie de sessão era `SameSite=Lax` fixo, e Lax só é
+  enviado entre origens do mesmo site. `.web.app` e `.run.app` são sufixos públicos
+  diferentes: o cookie seria aceito na volta do OAuth e sumiria em toda chamada de dado
+  depois, sem uma linha de erro. Virou `COOKIE_SAME_SITE`, com a decisão explicada no
+  guia de publicação.
+- **As fotos sumiriam.** Sem `MEDIA_BUCKET`, a API grava no disco do Cloud Run, que é
+  efêmero — e o `deploy-api.yml` não passava a variável. Agora a API se recusa a subir sem
+  ela em produção. Era um aviso no README, e aviso em README não é trava.
+- **Não havia CSP no Hosting**, num SPA que renderiza texto de terceiros. Foi escrita e
+  **verificada em navegador** com o build de produção e o mapa aberto, antes de entrar.
+
+Junto: publicação em parágrafos (`sanitizeMultiline`), a Google Sans servida do próprio
+domínio, a marca como arquivo, o ícone da aba, e o rastro de ferramental de agente fora do
+repositório.
+
+**347 testes, 137/137 critérios provados.**
+
 ### Fatia 7 — Publicação em produção · **bloqueado por você**
 
-> Os três workflows estão **desligados no automático** desde 19/08/2026, a pedido: rodam só
-> sob demanda pela aba Actions. Os de deploy não teriam como passar sem os segredos do
-> Google Cloud. O de CI tinha um defeito próprio — rodava o seed sem gerar o client do
-> Prisma antes —, já corrigido. Religar é devolver os gatilhos, que estão comentados no
-> topo de cada arquivo.
+Nada está no ar. A infraestrutura mudou de Google Cloud para **Render (API) + Vercel (SPA)
++ Cloudflare R2 (imagens) + Neon (banco)** — decisão do dono do produto. O `render.yaml` e
+o `vercel.json` estão no repositório, e o **passo a passo completo está no README, seção
+"Colocar no ar"** — dez passos, com as três armadilhas que falham em silêncio marcadas.
 
-Nada disso está no ar. Falta, e não depende de código:
+Falta, e não depende de código:
 
-1. Criar o projeto no Google Cloud e ativar o faturamento
-2. Gerar as credenciais OAuth do Google, do LinkedIn e do GitHub
-3. Criar o banco no Neon e o bucket no Cloud Storage
-4. Configurar o Workload Identity Federation para o CI publicar sem chave
+1. Criar as contas (Render, Vercel, Cloudflare, Neon, UptimeRobot) — todas gratuitas
+2. Criar o banco no Neon e o bucket no R2
+3. Gerar as credenciais OAuth do Google, do LinkedIn e do GitHub
+4. Trocar os dois marcadores da CSP no `vercel.json` pelos endereços reais
 
-O pipeline está pronto e testado até onde dá sem essas contas.
+O que a migração trouxe de novo, e que não existia no desenho anterior:
+
+- **A hibernação do Render** (~15 min sem tráfego, ~50 s para voltar) é o limite que aperta
+  primeiro, e desde o primeiro dia. A mitigação é um monitor externo; o workflow do
+  repositório é reforço, não solução, e o próprio arquivo diz por quê.
+- **`COOKIE_SAME_SITE=none` virou requisito**, porque `vercel.app` e `onrender.com` são
+  sites diferentes. Volta a `lax` no dia do domínio próprio.
+- **Um segredo novo passou a existir:** o Cloud Storage autenticava pelo ambiente, o R2
+  exige chave e segredo.
 
 ### Fatia 8 — Testes de ponta a ponta
 
 A suíte cobre bem serviço e rota, mas o fluxo completo no navegador — convite, login social
 real, onboarding, publicação — só foi verificado à mão.
 
-### Fatia 9 — Gamificação
+### Fatia 9 — Revogar convite
+
+Nasceu da Fatia 6.10 e não estava em nenhum plano. Com o convite atendendo quantas pessoas
+receberem o link, revogar virou a única forma de estancar um vazamento antes dos 15 dias.
+
+**Não bloqueia o lançamento**, por decisão do dono do produto: o link é divulgado em grupo
+fechado do programa e o ConnectGSA não é produto oficial. O risco aceito tem nome e está
+escrito em `.spec/features/convite-aberto/` — quem entra por um link vazado vê o diretório.
+
+Exige uma rota, a listagem dos convites ativos na tela (que hoje não existe — a tela só
+mostra o convite recém-gerado) e uma decisão sobre o que acontece com quem já entrou pelo
+link revogado.
+
+### Fatia 10 — Gamificação
 
 Pontos, badges e ranking opcional. É o que mais engaja num lançamento, e o mais fácil de
 adiar sem consequência.
 
-### Fatia 10 — Tempo real
+### Fatia 11 — Tempo real
 
 Presença online e contadores ao vivo. Atenção ao teto do plano gratuito do Firebase: **100
 conexões simultâneas**, e as novas são recusadas. O lançamento é justamente o pico.
@@ -274,7 +335,8 @@ conexões simultâneas**, e as novas são recusadas. O lançamento é justamente
 | **Firebase Hosting: 360 MB/dia** — ao estourar, o site é desligado | mitigado em parte (mapa sob demanda); falta pôr um CDN gratuito na frente |
 | **Firebase RTDB: 100 conexões simultâneas** no plano gratuito | ainda não afeta — o tempo real não existe |
 | **Marca**: "ConnectGSA" usa o nome do programa do Google | aviso de projeto não oficial no rodapé; sem aval, o risco permanece |
-| **Sem exportar/excluir conta** antes da abertura pública | é a Fatia 4, a próxima |
+| ~~**Sem exportar/excluir conta** antes da abertura pública~~ | entregue na Fatia 4 |
+| **Convite vazado não tem como ser revogado** — vale 15 dias para quem tiver o link | risco aceito: divulgação em grupo fechado, projeto não oficial. Revogação é a Fatia 9 |
 
 ---
 

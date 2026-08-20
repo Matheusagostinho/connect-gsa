@@ -22,7 +22,7 @@ src/
 │   └── session.ts      resolve a sessão e expõe `request.currentUser`
 ├── authz/              CASL: quem pode o quê
 ├── modules/
-│   ├── invite/         geração, conferência e reserva atômica de convites
+│   ├── invite/         geração e conferência de convites, e a indicação
 │   ├── profile/        perfil, sanitização e o mapper que nunca devolve e-mail
 │   ├── media/          reprocessamento de imagem e drivers de armazenamento
 │   ├── post/           posts, reações e comentários
@@ -35,7 +35,7 @@ src/
 
 | Prefixo | O que é |
 |---|---|
-| `/health` | sonda de infraestrutura — o Cloud Run consulta esta URL |
+| `/health` | sonda de infraestrutura — o Render consulta esta URL, e o ping que impede a hibernação também |
 | `/s/...` | link de compartilhamento, que vai colado em conversa |
 | `/api/auth/*` | Better Auth (o `basePath` dele já inclui o prefixo) |
 | `/api/*` | todo o resto do aplicativo |
@@ -91,9 +91,8 @@ que torna a página 2 uma continuação real da página 1.
 invisível para quase todo mundo. Quem conhece outro participante do programa é
 quem está NELE.
 
-O que segura o portão deixou de ser a permissão e passou a ser o **teto por
-período** (`INVITE_QUOTA`). Ele vive no SERVIÇO, não no CASL: o CASL decide sobre
-o que já está em memória, e contar convites criados exige ir ao banco. O teto
+O teto por período (`INVITE_QUOTA`) vive no SERVIÇO, não no CASL: o CASL decide
+sobre o que já está em memória, e contar convites criados exige ir ao banco. Ele
 conta convites **criados**, não usados — contar usados deixaria alguém gerar cem
 links de uma vez, e o teto só apareceria depois do estrago.
 
@@ -105,8 +104,50 @@ letra dele. Há teste provando que todos os 32 símbolos saem.
 
 `GET /invites/:code` devolve **só o primeiro nome** de quem convidou. Nome
 completo transformaria o link num jeito de descobrir quem está na rede sem
-entrar nela. E a recusa é a MESMA para não existe, já usado e expirado: distinguir
-os três entregaria de graça o oráculo que o limite de tentativas nega.
+entrar nela. E a recusa é a MESMA para não existe e expirado: distinguir os dois
+entregaria de graça o oráculo que o limite de tentativas nega.
+
+### O convite não é mais de uso único — leia antes de mexer
+
+Até 20/08/2026 a reserva era um compare-and-set atômico (`updateMany` com
+`usedAt: null` no filtro), e era o Postgres quem deixava exatamente uma
+requisição passar. **Isso não existe mais.** Foi decisão do dono do produto, com
+o custo apresentado antes, e está registrada no P-009 e em
+`.spec/features/convite-aberto/`.
+
+O que mudou no código, e o que cada nome quer dizer agora:
+
+- `claimInvite` virou **`resolveInvite`**. Nada é reservado: a função só confere
+  o formato e o prazo. Manter "claim" no nome seria mentir sobre o que ela faz.
+- `releaseInvite` **sumiu**. Não há reserva a devolver — e ela já era código
+  morto antes disso.
+- `usedAt` virou `lastUsedAt`, e é gravado em `attachInviteToUser`, não na
+  conferência. Marcar na conferência dataria convites de cadastros que nunca
+  aconteceram.
+
+**O que segura o portão agora é o PRAZO**, e só ele. Encurtar
+`INVITE_VALIDITY_DAYS` aperta; alongar afrouxa. Não há outra camada por baixo, e
+é por isso que **revogar convite** é a próxima fatia: sem uso único, revogar é o
+único jeito de estancar um link vazado antes do prazo.
+
+Se você for mexer aqui achando que "convite é de uma pessoa só", pare e leia o
+P-009 primeiro.
+
+## Indicação
+
+`User.invitedById` grava quem trouxe cada pessoa. Ele **não** é o mesmo que
+`User.invitedViaId` (por qual convite ela entrou): o primeiro é permanente, o
+segundo morre com o convite. `packages/db/AGENTS.md` tem a tabela dos dois.
+
+`attachInviteToUser` grava tudo numa transação, e a leitura de `createdById` sai
+do próprio `update`. Ler antes, fora da transação, abria uma janela: se quem
+convidou excluísse a conta entre a leitura e a escrita, a chave estrangeira
+recusava e **o cadastro inteiro falhava** — o portão fechando na cara de quem
+tinha convite válido.
+
+Convite que a pessoa gerou para si mesma não a indica. Ninguém a trouxe, e
+registrar o contrário seria gravar um fato falso — que vira ponto falso quando
+houver gamificação.
 
 ## Nome de usuário
 
@@ -148,9 +189,18 @@ Não removemos "os campos ruins" do EXIF: lista de bloqueio envelhece mal. Decod
 pixels e escrevemos um arquivo novo, que nasce sem metadado. O tipo vem dos **bytes**, nunca
 da extensão nem do `Content-Type`, que são do cliente e não valem nada.
 
-O destino é escolhido por driver: disco local em desenvolvimento, Cloud Storage em produção.
-Sem essa costura, ou o ambiente local exigiria credencial do Google, ou o código de produção
-teria um `if` sobre ambiente por dentro.
+O destino é escolhido por driver: disco local em desenvolvimento, **Cloudflare R2** em
+produção. Sem essa costura, ou o ambiente local exigiria credencial de nuvem, ou o código de
+produção teria um `if` sobre ambiente por dentro. A costura já provou o valor: trocar Cloud
+Storage por R2 foi um arquivo novo e uma linha no `app.ts` — nenhuma rota, nenhum serviço e
+nenhuma linha do banco souberam.
+
+O R2 fala o protocolo do S3, e é por isso que a dependência se chama `aws4fetch` sem ter
+nada a ver com a Amazon: ela só assina a requisição no formato SigV4. O binding nativo do R2
+seria melhor e não serve — ele só existe dentro de Cloudflare Workers.
+
+**A mensagem de erro do driver carrega o status, nunca o corpo da resposta.** O corpo de
+erro do S3 ecoa cabeçalhos da requisição assinada, e essa mensagem vai para o log (P-005).
 
 ## Quadro de avisos
 
@@ -192,10 +242,11 @@ pessoa precisa para saber que há um pedido a responder.
    impossível, não apenas proibido (P-002). Não crie um segundo caminho de serialização.
 2. **Toda rota declara `response` schema.** O Fastify serializa através dele; campo fora do
    schema não chega ao cliente. Remover o schema reabre o vazamento.
-3. **A reserva de convite é um compare-and-set no Postgres** (`updateMany` com
-   `usedAt: null` no filtro). Trocar por "checar depois gravar" reabre a janela de corrida
-   que o teste do AC-007 explora com 12 tentativas simultâneas.
-4. **Recusa de convite tem mensagem única**, igual para inexistente, expirado e já usado.
+3. **O prazo do convite é conferido em TODA leitura** (`expiresAt: { gt: new Date() }` em
+   `resolveInviteByHash`, `checkInvite` e `invitationFor`). Desde que o uso único saiu, é a
+   única coisa que fecha um convite — tirar a cláusula de um desses caminhos abre a rede por
+   ali, e os outros dois continuariam parecendo corretos.
+4. **Recusa de convite tem mensagem única**, igual para inexistente e expirado.
    Diferenciar entrega um oráculo para quem varre códigos.
 5. **O papel vem do banco a cada requisição**, nunca do cookie. Papel dentro do token seria
    escalonamento de privilégio a uma edição de distância.
@@ -221,10 +272,47 @@ Eles usam um banco **separado** (`TEST_DATABASE_URL`), porque `resetTestData` ap
 inteiras. `testing/db.ts` se recusa a rodar se ele for igual ao de desenvolvimento — o
 estrago seria silencioso: os testes passariam e você só descobriria ao voltar para a tela.
 
+## Texto livre: dois sanitizadores, e usar o errado destrói conteúdo
+
+`sanitizeText` achata `\s+` para um espaço — certo para nome, bio e rótulo de
+habilidade, que são campos de UMA linha.
+
+`sanitizeMultiline` preserva a quebra de linha e é o que publicação e comentário
+usam. Quem escrevia em parágrafos via tudo virar uma linha só justamente porque
+o primeiro era usado nos dois casos, e o defeito estava na ENTRADA — a exibição
+já usava `whitespace-pre-wrap`.
+
+Os dois mantêm a política de tags como lista de PERMISSÃO vazia: remover todas,
+nunca enumerar as perigosas (P-006). Ao criar um campo de texto novo, a pergunta
+é "isto tem parágrafos?", não "qual dos dois está mais à mão".
+
+`QUEBRAS_SEGUIDAS_MAX` conta QUEBRAS, não linhas vazias: duas quebras deixam uma
+linha em branco. O nome anterior contava uma coisa e dizia outra.
+
+## O que a API se recusa a fazer em produção
+
+Três travas, e nenhuma depende de alguém lembrar:
+
+1. **Sem as cinco variáveis do R2, a API não sobe** (`env.ts`): `MEDIA_BUCKET`,
+   `MEDIA_PUBLIC_URL`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID` e
+   `R2_SECRET_ACCESS_KEY`. O disco do contêiner é efêmero — e no plano gratuito
+   do Render, que hiberna por inatividade, "reiniciou" não é evento raro: é toda
+   madrugada. Sem bucket, as fotos sumiriam de um dia para o outro sem nada no
+   log. Isto já foi um aviso no README, e aviso em README não é trava.
+2. **As rotas `/api/dev/*` não são registradas**, e `assertDevOnly` lança se
+   alguém tentar.
+3. **`COOKIE_SAME_SITE` decide se o login funciona.** `lax` só serve quando o
+   SPA e a API estão no mesmo site (mesmo domínio registrável). **Com o SPA na
+   Vercel e a API no Render, precisa ser `none`** — `vercel.app` e `onrender.com`
+   são sufixos públicos diferentes. Cross-site com `lax`, o cookie é aceito na
+   volta do OAuth e some nas chamadas de dado: o aplicativo abre deslogado sem
+   um erro sequer. Em desenvolvimento nunca acontece, porque o proxy do Vite faz
+   tudo ser `localhost`. O dia de voltar para `lax` é o dia do domínio próprio.
+
 ## Armadilhas conhecidas
 
 - `fileParallelism: false` no `vitest.config.ts`: os testes compartilham um Postgres, e
   arquivos em paralelo limpariam tabelas uns dos outros.
-- `trustProxy: true` é obrigatório no Cloud Run — sem ele o rate limit veria o IP do
-  balanceador e trataria a internet inteira como um cliente só.
+- `trustProxy: true` é obrigatório atrás do proxy do Render — sem ele o rate limit veria o
+  IP do balanceador e trataria a internet inteira como um cliente só.
 - `parseEnv` lista apenas os **nomes** das variáveis inválidas, nunca os valores (P-005).
