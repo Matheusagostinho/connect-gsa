@@ -134,13 +134,49 @@ export async function claimInviteByHash(
   return { inviteId: invite.id };
 }
 
-/** Vincula o convite já reservado ao usuário criado a partir dele. */
+/**
+ * Vincula o convite ao usuário criado a partir dele, e grava a INDICAÇÃO.
+ *
+ * São dois registros com vidas diferentes, e é por isso que existem os dois:
+ *
+ * - `InviteCode.usedById` diz qual convite foi consumido por quem. Some junto
+ *   com o convite se quem o emitiu excluir a conta (a linha tem cascade).
+ * - `User.invitedById` diz quem trouxe a pessoa para a rede. É um FATO, não um
+ *   papel consumido: sobrevive à exclusão de quem convidou (vira nulo) e é o
+ *   que vai alimentar a gamificação.
+ *
+ * A gravação é uma transação: o convite marcado como usado sem a indicação
+ * registrada seria um buraco silencioso no histórico, descoberto só quando
+ * alguém fosse contar pontos.
+ *
+ * Quem emitiu o convite sai do próprio `update`, e não de uma leitura anterior.
+ * Ler fora da transação abria uma janela: se essa pessoa excluísse a conta
+ * entre a leitura e a escrita, a chave estrangeira recusaria o `invitedById` e
+ * o CADASTRO INTEIRO falharia — o portão fechando na cara de quem tinha convite
+ * válido. Dentro da transação, o valor lido é o valor gravado.
+ */
 export async function attachInviteToUser(
   prisma: PrismaClient,
   inviteId: string,
   userId: string,
 ): Promise<void> {
-  await prisma.inviteCode.update({ where: { id: inviteId }, data: { usedById: userId } });
+  await prisma.$transaction(async (tx) => {
+    const invite = await tx.inviteCode.update({
+      where: { id: inviteId },
+      data: { usedById: userId },
+      select: { createdById: true },
+    });
+
+    // Convite que a pessoa gerou para si mesma não a indica: ninguém a trouxe.
+    if (invite.createdById === userId) return;
+
+    await tx.user.update({ where: { id: userId }, data: { invitedById: invite.createdById } });
+  });
+}
+
+/** Quantas pessoas entraram pelos convites desta. */
+export async function contarIndicacoes(prisma: PrismaClient, userId: string): Promise<number> {
+  return prisma.user.count({ where: { invitedById: userId } });
 }
 
 /** Devolve a reserva quando o cadastro não chegou a acontecer. */

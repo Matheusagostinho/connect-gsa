@@ -1,5 +1,5 @@
-import { INVITE_QUOTA, type CreatedInvite } from '@connect-gsa/shared';
-import { useMutation } from '@tanstack/react-query';
+import { INVITE_QUOTA, type CreatedInvite, type InviteStatus } from '@connect-gsa/shared';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Check, Copy, Share2 } from 'lucide-react';
 import { useState } from 'react';
 import { api } from '../lib/api.js';
@@ -20,12 +20,23 @@ import { Button, Card } from './ui.tsx';
 export function InviteShare() {
   const [copiado, setCopiado] = useState(false);
 
+  const status = useQuery({
+    queryKey: ['invites', 'status'],
+    queryFn: () => api.get<InviteStatus>('/invites/status'),
+  });
+
   const gerar = useMutation({
     mutationFn: () => api.post<CreatedInvite>('/invites', { validityDays: 30 }),
-    onSuccess: () => setCopiado(false),
+    onSuccess: async () => {
+      setCopiado(false);
+      // O teto acabou de mudar: reler é mais barato que adivinhar.
+      await status.refetch();
+    },
   });
 
   const convite = gerar.data;
+  const indicacoes = status.data?.indicacoes ?? 0;
+  const restantes = status.data?.restantes ?? null;
 
   async function compartilhar() {
     if (!convite) return;
@@ -54,9 +65,24 @@ export function InviteShare() {
     <Card>
       <h2 className="text-xl font-medium">Convidar alguém</h2>
       <p className="mt-2 text-sm text-ink-muted">
-        Gere um link e mande para quem é do programa. Vale por 30 dias e serve para uma pessoa só.
-        Você pode criar até {INVITE_QUOTA.max} convites a cada {INVITE_QUOTA.days} dias.
+        Gere um link e mande para quem é do programa. Vale por 30 dias e serve para{' '}
+        <strong className="font-medium text-ink">uma pessoa só</strong>.
+        {restantes === null
+          ? ' Você não tem limite de convites.'
+          : ` Você pode criar até ${INVITE_QUOTA.max} a cada ${INVITE_QUOTA.days} dias — restam ${restantes}.`}
       </p>
+
+      {/*
+        A contagem de indicações fica visível desde já, antes da gamificação
+        existir. Dado invisível não é conferido por ninguém, e erro em dado
+        invisível só aparece quando ele já virou pontuação.
+      */}
+      {indicacoes > 0 ? (
+        <p className="mt-3 text-sm text-ink">
+          <strong className="font-medium">{indicacoes}</strong>{' '}
+          {indicacoes === 1 ? 'pessoa já entrou' : 'pessoas já entraram'} pelos seus convites.
+        </p>
+      ) : null}
 
       {convite ? (
         <div className="mt-5 flex flex-col gap-3">

@@ -4,6 +4,7 @@ import {
   createdInviteSchema,
   inviteCodeSchema,
   inviteInvitationSchema,
+  inviteStatusSchema,
   redeemInviteSchema,
 } from '@connect-gsa/shared';
 import { z } from 'zod';
@@ -16,7 +17,13 @@ import {
 import { requireAuth } from '../../auth/session.js';
 import { assertCan } from '../../authz/guard.js';
 import type { Env } from '../../env.js';
-import { checkInvite, createInvite, invitationFor } from './invite.service.js';
+import {
+  checkInvite,
+  contarIndicacoes,
+  createInvite,
+  invitationFor,
+  invitesRestantes,
+} from './invite.service.js';
 
 export function registerInviteRoutes(app: AppInstance, prisma: PrismaClient, env: Env): void {
   app.post(
@@ -28,6 +35,21 @@ export function registerInviteRoutes(app: AppInstance, prisma: PrismaClient, env
 
       const invite = await createInvite(prisma, user.id, request.body, env.WEB_URL, user.role);
       return reply.status(201).send(invite);
+    },
+  );
+
+  /** Quantos convites ainda posso criar, e quantas pessoas já trouxe. */
+  app.get(
+    '/invites/status',
+    { schema: { response: { 200: inviteStatusSchema } } },
+    async (request) => {
+      const user = requireAuth(request);
+      const [restantes, indicacoes] = await Promise.all([
+        invitesRestantes(prisma, user.id, user.role),
+        contarIndicacoes(prisma, user.id),
+      ]);
+
+      return { restantes, indicacoes };
     },
   );
 

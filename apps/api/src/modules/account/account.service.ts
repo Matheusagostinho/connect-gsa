@@ -37,6 +37,8 @@ export async function exportAccount(
       skills: { select: { name: true } },
       institution: { select: { name: true, campus: true } },
       city: { select: { name: true, state: true } },
+      invitedBy: { select: { name: true } },
+      invited: { select: { name: true, createdAt: true }, orderBy: { createdAt: 'asc' } },
     },
   });
 
@@ -102,6 +104,13 @@ export async function exportAccount(
       city: user.city ? `${user.city.name}/${user.city.state}` : null,
       visibleOnMap: user.visibleOnMap,
       createdAt: user.createdAt.toISOString(),
+    },
+    referral: {
+      invitedBy: user.invitedBy?.name ?? null,
+      invited: user.invited.map((pessoa) => ({
+        name: pessoa.name,
+        joinedAt: pessoa.createdAt.toISOString(),
+      })),
     },
     posts: posts.map((p) => ({
       id: p.id,

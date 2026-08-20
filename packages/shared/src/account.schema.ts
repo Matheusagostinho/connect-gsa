@@ -46,6 +46,20 @@ export const accountExportSchema = z.object({
     visibleOnMap: z.boolean(),
     createdAt: z.iso.datetime(),
   }),
+  /**
+   * A indicação: quem me trouxe, e quem eu trouxe.
+   *
+   * Faz parte dos meus dados tanto quanto uma publicação — é um vínculo entre
+   * mim e outra pessoa. Deixá-la de fora tornaria a exportação incompleta a
+   * partir do dia em que a rede passou a registrá-la (LGPD art. 18, V).
+   *
+   * Só o NOME de quem convidou e de quem entrou. Nem e-mail nem identificador:
+   * a exportação é dos meus dados, e o P-002 vale aqui como em toda saída.
+   */
+  referral: z.object({
+    invitedBy: z.string().nullable(),
+    invited: z.array(z.object({ name: z.string(), joinedAt: z.iso.datetime() })),
+  }),
   posts: z.array(
     z.object({
       id: z.uuid(),

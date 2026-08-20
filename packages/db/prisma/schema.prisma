@@ -70,6 +70,19 @@ model User {
   /// Quando o nome de usuário foi trocado pela última vez.
   slugChangedAt DateTime?
 
+  /// Quem trouxe esta pessoa para a rede.
+  ///
+  /// A indicação mora em quem foi INDICADO, não no convite. Um convite é um
+  /// papel que se consome e pode desaparecer com quem o emitiu — a indicação é
+  /// um fato permanente, e vai alimentar a gamificação.
+  ///
+  /// `SetNull` e NUNCA `Cascade`: com cascade, excluir um embaixador apagaria em
+  /// silêncio todo mundo que ele convidou. É o tipo de erro que só aparece no
+  /// dia em que alguém sai do programa, e aí já apagou.
+  invitedById String?
+  invitedBy   User?   @relation("Indicacao", fields: [invitedById], references: [id], onDelete: SetNull)
+  invited     User[]  @relation("Indicacao")
+
   /// Até quando esta pessoa já viu as próprias notificações.
   ///
   /// Uma coluna em vez de uma tabela de notificações. Nesta escala, manter
@@ -106,6 +119,8 @@ model User {
   @@index([cityId])
   // Filtro do diretório e do mapa: só perfis completos e visíveis interessam.
   @@index([visibleOnMap, profileComplete])
+  // "Quantas pessoas fulano trouxe" será consulta de gamificação, não de tela solta.
+  @@index([invitedById])
 }
 
 model Session {

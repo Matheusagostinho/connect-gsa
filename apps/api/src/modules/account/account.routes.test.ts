@@ -154,6 +154,36 @@ describe('exportar meus dados', () => {
     expect(dados.connections.map((c) => c.name)).toEqual(['Bruno']);
   });
 
+  it('traz quem me convidou e quem entrou pelos meus convites @spec:AC-142', async () => {
+    const [ana, bruno] = await Promise.all([embaixador('Ana'), embaixador('Bruno')]);
+
+    // Ana trouxe Bruno. É um vínculo entre os dois, e faz parte dos dados de
+    // ambos tanto quanto uma publicação.
+    await prisma.user.update({ where: { id: bruno.id }, data: { invitedById: ana.id } });
+
+    const dela = (await exportar(ana.id)).json<AccountExport>();
+    const dele = (await exportar(bruno.id)).json<AccountExport>();
+
+    expect(dela.referral.invited.map((p) => p.name)).toContain('Bruno');
+    expect(dela.referral.invitedBy).toBeNull();
+    expect(dele.referral.invitedBy).toBe('Ana');
+    expect(dele.referral.invited).toEqual([]);
+  });
+
+  it('a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002', async () => {
+    const [ana, bruno] = await Promise.all([
+      embaixador('Ana'),
+      embaixador('Bruno', 'bruno.indicado@uni.br'),
+    ]);
+    await prisma.user.update({ where: { id: bruno.id }, data: { invitedById: ana.id } });
+
+    const dela = await exportar(ana.id);
+
+    // A exportação é dos MEUS dados. O P-002 vale aqui como em toda saída.
+    expect(dela.body).not.toContain('bruno.indicado@uni.br');
+    expect(JSON.stringify(dela.json<AccountExport>().referral)).not.toContain(bruno.id);
+  });
+
   it('não entrega e-mail de terceiros @spec:AC-071 @principle:P-002', async () => {
     const [ana, bruno] = await Promise.all([
       embaixador('Ana', 'ana.titular@uni.br'),

@@ -1,7 +1,13 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { closeTestDb, createTestUser, resetTestData, testDb } from '../../testing/db.js';
 import { generateInviteCode, hashInviteCode } from './invite.code.js';
-import { claimInvite, createInvite, isEmailAllowed } from './invite.service.js';
+import {
+  attachInviteToUser,
+  claimInvite,
+  contarIndicacoes,
+  createInvite,
+  isEmailAllowed,
+} from './invite.service.js';
 
 const prisma = testDb();
 
@@ -120,5 +126,74 @@ describe('link de convite', () => {
     );
 
     expect(invite.shareUrl).not.toContain('//convite');
+  });
+});
+
+describe('indicação', () => {
+  it('entrar por convite registra quem indicou @spec:AC-139', async () => {
+    const ana = await createTestUser({ role: 'admin' });
+    const bruno = await createTestUser();
+    const invite = await createInvite(prisma, ana.id, { validityDays: 30 }, 'http://localhost:5173');
+
+    const { inviteId } = await claimInvite(prisma, invite.code);
+    await attachInviteToUser(prisma, inviteId, bruno.id);
+
+    const gravado = await prisma.user.findUniqueOrThrow({
+      where: { id: bruno.id },
+      select: { invitedById: true },
+    });
+
+    expect(gravado.invitedById).toBe(ana.id);
+  });
+
+  it('quem entra sem convite não ganha indicador @spec:AC-140', async () => {
+    const carla = await createTestUser();
+
+    // Inventar um indicador para quem entrou pela lista aprovada seria registrar
+    // um fato falso — e um fato falso vira ponto falso quando houver pontuação.
+    const gravado = await prisma.user.findUniqueOrThrow({
+      where: { id: carla.id },
+      select: { invitedById: true },
+    });
+
+    expect(gravado.invitedById).toBeNull();
+  });
+
+  it('excluir quem convidou NÃO apaga quem foi convidado @spec:AC-141', async () => {
+    const ana = await createTestUser({ role: 'admin' });
+    const bruno = await createTestUser();
+    const invite = await createInvite(prisma, ana.id, { validityDays: 30 }, 'http://localhost:5173');
+    const { inviteId } = await claimInvite(prisma, invite.code);
+    await attachInviteToUser(prisma, inviteId, bruno.id);
+
+    await prisma.user.delete({ where: { id: ana.id } });
+
+    // Com `onDelete: Cascade` na chave estrangeira, esta linha teria sumido — e
+    // o defeito só apareceria no dia em que alguém saísse do programa.
+    const sobreviveu = await prisma.user.findUnique({
+      where: { id: bruno.id },
+      select: { invitedById: true },
+    });
+
+    expect(sobreviveu).not.toBeNull();
+    expect(sobreviveu?.invitedById).toBeNull();
+  });
+
+  it('conta quantas pessoas entraram pelos meus convites', async () => {
+    const ana = await createTestUser({ role: 'admin' });
+
+    for (let i = 0; i < 3; i += 1) {
+      const convidado = await createTestUser();
+      const invite = await createInvite(
+        prisma,
+        ana.id,
+        { validityDays: 30 },
+        'http://localhost:5173',
+      );
+      const { inviteId } = await claimInvite(prisma, invite.code);
+      await attachInviteToUser(prisma, inviteId, convidado.id);
+    }
+
+    await expect(contarIndicacoes(prisma, ana.id)).resolves.toBe(3);
   });
 });

@@ -91,3 +91,17 @@ export const inviteInvitationSchema = z.object({
 });
 
 export type InviteInvitation = z.infer<typeof inviteInvitationSchema>;
+
+/**
+ * O que a pessoa vê sobre os próprios convites.
+ *
+ * `restantes` é `null` para quem não tem teto (coordenação e moderação) — e não
+ * um número grande fingindo de infinito, que a interface teria que interpretar.
+ */
+export const inviteStatusSchema = z.object({
+  restantes: z.number().int().nonnegative().nullable(),
+  /** Quantas pessoas já entraram pelos meus convites. Vai alimentar a gamificação. */
+  indicacoes: z.number().int().nonnegative(),
+});
+
+export type InviteStatus = z.infer<typeof inviteStatusSchema>;
