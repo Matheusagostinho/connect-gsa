@@ -9,6 +9,9 @@ import { cn } from './ui.tsx';
  *
  * O símbolo é uma rede de nós formando um "C": os pontos são os embaixadores e
  * as linhas, as conexões entre eles.
+ *
+ * O mesmo desenho existe em `public/logo.svg`, para os dois consumidores que não
+ * executam React: o ícone da aba do navegador e o README. Mexeu aqui, mexa lá.
  */
 
 const AZUL = '#4285F4';

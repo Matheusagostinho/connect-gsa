@@ -10,20 +10,42 @@
     />
     <!-- Rede fechada: nada aqui deve ser indexado. -->
     <meta name="robots" content="noindex, nofollow" />
+
+    <!--
+      SVG e não .ico: um arquivo serve todas as densidades de tela e pesa menos
+      de 1 KB, o que importa contra o teto de transferência do plano gratuito.
+      O `.svg` é o mesmo desenho de `src/components/Logo.tsx`.
+    -->
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <!-- Acompanha o tema, para a barra do navegador não destoar da página. -->
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#131314" media="(prefers-color-scheme: dark)" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
-      Google Sans é a fonte da referência visual e, desde janeiro de 2026, está
-      publicada sob SIL Open Font License — dá para usar sem pendência de licença.
+      A fonte vem do NOSSO domínio, não do CDN do Google.
+
+      Google Sans está sob SIL Open Font License desde janeiro de 2026, então
+      servi-la é permitido — e servi-la daqui é o que mantém a coerência com a
+      escolha do OpenFreeMap para o mapa: numa rede de estudantes, não
+      introduzir um terceiro que vê IP e User-Agent a cada visita pesa mais que
+      a conveniência do CDN. De quebra somem dois `preconnect` do caminho
+      crítico e duas origens da CSP.
+
+      O custo é 175 KB versionados e ~36 KB por visita nova (só o subset latino
+      da Google Sans carrega numa página em português) — contra o teto de
+      360 MB/dia do Hosting, é ruído. Regerar: `node scripts/baixar-fontes.mjs`.
+
+      O `preload` só do arquivo latino: ele é o que toda página usa. Pré-carregar
+      os seis desperdiçaria a banda que este arquivo existe para poupar.
     -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400..700&family=Google+Sans+Code:wght@400;500&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/google-sans-400-700-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
+    <link rel="stylesheet" href="/fonts/fontes.css" />
   </head>
   <body>
     <div id="root"></div>
