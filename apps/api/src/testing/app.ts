@@ -20,6 +20,7 @@ export const testEnv: Env = {
   WEB_URL: 'http://localhost:5173',
   API_URL: 'http://localhost:3333',
   BETTER_AUTH_SECRET: 'segredo-de-teste-suficientemente-longo-para-hmac',
+  COOKIE_SAME_SITE: 'lax',
   // Disco temporário: os testes gravam imagens de verdade, mas fora do projeto.
   MEDIA_LOCAL_DIR: join(tmpdir(), 'connect-gsa-test-media'),
   GOOGLE_CLIENT_ID: 'test',

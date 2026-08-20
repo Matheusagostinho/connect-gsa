@@ -39,8 +39,11 @@ export async function registerSecurity(app: FastifyInstance, env: Env): Promise<
     secret: env.BETTER_AUTH_SECRET,
     parseOptions: {
       httpOnly: true,
-      secure: env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: env.NODE_ENV === 'production' || env.COOKIE_SAME_SITE === 'none',
+      // O mesmo `SameSite` da sessão, e pelo mesmo motivo: o bilhete do convite
+      // precisa sobreviver ao vaivém do OAuth. Divergir daria um cookie que
+      // atravessa e outro que não, e o convite se perderia no meio do caminho.
+      sameSite: env.COOKIE_SAME_SITE,
       path: '/',
     },
   });

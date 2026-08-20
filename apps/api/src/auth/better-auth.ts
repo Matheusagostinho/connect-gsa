@@ -87,8 +87,11 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env) {
       useSecureCookies: isProduction,
       defaultCookieAttributes: {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: 'lax',
+        // `none` exige `secure`, senão o navegador descarta o cookie em
+        // silêncio. Em produção `isProduction` já garante; fora dela, `none`
+        // não é usado.
+        secure: isProduction || env.COOKIE_SAME_SITE === 'none',
+        sameSite: env.COOKIE_SAME_SITE,
         path: '/',
       },
     },
