@@ -13,7 +13,17 @@
 #       paths: [...]
 #     workflow_dispatch:
 #
-# Ver docs/roadmap.md, Fatia 7.
+# Ver README.md, seção "Colocar no ar", e docs/roadmap.md, Fatia 7.
+#
+# As três variáveis abaixo NÃO são opcionais, e duas delas falham em silêncio se
+# faltarem — por isso a API foi ensinada a recusar subir sem as duas primeiras:
+#
+#   MEDIA_BUCKET / MEDIA_PUBLIC_URL  sem elas a API grava imagem no disco do
+#                                    Cloud Run, que é efêmero: as fotos somem no
+#                                    primeiro reinício do contêiner
+#   COOKIE_SAME_SITE                 `none` se o SPA e a API estiverem em sites
+#                                    diferentes (`.web.app` e `.run.app` são),
+#                                    senão o login abre deslogado sem erro
 
 name: Deploy da API
 
@@ -80,7 +90,7 @@ jobs:
             --memory 512Mi \
             --cpu 1 \
             --concurrency 80 \
-            --set-env-vars "NODE_ENV=production,APP_VERSION=${{ github.sha }},WEB_ORIGINS=${{ vars.WEB_ORIGINS }},WEB_URL=${{ vars.WEB_URL }},API_URL=${{ vars.API_URL }}" \
+            --set-env-vars "NODE_ENV=production,APP_VERSION=${{ github.sha }},WEB_ORIGINS=${{ vars.WEB_ORIGINS }},WEB_URL=${{ vars.WEB_URL }},API_URL=${{ vars.API_URL }},MEDIA_BUCKET=${{ vars.MEDIA_BUCKET }},MEDIA_PUBLIC_URL=${{ vars.MEDIA_PUBLIC_URL }},COOKIE_SAME_SITE=${{ vars.COOKIE_SAME_SITE }}" \
             --set-secrets "DATABASE_URL=connect-gsa-database-url:latest,BETTER_AUTH_SECRET=connect-gsa-auth-secret:latest,GOOGLE_CLIENT_ID=connect-gsa-google-id:latest,GOOGLE_CLIENT_SECRET=connect-gsa-google-secret:latest,LINKEDIN_CLIENT_ID=connect-gsa-linkedin-id:latest,LINKEDIN_CLIENT_SECRET=connect-gsa-linkedin-secret:latest,GITHUB_CLIENT_ID=connect-gsa-github-id:latest,GITHUB_CLIENT_SECRET=connect-gsa-github-secret:latest"
 
       - name: Conferir que a versão publicada está viva

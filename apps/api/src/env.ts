@@ -71,10 +71,35 @@ const envSchema = z.object({
   GITHUB_CLIENT_SECRET: z.string().min(1),
 });
 
+/**
+ * Em produção, o armazenamento de imagem precisa ser o bucket.
+ *
+ * Sem `MEDIA_BUCKET`, `createStorage` cai no disco local — e o disco do Cloud
+ * Run é EFÊMERO. O estrago não aparece no deploy: aparece semanas depois, com
+ * a foto de perfil de todo mundo virando 404 porque o contêiner reiniciou.
+ *
+ * Isto era um aviso no README, e aviso em README não é trava. A regra da casa
+ * está no topo deste arquivo: um contêiner que se recusa a iniciar é melhor que
+ * um que sobe com um buraco.
+ */
+const envSchemaComRegrasDeProducao = envSchema.superRefine((env, ctx) => {
+  if (env.NODE_ENV !== 'production') return;
+
+  for (const campo of ['MEDIA_BUCKET', 'MEDIA_PUBLIC_URL'] as const) {
+    if (!env[campo]) {
+      ctx.addIssue({
+        code: 'custom',
+        path: [campo],
+        message: 'obrigatório em produção: sem bucket, as imagens somem a cada reinício',
+      });
+    }
+  }
+});
+
 export type Env = z.infer<typeof envSchema>;
 
 export function parseEnv(source: NodeJS.ProcessEnv = process.env): Env {
-  const result = envSchema.safeParse(source);
+  const result = envSchemaComRegrasDeProducao.safeParse(source);
 
   if (!result.success) {
     // Só os NOMES das variáveis problemáticas — jamais os valores (P-005).
