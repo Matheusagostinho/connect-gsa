@@ -449,14 +449,25 @@ body {
  * Estilo global porque os marcadores do MapLibre são elementos DOM criados fora
  * do React — as utilidades do Tailwind não alcançam o que não passa por JSX.
  */
+/*
+ * O pino usa a cor INVERTIDA em relação ao mapa.
+ *
+ * `--color-ink` é quase preto no tema claro e quase branco no escuro — ele já
+ * se inverte sozinho, então usá-lo como FUNDO do pino dá contraste máximo
+ * contra o mapa nos dois temas, sem uma segunda regra por tema.
+ *
+ * Isso importa porque o Positron é quase branco no claro e é invertido por
+ * filtro no escuro: um pino que seguisse a superfície do tema ficaria claro
+ * sobre claro e escuro sobre escuro — some justamente onde precisa ser visto.
+ */
 .pino-mapa {
   display: flex;
   cursor: pointer;
   align-items: center;
   gap: 0.25rem;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--color-border);
-  background-color: var(--color-surface-raised);
+  border: 1px solid var(--color-ink);
+  background-color: var(--color-ink);
   padding: 0.25rem;
   box-shadow: var(--shadow-card);
   transition: transform 150ms ease;
@@ -480,7 +491,13 @@ body {
   height: 1.75rem;
   width: 1.75rem;
   border-radius: var(--radius-pill);
-  border: 2px solid var(--color-surface-raised);
+  /*
+    O anel de cada foto contrasta com o fundo do pino, em vez de repeti-lo.
+    Repetindo, duas fotos escuras lado a lado sobre um pino escuro viravam uma
+    mancha só — o recorte existia, mas não se via, e os avatares pareciam
+    grudados. `--color-surface` é o oposto de `--color-ink` nos dois temas.
+  */
+  border: 2px solid var(--color-surface);
   object-fit: cover;
 }
 
@@ -507,7 +524,8 @@ body {
   padding-right: 0.125rem;
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--color-ink);
+  /* Sobre o fundo invertido, a tinta legível é a da superfície. */
+  color: var(--color-surface);
 }
 
 /* O mapa herda o tema: no escuro, a base clara do Positron é atenuada. */

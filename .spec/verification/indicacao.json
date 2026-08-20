@@ -1,0 +1,80 @@
+{
+  "feature": "indicacao",
+  "timestamp": "2026-08-20T12:24:18.612Z",
+  "gitRev": "284cf57",
+  "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 337,
+  "results": {
+    "AC-139": {
+      "status": "pass",
+      "testName": "indicação entrar por convite registra quem indicou @spec:AC-139 entrar por convite registra quem indicou @spec:AC-139",
+      "method": "vitest-json"
+    },
+    "AC-140": {
+      "status": "pass",
+      "testName": "indicação quem entra sem convite não ganha indicador @spec:AC-140 quem entra sem convite não ganha indicador @spec:AC-140",
+      "method": "vitest-json"
+    },
+    "AC-141": {
+      "status": "pass",
+      "testName": "indicação excluir quem convidou NÃO apaga quem foi convidado @spec:AC-141 excluir quem convidou NÃO apaga quem foi convidado @spec:AC-141",
+      "method": "vitest-json"
+    },
+    "AC-142": {
+      "status": "pass",
+      "testName": "exportar meus dados traz quem me convidou e quem entrou pelos meus convites @spec:AC-142 traz quem me convidou e quem entrou pelos meus convites @spec:AC-142",
+      "method": "vitest-json"
+    },
+    "AC-143": {
+      "status": "pass",
+      "testName": "texto com parágrafos preserva a quebra de linha da publicação @spec:AC-143 preserva a quebra de linha da publicação @spec:AC-143",
+      "method": "vitest-json"
+    },
+    "AC-144": {
+      "status": "pass",
+      "testName": "texto com parágrafos contém sequência abusiva de linhas vazias @spec:AC-144 contém sequência abusiva de linhas vazias @spec:AC-144",
+      "method": "vitest-json"
+    },
+    "AC-145": {
+      "status": "pass",
+      "testName": "texto com parágrafos campo de uma linha continua achatado @spec:AC-145 campo de uma linha continua achatado @spec:AC-145",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {
+    "P-006": {
+      "status": "pass",
+      "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006"
+    },
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
+    "P-003": {
+      "status": "pass",
+      "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003"
+    },
+    "P-004": {
+      "status": "pass",
+      "testName": "permissões deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004 deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004"
+    },
+    "P-002": {
+      "status": "pass",
+      "testName": "exportar meus dados a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002 a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002"
+    },
+    "P-001": {
+      "status": "pass",
+      "testName": "excluir minha conta apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012 apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012"
+    },
+    "P-012": {
+      "status": "pass",
+      "testName": "excluir minha conta apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012 apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012"
+    },
+    "P-009": {
+      "status": "pass",
+      "testName": "código de convite tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009 tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009"
+    }
+  }
+}

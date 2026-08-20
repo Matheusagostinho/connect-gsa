@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router';
 import { DESTINOS } from '../lib/navigation.js';
 import { Wordmark } from './Logo.tsx';
+import { GitHubMark } from './BrandMarks.tsx';
+import { REPOSITORIO } from '../lib/projeto.js';
 import { cn } from './ui.tsx';
 
 /**
@@ -42,6 +44,24 @@ export function SideNav() {
           </li>
         ))}
       </ul>
+
+      {/*
+        No rodapé da coluna, e não junto dos destinos: contribuir com o código
+        não é uma seção da rede, e misturá-lo com Início e Mapa daria a ele um
+        peso que ele não tem. `mt-auto` empurra para baixo o espaço que sobra.
+      */}
+      <a
+        href={REPOSITORIO}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-auto flex items-center gap-3 rounded-pill px-4 py-3 text-sm text-ink-muted transition-colors duration-200 hover:bg-surface-subtle hover:text-ink"
+      >
+        <GitHubMark />
+        <span>
+          Contribua com o projeto
+          <span className="sr-only"> no GitHub (abre em nova aba)</span>
+        </span>
+      </a>
     </nav>
   );
 }

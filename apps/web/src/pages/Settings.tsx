@@ -4,7 +4,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Download, TriangleAlert } from 'lucide-react';
 import { useState } from 'react';
 import { AppShell } from '../components/AppShell.tsx';
+import { GitHubMark } from '../components/BrandMarks.tsx';
 import { InviteShare } from '../components/InviteShare.tsx';
+import { REPOSITORIO } from '../lib/projeto.js';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { Button, Card, Field } from '../components/ui.tsx';
 import { useDeleteAccount, useExportData } from '../lib/account.js';
@@ -82,6 +84,29 @@ export function SettingsPage() {
           a ser o teto por período, verificado no servidor.
         */}
         <InviteShare />
+
+        {/*
+          O mesmo link da coluna de navegação, repetido aqui porque no celular
+          essa coluna não existe — e quem usa o produto no celular é quem mais
+          precisa achar um caminho para o código.
+        */}
+        <Card>
+          <h2 className="text-xl font-medium">Contribua com o projeto</h2>
+          <p className="mt-2 text-sm text-ink-muted">
+            O ConnectGSA é feito por embaixadores, no aberto. Sugestões, correções e ideias são
+            bem-vindas.
+          </p>
+          <a
+            href={REPOSITORIO}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-pill border border-border-strong px-5 text-sm font-medium text-ink transition-colors duration-200 hover:bg-surface-subtle"
+          >
+            <GitHubMark />
+            Ver no GitHub
+            <span className="sr-only"> (abre em nova aba)</span>
+          </a>
+        </Card>
 
         <Card>
           <h2 className="text-xl font-medium">Seus dados</h2>

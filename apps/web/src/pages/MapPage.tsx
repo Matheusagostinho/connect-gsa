@@ -38,7 +38,7 @@ export function MapPage() {
           ? 'Carregando…'
           : `${total} ${total === 1 ? 'embaixador' : 'embaixadores'} em ${cities.length} ${
               cities.length === 1 ? 'cidade' : 'cidades'
-            } · cidade, nunca endereço`
+            }`
       }
     >
       <div className="relative size-full">
