@@ -21,6 +21,11 @@ export const testEnv: Env = {
   API_URL: 'http://localhost:3333',
   BETTER_AUTH_SECRET: 'segredo-de-teste-suficientemente-longo-para-hmac',
   COOKIE_SAME_SITE: 'lax',
+  // A suíte dispara centenas de requisições contra 127.0.0.1 em segundos, e o
+  // limite global é por IP. Com o teto de produção, testes falhavam por 429 de
+  // forma intermitente — e a fatia que quebrava mudava a cada execução.
+  // O teto POR ROTA (o do AC-008) continua valendo: ele é declarado na rota.
+  RATE_LIMIT_MAX: 1_000_000,
   // Disco temporário: os testes gravam imagens de verdade, mas fora do projeto.
   MEDIA_LOCAL_DIR: join(tmpdir(), 'connect-gsa-test-media'),
   GOOGLE_CLIENT_ID: 'test',

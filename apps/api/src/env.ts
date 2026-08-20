@@ -53,15 +53,42 @@ const envSchema = z.object({
   COOKIE_SAME_SITE: z.enum(['lax', 'none']).default('lax'),
 
   /**
-   * Armazenamento de imagens.
+   * Teto global de requisições por minuto.
+   *
+   * Chaveado por usuário quando há sessão, e por IP quando não há — o segundo
+   * caso é o que torna este número configurável: a suíte de testes dispara
+   * centenas de requisições sem sessão contra `127.0.0.1` em poucos segundos, e
+   * com o teto de produção testes começavam a falhar por 429 de forma
+   * INTERMITENTE, mudando de fatia a cada execução. Um teste que falha às vezes
+   * é pior que um teste que falha sempre.
+   *
+   * Em produção, é este o parâmetro a subir se um campus atrás de NAT começar a
+   * levar 429 sem motivo.
+   */
+  RATE_LIMIT_MAX: z.coerce.number().int().positive().default(300),
+
+  /**
+   * Armazenamento de imagens no Cloudflare R2.
    *
    * Ausentes, a API usa disco local — adequado a desenvolvimento e testes, e
-   * inadequado a produção, onde o Cloud Run tem sistema de arquivos efêmero e
-   * um deploy apagaria tudo.
+   * inadequado a produção, onde o contêiner tem sistema de arquivos efêmero e
+   * um reinício apagaria tudo.
+   *
+   * `MEDIA_PUBLIC_URL` é o endereço de LEITURA do bucket (o subdomínio `r2.dev`
+   * ou o domínio próprio ligado a ele), e não o endpoint de escrita — são dois
+   * hosts diferentes no R2, e trocá-los faz toda imagem responder 401.
    */
   MEDIA_BUCKET: z.string().min(1).optional(),
   MEDIA_PUBLIC_URL: z.url().optional(),
   MEDIA_LOCAL_DIR: z.string().min(1).default('.media'),
+
+  /**
+   * Credenciais do R2. Gere o par com permissão de **Object Read & Write num
+   * único bucket**, nunca de conta inteira (P-007).
+   */
+  R2_ACCOUNT_ID: z.string().min(1).optional(),
+  R2_ACCESS_KEY_ID: z.string().min(1).optional(),
+  R2_SECRET_ACCESS_KEY: z.string().min(1).optional(),
 
   GOOGLE_CLIENT_ID: z.string().min(1),
   GOOGLE_CLIENT_SECRET: z.string().min(1),
@@ -74,9 +101,11 @@ const envSchema = z.object({
 /**
  * Em produção, o armazenamento de imagem precisa ser o bucket.
  *
- * Sem `MEDIA_BUCKET`, `createStorage` cai no disco local — e o disco do Cloud
- * Run é EFÊMERO. O estrago não aparece no deploy: aparece semanas depois, com
- * a foto de perfil de todo mundo virando 404 porque o contêiner reiniciou.
+ * Sem elas, `createStorage` cai no disco local — e o disco do contêiner é
+ * EFÊMERO. O estrago não aparece no deploy: aparece semanas depois, com a foto
+ * de perfil de todo mundo virando 404 porque o contêiner reiniciou. E como o
+ * plano gratuito do Render hiberna por inatividade, "reiniciou" aqui não é um
+ * evento raro: é toda madrugada.
  *
  * Isto era um aviso no README, e aviso em README não é trava. A regra da casa
  * está no topo deste arquivo: um contêiner que se recusa a iniciar é melhor que
@@ -85,7 +114,15 @@ const envSchema = z.object({
 const envSchemaComRegrasDeProducao = envSchema.superRefine((env, ctx) => {
   if (env.NODE_ENV !== 'production') return;
 
-  for (const campo of ['MEDIA_BUCKET', 'MEDIA_PUBLIC_URL'] as const) {
+  const obrigatoriasEmProducao = [
+    'MEDIA_BUCKET',
+    'MEDIA_PUBLIC_URL',
+    'R2_ACCOUNT_ID',
+    'R2_ACCESS_KEY_ID',
+    'R2_SECRET_ACCESS_KEY',
+  ] as const;
+
+  for (const campo of obrigatoriasEmProducao) {
     if (!env[campo]) {
       ctx.addIssue({
         code: 'custom',

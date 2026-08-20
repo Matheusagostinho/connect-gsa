@@ -56,12 +56,20 @@ export async function registerSecurity(app: FastifyInstance, env: Env): Promise<
 
   // Piso global. O diretório de embaixadores é uma lista de contatos valiosa:
   // sem limite, uma única sessão autenticada raspa a rede inteira (P-002).
+  //
+  // Chaveia pelo usuário quando há sessão; por IP quando não há. Sem isso, uma
+  // rede universitária inteira atrás de um NAT compartilharia o limite.
+  //
+  // O teto é configurável por um motivo concreto: a rota SEM sessão cai no IP, e
+  // a suíte de testes dispara centenas dessas contra `127.0.0.1` em segundos.
+  // Com o teto de produção, testes passaram a falhar por 429 de forma
+  // INTERMITENTE — e a fatia que quebrava mudava a cada execução, o que é o
+  // pior tipo de falha que existe. `testing/app.ts` eleva o número; o teto POR
+  // ROTA, que é o que os testes de limite exercitam, continua valendo.
   await app.register(rateLimit, {
     global: true,
-    max: 300,
+    max: env.RATE_LIMIT_MAX,
     timeWindow: '1 minute',
-    // Chaveia pelo usuário quando há sessão; por IP quando não há. Sem isso,
-    // uma rede universitária inteira atrás de um NAT compartilharia o limite.
     keyGenerator: (request) => request.session?.userId ?? request.ip,
   });
 }
