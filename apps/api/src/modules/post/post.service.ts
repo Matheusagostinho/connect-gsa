@@ -8,7 +8,7 @@ import type {
 } from '@connect-gsa/shared';
 import { connectionStatesFor } from '../connection/connection.service.js';
 import { forbidden, notFound } from '../../plugins/errors.js';
-import { sanitizeText } from '../profile/sanitize.js';
+import { sanitizeMultiline } from '../profile/sanitize.js';
 import type { StorageDriver } from '../media/storage.js';
 import { POST_SELECT, toPost, type PostRow, type ViewerContext } from './post.mapper.js';
 
@@ -89,7 +89,7 @@ export async function createPost(
   const row = await prisma.post.create({
     // Sanitizado na ENTRADA (P-006): o que chega ao Postgres já está inerte.
     data: {
-      content: sanitizeText(input.content),
+      content: sanitizeMultiline(input.content),
       mediaKey: input.mediaKey ?? null,
       authorId: viewer.userId,
     },
@@ -225,7 +225,7 @@ export async function createComment(
 
   await prisma.$transaction([
     prisma.comment.create({
-      data: { postId, authorId: viewer.userId, content: sanitizeText(input.content) },
+      data: { postId, authorId: viewer.userId, content: sanitizeMultiline(input.content) },
     }),
     prisma.post.update({ where: { id: postId }, data: { commentCount: { increment: 1 } } }),
   ]);

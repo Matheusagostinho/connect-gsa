@@ -5,7 +5,7 @@ import { requireAuth } from '../../auth/session.js';
 import { assertCan } from '../../authz/guard.js';
 import type { AppInstance } from '../../types.js';
 import type { StorageDriver } from '../media/storage.js';
-import { sanitizeText } from '../profile/sanitize.js';
+import { sanitizeMultiline } from '../profile/sanitize.js';
 import { POST_SELECT, toPost, type ViewerContext } from './post.mapper.js';
 import { hydratePosts } from './post.service.js';
 
@@ -97,7 +97,7 @@ export function registerAnnouncementRoutes(
       const row = await prisma.post.create({
         data: {
           kind: 'announcement',
-          content: sanitizeText(request.body.content),
+          content: sanitizeMultiline(request.body.content),
           mediaKey: request.body.mediaKey ?? null,
           authorId: user.id,
         },
