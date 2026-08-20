@@ -20,13 +20,13 @@ Toda feature passa por: **especificar → tarefas → implementar → verificar 
 - Cada princípio `[DEVE]` com verificação por teste tem `@principle:P-xxx` no título.
 - **Quem decide se um critério passou é o test runner**, nunca a pessoa que implementou.
 
-O motor que faz essa auditoria vive na skill `onp-spec-driven` (instalada globalmente, fora
-deste repositório) e roda **localmente**, não no CI:
+O motor que faz essa auditoria é uma ferramenta **local**, instalada fora deste
+repositório, e roda na sua máquina — nunca no CI. O repositório versiona a spec e a *prova*
+(`.spec/verification/<feature>.json`), não o motor.
 
-```bash
-node ~/.claude/skills/onp-spec-driven/scripts/onp-spec.mjs verify <feature>
-node ~/.claude/skills/onp-spec-driven/scripts/onp-spec.mjs audit --ci
-```
+Sem a ferramenta instalada nada quebra: os testes continuam sendo a fonte da verdade, e a
+anotação `@spec:AC-xxx` no título é só um rótulo. Quem for contribuir não precisa dela —
+precisa dos testes passando.
 
 ## Mapa do repositório
 
@@ -46,7 +46,8 @@ node ~/.claude/skills/onp-spec-driven/scripts/onp-spec.mjs audit --ci
 - **Comentário explica por quê, não o quê.** Se o comentário parafraseia a linha abaixo,
   apague o comentário.
 - **Commits em Conventional Commits**, sem trailer de co-autor.
-- Arquivos `CLAUDE.md` e a pasta `.claude/` são ignorados pelo Git de propósito.
+- Anotação e ferramental de assistente de código ficam **fora** do repositório, por opção
+  do dono do projeto. O `.gitignore` lista os nomes por isso.
 
 ## Comandos
 

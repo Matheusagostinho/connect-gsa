@@ -14,10 +14,12 @@ out/
 .env.*
 !.env.example
 
-# Ferramental de agente (fora do GitHub)
+# Ferramental de assistente de código — fica fora do repositório por opção.
+# Os nomes precisam continuar aqui: é o que faz o ignore funcionar.
 .claude/
 CLAUDE.md
 **/CLAUDE.md
+.spec/features/*/plano.json
 .spec/features/*/plano-execucao.md
 .spec/features/*/plano-execucao.html
 .spec/features/*/executar-tarefas.sh

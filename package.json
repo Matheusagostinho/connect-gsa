@@ -18,7 +18,6 @@
     "db:generate": "pnpm --filter @connect-gsa/db exec prisma generate",
     "db:migrate": "pnpm --filter @connect-gsa/db exec prisma migrate dev",
     "db:seed": "pnpm --filter @connect-gsa/db run seed",
-    "spec:audit": "node ~/.claude/skills/onp-spec-driven/scripts/onp-spec.mjs audit --ci",
     "db:seed:dev": "pnpm --filter @connect-gsa/db run seed:dev",
     "db:test:setup": "bash scripts/preparar-banco-de-teste.sh"
   },
