@@ -75,11 +75,12 @@ const envSchema = z.object({
    * par de chaves — e o que impede um ambiente mal configurado de derrubar o
    * cadastro por causa de uma notificação.
    *
-   * Gere com: `npx web-push generate-vapid-keys`
+   * `npx web-push generate-vapid-keys` gera DUAS delas — o par de chaves.
    *
-   * `VAPID_SUBJECT` é um `mailto:` ou uma URL de contato. Os serviços de push
-   * dos fabricantes o exigem para saber a quem reclamar de abuso — não é
-   * decoração, é o que evita seu domínio ser bloqueado sem aviso.
+   * `VAPID_SUBJECT` não sai de comando nenhum, e não é credencial: é um
+   * CONTATO. Os serviços de push dos fabricantes o exigem para saber a quem
+   * reclamar se o domínio começar a mandar spam — sem contato válido, podem
+   * bloquear os envios sem aviso. Aceita `mailto:voce@dominio.com` ou uma URL.
    */
   VAPID_PUBLIC_KEY: z.string().min(1).optional(),
   VAPID_PRIVATE_KEY: z.string().min(1).optional(),

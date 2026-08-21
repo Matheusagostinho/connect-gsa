@@ -710,15 +710,27 @@ de Configurações nem oferece o botão quando o servidor não tem chaves.
 npx web-push generate-vapid-keys
 ```
 
-No Render, três variáveis:
+Esse comando gera **duas** das três variáveis — o par de chaves. A terceira você
+escreve à mão:
 
-- [ ] `VAPID_PUBLIC_KEY` — a chave pública gerada
-- [ ] `VAPID_PRIVATE_KEY` — a privada
-- [ ] `VAPID_SUBJECT` — `mailto:seu-email@dominio` ou a URL do projeto
+- [ ] `VAPID_PUBLIC_KEY` — a `publicKey` que o comando imprimiu
+- [ ] `VAPID_PRIVATE_KEY` — a `privateKey` que o comando imprimiu
+- [ ] `VAPID_SUBJECT` — **não é gerado**: é um contato seu
 
-> O `VAPID_SUBJECT` não é decoração: os serviços de push dos fabricantes o
-> exigem para saber a quem reclamar de abuso. Sem um contato válido, o seu
-> domínio pode ser bloqueado sem aviso.
+> **O `VAPID_SUBJECT` não é credencial, é CONTATO.** Os serviços de push dos
+> fabricantes (Google, Mozilla, Apple) exigem saber a quem reclamar se o seu
+> domínio começar a mandar spam. Sem um contato válido, eles podem bloquear seus
+> envios sem aviso.
+>
+> Duas formas são aceitas:
+>
+> ```
+> VAPID_SUBJECT="mailto:voce@dominio.com"     ← recomendado
+> VAPID_SUBJECT="https://connect-gsa.vercel.app"
+> ```
+>
+> O `mailto:` é melhor: se algo der errado, eles conseguem falar com você. A URL
+> funciona, mas depende de alguém achar um contato no site.
 
 **No iPhone o aviso só funciona com o aplicativo instalado na tela inicial** — o
 Safari não expõe push para aba comum. A tela de Configurações detecta isso e
