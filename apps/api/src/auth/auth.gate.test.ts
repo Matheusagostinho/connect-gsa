@@ -2,6 +2,7 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { generateInviteCode, hashInviteCode } from '../modules/invite/invite.code.js';
 import { createInvite, resolveInvite } from '../modules/invite/invite.service.js';
 import { testAuth, testHelpers } from '../testing/auth.js';
+import { testEnv } from '../testing/app.js';
 import { closeTestDb, createTestUser, resetTestData, testDb } from '../testing/db.js';
 
 /**
@@ -159,5 +160,44 @@ describe('o id de quem entra pelo provedor social', () => {
     // E o mapper de saída aceita — que é onde o erro estourava de verdade.
     const { getMyProfile } = await import('../modules/profile/profile.service.js');
     await expect(getMyProfile(prisma, id)).resolves.toMatchObject({ id });
+  });
+});
+
+describe('o log da recusa', () => {
+  it('diz o MOTIVO e o domínio, e nunca o e-mail @principle:P-005', async () => {
+    const avisos: Array<Record<string, unknown>> = [];
+    // A assinatura precisa casar com `AuthLogger`, que recebe dados E mensagem.
+    const log = {
+      warn: (dados: Record<string, unknown>, _mensagem: string) => void avisos.push(dados),
+    };
+
+    const { betterAuth } = await import('better-auth');
+    const { buildAuthOptions } = await import('./better-auth.js');
+    const comLog = betterAuth(buildAuthOptions(prisma, testEnv, log));
+
+    // Alguém de fora: sem e-mail na lista e sem bilhete de convite.
+    const contexto = await comLog.$context;
+    await expect(
+      contexto.internalAdapter.createUser(
+        {
+          email: 'forasteiro@dominio-de-fora.test',
+          name: 'Forasteiro',
+          emailVerified: false,
+        },
+        // A ORIGEM da criação, como o retorno do Google a informaria. O hook
+        // lê os cabeçalhos do contexto para achar o bilhete do convite — aqui
+        // não há nenhum, que é exatamente o caso que queremos exercitar.
+        { method: 'oauth', oauth: { providerId: 'google', profile: {} } },
+      ),
+    ).rejects.toThrow();
+
+    // Quem opera precisa do motivo: "fora da lista" e "convite vencido" se
+    // resolvem de formas opostas, e a resposta ao usuário é a mesma para os dois.
+    expect(avisos).toHaveLength(1);
+    expect(avisos[0]).toMatchObject({ dominio: 'dominio-de-fora.test' });
+    expect(String(avisos[0]?.['motivo'])).toMatch(/fora da lista/);
+
+    // E o e-mail inteiro não aparece em lugar nenhum do registro.
+    expect(JSON.stringify(avisos)).not.toContain('forasteiro@');
   });
 });

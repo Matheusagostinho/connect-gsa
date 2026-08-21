@@ -57,3 +57,18 @@ describe('schema do Prisma × contrato do Better Auth', () => {
     expect(schema).not.toMatch(/@@unique\(\[providerId, accountId\]\)/);
   });
 });
+
+describe('a entrada pelo Google', () => {
+  it('sempre pede o seletor de conta, em vez de deixar o Google escolher', async () => {
+    const { buildAuthOptions } = await import('./better-auth.js');
+    const { testEnv } = await import('../testing/app.js');
+    const { testDb } = await import('../testing/db.js');
+
+    const opcoes = buildAuthOptions(testDb(), testEnv);
+
+    // Sem `prompt`, quem já tem sessão no Google entra em SILÊNCIO com a conta
+    // ativa. No celular isso escolheu a conta errada, o portão recusou, e a
+    // mensagem falava de convite — sem pista de que o problema era a conta.
+    expect(opcoes.socialProviders.google).toMatchObject({ prompt: 'select_account' });
+  });
+});

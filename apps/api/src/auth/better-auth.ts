@@ -30,7 +30,21 @@ export type Auth = ReturnType<typeof createAuth>;
  * O que importa é que a configuração de segurança abaixo — o portão, o vínculo
  * de contas, os atributos do cookie — é EXATAMENTE a mesma nos dois casos.
  */
-export function buildAuthOptions(prisma: PrismaClient, env: Env) {
+/**
+ * O mínimo de logger que este módulo precisa.
+ *
+ * Injetado em vez de `console`: o P-005 proíbe dado pessoal em log, e o logger
+ * do Fastify já redige cookie e cabeçalho de autenticação. Um `console.warn`
+ * aqui escaparia dessa redação — e contornar a regra trocando as palavras da
+ * mensagem seria burlá-la, não respeitá-la.
+ */
+export interface AuthLogger {
+  warn: (dados: Record<string, unknown>, mensagem: string) => void;
+}
+
+const LOGGER_SILENCIOSO: AuthLogger = { warn: () => undefined };
+
+export function buildAuthOptions(prisma: PrismaClient, env: Env, log: AuthLogger = LOGGER_SILENCIOSO) {
   const isProduction = env.NODE_ENV === 'production';
 
   return {
@@ -49,6 +63,23 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env) {
       google: {
         clientId: env.GOOGLE_CLIENT_ID,
         clientSecret: env.GOOGLE_CLIENT_SECRET,
+        /**
+         * O seletor de conta é SEMPRE mostrado. Sem isto, o Google escolhe.
+         *
+         * Sem `prompt`, quem já tem sessão no Google entra em silêncio, com a
+         * conta que estiver ativa — o retorno vem com `prompt=none` e a pessoa
+         * nunca vê um seletor. Num celular com a conta pessoal ativa e a
+         * institucional na lista aprovada, o portão recusa e a mensagem fala de
+         * convite, sem nenhuma pista de que o problema é a CONTA escolhida.
+         *
+         * Aconteceu no primeiro acesso pelo celular: mesma pessoa, mesmo
+         * aplicativo, entrou no computador e foi recusada no telefone.
+         *
+         * Numa rede de instituições isso não é caso raro — quase todo estudante
+         * tem a conta da instituição e a pessoal no mesmo aparelho. Mostrar o
+         * seletor custa um toque e evita um beco sem saída.
+         */
+        prompt: 'select_account',
       },
       github: {
         clientId: env.GITHUB_CLIENT_ID,
@@ -152,6 +183,26 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env) {
           before: async (user, ctx) => {
             const email = String(user.email ?? '').toLowerCase();
 
+            /**
+             * Registra POR QUE o portão recusou, sem dizer QUEM.
+             *
+             * A recusa é sempre a mesma para quem tenta entrar — distinguir os
+             * motivos na resposta entregaria um oráculo. Mas quem opera a rede
+             * precisa da diferença: "domínio fora da lista" e "convite vencido"
+             * se resolvem de formas opostas, e sem isso a única saída é adivinhar.
+             *
+             * O e-mail NÃO entra (P-005). Só o domínio, que não identifica
+             * pessoa e é justamente o que responde à pergunta mais comum — "essa
+             * conta é do domínio que eu liberei?". Numa rede de instituições,
+             * entrar com a conta pessoal em vez da institucional é o engano mais
+             * fácil de cometer e o mais difícil de enxergar.
+             */
+            const dominio = email.split('@')[1] ?? '(sem domínio)';
+            const recusar = (motivo: string): never => {
+              log.warn({ dominio, motivo }, 'portão recusou a criação de conta');
+              throw new APIError('FORBIDDEN', { message: ACESSO_RESTRITO });
+            };
+
             if (await isEmailAllowed(prisma, email)) {
               return { data: user };
             }
@@ -163,7 +214,11 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env) {
             );
 
             if (!codeHash) {
-              throw new APIError('FORBIDDEN', { message: ACESSO_RESTRITO });
+              // O caso mais comum, e o que mais confunde: a conta não está na
+              // lista E não veio por link de convite. Num celular isso também
+              // acontece quando o cookie do convite não sobreviveu ao vaivém do
+              // provedor — daí o motivo separado do convite inválido.
+              return recusar('e-mail fora da lista e sem bilhete de convite');
             }
 
             try {
@@ -172,7 +227,7 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env) {
               const { inviteId } = await resolveInviteByHash(prisma, codeHash);
               pendingInvites.set(email, inviteId);
             } catch {
-              throw new APIError('FORBIDDEN', { message: ACESSO_RESTRITO });
+              return recusar('bilhete de convite inválido ou vencido');
             }
 
             return { data: user };
@@ -192,8 +247,8 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env) {
   } satisfies BetterAuthOptions;
 }
 
-export function createAuth(prisma: PrismaClient, env: Env) {
-  return betterAuth(buildAuthOptions(prisma, env));
+export function createAuth(prisma: PrismaClient, env: Env, log?: AuthLogger) {
+  return betterAuth(buildAuthOptions(prisma, env, log));
 }
 
 export { ACESSO_RESTRITO };
