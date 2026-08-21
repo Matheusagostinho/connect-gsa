@@ -46,7 +46,15 @@ describe('rotas de perfil', () => {
     const response = await app.inject({ method: 'GET', url: '/health' });
 
     expect(response.statusCode).toBe(200);
-    expect(response.json()).toEqual({ status: 'ok', version: '0.1.0' });
+    // `toEqual` e não `toMatchObject`: o que esta rota devolve é contrato de
+    // superfície pública, e um campo novo entrando sem querer deve ficar
+    // vermelho aqui. Fora do Render não há commit publicado, e dizer
+    // `desconhecido` é mais honesto que inventar um.
+    expect(response.json()).toEqual({
+      status: 'ok',
+      version: '0.1.0',
+      commit: 'desconhecido',
+    });
   });
 
   it('recusa área restrita sem sessão, sem devolver dado nenhum @spec:AC-019', async () => {
