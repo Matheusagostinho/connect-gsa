@@ -638,7 +638,16 @@ inclusive a convenção `"//"`. O aviso mora aqui e no `apps/web/AGENTS.md`.
 
 - [ ] `connect-src` com o host do Render
 - [ ] `img-src` com o host do R2
-- [ ] Commitado e enviado (a Vercel republica sozinha)
+- [ ] Commitado e enviado
+- [ ] **Redeploy na Vercel** — a CSP é cabeçalho de RESPOSTA, então ela só muda
+      quando um deploy novo sobe. Editar o arquivo sem republicar não tem efeito
+
+> **Sobre o `img-src`:** o valor entregue é `https://*.r2.dev`, e não o host
+> exato. O subdomínio público do R2 carrega um hash por bucket, e um marcador
+> esquecido ali faz TODA foto de perfil virar a inicial sem dizer por quê. O
+> curinga custa pouco — o risco de `img-src` é carregar uma imagem, não executar
+> script. No dia em que você ligar um domínio próprio ao bucket, troque pelo
+> host exato e apague o curinga.
 
 ### Passo 8 — Impedir a hibernação
 
