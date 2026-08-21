@@ -229,6 +229,42 @@ body {
   animation: spark-corre 7s linear infinite;
 }
 
+/*
+ * A entrada do aviso. Deslocamento pequeno e opacidade — nada de escala, que
+ * chama mais atenção do que um aviso de rodapé merece.
+ *
+ * Sem `prefers-reduced-motion` aqui porque a classe já usa `motion-safe:` no
+ * Tailwind, que é a mesma consulta de mídia aplicada no lugar certo.
+ */
+/*
+ * A pulsação do contorno de carregamento.
+ *
+ * Opacidade, e não cor: animar `background-color` recalcula a pintura de cada
+ * bloco a cada quadro, e uma lista de doze deles num celular modesto começa a
+ * engasgar. A faixa vai só até 0.55 — piscar até quase sumir chama mais atenção
+ * do que um espaço reservado merece.
+ */
+@keyframes pulsa {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes toast-entra {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes spark-corre {
   from {
     background-position: 0% 50%;

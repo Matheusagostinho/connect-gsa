@@ -6,6 +6,7 @@ import { PostCard } from '../components/PostCard.tsx';
 import { Button, Card } from '../components/ui.tsx';
 import { useAnnouncements, useCreateAnnouncement } from '../lib/announcements.js';
 import { useMyProfile } from '../lib/session.js';
+import { PersonSkeleton, SkeletonList } from '../components/Skeleton.tsx';
 
 /**
  * O quadro de avisos.
@@ -73,9 +74,9 @@ export function AnnouncementsPage() {
       ) : null}
 
       {isPending ? (
-        <p className="py-8 text-center text-ink-muted" role="status">
-          Carregando…
-        </p>
+        <SkeletonList quantidade={3} rotulo="Carregando avisos">
+          {() => <PersonSkeleton />}
+        </SkeletonList>
       ) : null}
 
       {!isPending && avisos.length === 0 ? (

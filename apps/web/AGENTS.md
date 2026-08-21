@@ -181,6 +181,51 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
    e em Configurações — dois literais iguais viram um desatualizado no dia em que o
    repositório mudar de lugar.
 
+## Interface otimista: o que aplica na hora e o que espera
+
+Reagir, apagar publicação, comentar e salvar perfil aplicam ANTES da resposta do
+servidor, e desfazem com aviso se ele recusar. Três coisas aqui não são estilo:
+
+1. **`onMutate` cancela as buscas em voo antes de mexer no cache.** Sem isso,
+   uma busca que já estava a caminho termina depois e sobrescreve o valor
+   otimista com o estado anterior do servidor — o toque "desfaz sozinho".
+2. **O rollback guarda o cache inteiro, não o campo.** As duas abas do feed
+   guardam o mesmo post; devolver só uma deixa a outra com o valor errado.
+3. **Desfazer em silêncio é pior que a espera que isto substitui.** A pessoa
+   veria o próprio gesto revertido sem explicação e concluiria que o aplicativo
+   é instável. Daí o `useToast` em todo `onError`.
+
+**O que NÃO é otimista, e por quê:**
+
+- **Publicar com imagem.** O envio pode falhar por tamanho ou tipo, e mostrar o
+  post "publicado" para removê-lo depois é pior que esperar.
+- **O comentário na lista.** Só a CONTAGEM sobe: o texto passa por sanitização
+  no servidor, e mostrar o que a pessoa digitou para trocá-lo depois seria pior
+  que mostrar um instante mais tarde.
+- **Salvar perfil quando o nome de usuário mudou.** Só o servidor sabe se ele
+  está livre e se o intervalo entre trocas passou. Navegar e avisar por toast
+  faria a pessoa perder dez campos preenchidos para corrigir um.
+
+A regra da reação mora numa função PURA (`lib/reacao-otimista.ts`), com teste
+para cada um dos três caminhos. Havia uma decisão contrária aqui, com a
+justificativa de que "adivinhar qual dos três aconteceu é como a contagem
+diverge do banco" — a preocupação era certa e a premissa não: os três são
+determinísticos a partir do que a tela já sabe. E a resposta do servidor
+sobrescreve o cálculo, então divergir continua impossível.
+
+## Carregamento: contorno, não texto
+
+`Skeleton.tsx` desenha o espaço que o conteúdo vai ocupar. Um "Carregando…"
+centralizado some e é substituído por uma tela cheia — e o salto move o que a
+pessoa já estava lendo.
+
+As medidas do contorno imitam o conteúdo real de propósito. Um contorno que não
+tem a altura final causa o mesmo salto que ele deveria evitar.
+
+O brilho é `motion-safe:`, e o contorno é `aria-hidden`: quem navega por áudio
+não se beneficia de doze retângulos cinza anunciados um a um. O que serve a essa
+pessoa é o `aria-busy` na região.
+
 ## Design system
 
 Linguagem visual derivada do **antigravity.google**: superfície limpa, tinta quase preta,

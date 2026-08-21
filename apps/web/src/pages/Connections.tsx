@@ -5,6 +5,7 @@ import { AppShell } from '../components/AppShell.tsx';
 import { Card } from '../components/ui.tsx';
 import { useConnections } from '../lib/directory.js';
 import { useMyProfile } from '../lib/session.js';
+import { PersonSkeleton, SkeletonList } from '../components/Skeleton.tsx';
 
 function Secao({ titulo, pessoas }: { titulo: string; pessoas: AmbassadorCard[] }) {
   if (pessoas.length === 0) return null;
@@ -39,9 +40,9 @@ export function ConnectionsPage() {
     <AppShell profile={profile} title="Minhas conexões">
 
       {isPending ? (
-        <p className="py-8 text-center text-ink-muted" role="status">
-          Carregando…
-        </p>
+        <SkeletonList quantidade={3} rotulo="Carregando conexões">
+          {() => <PersonSkeleton />}
+        </SkeletonList>
       ) : null}
 
       {/* Pedidos recebidos vêm primeiro: são os que esperam uma ação sua. */}

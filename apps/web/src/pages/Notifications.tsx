@@ -7,6 +7,7 @@ import { Avatar } from '../components/Avatar.tsx';
 import { Card, cn } from '../components/ui.tsx';
 import { useNotifications } from '../lib/notifications.js';
 import { useMyProfile } from '../lib/session.js';
+import { PersonSkeleton, SkeletonList } from '../components/Skeleton.tsx';
 
 function quandoFoi(iso: string): string {
   const minutos = Math.floor((Date.now() - Date.parse(iso)) / 60_000);
@@ -54,9 +55,9 @@ export function NotificationsPage() {
     <AppShell profile={profile} title="Notificações">
 
       {feed.isPending ? (
-        <p className="py-8 text-center text-ink-muted" role="status">
-          Carregando…
-        </p>
+        <SkeletonList quantidade={4} rotulo="Carregando notificações">
+          {() => <PersonSkeleton />}
+        </SkeletonList>
       ) : null}
 
       {!feed.isPending && itens.length === 0 ? (

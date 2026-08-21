@@ -8,6 +8,7 @@ import {
   updateProfileSchema,
 } from '@connect-gsa/shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToast } from '../components/Toast.tsx';
 import { type FormEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AppShell } from '../components/AppShell.tsx';
@@ -90,16 +91,61 @@ export function OnboardingPage() {
     setInstitution(profile.institution ? { ...profile.institution, pending: false } : null);
   }, [profile]);
 
+  const { avisar } = useToast();
+
+  /**
+   * Salvar é otimista — **menos** quando o nome de usuário mudou.
+   *
+   * A validação de formato já roda aqui, com o mesmo schema da API. O que só o
+   * SERVIDOR sabe é se o nome de usuário está livre e se o intervalo entre
+   * trocas já passou. Nesses dois casos a pessoa precisa continuar no
+   * formulário, com o erro no campo certo — navegar e depois avisar por um
+   * toast a faria perder dez campos preenchidos para corrigir um.
+   *
+   * Então o otimismo é condicional: instantâneo no caso comum (editar bio,
+   * habilidades, cidade), com espera real só quando há algo que pode ser
+   * recusado por motivo que o cliente não tem como prever.
+   */
   const save = useMutation({
     mutationFn: (payload: unknown) => api.patch<MyProfile>('/me', payload),
-    onSuccess: async (updated) => {
-      queryClient.setQueryData(['me'], updated);
+
+    onMutate: async (payload: unknown) => {
+      const trocouUsuario =
+        typeof payload === 'object' && payload !== null && 'slug' in payload;
+
+      if (trocouUsuario) return { anterior: undefined, navegou: false };
+
+      const anterior = queryClient.getQueryData<MyProfile>(['me']);
+
+      // A tela já mostra o novo valor enquanto a requisição está no ar.
+      if (anterior) {
+        queryClient.setQueryData<MyProfile>(['me'], {
+          ...anterior,
+          ...(payload as Partial<MyProfile>),
+        });
+      }
+
       await navigate('/perfil');
+      return { anterior, navegou: true };
     },
+
+    onSuccess: async (updated, _payload, contexto) => {
+      queryClient.setQueryData(['me'], updated);
+      if (!contexto?.navegou) await navigate('/perfil');
+    },
+
     // "Já está em uso" pertence ao campo do nome de usuário, não a um aviso
     // solto no rodapé do formulário: quem lê um erro genérico depois de
     // preencher dez campos não sabe qual deles corrigir.
-    onError: (erro) => {
+    onError: async (erro, _payload, contexto) => {
+      if (contexto?.navegou) {
+        // Desfaz e traz a pessoa de volta ao formulário: deixá-la no perfil
+        // com um aviso a faria pensar que salvou e que o aviso é de outra coisa.
+        if (contexto.anterior) queryClient.setQueryData(['me'], contexto.anterior);
+        await navigate('/onboarding');
+        avisar('Não deu para salvar seu perfil. Nada foi alterado.');
+      }
+
       if (erro instanceof ApiError && erro.code === 'INVALID_USERNAME') {
         setErrors({ slug: erro.message });
       }

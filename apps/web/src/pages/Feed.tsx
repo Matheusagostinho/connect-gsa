@@ -9,6 +9,7 @@ import { PullToRefresh } from '../components/PullToRefresh.tsx';
 import { Button, UnofficialNotice } from '../components/ui.tsx';
 import { useFeed } from '../lib/feed.js';
 import { useMyProfile } from '../lib/session.js';
+import { PostSkeleton, SkeletonList } from '../components/Skeleton.tsx';
 
 export function FeedPage() {
   const { data: profile } = useMyProfile();
@@ -25,10 +26,15 @@ export function FeedPage() {
       <PullToRefresh onRefresh={() => refetch()}>
         <Composer authorName={profile.name} authorImage={profile.imageUrl} />
 
+        {/*
+          Contorno em vez de "Carregando o feed…": o texto centralizado some e é
+          substituído por uma tela cheia, e o salto move o que a pessoa já estava
+          olhando. O contorno ocupa o espaço final desde o primeiro quadro.
+        */}
         {isPending ? (
-          <p className="py-8 text-center text-ink-muted" role="status">
-            Carregando o feed…
-          </p>
+          <SkeletonList quantidade={3} rotulo="Carregando o feed">
+            {() => <PostSkeleton />}
+          </SkeletonList>
         ) : null}
 
         {error instanceof Error ? (
