@@ -17,6 +17,16 @@
       O `.svg` é o mesmo desenho de `src/components/Logo.tsx`.
     -->
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+
+    <!--
+      O manifesto é o que torna a rede instalável na tela inicial.
+      
+      `apple-touch-icon` separado porque o Safari ignora os ícones do manifesto e
+      procura esta tag — sem ela, o atalho no iPhone vira uma miniatura da
+      página, que fica ilegível.
+    -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <!-- Acompanha o tema, para a barra do navegador não destoar da página. -->
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#131314" media="(prefers-color-scheme: dark)" />

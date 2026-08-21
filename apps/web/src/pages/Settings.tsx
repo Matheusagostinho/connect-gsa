@@ -6,6 +6,14 @@ import { useState } from 'react';
 import { AppShell } from '../components/AppShell.tsx';
 import { GitHubMark } from '../components/BrandMarks.tsx';
 import { InviteShare } from '../components/InviteShare.tsx';
+import { Bell } from 'lucide-react';
+import {
+  instalado,
+  suportaPush,
+  useAutorizarPush,
+  useDesautorizarPush,
+  usePushStatus,
+} from '../lib/push.js';
 import { REPOSITORIO } from '../lib/projeto.js';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { Button, Card, Field } from '../components/ui.tsx';
@@ -90,6 +98,8 @@ export function SettingsPage() {
           essa coluna não existe — e quem usa o produto no celular é quem mais
           precisa achar um caminho para o código.
         */}
+        <AvisoPorNotificacao />
+
         <Card>
           <h2 className="text-xl font-medium">Contribua com o projeto</h2>
           <p className="mt-2 text-sm text-ink-muted">
@@ -161,5 +171,74 @@ export function SettingsPage() {
         </Card>
       </div>
     </AppShell>
+  );
+}
+
+/**
+ * Autorizar o aviso por notificação.
+ *
+ * A tela PERGUNTA antes de oferecer, em vez de mostrar um botão que não faz
+ * nada. Três coisas precisam ser verdade e nenhuma depende de nós: o navegador
+ * suportar, o servidor ter chaves, e — no iPhone — o aplicativo estar instalado
+ * na tela inicial.
+ *
+ * O caso do iPhone é o que mais confunde: o Safari não expõe push para uma aba
+ * comum, e nem pergunta. Sem explicar isso aqui, metade dos embaixadores
+ * concluiria que o recurso está quebrado.
+ */
+function AvisoPorNotificacao() {
+  const { data: status } = usePushStatus();
+  const autorizar = useAutorizarPush();
+  const desautorizar = useDesautorizarPush();
+
+  if (!suportaPush()) return null;
+
+  // Sem chaves no servidor o recurso não existe — e mostrar um botão que
+  // sempre falha é pior que não mostrar nada.
+  if (status && !status.publicKey) return null;
+
+  const precisaInstalar = !instalado() && /iPhone|iPad|iPod/.test(navigator.userAgent);
+
+  return (
+    <Card>
+      <h2 className="text-xl font-medium">Avisos no aparelho</h2>
+      <p className="mt-2 text-sm text-ink-muted">
+        Receba aviso de pedido de conexão, reação e comentário mesmo com o aplicativo fechado.
+      </p>
+
+      {precisaInstalar ? (
+        <p className="mt-4 rounded-field bg-surface-subtle p-4 text-sm text-ink-muted">
+          No iPhone, os avisos só funcionam com o ConnectGSA instalado na tela inicial. Toque em{' '}
+          <strong className="font-medium text-ink">Compartilhar</strong> e depois em{' '}
+          <strong className="font-medium text-ink">Adicionar à Tela de Início</strong>.
+        </p>
+      ) : status?.inscrito ? (
+        <Button
+          variant="outline"
+          className="mt-5"
+          disabled={desautorizar.isPending}
+          onClick={() => desautorizar.mutate()}
+        >
+          <Bell className="size-4" aria-hidden="true" />
+          {desautorizar.isPending ? 'Desligando…' : 'Desligar avisos'}
+        </Button>
+      ) : (
+        <Button
+          className="mt-5"
+          disabled={autorizar.isPending || !status?.publicKey}
+          onClick={() => status?.publicKey && autorizar.mutate(status.publicKey)}
+        >
+          <Bell className="size-4" aria-hidden="true" />
+          {autorizar.isPending ? 'Autorizando…' : 'Ligar avisos'}
+        </Button>
+      )}
+
+      {autorizar.isError ? (
+        <p role="alert" className="mt-3 text-sm text-danger">
+          Não deu para ligar os avisos. Se você recusou a permissão, precisa liberá-la nas
+          configurações do navegador.
+        </p>
+      ) : null}
+    </Card>
   );
 }

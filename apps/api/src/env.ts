@@ -68,6 +68,24 @@ const envSchema = z.object({
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(300),
 
   /**
+   * Chaves do aviso por notificação (VAPID). Opcionais de propósito.
+   *
+   * Sem elas o recurso simplesmente não existe: a tela não oferece autorizar, e
+   * o envio devolve cedo. É o que permite desenvolver e rodar a suíte sem gerar
+   * par de chaves — e o que impede um ambiente mal configurado de derrubar o
+   * cadastro por causa de uma notificação.
+   *
+   * Gere com: `npx web-push generate-vapid-keys`
+   *
+   * `VAPID_SUBJECT` é um `mailto:` ou uma URL de contato. Os serviços de push
+   * dos fabricantes o exigem para saber a quem reclamar de abuso — não é
+   * decoração, é o que evita seu domínio ser bloqueado sem aviso.
+   */
+  VAPID_PUBLIC_KEY: z.string().min(1).optional(),
+  VAPID_PRIVATE_KEY: z.string().min(1).optional(),
+  VAPID_SUBJECT: z.string().min(1).optional(),
+
+  /**
    * Armazenamento de imagens no Cloudflare R2.
    *
    * Ausentes, a API usa disco local — adequado a desenvolvimento e testes, e

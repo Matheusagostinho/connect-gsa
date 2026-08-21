@@ -181,6 +181,40 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
    e em Configurações — dois literais iguais viram um desatualizado no dia em que o
    repositório mudar de lugar.
 
+## O service worker: três coisas que não são escolha
+
+`public/sw.js` é escrito à mão e servido sem passar pelo empacotador.
+
+1. **Ele precisa viver na RAIZ.** O escopo de um service worker é a pasta em que
+   ele é servido — de `/assets/sw-a1b2.js` ele controlaria só `/assets/`.
+2. **O nome não pode ter hash.** O navegador compara o arquivo byte a byte com o
+   que já registrou para decidir se há versão nova; um nome que muda a cada build
+   registraria um worker diferente em vez de atualizar o existente.
+3. **Ele não pode ser servido do cache.** O `vercel.json` manda
+   `max-age=0, must-revalidate` — um SW velho em cache prende o aplicativo numa
+   versão antiga, e nada no produto consegue sair dali.
+
+**Ele NÃO guarda resposta de API**, e isso é decisão de privacidade, não de
+desempenho: numa rede fechada, servir do cache um feed ou um perfil de ontem é
+pior que dizer "sem conexão" — a pessoa não saberia que está lendo algo velho, e
+um perfil em cache sobreviveria a uma exclusão de conta (P-012).
+
+E o registro acontece depois do `load`, nunca antes: a instalação baixa o casco
+inteiro e disputaria banda com o primeiro desenho da tela.
+
+## Aviso por notificação: o que a tela precisa perguntar antes
+
+Três coisas precisam ser verdade, e nenhuma depende de nós. A pior é a terceira:
+**no iPhone, o push só existe com o aplicativo INSTALADO na tela inicial.** O
+Safari não expõe a API para uma aba comum — não recusa, simplesmente não existe.
+
+Por isso `Settings.tsx` pergunta antes de oferecer, e explica o passo do
+"Adicionar à Tela de Início" quando detecta iOS sem instalação. Um botão que não
+faz nada faria metade dos embaixadores concluir que o recurso está quebrado.
+
+A permissão é pedida de dentro de um gesto da pessoa — navegadores recusam o
+pedido automático, e com razão.
+
 ## O cadastro inicial pede DUAS coisas, em duas etapas
 
 Instituição (que põe a pessoa no diretório) e cidade (que a põe no mapa). Nada

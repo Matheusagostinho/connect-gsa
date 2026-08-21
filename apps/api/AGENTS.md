@@ -241,6 +241,36 @@ O aviso mais recente é servido separado, em `/announcements/latest`, e some do 
 depois de 14 dias. O prazo está no código, não na tela: quem decide o que é notícia é o
 servidor.
 
+## Aviso por notificação (push)
+
+O push **não** duplica a notificação: ele é um canal de ENTREGA para o que já é
+derivado do banco (ASM-019). O que ganha tabela é o APARELHO inscrito, que é
+outra coisa — a notificação é calculada a cada consulta; o aparelho é um registro
+que nasce ao autorizar e morre ao desinstalar.
+
+Quatro regras que não podem ser afrouxadas:
+
+1. **Falhar no envio nunca desfaz a ação.** Quem reagiu já reagiu; o serviço do
+   fabricante estar fora não pode recusar a reação. Todo disparo é `void` e o
+   erro é engolido dentro de `avisar`.
+2. **Inscrição morta é apagada** quando o serviço responde 404 ou 410. Sem isso a
+   tabela vira um cemitério percorrido a cada aviso, e o tempo de envio cresce
+   com o número de gente que SAIU. Erro passageiro (500, rede) mantém — apagar
+   por instabilidade tiraria o aviso de quem não fez nada.
+3. **O `endpoint` é a chave única**, não o `userId`: a mesma pessoa se inscreve
+   no celular e no computador, e são duas entregas. E o `upsert` atualiza o dono
+   no conflito, porque num computador compartilhado o aparelho passa a ser de
+   quem está logado agora.
+4. **O texto do aviso é primeiro nome e destino, nada além.** Ele aparece na tela
+   bloqueada, à vista de quem estiver por perto — é a superfície MENOS privada do
+   produto. Nome completo já diz demais num ônibus; e-mail e conteúdo integral de
+   publicação não entram (P-002). Os textos moram todos em `push.eventos.ts`
+   porque isso é decisão de produto, não detalhe de rota.
+
+Sem chaves VAPID configuradas o recurso simplesmente não existe: a tela não
+oferece e o envio devolve cedo. É o que permite rodar a suíte sem gerar par de
+chaves.
+
 ## Notificações
 
 Não existe tabela de notificação. Pedidos, reações e comentários já estão no banco com data

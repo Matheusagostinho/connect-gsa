@@ -13,11 +13,33 @@
       "destination": "https://connect-gsa-api.onrender.com/api/:caminho*"
     },
     {
-      "source": "/((?!api/|assets/|fonts/|maplibre/|logo\\.svg).*)",
+      "source": "/((?!api/|assets/|fonts/|maplibre/|icons/|logo\\.svg|sw\\.js|manifest\\.webmanifest).*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    },
     {
       "source": "/assets/(.*)",
       "headers": [

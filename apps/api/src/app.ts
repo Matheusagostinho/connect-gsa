@@ -24,6 +24,7 @@ import { registerConnectionRoutes } from './modules/connection/connection.routes
 import { registerDirectoryRoutes } from './modules/directory/directory.routes.js';
 import { registerAccountRoutes } from './modules/account/account.routes.js';
 import { registerNotificationRoutes } from './modules/notification/notification.routes.js';
+import { registerPushRoutes } from './modules/push/push.routes.js';
 import { R2StorageDriver } from './modules/media/r2-storage.js';
 import { LocalStorageDriver } from './modules/media/local-storage.js';
 import type { StorageDriver } from './modules/media/storage.js';
@@ -123,12 +124,13 @@ export async function buildApp({
       registerInviteRoutes(scope, prisma, env);
       registerProfileRoutes(scope, prisma);
       registerMediaRoutes(scope, prisma, storage);
-      registerPostRoutes(scope, prisma, storage);
+      registerPostRoutes(scope, prisma, storage, env);
       registerAnnouncementRoutes(scope, prisma, storage);
       registerFeedRoutes(scope, prisma, storage);
       registerDirectoryRoutes(scope, prisma);
-      registerConnectionRoutes(scope, prisma);
+      registerConnectionRoutes(scope, prisma, env);
       registerNotificationRoutes(scope, prisma);
+      registerPushRoutes(scope, prisma, env);
       registerAccountRoutes(scope, prisma, storage);
       registerAuthorPostsRoute(scope, prisma, storage);
       registerLogoutRoute(scope, auth);

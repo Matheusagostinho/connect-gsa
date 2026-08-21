@@ -8,3 +8,4 @@ export * from './connection.schema.js';
 export * from './notification.schema.js';
 export * from './account.schema.js';
 export * from './links.js';
+export * from './push.schema.js';

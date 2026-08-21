@@ -8,6 +8,8 @@ import {
 } from '@connect-gsa/shared';
 import { z } from 'zod';
 import { requireAuth } from '../../auth/session.js';
+import type { Env } from '../../env.js';
+import { avisarComentario, avisarReacao } from '../push/push.eventos.js';
 import type { AppInstance } from '../../types.js';
 import type { StorageDriver } from '../media/storage.js';
 import {
@@ -27,7 +29,11 @@ export function registerPostRoutes(
   app: AppInstance,
   prisma: PrismaClient,
   storage: StorageDriver,
+  env: Env,
 ): void {
+  // O aviso por notificação é DISPARADO, não esperado: quem reagiu já reagiu, e
+  // o serviço de push do fabricante estar fora não pode recusar a reação.
+  const contextoDeAviso = { prisma, env, log: app.log };
   /** Quem está lendo, com o poder de moderação já resolvido. */
   const viewerOf = (request: Parameters<typeof requireAuth>[0]): ViewerContext => {
     const user = requireAuth(request);
@@ -67,8 +73,21 @@ export function registerPostRoutes(
         },
       },
     },
-    async (request) =>
-      reactToPost(prisma, viewerOf(request), request.params.id, request.body.reaction),
+    async (request) => {
+      const viewer = viewerOf(request);
+      const resultado = await reactToPost(
+        prisma,
+        viewer,
+        request.params.id,
+        request.body.reaction,
+      );
+
+      // Sem `await`: a resposta não espera a entrega. E sem `catch` aqui porque
+      // `avisar` já engole tudo — o que sobra é o registro.
+      void avisarReacao(contextoDeAviso, request.params.id, viewer.userId);
+
+      return resultado;
+    },
   );
 
   app.get(
@@ -88,12 +107,11 @@ export function registerPostRoutes(
       config: { rateLimit: { max: 60, timeWindow: '10 minutes' } },
     },
     async (request, reply) => {
-      const comments = await createComment(
-        prisma,
-        viewerOf(request),
-        request.params.id,
-        request.body,
-      );
+      const viewer = viewerOf(request);
+      const comments = await createComment(prisma, viewer, request.params.id, request.body);
+
+      void avisarComentario(contextoDeAviso, request.params.id, viewer.userId);
+
       return reply.status(201).send(comments);
     },
   );

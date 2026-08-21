@@ -105,6 +105,9 @@ model User {
   accounts       Account[]
   invitesCreated InviteCode[] @relation("InviteCreator")
 
+  /// Aparelhos inscritos para receber aviso por notificação.
+  pushSubscriptions PushSubscription[]
+
   /// Por qual convite esta pessoa entrou.
   ///
   /// Mora aqui, e não em `InviteCode.usedById`, porque o convite deixou de ser
@@ -229,6 +232,34 @@ model InviteCode {
 
   @@index([createdById])
   @@index([expiresAt])
+}
+
+/// Um aparelho inscrito para receber aviso por notificação.
+///
+/// A NOTIFICAÇÃO continua derivada do que já está no banco (ASM-019) — esta
+/// tabela não a duplica. O que ela guarda é o APARELHO: coisas com vidas
+/// diferentes, porque a notificação é calculada e o aparelho é um registro que
+/// nasce quando alguém autoriza e morre quando desinstala.
+///
+/// `endpoint` é a chave única porque é ele que o navegador garante ser único por
+/// aparelho e por origem. Usar `userId` não serviria: a mesma pessoa se inscreve
+/// no celular e no computador, e são duas entregas.
+///
+/// `onDelete: Cascade`: excluir a conta precisa levar as inscrições junto, senão
+/// o aparelho continuaria recebendo aviso de uma rede da qual a pessoa saiu.
+model PushSubscription {
+  id       String @id @default(uuid())
+  endpoint String @unique
+  /// Chaves de criptografia do navegador. Sem elas o envio não é decifrável.
+  p256dh   String
+  auth     String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 /// Lista de e-mails pré-aprovados pelo programa (Q-001).

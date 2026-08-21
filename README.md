@@ -701,6 +701,30 @@ personalizado — o preço consciente de não rastrear pessoa.
 Sem o token trocado, o script não faz nada e a página funciona igual. Medição que
 derruba a página que ela mede é pior que medição nenhuma.
 
+### Passo 7.7 — Ligar o aviso por notificação (opcional)
+
+Sem isto o aplicativo funciona igual — só não avisa com a tela fechada. A tela
+de Configurações nem oferece o botão quando o servidor não tem chaves.
+
+```bash
+npx web-push generate-vapid-keys
+```
+
+No Render, três variáveis:
+
+- [ ] `VAPID_PUBLIC_KEY` — a chave pública gerada
+- [ ] `VAPID_PRIVATE_KEY` — a privada
+- [ ] `VAPID_SUBJECT` — `mailto:seu-email@dominio` ou a URL do projeto
+
+> O `VAPID_SUBJECT` não é decoração: os serviços de push dos fabricantes o
+> exigem para saber a quem reclamar de abuso. Sem um contato válido, o seu
+> domínio pode ser bloqueado sem aviso.
+
+**No iPhone o aviso só funciona com o aplicativo instalado na tela inicial** — o
+Safari não expõe push para aba comum. A tela de Configurações detecta isso e
+explica o passo do "Adicionar à Tela de Início"; vale você testar assim antes de
+divulgar.
+
 ### Passo 8 — Impedir a hibernação
 
 - [ ] **UptimeRobot** → *Add New Monitor* → HTTP(s) → URL
