@@ -49,7 +49,18 @@ export const updateProfileSchema = z.object({
   name: z.string().trim().min(2).max(PROFILE_LIMITS.nameMax),
   institutionId: z.uuid(),
   cityId: z.uuid(),
-  course: z.string().trim().min(2).max(PROFILE_LIMITS.courseMax),
+  /**
+   * Opcional desde 21/08/2026.
+   *
+   * O onboarding passou a pedir só instituição e cidade — o mínimo para a
+   * pessoa aparecer no mapa e no diretório, que é o que torna a rede útil para
+   * quem chegou. Curso, bio, habilidades e links são preenchidos depois, no
+   * perfil, por quem quiser.
+   *
+   * A troca é deliberada: um formulário longo na porta de entrada é onde as
+   * pessoas desistem, e um perfil sem curso ainda encontra e é encontrado.
+   */
+  course: z.string().trim().max(PROFILE_LIMITS.courseMax).default(''),
   bio: z.string().trim().max(PROFILE_LIMITS.bioMax).default(''),
   /**
    * Identificadores do catálogo de habilidades, não texto livre.
@@ -146,6 +157,21 @@ export type PublicProfile = z.infer<typeof publicProfileSchema>;
  * o que não trafega não vaza.
  */
 export const myProfileSchema = publicProfileSchema.extend({
+  /**
+   * NULO enquanto o onboarding não terminou.
+   *
+   * O `publicProfileSchema` declara `slug` obrigatório, e está certo: perfil de
+   * terceiro só existe depois de completo. Para o PRÓPRIO dono existe um
+   * intervalo real entre criar a conta e concluir o cadastro — e ali não há
+   * nome de usuário ainda.
+   *
+   * O mapper cobria isso devolvendo o `id` no lugar. Funcionou enquanto o id era
+   * uma string curta; quando ele virou UUID (para casar com `z.uuid()` nos
+   * schemas de saída), o campo de nome de usuário do onboarding passou a vir
+   * preenchido com um UUID. Um valor de mentira num campo obrigatório sempre
+   * acaba aparecendo em algum lugar — aqui apareceu num formulário.
+   */
+  slug: z.string().nullable(),
   institution: publicProfileSchema.shape.institution.nullable(),
   city: publicProfileSchema.shape.city.nullable(),
   course: z.string(),

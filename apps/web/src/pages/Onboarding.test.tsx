@@ -1,6 +1,7 @@
 import type { MyProfile } from '@connect-gsa/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { OnboardingPage } from './Onboarding.tsx';
@@ -56,6 +57,22 @@ function renderOnboarding(profileComplete: boolean) {
             Promise.resolve([{ slug: 'react', name: 'React', category: 'Tecnologia' }]),
         });
       }
+      if (caminho.includes('/institutions')) {
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () =>
+            Promise.resolve([
+              {
+                id: '11111111-1111-4111-8111-111111111111',
+                name: 'IFNMG',
+                campus: 'Pirapora',
+                acronym: 'IFNMG',
+                status: 'approved',
+              },
+            ]),
+        });
+      }
       return Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve([]) });
     }),
   );
@@ -73,6 +90,18 @@ function renderOnboarding(profileComplete: boolean) {
 afterEach(() => {
   vi.unstubAllGlobals();
 });
+
+/**
+ * Avança do passo 1 para o 2.
+ *
+ * O `PERFIL` do teste já traz instituição, então o seletor está no estado
+ * "escolhida" e não há busca a fazer — basta continuar. O botão valida a etapa
+ * antes de passar: descobrir na última tela que faltou algo na primeira é o que
+ * faz a pessoa abandonar o cadastro.
+ */
+async function avancarParaCidade() {
+  await userEvent.click(await screen.findByRole('button', { name: 'Continuar' }));
+}
 
 describe('formulário do perfil', () => {
   it('editar acontece dentro da moldura do aplicativo @spec:AC-106', async () => {
@@ -110,19 +139,28 @@ describe('formulário do perfil', () => {
     expect(await screen.findByLabelText('Nome de usuário')).toHaveValue('ana-ribeiro');
   });
 
-  it('não pede nome de usuário nem links no primeiro preenchimento', async () => {
+  it('o primeiro cadastro pede só instituição e cidade, em duas etapas', async () => {
     renderOnboarding(false);
 
-    // Quem está entrando agora já tem seis campos obrigatórios pela frente;
-    // pedir mais cinco links antes de a pessoa ver a rede é o caminho mais curto
-    // para ela desistir no formulário.
-    await screen.findByRole('heading', { name: /complete seu perfil/i });
-    expect(screen.queryByLabelText('Nome de usuário')).not.toBeInTheDocument();
-    expect(screen.queryByLabelText('GitHub')).not.toBeInTheDocument();
+    // Eram seis campos obrigatórios numa tela só. Formulário longo na porta de
+    // entrada é onde as pessoas desistem, e nada ali era necessário para a rede
+    // funcionar para elas. Ficaram os dois que a fazem APARECER: instituição
+    // (diretório) e cidade (mapa).
+    await screen.findByRole('heading', { name: /onde você estuda/i });
+    expect(screen.getByText('Passo 1 de 2')).toBeInTheDocument();
+
+    for (const campo of ['Nome', 'Curso', 'Bio', 'Nome de usuário', 'GitHub']) {
+      expect(screen.queryByLabelText(campo)).not.toBeInTheDocument();
+    }
   });
 
   it('avisa que a pessoa vai aparecer no mapa, e que pode sair @spec:AC-128', async () => {
     renderOnboarding(false);
+
+    // O aviso mora na etapa da CIDADE, e não no rodapé do formulário: ele
+    // precisa ser lido no momento da escolha, não depois de rolar a tela.
+    await screen.findByRole('heading', { name: /onde você estuda/i });
+    await avancarParaCidade();
 
     // O aviso é a contrapartida de o mapa vir ligado (P-011, invertido em
     // 2026-08-19). Nascer visível só é aceitável se a pessoa souber ao
@@ -140,8 +178,8 @@ describe('formulário do perfil', () => {
     // O `ProtectedRoute` devolve para cá quem tem perfil incompleto e tenta
     // qualquer outra seção. Oferecer os destinos seria oferecer uma porta que
     // se fecha na cara de quem a abre.
-    expect(await screen.findByRole('heading', { name: /complete seu perfil/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /onde você estuda/i })).toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Seções' })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Salvar e continuar' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Continuar' })).toBeInTheDocument();
   });
 });

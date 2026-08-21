@@ -181,6 +181,29 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
    e em Configurações — dois literais iguais viram um desatualizado no dia em que o
    repositório mudar de lugar.
 
+## O cadastro inicial pede DUAS coisas, em duas etapas
+
+Instituição (que põe a pessoa no diretório) e cidade (que a põe no mapa). Nada
+mais — nome vem do provedor social, e curso, bio, habilidades, links e nome de
+usuário ficam para o perfil, quando ela já viu para que a rede serve.
+
+Eram seis campos obrigatórios numa tela só. Formulário longo na porta de entrada
+é onde as pessoas desistem, e nada ali era necessário para a rede funcionar para
+elas: um perfil sem curso ainda encontra e é encontrado.
+
+Duas coisas aqui não são estilo:
+
+- **"Voltar" é `type="button"`.** Dentro de um `<form>`, botão sem tipo é
+  `submit` por padrão — voltar enviaria o cadastro pela metade.
+- **O aviso do mapa mora na etapa da CIDADE**, não no rodapé. Ele é a
+  contrapartida de o mapa vir ligado (P-011) e precisa ser lido no momento da
+  escolha, não depois de rolar a tela.
+
+O MESMO componente serve ao cadastro e à edição: `editando` mostra tudo de uma
+vez, sem etapas. São dois arranjos de um formulário só — separá-los em dois
+arquivos foi o que já fez o perfil próprio e o público divergirem sem ninguém
+decidir isso.
+
 ## Interface otimista: o que aplica na hora e o que espera
 
 Reagir, apagar publicação, comentar e salvar perfil aplicam ANTES da resposta do

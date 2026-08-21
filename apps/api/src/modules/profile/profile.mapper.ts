@@ -57,8 +57,10 @@ function parseLinks(value: unknown): Link[] {
 function baseProfile(row: ProfileRow) {
   return {
     id: row.id,
-    // Perfil sem slug só existe entre criar a conta e concluir o onboarding.
-    slug: row.slug ?? row.id,
+    // Perfil sem slug só existe entre criar a conta e concluir o onboarding, e
+    // esse intervalo é do PRÓPRIO dono — `myProfileSchema` aceita nulo. O
+    // `publicProfileSchema` não, e não precisa: terceiro só vê perfil completo.
+    slug: row.slug,
     name: row.name,
     imageUrl: row.image,
     role: row.role,

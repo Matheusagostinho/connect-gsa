@@ -47,7 +47,11 @@ export function ProfileView({
   eu?: MyProfile;
 }) {
   const [aba, setAba] = useState<Aba>('posts');
-  const { data: posts = [] } = useAuthorPosts(profile.slug);
+  // Perfil sem slug só existe entre criar a conta e concluir o onboarding — e
+  // nesse intervalo o `ProtectedRoute` não deixa chegar aqui. A guarda existe
+  // para o TIPO, não para um caso real: buscar publicações de `null` seria uma
+  // requisição para `/perfil/null`.
+  const { data: posts = [] } = useAuthorPosts(profile.slug ?? '');
   const { request, accept, remove } = useConnectionAction(profile.id);
 
   const souEu = eu !== undefined;
@@ -108,7 +112,8 @@ export function ProfileView({
                 é ir para outro endereço, e só o link dá o menu de contexto, o
                 "abrir em nova aba" e o destino na barra de status.
               */}
-              <ShareProfile slug={profile.slug} name={profile.name} />
+              {/* Sem slug não há endereço público para compartilhar. */}
+              {profile.slug ? <ShareProfile slug={profile.slug} name={profile.name} /> : null}
 
               {souEu ? (
                 <Link

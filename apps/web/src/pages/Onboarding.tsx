@@ -82,7 +82,7 @@ export function OnboardingPage() {
     setName(profile.name);
     setCourse(profile.course);
     setBio(profile.bio);
-    setUsername(profile.slug);
+    setUsername(profile.slug ?? '');
     setLinks(linksToFields(profile.links));
     setSkillSlugs(profile.skills.map((skill) => skill.slug));
     setCity(profile.city);
@@ -92,6 +92,23 @@ export function OnboardingPage() {
   }, [profile]);
 
   const { avisar } = useToast();
+
+  /**
+   * O cadastro inicial em DUAS etapas, uma pergunta de cada vez.
+   *
+   * Antes eram seis campos obrigatórios numa tela só — nome, instituição,
+   * curso, cidade, habilidades e bio. Formulário longo na porta de entrada é
+   * onde as pessoas desistem, e nada ali era necessário para a rede funcionar
+   * para elas.
+   *
+   * Ficaram os dois que fazem a pessoa APARECER: instituição (que a coloca no
+   * diretório) e cidade (que a coloca no mapa). O resto virou preenchimento
+   * opcional no perfil, quando ela já viu para que serve.
+   *
+   * O nome não é perguntado: ele vem do provedor social, já preenchido, e
+   * continua editável no perfil.
+   */
+  const [etapa, setEtapa] = useState(1);
 
   /**
    * Salvar é otimista — **menos** quando o nome de usuário mudou.
@@ -154,6 +171,9 @@ export function OnboardingPage() {
 
   const editando = profile?.profileComplete === true;
 
+  /** No modo edição tudo aparece junto; no cadastro, uma etapa por vez. */
+  const mostrar = (numero: number) => editando || etapa === numero;
+
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
@@ -191,30 +211,39 @@ export function OnboardingPage() {
   const formulario = (
     <Card>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
-          <Field
-            id="nome"
-            label="Nome"
-            value={name}
-            maxLength={PROFILE_LIMITS.nameMax}
-            onChange={(event) => setName(event.target.value)}
-            {...(errors['name'] ? { error: errors['name'] } : {})}
-          />
+          {/* O nome vem do provedor social, já preenchido. Editar é no perfil. */}
+          {editando ? (
+            <Field
+              id="nome"
+              label="Nome"
+              value={name}
+              maxLength={PROFILE_LIMITS.nameMax}
+              onChange={(event) => setName(event.target.value)}
+              {...(errors['name'] ? { error: errors['name'] } : {})}
+            />
+          ) : null}
 
+          {mostrar(1) ? (
           <InstitutionPicker
             value={institution}
             onSelect={setInstitution}
             {...(errors['institutionId'] ? { error: 'Escolha sua instituição.' } : {})}
           />
+          ) : null}
 
-          <Field
-            id="curso"
-            label="Curso"
-            value={course}
-            maxLength={PROFILE_LIMITS.courseMax}
-            onChange={(event) => setCourse(event.target.value)}
-            {...(errors['course'] ? { error: errors['course'] } : {})}
-          />
+          {editando ? (
+            <Field
+              id="curso"
+              label="Curso"
+              hint="Opcional."
+              value={course}
+              maxLength={PROFILE_LIMITS.courseMax}
+              onChange={(event) => setCourse(event.target.value)}
+              {...(errors['course'] ? { error: errors['course'] } : {})}
+            />
+          ) : null}
 
+          {mostrar(2) ? (
           <Autocomplete<City>
             id="cidade"
             label="Cidade"
@@ -224,12 +253,15 @@ export function OnboardingPage() {
             render={(item) => `${item.name}/${item.state}`}
             {...(errors['cityId'] ? { error: 'Escolha sua cidade.' } : {})}
           />
+          ) : null}
 
-          <SkillPicker
-            selected={skillSlugs}
-            onChange={setSkillSlugs}
-            {...(errors['skillSlugs'] ? { error: errors['skillSlugs'] } : {})}
-          />
+          {editando ? (
+            <SkillPicker
+              selected={skillSlugs}
+              onChange={setSkillSlugs}
+              {...(errors['skillSlugs'] ? { error: errors['skillSlugs'] } : {})}
+            />
+          ) : null}
 
           {/*
             Nome de usuário e links só no MODO EDIÇÃO. Quem está entrando agora
@@ -251,15 +283,17 @@ export function OnboardingPage() {
             />
           ) : null}
 
-          <Field
-            id="bio"
-            label="Bio"
-            hint={`Até ${PROFILE_LIMITS.bioMax} caracteres.`}
-            value={bio}
-            maxLength={PROFILE_LIMITS.bioMax}
-            onChange={(event) => setBio(event.target.value)}
-            {...(errors['bio'] ? { error: errors['bio'] } : {})}
-          />
+          {editando ? (
+            <Field
+              id="bio"
+              label="Bio"
+              hint={`Até ${PROFILE_LIMITS.bioMax} caracteres.`}
+              value={bio}
+              maxLength={PROFILE_LIMITS.bioMax}
+              onChange={(event) => setBio(event.target.value)}
+              {...(errors['bio'] ? { error: errors['bio'] } : {})}
+            />
+          ) : null}
 
           {editando ? (
             <fieldset className="flex flex-col gap-4">
@@ -291,10 +325,18 @@ export function OnboardingPage() {
             ao preencher — descobrir por acidente depois é o que não pode
             acontecer.
           */}
-          <p className="rounded-field bg-surface-subtle p-4 text-xs text-ink-muted">
-            Guardamos apenas a sua cidade — nunca a localização do seu aparelho. Você vai aparecer
-            no mapa da rede pela sua cidade, e pode sair quando quiser em Configurações.
-          </p>
+          {/*
+            O aviso acompanha o campo da CIDADE, e não o rodapé do formulário:
+            ele é a contrapartida de o mapa vir ligado, e precisa ser lido no
+            momento da escolha — não depois, quando a pessoa já rolou para baixo.
+          */}
+          {mostrar(2) ? (
+            <p className="rounded-field bg-surface-subtle p-4 text-xs text-ink-muted">
+              Guardamos apenas a sua cidade — nunca a localização do seu aparelho. Você vai
+              aparecer no mapa da rede pela sua cidade, e pode sair quando quiser em
+              Configurações.
+            </p>
+          ) : null}
 
           {save.error instanceof Error ? (
             <p role="alert" className="text-sm font-medium text-danger">
@@ -302,9 +344,40 @@ export function OnboardingPage() {
             </p>
           ) : null}
 
-          <Button type="submit" disabled={save.isPending}>
-            {save.isPending ? 'Salvando…' : editando ? 'Salvar' : 'Salvar e continuar'}
-          </Button>
+          {editando || etapa === 2 ? (
+            <div className="flex gap-2">
+              {/*
+                "Voltar" é `type="button"`: dentro de um `<form>`, botão sem tipo
+                é `submit` por padrão — voltar enviaria o cadastro pela metade.
+              */}
+              {!editando ? (
+                <Button type="button" variant="outline" onClick={() => setEtapa(1)}>
+                  Voltar
+                </Button>
+              ) : null}
+
+              <Button type="submit" className="flex-1" disabled={save.isPending}>
+                {save.isPending ? 'Salvando…' : editando ? 'Salvar' : 'Concluir'}
+              </Button>
+            </div>
+          ) : (
+            <Button
+              type="button"
+              disabled={!institution}
+              onClick={() => {
+                // Valida a etapa ANTES de avançar: descobrir na última tela que
+                // faltou algo na primeira é o que faz a pessoa abandonar.
+                if (!institution) {
+                  setErrors({ institutionId: 'Escolha sua instituição.' });
+                  return;
+                }
+                setErrors({});
+                setEtapa(2);
+              }}
+            >
+              Continuar
+            </Button>
+          )}
         </form>
       </Card>
   );
@@ -324,9 +397,16 @@ export function OnboardingPage() {
         <ThemeToggle />
       </header>
 
-      <h1 className="display mb-3 text-4xl sm:text-5xl">Complete seu perfil</h1>
+      <p className="mb-2 text-sm font-medium text-ink-muted">Passo {etapa} de 2</p>
+
+      <h1 className="display mb-3 text-4xl sm:text-5xl">
+        {etapa === 1 ? 'Onde você estuda?' : 'De qual cidade?'}
+      </h1>
+
       <p className="mb-10 text-lg text-ink-muted">
-        É assim que os outros embaixadores vão te encontrar.
+        {etapa === 1
+          ? 'É por aqui que os outros embaixadores da sua instituição vão te encontrar.'
+          : 'Só a cidade — nunca a localização do aparelho. É ela que te coloca no mapa da rede.'}
       </p>
 
       {formulario}
