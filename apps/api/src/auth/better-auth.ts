@@ -9,6 +9,8 @@ import {
   isEmailAllowed,
 } from '../modules/invite/invite.service.js';
 import { INVITE_COOKIE, readCookie, readInviteTicket } from './invite-ticket.js';
+import { importarFotoDoProvedor } from '../modules/media/foto-do-provedor.js';
+import type { StorageDriver } from '../modules/media/storage.js';
 
 const ACESSO_RESTRITO =
   'O ConnectGSA é exclusivo para participantes do Programa de Embaixadores Estudantis do Google. ' +
@@ -44,7 +46,12 @@ export interface AuthLogger {
 
 const LOGGER_SILENCIOSO: AuthLogger = { warn: () => undefined };
 
-export function buildAuthOptions(prisma: PrismaClient, env: Env, log: AuthLogger = LOGGER_SILENCIOSO) {
+export function buildAuthOptions(
+  prisma: PrismaClient,
+  env: Env,
+  log: AuthLogger = LOGGER_SILENCIOSO,
+  storage?: StorageDriver,
+) {
   const isProduction = env.NODE_ENV === 'production';
 
   return {
@@ -203,8 +210,32 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env, log: AuthLogger
               throw new APIError('FORBIDDEN', { message: ACESSO_RESTRITO });
             };
 
+            /**
+             * A foto do provedor NUNCA é guardada como URL dele.
+             *
+             * `user.picture` do Google carrega um identificador da conta, e esse
+             * campo é servido a qualquer participante que veja o perfil. Aqui
+             * ela é trazida para o nosso armazenamento, reprocessada sem
+             * metadado, ou descartada — nunca referenciada de fora.
+             *
+             * Acontece no `before` de propósito: assim a linha do usuário já
+             * NASCE com o valor certo, e não existe janela em que a URL do
+             * provedor esteve no banco.
+             */
+            const trazerFoto = async (dados: typeof user) => {
+              // Estreitar para `string` em vez de coagir: `image` vem do
+              // provedor e pode ser qualquer coisa, e `String(objeto)` daria
+              // "[object Object]" — uma URL de mentira que passaria adiante.
+              const bruto: unknown = (dados as { image?: unknown }).image;
+              const original = typeof bruto === 'string' ? bruto : '';
+              if (!original) return dados;
+
+              const nossa = storage ? await importarFotoDoProvedor(storage, original) : null;
+              return { ...dados, image: nossa };
+            };
+
             if (await isEmailAllowed(prisma, email)) {
-              return { data: user };
+              return { data: await trazerFoto(user) };
             }
 
             const cookieHeader = ctx?.headers?.get('cookie');
@@ -230,7 +261,7 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env, log: AuthLogger
               return recusar('bilhete de convite inválido ou vencido');
             }
 
-            return { data: user };
+            return { data: await trazerFoto(user) };
           },
 
           after: async (user) => {
@@ -247,8 +278,13 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env, log: AuthLogger
   } satisfies BetterAuthOptions;
 }
 
-export function createAuth(prisma: PrismaClient, env: Env, log?: AuthLogger) {
-  return betterAuth(buildAuthOptions(prisma, env, log));
+export function createAuth(
+  prisma: PrismaClient,
+  env: Env,
+  log?: AuthLogger,
+  storage?: StorageDriver,
+) {
+  return betterAuth(buildAuthOptions(prisma, env, log, storage));
 }
 
 export { ACESSO_RESTRITO };

@@ -84,7 +84,7 @@ export async function buildApp({
   const storage = createStorage(env);
   await registerMediaHosting(app, env, storage);
 
-  const auth = createAuth(prisma, env, app.log);
+  const auth = createAuth(prisma, env, app.log, storage);
 
   // Fora de produção, o cookie de desenvolvimento serve como identidade de
   // reserva — uma sessão real do Better Auth sempre vence. Em produção este

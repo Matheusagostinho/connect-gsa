@@ -121,7 +121,14 @@ export function logout(): Promise<{ ok: true }> {
 export async function socialSignIn(provider: 'google' | 'github' | 'linkedin'): Promise<void> {
   const { url } = await api.post<{ url: string; redirect: boolean }>('/auth/sign-in/social', {
     provider,
-    callbackURL: `${window.location.origin}/onboarding`,
+    // A RAIZ, não o onboarding. Quem decide para onde a pessoa vai é o
+    // `ProtectedRoute`, que já sabe: perfil incompleto vai para o onboarding,
+    // completo entra direto no início.
+    //
+    // Mandar todo mundo para `/onboarding` fazia quem já tinha perfil passar
+    // pela tela de apresentação a cada login — e a tela, vendo perfil completo,
+    // virava um formulário de edição que ninguém pediu para abrir.
+    callbackURL: `${window.location.origin}/`,
   });
 
   window.location.assign(url);

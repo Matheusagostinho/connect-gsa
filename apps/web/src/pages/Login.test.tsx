@@ -81,9 +81,13 @@ describe('tela de entrada', () => {
     // O MÉTODO é o ponto deste teste. Com GET, o Better Auth responde 404 e
     // corpo `null`, e a tela navega para lugar nenhum.
     expect(pedido?.method).toBe('POST');
+    // A RAIZ, e não `/onboarding`: quem decide o destino é o `ProtectedRoute`,
+    // que manda para o onboarding só quando o perfil está incompleto. Fixar o
+    // onboarding fazia quem já tinha perfil cair num formulário de edição a
+    // cada login.
     expect(pedido?.body).toMatchObject({
       provider: 'google',
-      callbackURL: 'https://connect-gsa.vercel.app/onboarding',
+      callbackURL: 'https://connect-gsa.vercel.app/',
     });
 
     // E quem decide o destino é o SERVIDOR, não uma URL montada no cliente.

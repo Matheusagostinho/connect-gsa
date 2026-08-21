@@ -178,6 +178,32 @@ Só laço **aceito** conta como conexão: pedido pendente é intenção de um la
 E só publicação `kind: 'feed'` conta — comunicado oficial pertence à coordenação,
 e contá-lo inflaria o perfil de quem por acaso tem o papel.
 
+## A foto do provedor social nunca fica no provedor
+
+O Better Auth grava `image: user.picture`, e o Google devolve
+`lh3.googleusercontent.com/a/ACg8ocK…` — um caminho que carrega identificador
+derivado da conta Google da pessoa. Esse campo é servido a QUALQUER participante
+que veja o perfil, o diretório, o feed ou um pino do mapa. Eram dois vazamentos
+num campo só: o identificador circulando pela rede, e cada avatar renderizado
+virando uma requisição ao Google com o IP de quem navega.
+
+`importarFotoDoProvedor` traz o arquivo na criação da conta e passa pelo MESMO
+pipeline de todo upload — decodificar os pixels, escrever arquivo novo sem
+metadado. Nada de copiar bytes: o arquivo do provedor é entrada não confiável
+como qualquer outra, e foto de rede social carrega EXIF com frequência (P-001).
+
+Três guardas que não podem sair:
+
+1. **Só `https`.** O valor vem de terceiro e quem dispara a requisição é o
+   SERVIDOR — sem isso, é o começo de um SSRF.
+2. **O tipo vem dos bytes**, nunca do `Content-Type` do outro lado.
+3. **Falha devolve `null`, nunca lança.** Recusar o cadastro porque o Google
+   demorou seria trocar um contratempo por um portão fechado; a pessoa entra sem
+   foto e o avatar recua para a inicial.
+
+A importação acontece no `before` do hook de criação: assim a linha já NASCE com
+o valor certo, e não existe janela em que a URL do provedor esteve no banco.
+
 ## Imagens
 
 Todo envio passa PELA API, não por URL assinada direto ao bucket (ASM-012). É mais lento, e
