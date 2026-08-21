@@ -563,10 +563,15 @@ Preencha no painel as variáveis marcadas `sync: false`:
 `COOKIE_SAME_SITE` já vem como `none` — veja o Passo 6.
 
 ```bash
-curl -sS "https://SUA-API.onrender.com/health"   # {"status":"ok","version":"..."}
+curl -sS "https://SUA-API.onrender.com/health"
+# {"status":"ok","version":"0.1.0","commit":"a1b2c3d"}
 ```
 
-- [ ] `/health` respondendo
+- [ ] `/health` respondendo, e o `commit` batendo com `git rev-parse --short HEAD`
+
+> O campo `commit` responde a pergunta que mais atrapalha numa publicação: **"o
+> que está no ar já tem a correção?"** Sem ele, a única saída é adivinhar pelo
+> sintoma — e cada palpite errado custa um ciclo de deploy inteiro.
 
 > A API **se recusa a subir** se faltar qualquer uma das cinco variáveis do R2.
 > Isso é deliberado: sem bucket ela gravaria no disco do contêiner, que some a
