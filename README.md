@@ -596,33 +596,55 @@ Só uma variável de ambiente:
 Depois do primeiro deploy, volte ao Render e preencha `WEB_URL` e `WEB_ORIGINS`
 com a URL da Vercel, e ao Passo 3 para cadastrar as URLs de retorno reais.
 
-### Passo 6 — ⚠️ O cookie, e por que ele precisa ser `none` aqui
+### Passo 6 — Por que a API é servida pela mesma origem
 
-> ⚠️ **Falha em silêncio #2, e é a pior de todas.**
+O `vercel.json` traz um rewrite que repassa `/api/*` para o serviço no Render.
+Isso não é otimização — é o que faz o login funcionar.
 
-O cookie de sessão é `SameSite`. `Lax` — o valor seguro — só é enviado quando o
-SPA e a API estão no **mesmo site**, isto é, no mesmo domínio registrável:
+O Better Auth guarda o `state` do OAuth num cookie antes de mandar a pessoa para
+o Google. Com o SPA e a API em **sites diferentes**, esse cookie é gravado numa
+requisição cross-site: é cookie de terceiro, e o navegador o descarta. O retorno
+do Google chega sem o `state`, e o login morre com:
 
-| SPA | API | Mesmo site? |
+```
+State mismatch: State not persisted correctly
+```
+
+Nenhuma configuração resolve isso, porque a causa é a origem. Navegadores estão
+fechando o cerco a cookie de terceiro, então a tendência é piorar.
+
+Com o proxy, tudo é primeira parte:
+
+| | Sem proxy | Com proxy |
 |---|---|---|
-| `connect-gsa.vercel.app` | `connect-gsa-api.onrender.com` | ❌ **não** — `vercel.app` e `onrender.com` são sufixos públicos diferentes |
-| `connectgsa.com.br` | `api.connectgsa.com.br` | ✅ sim |
+| `COOKIE_SAME_SITE` | `none` (obrigatório) | **`lax`** — defesa de CSRF do navegador de volta |
+| CORS | necessário | sai do caminho |
+| `connect-src` da CSP | precisa nomear a API | só `'self'` |
+| Cookie de terceiro | dependência | nenhuma |
 
-Cross-site com `Lax`, o navegador aceita o cookie na volta do OAuth (que é
-navegação de topo) e **não o envia em nenhuma chamada de dado depois**. O login
-parece dar certo, o aplicativo abre deslogado, e não há uma linha de erro no
-console. Em desenvolvimento nunca acontece, porque lá tudo é `localhost` atrás do
-proxy do Vite.
+O preço: o tráfego de API conta na banda da Vercel (100 GB/mês, folgado nesta
+escala) e ganha um salto de proxy.
 
-Com os domínios padrão, portanto, **`COOKIE_SAME_SITE=none` é requisito**, não
-escolha. O preço é explícito: o cookie passa a atravessar sites e a única defesa
-de CSRF que resta é a lista de origens do CORS (`WEB_ORIGINS`, sem curinga).
+**A ordem dos rewrites importa.** O `/api/:caminho*` vem primeiro, e `api/` está
+na exclusão do catch-all do SPA — senão toda chamada de dados receberia o
+`index.html` com status 200, e o cliente tentaria ler HTML como JSON.
 
-- [ ] `COOKIE_SAME_SITE=none` confirmado no Render
-- [ ] `WEB_ORIGINS` com a origem exata da Vercel, sem curinga
+**No Render, ajuste três variáveis:**
 
-**No dia em que você comprar um domínio**, aponte o SPA para o apex e a API para
-`api.`, e volte para `lax`. É uma variável.
+- [ ] `COOKIE_SAME_SITE` = `lax`
+- [ ] `API_URL` = `https://connect-gsa.vercel.app` — **o domínio do SPA**, porque
+      é ele que o navegador acessa; o Better Auth monta o `redirect_uri` a partir
+      daqui
+- [ ] `WEB_URL` = `https://connect-gsa.vercel.app`
+
+**No Google Cloud Console**, a URI de redirecionamento autorizada passa a ser:
+
+```
+https://connect-gsa.vercel.app/api/auth/callback/google
+```
+
+Deixe a antiga (`...onrender.com/...`) cadastrada também até confirmar que a nova
+funciona — o Google aceita várias.
 
 ### Passo 7 — ⚠️ Ajustar a CSP
 

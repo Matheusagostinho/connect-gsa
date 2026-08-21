@@ -147,7 +147,22 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
    estudantes, não entregar IP e User-Agent a um terceiro a cada visita. Só os subsets
    latinos, e o download roda À MÃO (`scripts/baixar-fontes.mjs`) com o resultado
    versionado. No build, um Google Fonts fora do ar viraria um build quebrado.
-35. **A CSP mora no `vercel.json` e tem dois marcadores que PRECISAM ser trocados**:
+35. **A API é servida pela MESMA origem, por um rewrite da Vercel.** `/api/*` é
+    repassado para o serviço no Render. Isso não é otimização: com o SPA e a API
+    em sites diferentes, o cookie que o Better Auth usa para guardar o `state` do
+    OAuth é gravado numa requisição CROSS-SITE — ou seja, é cookie de terceiro, e
+    o navegador o descarta. O sintoma foi `State not persisted correctly`, e não
+    havia configuração que resolvesse: a causa é a origem.
+
+    Com o proxy, tudo é primeira parte. `COOKIE_SAME_SITE` volta a `lax`, o CORS
+    some do caminho e o `connect-src` da CSP fica só com `'self'`.
+
+    **A ordem dos rewrites importa:** o `/api/:caminho*` vem PRIMEIRO, e `api/`
+    entrou na exclusão do catch-all do SPA. Sem isso, toda chamada de dados
+    receberia o `index.html` com status 200 — e o cliente tentaria interpretar
+    HTML como JSON.
+
+36. **A CSP mora no `vercel.json` e tem um marcador que PRECISA ser trocado**:
    `API-DA-SUA-INSTALACAO` em `connect-src` (o host do serviço no Render) e
    `MIDIA-DA-SUA-INSTALACAO` em `img-src` (o host de LEITURA do bucket R2, o
    `pub-….r2.dev`). Os dois falham CALADOS — o primeiro deixa o SPA sem servidor, o
@@ -162,7 +177,7 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
     Se for mexer na política, verifique num navegador com **o mapa aberto**: o worker do
     MapLibre e as tiles do OpenFreeMap são o que ela mais tem chance de quebrar, e o
     sintoma é o mapa cinza que este projeto já conhece.
-36. **`REPOSITORIO` mora em `lib/projeto.ts`.** O endereço aparece na coluna de navegação
+37. **`REPOSITORIO` mora em `lib/projeto.ts`.** O endereço aparece na coluna de navegação
    e em Configurações — dois literais iguais viram um desatualizado no dia em que o
    repositório mudar de lugar.
 
