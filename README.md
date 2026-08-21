@@ -623,7 +623,10 @@ de CSRF que resta é a lista de origens do CORS (`WEB_ORIGINS`, sem curinga).
 
 > ⚠️ **Falha em silêncio #3.**
 
-Abra `vercel.json`. Dois marcadores precisam virar os seus endereços:
+Abra `vercel.json`. Dois marcadores precisam virar os seus endereços — e note que
+o arquivo **não tem comentários explicando isso** de propósito: a Vercel valida o
+`vercel.json` contra um schema e recusa o deploy com qualquer chave desconhecida,
+inclusive a convenção `"//"`. O aviso mora aqui e no `apps/web/AGENTS.md`.
 
 ```jsonc
 "connect-src 'self' https://API-DA-SUA-INSTALACAO ..."

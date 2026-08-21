@@ -147,12 +147,21 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
    estudantes, não entregar IP e User-Agent a um terceiro a cada visita. Só os subsets
    latinos, e o download roda À MÃO (`scripts/baixar-fontes.mjs`) com o resultado
    versionado. No build, um Google Fonts fora do ar viraria um build quebrado.
-35. **A CSP mora no `vercel.json` e tem dois valores acoplados ao ambiente**: o host da
-   API (Render) em `connect-src` e o do bucket R2 em `img-src`. Os dois falham CALADOS —
-   o primeiro deixa o SPA sem servidor, o segundo transforma toda foto de perfil na
-   inicial. Se for mexer na política, verifique num navegador com **o mapa aberto**: o
-   worker do MapLibre e as tiles do OpenFreeMap são o que ela mais tem chance de quebrar,
-   e o sintoma é o mapa cinza que este projeto já conhece.
+35. **A CSP mora no `vercel.json` e tem dois marcadores que PRECISAM ser trocados**:
+   `API-DA-SUA-INSTALACAO` em `connect-src` (o host do serviço no Render) e
+   `MIDIA-DA-SUA-INSTALACAO` em `img-src` (o host de LEITURA do bucket R2, o
+   `pub-….r2.dev`). Os dois falham CALADOS — o primeiro deixa o SPA sem servidor, o
+   segundo transforma toda foto de perfil na inicial.
+
+    **O `vercel.json` não pode explicar isso sozinho.** A Vercel valida o arquivo contra um
+    schema e RECUSA o deploy se houver qualquer chave desconhecida — inclusive a convenção
+    `"//"` usada como comentário, que o `firebase.json` aceitava. Por isso o aviso mora
+    aqui e no README, e não ao lado do valor. Se você adicionar campo novo lá, confirme que
+    ele existe no schema antes de enviar.
+
+    Se for mexer na política, verifique num navegador com **o mapa aberto**: o worker do
+    MapLibre e as tiles do OpenFreeMap são o que ela mais tem chance de quebrar, e o
+    sintoma é o mapa cinza que este projeto já conhece.
 36. **`REPOSITORIO` mora em `lib/projeto.ts`.** O endereço aparece na coluna de navegação
    e em Configurações — dois literais iguais viram um desatualizado no dia em que o
    repositório mudar de lugar.
