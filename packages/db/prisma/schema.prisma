@@ -217,6 +217,15 @@ model InviteCode {
 ///
 /// Caminho alternativo ao convite: se o programa entregar a relação oficial de
 /// embaixadores, o primeiro login desses e-mails dispensa código.
+/// Lista de e-mails pré-aprovados pelo programa (Q-001).
+///
+/// O e-mail é guardado SEMPRE em minúsculas, e há uma `CHECK` no banco
+/// garantindo isso — ver a migração `20260821090000_allowed_email_minusculo`.
+///
+/// O motivo é uma falha silenciosa que aconteceu no primeiro acesso em
+/// produção: `isEmailAllowed` normaliza o e-mail que CHEGA do provedor, mas nada
+/// normalizava o que estava gravado. Uma linha com maiúscula nunca casa com
+/// ninguém, e a pessoa é recusada no portão sem nenhuma pista do porquê.
 model AllowedEmail {
   id        String   @id @default(uuid())
   email     String   @unique

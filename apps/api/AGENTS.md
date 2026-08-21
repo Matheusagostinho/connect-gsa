@@ -309,6 +309,17 @@ Três travas, e nenhuma depende de alguém lembrar:
    um erro sequer. Em desenvolvimento nunca acontece, porque o proxy do Vite faz
    tudo ser `localhost`. O dia de voltar para `lax` é o dia do domínio próprio.
 
+## A lista aprovada é minúscula, e o banco garante
+
+`isEmailAllowed` faz `trim().toLowerCase()` no e-mail que CHEGA do provedor. Nada
+normalizava o que estava GRAVADO — e uma linha com maiúscula nunca casa com
+ninguém. A pessoa é recusada no portão com "acesso restrito", sem uma pista de
+que a causa é uma letra numa tabela.
+
+Aconteceu no primeiro acesso em produção. Agora há uma `CHECK` no banco, e ela
+recusa a inserção em vez de consertar em silêncio: consertar calado esconde de
+quem inseriu que ele digitou errado, e esta é a lista que controla quem entra.
+
 ## Uma falha intermitente ainda não explicada (2026-08-20)
 
 `moderation.test.ts` (AC-078) falhou **uma vez** durante um laço que roda a suíte

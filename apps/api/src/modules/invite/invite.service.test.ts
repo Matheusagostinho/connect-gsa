@@ -208,3 +208,23 @@ describe('indicação', () => {
     await expect(contarUsos(prisma, invite.id)).resolves.toBe(3);
   });
 });
+
+describe('lista aprovada', () => {
+  it('recusa gravar e-mail com maiúscula, em vez de aceitar e nunca casar', async () => {
+    // Aconteceu no primeiro acesso em produção: uma linha com maiúscula é aceita
+    // pela tabela, `isEmailAllowed` normaliza só o que CHEGA, e a pessoa é
+    // recusada no portão sem nenhuma pista do porquê. A `CHECK` no banco
+    // transforma a falha silenciosa num erro na hora de inserir.
+    await expect(
+      prisma.allowedEmail.create({ data: { email: 'Fulano@Uni.br' } }),
+    ).rejects.toThrow();
+
+    await expect(
+      prisma.allowedEmail.create({ data: { email: ' ana@uni.br ' } }),
+    ).rejects.toThrow();
+
+    await expect(
+      prisma.allowedEmail.create({ data: { email: 'ana@uni.br' } }),
+    ).resolves.toMatchObject({ email: 'ana@uni.br' });
+  });
+});

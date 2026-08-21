@@ -666,8 +666,15 @@ A rede é fechada: **não existe cadastro aberto**. O primeiro acesso é liberad
 mão no banco.
 
 ```sql
--- 1. ANTES do primeiro login
-INSERT INTO "AllowedEmail" (id, email) VALUES (gen_random_uuid(), 'voce@uni.br');
+-- 1. ANTES do primeiro login.
+-- `lower(trim(...))` não é zelo: o banco RECUSA e-mail com maiúscula ou espaço,
+-- porque uma linha assim nunca casaria com o e-mail que chega do provedor — e a
+-- recusa apareceria no portão, sem pista nenhuma da causa.
+INSERT INTO "AllowedEmail" (id, email)
+VALUES (gen_random_uuid(), lower(trim('voce@uni.br')));
+
+-- Confirme que gravou o que você espera:
+SELECT email FROM "AllowedEmail";
 ```
 
 - [ ] E-mail liberado
