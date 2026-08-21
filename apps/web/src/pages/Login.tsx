@@ -4,7 +4,7 @@ import { LogoMark, Wordmark } from '../components/Logo.tsx';
 import { PixelCloud } from '../components/PixelCloud.tsx';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { Button, UnofficialNotice } from '../components/ui.tsx';
-import { socialSignIn } from '../lib/api.js';
+import { ApiError, socialSignIn } from '../lib/api.js';
 import { lerConvite } from '../lib/invite-guardado.js';
 
 /**
@@ -57,8 +57,18 @@ export function LoginPage() {
 
     try {
       await socialSignIn(provider);
-    } catch {
-      // Mensagem sem detalhe técnico: quem lê isto não configura servidor.
+    } catch (falha) {
+      // Duas audiências, duas mensagens. Na TELA, o embaixador — que não
+      // configura servidor e para quem "INVALID_CALLBACK_URL" não quer dizer
+      // nada. No CONSOLE, quem está publicando: sem o código, a causa mais
+      // comum (a origem do SPA fora de `WEB_ORIGINS`) fica indistinguível de
+      // uma queda de rede, e as duas se resolvem de formas opostas.
+      //
+      // Só status e código, nunca corpo nem cabeçalho: mesma regra do P-005 que
+      // vale no servidor, porque o console de quem depura também é um log.
+      const detalhe = falha instanceof ApiError ? `${falha.status} ${falha.code}` : 'sem resposta';
+      console.warn(`[entrar] o servidor recusou o início da entrada: ${detalhe}`);
+
       setErro('Não deu para começar a entrada agora. Tente de novo em instantes.');
       setIndo(false);
     }
