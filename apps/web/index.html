@@ -49,27 +49,28 @@
 
     <!--
       Cloudflare Web Analytics.
-      
+
       Escolhido em vez do Google Analytics por coerência com o resto do produto:
       esta rede tirou o Google Fonts do caminho e escolheu o OpenFreeMap para o
       mapa pela mesma razão — não entregar o IP de um estudante a um terceiro que
       ele não escolheu.
-      
+
       O que este script NÃO faz: não grava cookie, não usa `localStorage`, não
       cria identificador de visitante e não segue ninguém entre sites. Por isso
       não há banner de consentimento a exibir — não há dado pessoal tratado, e a
       LGPD não é acionada.
-      
+
       O que ele dá: páginas mais vistas, visitantes, origem do tráfego, país e
       Core Web Vitals. O que ele NÃO dá: funil, coorte e evento personalizado —
       o preço consciente de não rastrear pessoa.
-      
+
       `defer` para não competir com o primeiro desenho. O token é público por
       construção (ele identifica o SITE, não a pessoa) e por isso pode viver aqui.
       Trocar `SEU-TOKEN` é o passo do guia; sem isso o script não faz nada — e
       falhar em silêncio é o certo para uma medição, que nunca deve derrubar a
       página que ela mede.
     -->
+    <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "41310f27419f4f73a7c077f2665bd682"}'></script><!-- End Cloudflare Web Analytics -->
     <script
       defer
       src="https://static.cloudflareinsights.com/beacon.min.js"

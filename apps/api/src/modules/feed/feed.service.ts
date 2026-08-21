@@ -3,7 +3,7 @@ import { POST_LIMITS, type FeedPage, type FeedTab, type Reaction } from '@connec
 import { badRequest } from '../../plugins/errors.js';
 import type { StorageDriver } from '../media/storage.js';
 import { POST_SELECT, toPost, type ViewerContext } from '../post/post.mapper.js';
-import { connectionBuckets } from '../connection/connection.service.js';
+import { connectionBuckets, connectionStatesFor } from '../connection/connection.service.js';
 import { loadReactions } from '../post/post.service.js';
 import { rankFeed, type RankablePost } from './ranking.js';
 
@@ -160,11 +160,32 @@ export async function buildFeed(
 
   const porId = new Map(candidatos.map((post) => [post.id, post]));
 
+  // O estado de conexão de cada autor da PÁGINA, numa consulta só.
+  //
+  // Faltava. `toPost` recebe `connection` como último parâmetro COM PADRÃO
+  // `'none'`, então esquecê-lo não dava erro de tipo nem de teste: todo post do
+  // feed dizia "não conectado", e o botão oferecia conectar com quem já era
+  // conexão. O padrão silencioso é o que escondeu o esquecimento.
+  const estadoDeConexao = await connectionStatesFor(
+    prisma,
+    viewer.userId,
+    [...new Set(pagina.flatMap(({ post }) => porId.get(post.id)?.author.id ?? []))],
+  );
+
   const posts = pagina.flatMap(({ post }) => {
     const row = porId.get(post.id);
     if (!row) return [];
     const contagem: Partial<Record<Reaction, number>> = counts.get(row.id) ?? {};
-    return [toPost(row, viewer, storage, contagem, mine.get(row.id) ?? null)];
+    return [
+      toPost(
+        row,
+        viewer,
+        storage,
+        contagem,
+        mine.get(row.id) ?? null,
+        estadoDeConexao.get(row.author.id) ?? 'none',
+      ),
+    ];
   });
 
   const temMais = offset + POST_LIMITS.pageSize < ordenados.length;

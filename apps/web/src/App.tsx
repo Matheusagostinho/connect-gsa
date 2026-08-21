@@ -53,7 +53,7 @@ function Raiz() {
 
   if (isPending) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-surface" role="status">
+      <div className="flex min-h-dvh items-center justify-center bg-surface" role="status">
         <span className="text-ink-muted">Carregando…</span>
       </div>
     );

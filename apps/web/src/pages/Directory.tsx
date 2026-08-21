@@ -43,9 +43,14 @@ export function DirectoryPage() {
   return (
     <AppShell
       profile={profile}
-      title="Quem está na rede"
-      lead={
-        <div className="flex items-center gap-1">
+      title="Pesquisar"
+    >
+      {/*
+        A lupa e o filtro moram ABAIXO do título, não na faixa do cabeçalho.
+        No celular aquela faixa já carrega marca, sino e conta; somar dois
+        controles ali espremia tudo e deixava os alvos de toque colados.
+      */}
+      <div className="flex items-center gap-1 border-b border-border px-4 py-2 sm:px-5">
           <button
             type="button"
             onClick={() => {
@@ -86,8 +91,7 @@ export function DirectoryPage() {
             ) : null}
           </button>
         </div>
-      }
-    >
+
       {buscaAberta ? (
         <div className="border-b border-border px-4 py-3 sm:px-5">
           <label htmlFor="busca" className="sr-only">
@@ -143,9 +147,17 @@ export function DirectoryPage() {
         </div>
       ) : null}
 
+      {/*
+        `min-w-0` no ITEM do grid, não só no conteúdo do cartão.
+        
+        Item de grid nasce com `min-width: auto`, o que o impede de encolher
+        abaixo do próprio conteúdo — e aí o `truncate` lá dentro nunca entra em
+        ação: o cartão inteiro cresce e vaza pela direita da tela. Foi o que
+        quebrava o diretório no celular.
+      */}
       <ul className="grid gap-4 p-4 sm:grid-cols-2 sm:p-5">
         {pessoas.map((pessoa) => (
-          <li key={pessoa.id}>
+          <li key={pessoa.id} className="min-w-0">
             <AmbassadorCardItem person={pessoa} />
           </li>
         ))}

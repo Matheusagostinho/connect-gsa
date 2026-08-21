@@ -40,7 +40,7 @@ const DESTAQUES = [
  */
 export function LandingPage() {
   return (
-    <div className="relative isolate min-h-screen overflow-x-clip bg-surface">
+    <div className="relative isolate min-h-dvh overflow-x-clip bg-surface">
       {/*
         A nuvem cobre a PÁGINA inteira, atrás de tudo. Presa à seção do título
         ela terminava numa borda reta no meio da tela, e o corte denunciava que

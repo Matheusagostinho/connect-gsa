@@ -273,6 +273,36 @@ export function buildAuthOptions(
             await attachInviteToUser(prisma, inviteId, user.id);
           },
         },
+
+        /**
+         * A mesma trava na ATUALIZAÇÃO — defesa em profundidade.
+         *
+         * Hoje o Better Auth não reescreve `image` nos logins seguintes: aquele
+         * caminho (`link-account.mjs:186`) é guardado por
+         * `accountLinking.updateUserInfoOnLink`, que nós não ligamos e cujo
+         * padrão é `false`.
+         *
+         * Isso é um PADRÃO de biblioteca de terceiro, não uma garantia nossa.
+         * Basta alguém ligar a opção — ou o padrão mudar numa versão — para a
+         * URL do Google voltar ao banco em silêncio, e o vazamento renascer sem
+         * ninguém tocar no nosso código.
+         *
+         * Aqui a regra fica onde não depende disso: qualquer escrita em `image`
+         * que aponte para fora passa pelo mesmo tratamento ou vira nulo.
+         */
+        update: {
+          before: async (dados) => {
+            const bruto: unknown = (dados as { image?: unknown }).image;
+            if (typeof bruto !== 'string' || !bruto) return { data: dados };
+
+            // O que já é nosso passa direto: `urlFor` é quem monta essas URLs.
+            const nosso = env.MEDIA_PUBLIC_URL ?? env.API_URL;
+            if (bruto.startsWith(nosso)) return { data: dados };
+
+            const nossa = storage ? await importarFotoDoProvedor(storage, bruto) : null;
+            return { data: { ...dados, image: nossa } };
+          },
+        },
       },
     },
   } satisfies BetterAuthOptions;

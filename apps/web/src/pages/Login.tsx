@@ -113,7 +113,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="relative isolate flex min-h-screen flex-col overflow-x-clip bg-surface">
+    <div className="relative isolate flex min-h-dvh flex-col overflow-x-clip bg-surface">
       {/*
         A mesma nuvem da apresentação, com a mesma justificativa de `fixed` e
         `w-screen` que está lá: presa ao conteúdo ela termina numa borda reta, e

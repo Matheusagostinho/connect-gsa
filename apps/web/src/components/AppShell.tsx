@@ -60,7 +60,7 @@ export function AppShell({
   const imersivo = variant === 'immersive';
 
   return (
-    <div className={cn('bg-surface', imersivo ? 'h-dvh overflow-hidden' : 'min-h-screen')}>
+    <div className={cn('bg-surface', imersivo ? 'h-dvh overflow-hidden' : 'min-h-dvh')}>
       {/*
         Menos respiro lateral no celular: numa tela de 390px, 20px de cada lado
         custam 10% da largura do conteúdo — o cartão de publicação sente.

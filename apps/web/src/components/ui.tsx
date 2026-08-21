@@ -114,7 +114,7 @@ export function Shell({
   width?: keyof typeof LARGURAS;
 }) {
   return (
-    <div className="min-h-screen bg-surface px-5 py-10 sm:px-gutter">
+    <div className="min-h-dvh bg-surface px-5 py-10 sm:px-gutter">
       <div className={cn('mx-auto w-full', LARGURAS[width])}>{children}</div>
     </div>
   );

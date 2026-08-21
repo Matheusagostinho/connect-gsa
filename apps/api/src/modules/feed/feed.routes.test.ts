@@ -240,3 +240,40 @@ describe('abas do feed', () => {
     expect(alheio?.author.connection).toBe('none');
   });
 });
+
+describe('o estado de conexão no feed', () => {
+  it('mostra quem já é conexão como conectado, não como "conectar"', async () => {
+    const ana = await createTestUser();
+    const bruno = await createTestUser();
+
+    await prisma.connection.create({
+      data: {
+        userAId: ana.id < bruno.id ? ana.id : bruno.id,
+        userBId: ana.id < bruno.id ? bruno.id : ana.id,
+        status: 'accepted',
+        requestedById: bruno.id,
+      },
+    });
+
+    await semeiaPosts(bruno.id, 1);
+
+    const { posts } = await pagina(ana.id);
+    const doBruno = posts.find((p) => p.author.id === bruno.id);
+
+    // `toPost` recebe `connection` como último parâmetro COM PADRÃO 'none'.
+    // O feed montava os posts por um caminho próprio e esquecia esse argumento,
+    // então todo post dizia "não conectado" e o botão oferecia conectar com quem
+    // já era conexão. O padrão silencioso é o que escondeu o esquecimento — sem
+    // erro de tipo, sem teste vermelho.
+    expect(doBruno?.author.connection).toBe('connected');
+  });
+
+  it('mostra a própria publicação como `self`', async () => {
+    const ana = await createTestUser();
+    await semeiaPosts(ana.id, 1);
+
+    const { posts } = await pagina(ana.id);
+
+    expect(posts[0]?.author.connection).toBe('self');
+  });
+});

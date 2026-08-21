@@ -152,6 +152,20 @@
  */
 html {
   scrollbar-gutter: stable;
+
+  /*
+   * Sem o efeito elástico além do fim da página.
+   *
+   * No celular, arrastar além do conteúdo puxava a página inteira — e a barra
+   * de navegação, que é `fixed`, ia junto: ela aparecia no MEIO da tela com
+   * vazio embaixo. `fixed` no iOS e no Chrome móvel é ancorado à janela
+   * VISUAL, e durante o arraste elástico essa janela se desloca.
+   *
+   * `contain` e não `none`: `none` também mataria o "puxar para atualizar" do
+   * feed, que é nosso e depende do gesto. `contain` corta só a propagação do
+   * arraste para o navegador.
+   */
+  overscroll-behavior-y: contain;
 }
 
 body {
