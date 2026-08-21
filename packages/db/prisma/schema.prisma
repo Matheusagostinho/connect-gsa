@@ -148,9 +148,25 @@ model Session {
   @@index([userId])
 }
 
+/// Vínculo entre a conta do ConnectGSA e a do provedor social.
+///
+/// **`issuer` é exigido pelo Better Auth 1.7** — ele consulta esta tabela por
+/// `[issuer, accountId]` em `findAccountOwnerByKey`, no retorno do OAuth. Sem a
+/// coluna, o Prisma recusa a consulta e o login inteiro morre com
+/// `internal_server_error`, sem dizer qual campo falta.
+///
+/// Isso não aparecia em teste: o `testUtils` grava pelo `internalAdapter` sem
+/// passar pelo caminho de vínculo de conta do OAuth, que é onde `issuer` é lido.
+/// Só apareceu no primeiro login real com o Google.
+///
+/// `providerId` continua existindo — os dois convivem no schema do 1.7. O que
+/// mudou de lugar foi o índice ÚNICO: era `[providerId, accountId]`, agora é
+/// `[issuer, accountId]`.
 model Account {
   id                    String    @id @default(uuid())
   accountId             String
+  /// Quem emitiu a identidade, no formato de URL (`https://accounts.google.com`).
+  issuer                String
   providerId            String
   userId                String
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -164,7 +180,9 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  @@unique([providerId, accountId])
+  // O Better Auth 1.7 busca por [issuer, accountId]; é este par que precisa ser
+  // único. O antigo [providerId, accountId] saiu junto.
+  @@unique([issuer, accountId])
   @@index([userId])
 }
 
