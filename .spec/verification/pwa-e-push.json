@@ -1,0 +1,79 @@
+{
+  "feature": "pwa-e-push",
+  "timestamp": "2026-08-21T13:14:17.882Z",
+  "gitRev": "829b0e9",
+  "command": "pnpm vitest run --reporter=json --outputFile=.spec/verification/raw.json",
+  "reporter": "vitest-json",
+  "exitCode": 0,
+  "testsParsed": 401,
+  "results": {
+    "AC-155": {
+      "status": "pass",
+      "testName": "manifesto do aplicativo descreve um aplicativo instalável @spec:AC-155 descreve um aplicativo instalável @spec:AC-155",
+      "method": "vitest-json"
+    },
+    "AC-156": {
+      "status": "pass",
+      "testName": "service worker recua para a moldura quando não há rede @spec:AC-156 recua para a moldura quando não há rede @spec:AC-156",
+      "method": "vitest-json"
+    },
+    "AC-157": {
+      "status": "pass",
+      "testName": "inscrição de aparelho o mesmo aparelho inscrito duas vezes não vira duas linhas @spec:AC-157 o mesmo aparelho inscrito duas vezes não vira duas linhas @spec:AC-157",
+      "method": "vitest-json"
+    },
+    "AC-158": {
+      "status": "pass",
+      "testName": "inscrição de aparelho sair remove aquele aparelho, e só ele @spec:AC-158 sair remove aquele aparelho, e só ele @spec:AC-158",
+      "method": "vitest-json"
+    },
+    "AC-159": {
+      "status": "pass",
+      "testName": "envio do aviso apaga a inscrição quando o serviço responde 404 ou 410 @spec:AC-159 apaga a inscrição quando o serviço responde 404 ou 410 @spec:AC-159",
+      "method": "vitest-json"
+    },
+    "AC-160": {
+      "status": "pass",
+      "testName": "o que o aviso carrega traz o PRIMEIRO nome e o destino, e nada de dado pessoal @spec:AC-160 @principle:P-002 traz o PRIMEIRO nome e o destino, e nada de dado pessoal @spec:AC-160 @principle:P-002",
+      "method": "vitest-json"
+    }
+  },
+  "principles": {
+    "P-006": {
+      "status": "pass",
+      "testName": "texto com links mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006 mantém marcação como texto, sem virar elemento @spec:AC-082 @principle:P-006"
+    },
+    "P-012": {
+      "status": "pass",
+      "testName": "service worker NUNCA guarda resposta da API @principle:P-012 NUNCA guarda resposta da API @principle:P-012"
+    },
+    "P-008": {
+      "status": "pass",
+      "testName": "tema não guarda credencial nenhuma junto da preferência @principle:P-008 não guarda credencial nenhuma junto da preferência @principle:P-008"
+    },
+    "P-005": {
+      "status": "pass",
+      "testName": "variáveis de ambiente nunca põe o VALOR da variável na mensagem de erro @principle:P-005 nunca põe o VALOR da variável na mensagem de erro @principle:P-005"
+    },
+    "P-003": {
+      "status": "pass",
+      "testName": "portão de entrada da rede recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003 recusa quem não tem convite nem e-mail aprovado, sem criar registro @spec:AC-004 @principle:P-003"
+    },
+    "P-004": {
+      "status": "pass",
+      "testName": "permissões deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004 deixa o embaixador editar apenas o próprio perfil @spec:AC-013 @principle:P-004"
+    },
+    "P-002": {
+      "status": "pass",
+      "testName": "exportar meus dados a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002 a indicação não carrega e-mail nem id de terceiro @spec:AC-142 @principle:P-002"
+    },
+    "P-001": {
+      "status": "pass",
+      "testName": "excluir minha conta apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012 apaga as imagens do armazenamento, não só as linhas @spec:AC-074 @principle:P-001 @principle:P-012"
+    },
+    "P-009": {
+      "status": "pass",
+      "testName": "código de convite tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009 tem oito caracteres e nenhuma letra ambígua @spec:AC-133 @principle:P-009"
+    }
+  }
+}
