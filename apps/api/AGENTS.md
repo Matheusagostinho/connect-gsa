@@ -399,6 +399,22 @@ O teto de imagem não é só de armazenamento: **toda imagem é decodificada** n
 para ser reprocessada sem metadado, e decodificar é onde a memória vai. Num
 contêiner pequeno, alguns envios grandes simultâneos derrubam o processo.
 
+## Parâmetro com padrão esconde dado errado
+
+`toPost` recebe `connection` como último parâmetro com padrão `'none'`. O feed
+monta os posts por um caminho próprio e esquecia de passá-lo — e o resultado não
+foi erro, foi **dado errado em silêncio**: todo post dizia "não conectado", e a
+tela oferecia conectar com quem já era conexão.
+
+Não houve erro de tipo, de lint nem de teste. Só o sintoma na tela, semanas
+depois, relatado por quem usava.
+
+A lição vale além deste caso: **quando o valor omitido é plausível, o padrão
+deixa de ser conveniência e vira armadilha.** Um parâmetro obrigatório teria
+quebrado a compilação na hora. Se você criar um caminho novo que monte `Post`,
+confira o que ele passa — e cubra com teste, como o `feed.routes.test.ts` faz
+para `connected` e `self`.
+
 ## Armadilhas conhecidas
 
 - `fileParallelism: false` no `vitest.config.ts`: os testes compartilham um Postgres, e

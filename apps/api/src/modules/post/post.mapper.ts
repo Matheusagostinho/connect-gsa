@@ -57,6 +57,19 @@ export interface ViewerContext {
  * verdade é a rota — a separação aqui é de significado, não de segurança:
  * apagar o que é seu e remover o que é de outra pessoa são atos distintos.
  */
+/**
+ * ⚠️ `connection` tem PADRÃO, e esse padrão já escondeu um defeito.
+ *
+ * O feed monta os posts por um caminho próprio e esquecia de passar este
+ * argumento. Como ele cai em `'none'`, não houve erro de tipo, de lint nem de
+ * teste — só o botão oferecendo "conectar" com quem já era conexão, na tela.
+ *
+ * O padrão continua aqui porque há chamadores legítimos sem viewer, mas quem
+ * adicionar um caminho novo de montagem de post precisa saber: **um argumento
+ * esquecido aqui vira dado errado silencioso, não erro**. Há teste no
+ * `feed.routes.test.ts` cobrindo `connected` e `self` — se você criar outro
+ * caminho, cubra também.
+ */
 export function toPost(
   row: PostRow,
   viewer: ViewerContext,
