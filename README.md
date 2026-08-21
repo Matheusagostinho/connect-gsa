@@ -682,6 +682,25 @@ inclusive a convenção `"//"`. O aviso mora aqui e no `apps/web/AGENTS.md`.
 > script. No dia em que você ligar um domínio próprio ao bucket, troque pelo
 > host exato e apague o curinga.
 
+### Passo 7.5 — Ligar a medição de acesso
+
+**Cloudflare Web Analytics**, e não Google Analytics — a escolha é a mesma que
+tirou o Google Fonts do caminho: não entregar o IP de um estudante a um terceiro
+que ele não escolheu.
+
+- [ ] Painel da Cloudflare → **Web Analytics** → *Add a site* →
+      `connect-gsa.vercel.app`
+- [ ] Copiar o **token** e trocar `SEU-TOKEN` em `apps/web/index.html`
+- [ ] Commitar e enviar
+
+Sem cookie, sem `localStorage`, sem identificador de visitante: **não há banner
+de consentimento a exibir**, porque não há dado pessoal tratado. Ele dá páginas
+mais vistas, visitantes, origem, país e Core Web Vitals. Não dá funil nem evento
+personalizado — o preço consciente de não rastrear pessoa.
+
+Sem o token trocado, o script não faz nada e a página funciona igual. Medição que
+derruba a página que ela mede é pior que medição nenhuma.
+
 ### Passo 8 — Impedir a hibernação
 
 - [ ] **UptimeRobot** → *Add New Monitor* → HTTP(s) → URL

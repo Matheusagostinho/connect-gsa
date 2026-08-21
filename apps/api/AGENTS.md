@@ -386,6 +386,19 @@ Antes de confiar num build de imagem, rode-o: `docker run --rm <imagem>` precisa
 chegar à validação de ambiente e reclamar das variáveis. Se falhar antes disso,
 o `dist` está incompleto.
 
+## Os tetos de entrada, e onde cada um mora
+
+| Teto | Onde | Por quê |
+|---|---|---|
+| `bodyLimit: 64 KB` | `app.ts` | Corpo JSON. A maior publicação tem mil caracteres; o padrão do Fastify (1 MB) era generoso sem motivo. Imagem NÃO passa por aqui |
+| `imageBytesMax: 4 MB` | `POST_LIMITS` | Imagem, via multipart. É o mesmo valor usado no plugin — dois números parecidos em lugares diferentes viram um desatualizado, e aí o multipart aceita o que a rota recusa |
+| `mediaKeySchema` | `post.schema.ts` | FORMATO da chave, não só tamanho. O cliente escolhe esse valor ao publicar: sem formato ele apontaria para qualquer objeto do bucket — ou para fora dele |
+| `RATE_LIMIT_MAX` | `env.ts` | Piso global por minuto, por IP quando não há sessão |
+
+O teto de imagem não é só de armazenamento: **toda imagem é decodificada** na API
+para ser reprocessada sem metadado, e decodificar é onde a memória vai. Num
+contêiner pequeno, alguns envios grandes simultâneos derrubam o processo.
+
 ## Armadilhas conhecidas
 
 - `fileParallelism: false` no `vitest.config.ts`: os testes compartilham um Postgres, e

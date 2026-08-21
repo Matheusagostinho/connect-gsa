@@ -1,11 +1,41 @@
 import { z } from 'zod';
 import { reactionSchema } from './reaction.js';
 
+/**
+ * A chave de uma imagem já enviada, do jeito que `buildStorageKey` a produz:
+ * `posts/2026-08/<uuid>.webp`.
+ *
+ * Validar o FORMATO, e não só o tamanho, fecha duas portas. O cliente escolhe
+ * este valor ao publicar, então sem formato ele poderia mandar `../coisa`, uma
+ * URL inteira, ou apontar para um objeto do bucket que não é imagem de post — e
+ * a API montaria a URL pública em cima do que viesse.
+ *
+ * O UUID no meio é o que torna a chave imprevisível: adivinhar a imagem de
+ * outra pessoa não é viável, e é isso que permite o bucket servir leitura
+ * pública sem URL assinada.
+ */
+export const mediaKeySchema = z
+  .string()
+  .trim()
+  .max(200)
+  .regex(
+    /^(posts|avatars)\/\d{4}-\d{2}\/[0-9a-f-]{36}\.[a-z0-9]{2,5}$/,
+    'Chave de imagem inválida',
+  );
+
 export const POST_LIMITS = {
   contentMax: 1000,
   commentMax: 500,
-  /** 5 MB: cabe uma foto de celular e não estoura a cota gratuita de armazenamento. */
-  imageBytesMax: 5 * 1024 * 1024,
+  /**
+   * 4 MB. Cabe foto de celular e não estoura a cota gratuita de armazenamento.
+   *
+   * Baixou de 5 MB a pedido do dono do produto. O teto importa mais do que
+   * parece: toda imagem é DECODIFICADA na API para ser reprocessada sem
+   * metadado, e decodificar é onde a memória é gasta. Num contêiner pequeno,
+   * alguns envios grandes ao mesmo tempo derrubam o processo — o limite é tanto
+   * de armazenamento quanto de disponibilidade.
+   */
+  imageBytesMax: 4 * 1024 * 1024,
   /** Maior lado da imagem depois do reprocessamento. */
   imageMaxSide: 1200,
   avatarSide: 320,
@@ -30,7 +60,7 @@ export type PostKind = z.infer<typeof postKindSchema>;
 
 export const createAnnouncementSchema = z.object({
   content: z.string().trim().min(1, 'Escreva o comunicado').max(POST_LIMITS.contentMax),
-  mediaKey: z.string().trim().max(200).optional(),
+  mediaKey: mediaKeySchema.optional(),
 });
 
 export type CreateAnnouncement = z.infer<typeof createAnnouncementSchema>;
@@ -38,7 +68,7 @@ export type CreateAnnouncement = z.infer<typeof createAnnouncementSchema>;
 export const createPostSchema = z.object({
   content: z.string().trim().min(1, 'Escreva alguma coisa').max(POST_LIMITS.contentMax),
   /** Chave devolvida pelo envio de imagem; o cliente nunca escolhe a URL final. */
-  mediaKey: z.string().trim().max(200).optional(),
+  mediaKey: mediaKeySchema.optional(),
 });
 
 export type CreatePost = z.infer<typeof createPostSchema>;

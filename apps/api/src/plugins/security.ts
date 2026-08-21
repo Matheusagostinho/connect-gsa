@@ -4,6 +4,7 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import type { FastifyInstance } from 'fastify';
+import { POST_LIMITS } from '@connect-gsa/shared';
 import type { Env } from '../env.js';
 
 /**
@@ -51,7 +52,10 @@ export async function registerSecurity(app: FastifyInstance, env: Env): Promise<
   // O teto de tamanho é aplicado no plugin, antes de o corpo ser lido inteiro:
   // recusar 50 MB depois de recebê-los seria pagar a banda à toa.
   await app.register(multipart, {
-    limits: { fileSize: 5 * 1024 * 1024, files: 1, fields: 4 },
+    // O mesmo teto do `POST_LIMITS.imageBytesMax`, e não um número solto: dois
+    // limites parecidos em lugares diferentes viram um desatualizado no dia em
+    // que alguém mexe num só — e aí o multipart aceita o que a rota recusa.
+    limits: { fileSize: POST_LIMITS.imageBytesMax, files: 1, fields: 4 },
   });
 
   // Piso global. O diretório de embaixadores é uma lista de contatos valiosa:

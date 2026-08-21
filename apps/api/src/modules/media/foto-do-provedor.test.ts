@@ -93,3 +93,24 @@ describe('foto vinda do provedor social', () => {
     ).resolves.toBeNull();
   });
 });
+
+describe('a chave de imagem que o cliente manda', () => {
+  it('só aceita o formato que o servidor produz', async () => {
+    const { mediaKeySchema } = await import('@connect-gsa/shared');
+
+    // O cliente escolhe este valor ao publicar. Sem formato, ele apontaria para
+    // qualquer objeto do bucket — ou para fora dele.
+    expect(mediaKeySchema.safeParse('posts/2026-08/8f14e45f-ceea-467a-9f9e-1b2c3d4e5f60.webp').success).toBe(true);
+    expect(mediaKeySchema.safeParse('avatars/2026-08/8f14e45f-ceea-467a-9f9e-1b2c3d4e5f60.jpg').success).toBe(true);
+
+    for (const invalida of [
+      '../../etc/passwd',
+      'https://evil.test/x.png',
+      'posts/../avatars/8f14e45f-ceea-467a-9f9e-1b2c3d4e5f60.webp',
+      'outra-pasta/2026-08/8f14e45f-ceea-467a-9f9e-1b2c3d4e5f60.webp',
+      'posts/2026-08/nao-e-uuid.webp',
+    ]) {
+      expect(mediaKeySchema.safeParse(invalida).success, invalida).toBe(false);
+    }
+  });
+});

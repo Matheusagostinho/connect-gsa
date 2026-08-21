@@ -51,6 +51,16 @@ export async function buildApp({
   resolveSession,
 }: AppDeps): Promise<FastifyInstance> {
   const app = Fastify({
+    /*
+     * Teto do CORPO de requisições JSON. O padrão do Fastify é 1 MB, e nenhuma
+     * rota deste aplicativo precisa de tanto: a maior publicação tem mil
+     * caracteres e o maior perfil, alguns milhares.
+     *
+     * Imagem NÃO passa por aqui — ela vai por multipart, que tem o próprio
+     * limite em `plugins/security.ts`. Então baixar este número não afeta
+     * upload, e recusa cedo um corpo grande antes de gastar memória com ele.
+     */
+    bodyLimit: 64 * 1024,
     logger: {
       level: env.NODE_ENV === 'test' ? 'silent' : 'info',
       // P-005: mesmo em log de erro, estes caminhos saem como [Redacted]. Um
