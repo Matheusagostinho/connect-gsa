@@ -48,6 +48,19 @@ const queryClient = new QueryClient({
  * Enquanto a sessão é verificada não mostramos nem uma coisa nem outra: piscar
  * a apresentação para quem já está autenticado é pior do que esperar um quadro.
  */
+/**
+ * A raiz serve três telas diferentes, e a ordem das perguntas importa.
+ *
+ * 1. Sem sessão → a apresentação. É a porta de quem chegou por um link.
+ * 2. Com sessão e perfil INCOMPLETO → o onboarding. Sem cidade não há mapa,
+ *    sem instituição não há diretório: entrar no feed antes disso mostra uma
+ *    rede da qual a pessoa ainda não faz parte.
+ * 3. Com sessão e perfil completo → o feed.
+ *
+ * O passo 2 faltava aqui, e o defeito só apareceu quando o login parou de ir
+ * direto para `/onboarding`: esta rota decidia entre feed e apresentação sem
+ * nunca olhar `profileComplete`, e quem acabava de entrar caía num feed vazio.
+ */
 function Raiz() {
   const { data: profile, isPending } = useMyProfile();
 
@@ -59,7 +72,11 @@ function Raiz() {
     );
   }
 
-  return profile ? <FeedPage /> : <LandingPage />;
+  if (!profile) return <LandingPage />;
+
+  if (!profile.profileComplete) return <Navigate to="/onboarding" replace />;
+
+  return <FeedPage />;
 }
 
 export function App() {
