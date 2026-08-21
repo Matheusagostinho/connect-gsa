@@ -106,6 +106,26 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env) {
     },
 
     advanced: {
+      /**
+       * O id de usuário, sessão e conta é UUID — não o gerador do Better Auth.
+       *
+       * O padrão da biblioteca é uma string curta no estilo nanoid, e ela NÃO é
+       * um UUID. Todo schema de saída deste projeto declara `z.uuid()`, e o
+       * Fastify valida a resposta contra ele: com o id do padrão, `/me` respondia
+       * **400 com "Invalid UUID"** logo depois de um login bem-sucedido.
+       *
+       * Não apareceu em desenvolvimento porque lá as pessoas vêm do seed, que
+       * usa o `@default(uuid())` do Prisma. Só quem entra pelo OAuth recebe um id
+       * gerado pela biblioteca — e isso é exatamente o caminho que a tela `/dev`
+       * contorna.
+       *
+       * A correção certa é alinhar o gerador, e não afrouxar `z.uuid()` nos
+       * vinte schemas que o usam: a validação de saída é o que impede a API de
+       * devolver campo que não deveria (P-002), e enfraquecê-la para acomodar um
+       * formato de id seria pagar em segurança por um detalhe de biblioteca.
+       */
+      database: { generateId: 'uuid' },
+
       useSecureCookies: isProduction,
       defaultCookieAttributes: {
         httpOnly: true,

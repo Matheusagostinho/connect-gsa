@@ -139,3 +139,25 @@ describe('portão de entrada da rede', () => {
     await expect(prisma.user.count()).resolves.toBe(0);
   });
 });
+
+describe('o id de quem entra pelo provedor social', () => {
+  it('é UUID, e o próprio perfil pode ser serializado @spec:AC-009', async () => {
+    const test = await testHelpers();
+    await prisma.allowedEmail.create({ data: { email: 'nova@uni.br' } });
+
+    const criada = await test.saveUser(test.createUser({ email: 'nova@uni.br', name: 'Nova' }));
+    const { id } = criada;
+
+    // O padrão do Better Auth é uma string curta estilo nanoid, e NÃO é UUID.
+    // Com ela, `/me` respondia 400 "Invalid UUID" logo depois de um login bem
+    // sucedido — porque todo schema de saída daqui declara `z.uuid()` e o
+    // Fastify valida a RESPOSTA contra ele.
+    expect(id).toMatch(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+    );
+
+    // E o mapper de saída aceita — que é onde o erro estourava de verdade.
+    const { getMyProfile } = await import('../modules/profile/profile.service.js');
+    await expect(getMyProfile(prisma, id)).resolves.toMatchObject({ id });
+  });
+});
