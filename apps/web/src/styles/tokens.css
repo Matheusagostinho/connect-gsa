@@ -246,6 +246,73 @@ body {
 }
 
 /*
+ * A borda de quatro cores em movimento, para UM botão por tela.
+ *
+ * O degradê é o fundo do elemento externo; o conteúdo mora num filho opaco, e a
+ * "borda" é o padding que sobra. Não dá para animar `border-image` de forma
+ * confiável entre navegadores, e `border-color` não aceita degradê.
+ *
+ * Aqui o amarelo ENTRA, ao contrário do `spark-text`: isto é moldura, não texto,
+ * e o mínimo de 3:1 se aplica ao que se lê. Quem carrega o contraste é a tinta
+ * do rótulo sobre a superfície do filho.
+ *
+ * `background-size: 300%` com a posição animada, e não a cor: o mesmo motivo do
+ * `spark-text-vivo`. Uma cor recalculada a cada quadro repinta o botão inteiro.
+ *
+ * Um por tela, e não um por botão: se tudo pisca, nada chama atenção — e esta
+ * borda existe justamente para dizer "é por aqui que se entra".
+ */
+.borda-spark {
+  padding: 2px;
+  background-image: linear-gradient(
+    95deg,
+    var(--color-spark-blue),
+    var(--color-spark-violet) 20%,
+    var(--color-spark-red) 40%,
+    var(--color-spark-yellow) 55%,
+    var(--color-spark-red) 70%,
+    var(--color-spark-violet) 85%,
+    var(--color-spark-blue)
+  );
+  background-size: 300% 100%;
+  animation: spark-corre 6s linear infinite;
+}
+
+/*
+ * O brilho por baixo, que dá o "mexendo" sem mexer o botão.
+ *
+ * É o MESMO degradê borrado atrás do elemento. Sem ele a borda parece um
+ * adesivo; com ele, o botão parece aceso. `filter: blur` num pseudo-elemento
+ * não força layout — o que forçaria seria animar tamanho ou posição do botão.
+ */
+.borda-spark::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  z-index: -1;
+  border-radius: inherit;
+  background-image: inherit;
+  background-size: inherit;
+  filter: blur(14px);
+  opacity: 0.5;
+  animation: inherit;
+}
+
+/*
+ * Quem pediu menos movimento recebe a borda PARADA, não a ausência dela.
+ *
+ * Sumir com o degradê tiraria também a dica visual de qual é o botão principal
+ * — e essa dica não é decoração, é hierarquia.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .borda-spark,
+  .borda-spark::before {
+    animation: none;
+    background-position: 0% 50%;
+  }
+}
+
+/*
  * Foco sempre visível. Remover o anel de foco é o atalho que quebra a navegação
  * por teclado — e uma rede fechada de estudantes inclui quem depende dela.
  */

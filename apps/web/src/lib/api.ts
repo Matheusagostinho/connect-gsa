@@ -102,8 +102,27 @@ export function logout(): Promise<{ ok: true }> {
   return api.post<{ ok: true }>('/auth/logout');
 }
 
-/** Endereço para onde o navegador é enviado ao entrar com um provedor social. */
-export function socialSignInUrl(provider: 'google' | 'github' | 'linkedin'): string {
-  const callback = encodeURIComponent(`${window.location.origin}/onboarding`);
-  return `${BASE_URL}/auth/sign-in/social?provider=${provider}&callbackURL=${callback}`;
+/**
+ * Começa a entrada por um provedor social.
+ *
+ * São DOIS passos, e não um: o Better Auth expõe `/auth/sign-in/social` como
+ * **POST**, devolve o endereço do provedor no corpo, e só então o navegador vai
+ * para lá. Antes isto montava a URL à mão e navegava direto — um GET, que o
+ * Better Auth responde com 404 e corpo `null`.
+ *
+ * Aquele defeito não tinha como aparecer em desenvolvimento: sem credencial de
+ * OAuth, quem testava entrava pela tela `/dev`, e este caminho nunca era
+ * exercitado. Só apareceu no primeiro clique em produção.
+ *
+ * O `callbackURL` é validado pelo servidor contra `WEB_ORIGINS`. Se ele não
+ * incluir a origem exata do SPA, a resposta é `INVALID_CALLBACK_URL` — e é
+ * config, não código.
+ */
+export async function socialSignIn(provider: 'google' | 'github' | 'linkedin'): Promise<void> {
+  const { url } = await api.post<{ url: string; redirect: boolean }>('/auth/sign-in/social', {
+    provider,
+    callbackURL: `${window.location.origin}/onboarding`,
+  });
+
+  window.location.assign(url);
 }
