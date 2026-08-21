@@ -63,6 +63,14 @@ resolvido pela rota `/s/profile/:id` na API — não por um framework.
 15. **A aba "Para você" ordena, não filtra.** Afinidade impulsiona no ranking do servidor;
     filtrar deixaria a tela inicial de quem acabou de chegar vazia — e é justamente quem
     acabou de chegar que mais precisa ver a rede.
+
+    **As abas estão ESCONDIDAS** (`MOSTRAR_ABAS = false` em `Feed.tsx`) enquanto a rede é
+    pequena: com poucas pessoas, "Seguindo" fica quase vazia e a escolha entre as duas não
+    tem consequência. Como "Para você" nunca filtrou nada, esconder as abas faz todo mundo
+    ver a rede inteira — que é o que se quer no começo.
+
+    Escondido na TELA, e não removido: a busca por aba, a rota e o teste do AC-099 seguem
+    de pé, e o servidor nunca soube desta decisão. Voltar é trocar `false` por `true`.
 16. **Existe UMA moldura: o `AppShell`.** Nenhuma página desenha o próprio
     `SideNav` — o mapa já fez isso, num contêiner sem a largura máxima das
     outras telas, e a coluna de navegação saltava oitenta pixels ao trocar de

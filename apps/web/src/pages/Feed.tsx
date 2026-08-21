@@ -3,6 +3,23 @@ import { useState } from 'react';
 import { AppShell } from '../components/AppShell.tsx';
 import { Composer } from '../components/Composer.tsx';
 import { FeedTabs } from '../components/FeedTabs.tsx';
+
+/**
+ * As abas do feed aparecem?
+ *
+ * **Desligadas enquanto a rede é pequena**, a pedido do dono do produto. Com
+ * poucas pessoas, "Seguindo" fica quase vazia e a escolha entre as duas não tem
+ * consequência — vira uma pergunta que a tela faz sem ter resposta útil.
+ *
+ * "Para você" continua sendo o que todo mundo vê, e ela nunca filtrou nada: a
+ * afinidade entra como impulso no ranking, nunca como cláusula de busca
+ * (AC-099). Ou seja, com as abas escondidas, todo mundo vê a rede inteira — que
+ * é exatamente o que se quer no começo.
+ *
+ * **Para voltar:** troque para `true`. Nada mais precisa mudar — a busca por aba
+ * continua no lugar, com o teste dela, e o servidor nunca soube desta decisão.
+ */
+const MOSTRAR_ABAS = false;
 import { NewPostButton } from '../components/NewPostButton.tsx';
 import { PostCard } from '../components/PostCard.tsx';
 import { PullToRefresh } from '../components/PullToRefresh.tsx';
@@ -22,7 +39,11 @@ export function FeedPage() {
   const posts = data?.pages.flatMap((page) => page.posts) ?? [];
 
   return (
-    <AppShell profile={profile} rail tabs={<FeedTabs atual={aba} onChange={setAba} />}>
+    <AppShell
+      profile={profile}
+      rail
+      {...(MOSTRAR_ABAS ? { tabs: <FeedTabs atual={aba} onChange={setAba} /> } : {})}
+    >
       <PullToRefresh onRefresh={() => refetch()}>
         <Composer authorName={profile.name} authorImage={profile.imageUrl} />
 
