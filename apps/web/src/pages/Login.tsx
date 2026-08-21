@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { GitHubMark, GoogleMark, LinkedInMark } from '../components/BrandMarks.tsx';
 import { LogoMark, Wordmark } from '../components/Logo.tsx';
 import { PixelCloud } from '../components/PixelCloud.tsx';
@@ -23,6 +24,29 @@ const PROVEDORES = [
   { id: 'linkedin', label: 'Entrar com LinkedIn', Mark: LinkedInMark, visivel: false },
   { id: 'github', label: 'Entrar com GitHub', Mark: GitHubMark, visivel: false },
 ] as const;
+
+/**
+ * O que o `?error=` do Better Auth quer dizer, em português.
+ *
+ * Traduzir aqui, e não mostrar o código cru, porque quem lê é o embaixador. Mas
+ * a tradução não pode ser genérica: cada um destes tem uma AÇÃO diferente, e
+ * "algo deu errado" mandaria a pessoa tentar de novo num caso em que tentar de
+ * novo não resolve nunca.
+ *
+ * `internal_server_error` é o mais traiçoeiro: parece falha passageira e quase
+ * sempre é migração pendente no banco. A mensagem não diz isso — não é problema
+ * do embaixador — mas o console diz, para quem publica.
+ */
+const RECADOS: Record<string, string> = {
+  internal_server_error:
+    'O servidor não conseguiu concluir sua entrada. Já estamos sabendo — tente de novo em alguns minutos.',
+  access_denied: 'Você cancelou a entrada no Google. Pode tentar de novo quando quiser.',
+  unable_to_create_user:
+    'A rede é restrita a quem participa do programa. Se você recebeu um convite, abra o link dele.',
+};
+
+const RECADO_PADRAO =
+  'Não deu para concluir a entrada. Se você recebeu um convite, tente abrir o link dele.';
 
 /**
  * Entrada por provedor social (US-001).
@@ -50,6 +74,20 @@ export function LoginPage() {
   // tela, a pessoa clica de novo.
   const [indo, setIndo] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+
+  // Quem foi recusado no meio do OAuth volta para cá com `?error=`. Antes disso
+  // ele caía numa página JSON no domínio da API — endereço errado, sem
+  // explicação e sem caminho de volta.
+  const [parametros] = useSearchParams();
+  const codigo = parametros.get('error');
+  const recado = codigo ? (RECADOS[codigo] ?? RECADO_PADRAO) : null;
+
+  // O código cru no console: a mensagem da tela é para o embaixador, e
+  // `internal_server_error` parece falha passageira quando quase sempre é
+  // migração pendente no banco. Quem publica precisa dessa diferença.
+  if (codigo) {
+    console.warn(`[entrar] o login voltou com erro: ${codigo}`);
+  }
 
   async function entrar(provider: (typeof PROVEDORES)[number]['id']) {
     setIndo(true);
@@ -125,11 +163,11 @@ export function LoginPage() {
           ))}
         </div>
 
-        {erro ? (
+        {(erro ?? recado) === null ? null : (
           <p role="alert" className="mt-4 text-sm text-danger">
-            {erro}
+            {erro ?? recado}
           </p>
-        ) : null}
+        )}
 
         <p className="mt-8 text-sm text-ink-muted">
           Ainda não tem convite?{' '}

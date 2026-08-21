@@ -16,7 +16,7 @@ import { LoginPage } from './Login.tsx';
  * exercitado. Só apareceu no primeiro clique em produção, e é por isso que ele
  * ganhou teste.
  */
-function montar(resposta: { ok: boolean; corpo: unknown }) {
+function montar(resposta: { ok: boolean; corpo: unknown }, rota = '/entrar') {
   const chamadas: Array<{ url: string; method: string; body: unknown }> = [];
   const destinos: string[] = [];
 
@@ -47,7 +47,7 @@ function montar(resposta: { ok: boolean; corpo: unknown }) {
   });
 
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[rota]}>
       <LoginPage />
     </MemoryRouter>,
   );
@@ -88,6 +88,27 @@ describe('tela de entrada', () => {
 
     // E quem decide o destino é o SERVIDOR, não uma URL montada no cliente.
     expect(destinos).toEqual([destino]);
+  });
+
+  it('traduz o erro com que o Better Auth devolve a pessoa @spec:AC-004', () => {
+    // Antes disto, quem tropeçava no meio do OAuth caía numa página JSON no
+    // domínio da API — endereço errado, sem explicação e sem volta.
+    montar({ ok: true, corpo: {} }, '/entrar?error=unable_to_create_user');
+
+    expect(screen.getByRole('alert')).toHaveTextContent(/restrita a quem participa/i);
+  });
+
+  it('não inventa mensagem para código que não conhece', () => {
+    montar({ ok: true, corpo: {} }, '/entrar?error=coisa_nova_do_better_auth');
+
+    // Recado genérico, mas ainda ACIONÁVEL: manda abrir o link do convite.
+    expect(screen.getByRole('alert')).toHaveTextContent(/convite/i);
+  });
+
+  it('não mostra alerta quando não há erro na URL', () => {
+    montar({ ok: true, corpo: {} });
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('avisa sem sair da página quando o servidor recusa', async () => {

@@ -83,6 +83,28 @@ export function buildAuthOptions(prisma: PrismaClient, env: Env) {
       updateAge: 60 * 60 * 24,
     },
 
+    /**
+     * Para onde vai quem tropeça no meio do login.
+     *
+     * Sem isto, o Better Auth manda para `${baseURL}/error` — que é o domínio da
+     * API. A pessoa recusada saía do Google e caía numa página JSON dizendo
+     * "Rota não encontrada", no endereço errado, sem explicação e sem caminho de
+     * volta. Numa rede FECHADA isso não é caso raro: recusar é o comportamento
+     * normal para quem não tem convite.
+     *
+     * O SPA lê o `?error=` e traduz. Vale saber o que os códigos querem dizer,
+     * porque eles não são intuitivos:
+     *
+     * - `internal_server_error` — uma consulta ao BANCO falhou. É o que o
+     *   `link-account` emite quando o adapter lança, e em produção quase sempre
+     *   significa migração pendente: o client do Prisma pede colunas que a
+     *   tabela ainda não tem.
+     * - as recusas do portão NÃO passam por aqui — `APIError` é relançada.
+     */
+    onAPIError: {
+      errorURL: `${env.WEB_URL.replace(/\/+$/, '')}/entrar`,
+    },
+
     advanced: {
       useSecureCookies: isProduction,
       defaultCookieAttributes: {
