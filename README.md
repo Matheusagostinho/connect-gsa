@@ -569,6 +569,12 @@ curl -sS "https://SUA-API.onrender.com/health"
 
 - [ ] `/health` respondendo, e o `commit` batendo com `git rev-parse --short HEAD`
 
+> **O `/health` fica na RAIZ da API, fora do prefixo `/api`** — então ele não
+> passa pelo proxy da Vercel. Consulte-o sempre em `SUA-API.onrender.com/health`,
+> nunca em `SEU-SPA.vercel.app/api/health`, que responde 404. É também por isso
+> que o monitor do Passo 8 aponta direto para o Render: ele precisa acordar a
+> API, e uma chamada que morre na Vercel não acordaria nada.
+
 > O campo `commit` responde a pergunta que mais atrapalha numa publicação: **"o
 > que está no ar já tem a correção?"** Sem ele, a única saída é adivinhar pelo
 > sintoma — e cada palpite errado custa um ciclo de deploy inteiro.

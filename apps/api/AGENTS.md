@@ -35,7 +35,7 @@ src/
 
 | Prefixo | O que é |
 |---|---|
-| `/health` | sonda de infraestrutura — o Render consulta esta URL, e o ping que impede a hibernação também |
+| `/health` | sonda de infraestrutura — o Render consulta esta URL, e o ping que impede a hibernação também. **Fora do prefixo `/api` de propósito:** ela não passa pelo proxy da Vercel, e um ping que morresse lá não acordaria a API |
 | `/s/...` | link de compartilhamento, que vai colado em conversa |
 | `/api/auth/*` | Better Auth (o `basePath` dele já inclui o prefixo) |
 | `/api/*` | todo o resto do aplicativo |
