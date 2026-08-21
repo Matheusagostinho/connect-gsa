@@ -329,6 +329,26 @@ quando alguém tocar neste arquivo.
 Está registrado aqui, e não escondido, porque um teste que falha às vezes ensina
 a ignorar o vermelho.
 
+## A imagem: duas armadilhas que davam verde falso
+
+**1. O `.dockerignore` mora na RAIZ do repositório, não ao lado do Dockerfile.**
+O Docker lê o `.dockerignore` da raiz do CONTEXTO, e o contexto aqui é o
+repositório inteiro. Havia um `apps/api/.dockerignore` que nunca foi lido — e o
+efeito foi pior que não ter nenhum: o `dist/` compilado na máquina de quem rodava
+o build era copiado para dentro da imagem. **O build passava local e falhava no
+servidor**, que clona limpo. Se você mexer no contexto, teste com `--no-cache`.
+
+**2. Cada pacote é compilado pelo próprio script `build`**, nunca por um `tsc -b`
+solto. `tsc -b` sem argumento usa `tsconfig.json`, que tem `noEmit: true` porque
+serve ao typecheck: ele não emite nada, o `dist` do `@connect-gsa/db` não nasce,
+e a API falha com "Cannot find module '@connect-gsa/db'" seguida de dezenas de
+erros de `any` — que são só a cascata do primeiro. Quem sabe compilar cada
+pacote é o `package.json` dele.
+
+Antes de confiar num build de imagem, rode-o: `docker run --rm <imagem>` precisa
+chegar à validação de ambiente e reclamar das variáveis. Se falhar antes disso,
+o `dist` está incompleto.
+
 ## Armadilhas conhecidas
 
 - `fileParallelism: false` no `vitest.config.ts`: os testes compartilham um Postgres, e

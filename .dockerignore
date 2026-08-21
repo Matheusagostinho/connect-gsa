@@ -1,0 +1,45 @@
+# Contexto de build da imagem da API.
+#
+# ESTE arquivo precisa estar na RAIZ, e não ao lado do Dockerfile: o Docker lê o
+# `.dockerignore` da raiz do CONTEXTO, e o contexto aqui é o repositório inteiro
+# (o Dockerfile copia `pnpm-workspace.yaml`, `packages/` e `apps/api/`).
+#
+# Havia um `apps/api/.dockerignore` que nunca foi lido por causa disso, e o
+# efeito foi pior que não ter nenhum: o `dist/` COMPILADO NA MÁQUINA de quem
+# rodava o build era copiado para dentro da imagem. O build passava localmente e
+# falhava no servidor, que clona limpo — o pior tipo de verde.
+
+# Dependências: reinstaladas dentro da imagem, a partir do lockfile.
+node_modules
+**/node_modules
+.pnpm-store
+
+# Saída de compilação: precisa ser gerada DENTRO da imagem, senão o build local
+# mente sobre o que o servidor vai encontrar.
+dist
+**/dist
+*.tsbuildinfo
+**/*.tsbuildinfo
+packages/db/src/generated
+
+# Segredo nunca entra no contexto (P-007).
+.env
+.env.*
+!.env.example
+
+# Nada disso serve à imagem da API.
+.git
+.github
+.turbo
+**/.turbo
+.spec
+docs
+apps/web
+coverage
+**/coverage
+.media
+*.log
+
+# Testes não vão para a imagem de produção: menos superfície, menos peso.
+**/*.test.ts
+**/*.test.tsx

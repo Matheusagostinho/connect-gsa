@@ -27,10 +27,15 @@ FROM deps AS build
 COPY packages ./packages
 COPY apps/api ./apps/api
 COPY tsconfig.json ./
-RUN pnpm --filter @connect-gsa/db run generate \
+# Cada pacote é compilado pelo PRÓPRIO script `build`, e não por um `tsc -b`
+# solto. A diferença não é estilo: `tsc -b` sem argumento usa `tsconfig.json`, que
+# tem `noEmit: true` porque serve ao typecheck — ele não emitia NADA, o `dist` do
+# `@connect-gsa/db` nunca nascia, e a API falhava com "Cannot find module
+# '@connect-gsa/db'" seguida de cinquenta erros de `any` que eram só a cascata.
+# Quem sabe como se compila cada pacote é o `package.json` dele.
+RUN pnpm --filter @connect-gsa/db run build \
  && pnpm --filter @connect-gsa/shared run build \
- && pnpm --filter @connect-gsa/db exec tsc -b \
- && pnpm --filter @connect-gsa/api exec tsc -b
+ && pnpm --filter @connect-gsa/api run build
 # Extrai só o necessário para rodar, com dependências de produção.
 RUN pnpm deploy --filter @connect-gsa/api --prod --legacy /app
 
