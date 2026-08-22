@@ -1,6 +1,12 @@
 # Roadmap do ConnectGSA
 
-> Situação em 20 de agosto de 2026 · 347 testes · 137/137 critérios de aceite provados
+> Situação em 22 de agosto de 2026 · 401 testes · 154/154 critérios de aceite provados
+>
+> **O MVP foi ao ar e funcionou: 26 embaixadores em 20 cidades.** Em 21/08 a coordenação
+> do programa pediu para segurar a divulgação — haverá um diretório oficial em 2026, e as
+> ferramentas de rede devem ficar nos canais oficiais. O pedido foi atendido: a rede não
+> recebe gente nova, e o que segue abaixo é registro do que foi feito, não plano do que
+> vem.
 
 Este documento compara o que o MVP prometeu com o que existe hoje, e ordena o que falta.
 A ordem não é por tamanho nem por vontade: começa pelo que é **exigência legal**, passa

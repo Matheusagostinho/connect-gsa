@@ -9,74 +9,95 @@
 Perfil, diretório, mapa, feed e conexões — para quem está no programa encontrar,
 reconhecer e trabalhar junto com quem também está.
 
+*MVP concluído: 26 embaixadores em 20 cidades. Divulgação pausada a pedido do
+programa — [leia por quê](#-estado-do-projeto-pausado-a-pedido-do-programa).*
+
 </div>
 
 ---
 
-> **Projeto não oficial.** O ConnectGSA não é afiliado ao Google nem endossado por ele.
-> O nome e as referências ao programa são descritivos e serão revistos caso a coordenação
-> se manifeste.
+> ## 📌 Estado do projeto: pausado a pedido do programa
+>
+> O ConnectGSA rodou como MVP e **funcionou**: 26 embaixadores em 20 cidades, com
+> perfil, diretório, mapa, feed e conexões em uso real.
+>
+> Em 21/08/2026 a coordenação do Programa Embaixadores Estudantis Google pediu
+> para **segurar a divulgação**. O motivo, nas palavras deles: garantir a
+> privacidade de dados de todo mundo e evitar sobreposição, porque o programa
+> de 2026 terá um **diretório oficial e centralizado** de participantes — e as
+> ferramentas de rede devem ficar concentradas nos canais oficiais.
+>
+> **O pedido foi atendido.** A rede não está recebendo gente nova e o endereço
+> não é divulgado aqui.
+>
+> O repositório segue no ar como registro técnico: as decisões, os erros e as
+> provas de um produto que foi de zero a 26 pessoas usando. Se o programa quiser
+> aproveitar qualquer coisa daqui no diretório oficial, é só falar comigo.
+
+> **Projeto não oficial.** O ConnectGSA não é afiliado ao Google nem endossado
+> por ele. O nome e as referências ao programa são descritivos.
 
 > **Código aberto para leitura e contribuição, não para uso livre.** Veja
-> [Licença](#licença) antes de assumir o contrário.
+> [Licença](#licença).
 
 ## Sumário
 
-- [Situação atual](#situação-atual) · o que existe e o que não
+- [O que o MVP entregou](#o-que-o-mvp-entregou) · números, mapa e o que aprendemos
 - [Arquitetura](#arquitetura) · e por que cada escolha
 - [Como rodar](#como-rodar) · do zero, em cinco minutos
 - [Colocar no ar](#colocar-no-ar) · o passo a passo de produção
 - [Contribuindo](#contribuindo) · como mandar um PR que entra
 - [Licença](#licença)
 
-As seções do meio explicam as decisões de produto — as reações, o ranking do feed, o mapa,
-os convites — e existem porque **a decisão é a parte cara**; o código é a parte fácil de
-reconstruir.
+As seções do meio explicam as decisões de produto — as reações, o ranking do
+feed, o mapa, os convites — e existem porque **a decisão é a parte cara**; o
+código é a parte fácil de reconstruir.
 
-## Situação atual
+## O que o MVP entregou
 
-Primeira fatia vertical em produção: **acesso e perfil**.
+<img src="docs/imagens/mapa.png" alt="Mapa do ConnectGSA com 26 embaixadores em 20 cidades" width="100%">
 
-| Entregue | Ainda não |
+> **Os rostos estão borrados de propósito.** São 26 estudantes reais, e nenhum
+> consentiu em aparecer num repositório público. É a mesma razão que fez o
+> projeto tirar o Google Fonts do caminho, servir as tiles do OpenFreeMap e
+> trazer a foto de perfil do provedor para o próprio bucket: em rede de
+> estudante, exposição que não foi pedida é exposição que não acontece.
+
+**26 embaixadores. 20 cidades. Um pino por cidade — nunca por pessoa.**
+
+Esse detalhe do mapa não é limitação técnica: a API não devolve posição
+individual porque ela **não existe no sistema**. O que o banco conhece é o
+município, e desenhar alguém num ponto exigiria inventar uma coordenada.
+
+O que estava em uso quando a divulgação parou:
+
+| | |
 |---|---|
-| Monorepo, CI/CD e publicação | Busca no diretório e mapa |
-| Login social (Google, LinkedIn, GitHub) | Gamificação (pontos, badges, ranking) |
-| Acesso restrito por convite ou lista aprovada | Presença online em tempo real |
-| Perfil: criar, ver, editar, sair da conta | Notificar a rede sobre um aviso novo |
-| Feed com ranking, posts, comentários | Notificação de reação e comentário |
-| Cinco reações próprias | Sugerir conexão a partir de "Bora junto" |
-| Envio de imagem em post e foto de perfil | Vídeo |
-| Diretório com busca e filtro por habilidade | Notificação de pedido de conexão |
-| Mapa por cidade, com pinos clicáveis | Mensagem direta |
-| Perfil público em `/perfil/{slug}` com as publicações | Mapa fora do Brasil |
-| Conexões: pedir, aceitar, recusar, desfazer | Exportar e excluir a própria conta |
-| Link de convite pronto para compartilhar | |
-| Notificações de reação, comentário e conexão | |
-| Navegação lateral no computador, inferior no celular | |
-| Exportar e excluir a conta (LGPD art. 18, V e VI) | |
-| Página de apresentação e tela de configurações | |
-| Quadro de avisos oficiais | |
-| Controle de visibilidade no mapa | |
-| Feed em abas: "Para você" e "Seguindo" | |
-| Caixa de notificações no cabeçalho | |
-| Perfil com publicações, abas e contagens | |
-| Coluna de sugestões no computador | |
-| Nome de usuário editável, com o antigo respondendo | |
-| Cinco campos de link no perfil | |
-| Apresentação com nuvem de pixels interativa | |
-| Convite de 8 caracteres, gerado por qualquer embaixador | |
-| Convite que atende várias pessoas, válido por 15 dias | |
-| Indicação registrada: quem trouxe quem | |
-| Publicação em parágrafos | |
-| Fontes servidas do próprio domínio e CSP no Hosting | |
+| **Entrar** | Login social, acesso só por convite ou lista aprovada |
+| **Perfil** | Instituição por campus, cidade, curso, habilidades, links, endereço público |
+| **Encontrar** | Diretório com busca e filtro, mapa por cidade, sugestões |
+| **Conversar** | Feed com ranking próprio, cinco reações, comentários, quadro de avisos |
+| **Conectar** | Pedir, aceitar, recusar, desfazer — com notificação |
+| **Sair** | Exportar e excluir a própria conta (LGPD art. 18, V e VI) |
+| **No aparelho** | Instalável, funciona sem rede, avisa com o app fechado |
 
-**347 testes · 137 critérios de aceite provados.** A especificação completa de cada fatia,
-com critérios e provas, está em `.spec/features/`. Quem decide se um critério passou é o
-test runner, nunca quem implementou.
+**401 testes · 154 critérios de aceite provados · auditoria limpa.**
 
-Um risco está **aceito, não resolvido**: não existe revogar convite. Quem entra por um link
-vazado vê o diretório, e o link vale 15 dias. É aceitável porque a divulgação é em grupo
-fechado do programa e isto não é produto oficial — mas está escrito aqui, não escondido.
+### O que aprendemos publicando
+
+A parte mais útil deste repositório talvez seja o que deu errado. Oito defeitos
+apareceram **só em produção**, todos no caminho de autenticação real — o mesmo
+que a tela de desenvolvimento contorna:
+
+- O endpoint de login era POST e a tela chamava com GET
+- A `Content-Security-Policy` bloqueava a própria API
+- O `Account` do Better Auth 1.7 pedia uma coluna que não existia
+- O id gerado pela biblioteca não era UUID, e a validação de saída recusava
+- O Google escolhia a conta em silêncio, sem mostrar o seletor
+- O cookie de `state` do OAuth era de terceiro, e o navegador descartava
+
+Cada um virou teste de regressão ou passo verificável no guia. O histórico de
+commits conta a investigação de cada um, com a evidência que levou à causa.
 
 ## Arquitetura
 
@@ -273,6 +294,11 @@ completamente vazia, e quem acabou de chegar é justamente quem mais precisa ver
 teste garantindo que "Para você" continue mostrando a rede inteira mesmo para quem não tem
 afinidade com ninguém.
 
+**As abas estão escondidas** desde 21/08/2026 (`MOSTRAR_ABAS` em `Feed.tsx`). Com 26
+pessoas, "Seguindo" ficava quase vazia e a escolha entre as duas não tinha consequência —
+a tela fazia uma pergunta sem ter resposta útil. Como "Para você" nunca filtrou nada,
+esconder as abas fez todo mundo ver a rede inteira. Voltar é trocar uma palavra.
+
 ## Convites
 
 Todo embaixador convida, até **5 a cada 30 dias** — coordenação e moderação sem teto.
@@ -460,8 +486,14 @@ dia. Os outros três estão folgados para uma rede de centenas de pessoas.
 
 ## Colocar no ar
 
-Nada disso está publicado ainda, e **o que falta não é código**: são contas,
-credenciais e alguns valores que precisam casar entre si.
+> **Este guia continua aqui de propósito, mesmo com a divulgação pausada.** Ele
+> é o registro de como o MVP foi ao ar — inclusive das três armadilhas que só
+> aparecem em produção e que custaram um dia inteiro cada. Serve a quem for
+> contribuir, a quem quiser rodar a própria cópia para desenvolver, e a mim
+> mesmo se o programa quiser aproveitar alguma coisa daqui.
+
+**O que falta não é código**: são contas, credenciais e alguns valores que
+precisam casar entre si.
 
 > **Leia isto antes de começar.** Três coisas deste guia falham **em silêncio** —
 > o deploy passa, a tela abre, e o defeito aparece depois. Estão marcadas com ⚠️.
